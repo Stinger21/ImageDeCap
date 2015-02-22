@@ -15,7 +15,7 @@ using System.Text.RegularExpressions;
 
 using System.Collections.Specialized;
 
-namespace screenshotsPls
+namespace imageDeCap
 {
     public class KeyMessageFilter : IMessageFilter
     {

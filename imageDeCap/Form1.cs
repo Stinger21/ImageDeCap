@@ -20,7 +20,7 @@ using System.Media;
 using System.Diagnostics;
 
 
-namespace screenshotsPls
+namespace imageDeCap
 {
     public partial class Form1 : Form
     {
@@ -205,14 +205,14 @@ namespace screenshotsPls
 
                 notifyIcon1.ShowBalloonTip(500, "imageDeCap", "Pastebin link placed in clipboard!", ToolTipIcon.Info);
                 Assembly assembly = Assembly.GetExecutingAssembly();
-                SoundPlayer sp = new SoundPlayer(assembly.GetManifestResourceStream("screenshotsPls.upload.wav"));
+                SoundPlayer sp = new SoundPlayer(assembly.GetManifestResourceStream("imageDeCap.upload.wav"));
                 sp.Play();
             }
             else
             {
                 notifyIcon1.ShowBalloonTip(500, "imageDeCap", "upload to pastebin failed!", ToolTipIcon.Error);
                 Assembly assembly = Assembly.GetExecutingAssembly();
-                SoundPlayer sp = new SoundPlayer(assembly.GetManifestResourceStream("screenshotsPls.error.wav"));
+                SoundPlayer sp = new SoundPlayer(assembly.GetManifestResourceStream("imageDeCap.error.wav"));
                 sp.Play();
             }
 
@@ -258,7 +258,7 @@ namespace screenshotsPls
                 notifyIcon1.ShowBalloonTip(500, "imageDeCap", "upload to imgur failed!", ToolTipIcon.Error);
 
                 Assembly assembly = Assembly.GetExecutingAssembly();
-                SoundPlayer sp = new SoundPlayer(assembly.GetManifestResourceStream("screenshotsPls.error.wav"));
+                SoundPlayer sp = new SoundPlayer(assembly.GetManifestResourceStream("imageDeCap.error.wav"));
                 sp.Play();
             }
             else
@@ -266,7 +266,7 @@ namespace screenshotsPls
                 notifyIcon1.ShowBalloonTip(500, "imageDeCap", "imgur URL copied to clipboard!", ToolTipIcon.Info);//annoying-ass opoup
 
                 Assembly assembly = Assembly.GetExecutingAssembly();
-                SoundPlayer sp = new SoundPlayer(assembly.GetManifestResourceStream("screenshotsPls.upload.wav"));//play FUCKING notification
+                SoundPlayer sp = new SoundPlayer(assembly.GetManifestResourceStream("imageDeCap.upload.wav"));//play FUCKING notification
                 sp.Play();
 
                 Clipboard.SetText(url);//cliboardfgbhloöijunsd
@@ -362,7 +362,7 @@ namespace screenshotsPls
                     notifyIcon1.ShowBalloonTip(500, "imageDeCap", "upload failed!", ToolTipIcon.Error);
 
                     Assembly assembly = Assembly.GetExecutingAssembly();
-                    SoundPlayer sp = new SoundPlayer(assembly.GetManifestResourceStream("screenshotsPls.error.wav"));
+                    SoundPlayer sp = new SoundPlayer(assembly.GetManifestResourceStream("imageDeCap.error.wav"));
                     sp.Play();
                 }
                 else
@@ -370,7 +370,7 @@ namespace screenshotsPls
                     notifyIcon1.ShowBalloonTip(500, "imageDeCap", "imgur URL copied to clipboard!", ToolTipIcon.Info);//annoying-ass opoup
 
                     Assembly assembly = Assembly.GetExecutingAssembly();
-                    SoundPlayer sp = new SoundPlayer(assembly.GetManifestResourceStream("screenshotsPls.upload.wav"));//play FUCKING notification
+                    SoundPlayer sp = new SoundPlayer(assembly.GetManifestResourceStream("imageDeCap.upload.wav"));//play FUCKING notification
                     sp.Play();
 
                     Clipboard.SetText(url);//cliboardfgbhloöijunsd

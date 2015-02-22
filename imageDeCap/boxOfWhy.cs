@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace screenshotsPls
+namespace imageDeCap
 {
     public partial class boxOfWhy : Form
     {

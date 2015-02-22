@@ -7,8 +7,8 @@
     <ProjectGuid>{ADD5179A-F93E-4947-BB09-0841EC81ADAD}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>screenshotsPls</RootNamespace>
-    <AssemblyName>screenshotsPls</AssemblyName>
+    <RootNamespace>imageDeCap</RootNamespace>
+    <AssemblyName>imageDeCap</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <PublishUrl>publish\</PublishUrl>
@@ -112,6 +112,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

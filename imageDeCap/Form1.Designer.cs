@@ -1,4 +1,4 @@
-﻿namespace screenshotsPls
+﻿namespace imageDeCap
 {
     partial class Form1
     {
