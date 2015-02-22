@@ -1,0 +1,15 @@
+c:\users\stinger\documents\visual studio 2013\Projects\screenshotsPls\screenshotsPls\bin\Debug\screenshotsPls.exe.config
+c:\users\stinger\documents\visual studio 2013\Projects\screenshotsPls\screenshotsPls\bin\Debug\screenshotsPls.exe
+c:\users\stinger\documents\visual studio 2013\Projects\screenshotsPls\screenshotsPls\bin\Debug\screenshotsPls.pdb
+c:\users\stinger\documents\visual studio 2013\Projects\screenshotsPls\screenshotsPls\obj\Debug\screenshotsPls.csprojResolveAssemblyReference.cache
+c:\users\stinger\documents\visual studio 2013\Projects\screenshotsPls\screenshotsPls\obj\Debug\screenshotsPls.Form1.resources
+c:\users\stinger\documents\visual studio 2013\Projects\screenshotsPls\screenshotsPls\obj\Debug\screenshotsPls.Properties.Resources.resources
+c:\users\stinger\documents\visual studio 2013\Projects\screenshotsPls\screenshotsPls\obj\Debug\screenshotsPls.csproj.GenerateResource.Cache
+c:\users\stinger\documents\visual studio 2013\Projects\screenshotsPls\screenshotsPls\obj\Debug\screenshotsPls.exe
+c:\users\stinger\documents\visual studio 2013\Projects\screenshotsPls\screenshotsPls\obj\Debug\screenshotsPls.pdb
+c:\users\stinger\documents\visual studio 2013\Projects\screenshotsPls\screenshotsPls\obj\Debug\screenshotsPls.boxOfWhy.resources
+c:\users\stinger\documents\visual studio 2013\Projects\screenshotsPls\screenshotsPls\obj\Debug\screenshotsPls.completeCover.resources
+C:\Users\Stinger\documents\visual studio 2013\Projects\screenshotsPls\screenshotsPls\bin\Debug\screenshotsPls.exe.manifest
+C:\Users\Stinger\documents\visual studio 2013\Projects\screenshotsPls\screenshotsPls\bin\Debug\screenshotsPls.application
+C:\Users\Stinger\documents\visual studio 2013\Projects\screenshotsPls\screenshotsPls\obj\Debug\screenshotsPls.exe.manifest
+C:\Users\Stinger\documents\visual studio 2013\Projects\screenshotsPls\screenshotsPls\obj\Debug\screenshotsPls.application
