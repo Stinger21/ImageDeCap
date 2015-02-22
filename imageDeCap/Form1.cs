@@ -47,7 +47,7 @@ namespace screenshotsPls
             //HotKey wa = new HotKey(Keys.D2, HotKey.KeyModifiers.Shift | HotKey.KeyModifiers.Control, UploadToPasteBin, 0);
 
             //new HotKey(Keys.D3, HotKey.KeyModifiers.Shift | HotKey.KeyModifiers.Control, UploadImgurScreen, 1);
-            new HotKey(Keys.D4, HotKey.KeyModifiers.Shift | HotKey.KeyModifiers.Control, UploadToImgurBounds, 2);
+            //new HotKey(Keys.D4, HotKey.KeyModifiers.Shift | HotKey.KeyModifiers.Control, UploadToImgurBounds, 2);
             //new HotKey(Keys.D5, HotKey.KeyModifiers.Shift | HotKey.KeyModifiers.Control, UploadImgurWindow, 3);
 
             this.contextMenu1 = new System.Windows.Forms.ContextMenu();
@@ -218,7 +218,7 @@ namespace screenshotsPls
 
         }
 
-        private void UploadToImgurBounds(object sender, EventArgs e)
+        private void UploadToImgurBounds()
         {
             //back cover used for pulling cursor position into updateSelectedArea()
             completeCover backCover = new completeCover(this);
@@ -390,6 +390,11 @@ namespace screenshotsPls
         private void label5_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void button3_Click_1(object sender, EventArgs e)
+        {
+            UploadToImgurBounds();
         }
 
 

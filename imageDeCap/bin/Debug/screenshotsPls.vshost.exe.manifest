@@ -42,14 +42,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="screenshotsPls.exe" size="867280">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="screenshotsPls.exe" size="866256">
       <assemblyIdentity name="screenshotsPls" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>c9U5GH+gdQXR7SISrB66z31vDEYP27LPPSNUCJM9OgU=</dsig:DigestValue>
+        <dsig:DigestValue>YTQRCNJ5Uykx6kUDtwihbyTYuSyXI+5QJcsJ2iW+KnE=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
