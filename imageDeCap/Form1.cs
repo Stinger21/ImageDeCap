@@ -57,8 +57,8 @@ namespace imageDeCap
 
             this.contextMenu1.MenuItems.Add(this.menuItem2);
             this.contextMenu1.MenuItems.Add("-");
-            this.contextMenu1.MenuItems.Add(this.menuItem1);
             this.contextMenu1.MenuItems.Add(this.menuItem3);
+            this.contextMenu1.MenuItems.Add(this.menuItem1);
 
             this.menuItem1.Text = "Exit";
             this.menuItem1.Click += new System.EventHandler(this.menuItem1_Click);
@@ -86,6 +86,7 @@ namespace imageDeCap
             listBox1.DragEnter += new DragEventHandler(Form1_DragEnter);
             listBox1.DragDrop += new DragEventHandler(Form1_DragDrop);
         }
+
         void Form1_DragEnter(object sender, DragEventArgs e)
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop)) e.Effect = DragDropEffects.Copy;
@@ -184,7 +185,7 @@ namespace imageDeCap
             uploadPastebin(Clipboard.GetText());
         }
 
-
+        Magnificator magn;
         bool isTakingSnapshot = false;
         private void UploadToImgurBounds()
         {
@@ -192,8 +193,10 @@ namespace imageDeCap
             {
                 isTakingSnapshot = true;
                 //back cover used for pulling cursor position into updateSelectedArea()
+                magn = new Magnificator();
                 completeCover backCover = new completeCover(this);
                 backCover.Show();
+                magn.Show();
                 //backCover.BackColor = Color.White;
                 //backCover.Opacity = 0.1;
 
@@ -297,11 +300,13 @@ namespace imageDeCap
 
         public void updateSelectedArea(completeCover backCover, bool keyPressed, bool escapePressed)//this thing is essentially a fucking frame-loop.
         {
-            //backCover.Activate();
+            backCover.Activate();
+            magn.Bounds = new Rectangle(Cursor.Position.X + 32, Cursor.Position.Y - 32, 124, 124);
             if (wasPressed != (MouseButtons == MouseButtons.Left))
             {
                 if (wasPressed)//keyUp
                 {
+                    magn.Close();
                     backCover.Close();
 
                     topBox.Hide();
@@ -351,6 +356,7 @@ namespace imageDeCap
             }
             if (escapePressed)
             {
+                magn.Close();
                 backCover.Close();
 
                 topBox.Hide();
@@ -389,6 +395,12 @@ namespace imageDeCap
         {
 
         }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+
+        }
+
 
 
 
