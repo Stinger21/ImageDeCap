@@ -27,8 +27,6 @@ namespace imageDeCap
 
     class ScreenCapturer
     {
-
-
         string ClientId = "da05117bbfa9bda";
         public string UploadImage(string image)
         {
@@ -116,7 +114,7 @@ namespace imageDeCap
 
             if (screenCaptureMode == enmScreenCaptureMode.Screen)
             {
-                bounds = Screen.GetBounds(Point.Empty);
+                bounds = new Rectangle(0, 0, SystemInformation.VirtualScreen.Width, SystemInformation.VirtualScreen.Height);
                 CursorPosition = Cursor.Position;
             }
             else if (screenCaptureMode == enmScreenCaptureMode.Window)

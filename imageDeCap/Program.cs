@@ -4,13 +4,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using System.Runtime.InteropServices;
+using System.Threading;
+
 namespace imageDeCap
 {
     static class Program
     {
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
+        public static Form1 mainProgram;
         [STAThread]
         static void Main()
         {
@@ -19,5 +20,7 @@ namespace imageDeCap
             Form1 mainProgram = new Form1();
             Application.Run(mainProgram);
         }
+
+
     }
 }

@@ -34,10 +34,11 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(292, 270);
+            this.BackColor = System.Drawing.Color.White;
+            this.ClientSize = new System.Drawing.Size(391, 365);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "completeCover";
-            this.Opacity = 0.5D;
+            this.Opacity = 0.05D;
             this.Text = "completeCover";
             this.TopMost = true;
             this.Load += new System.EventHandler(this.completeCover_Load);

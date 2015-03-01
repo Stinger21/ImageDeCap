@@ -17,12 +17,25 @@ namespace imageDeCap
         {
             InitializeComponent();
             this.mainProgram = mainProgram;
+
+            //ScreenCapturer cap = new ScreenCapturer();
+            //Bitmap fullSnapshot = cap.Capture(enmScreenCaptureMode.Screen);
+            SetBounds(0, 0, SystemInformation.VirtualScreen.Width, SystemInformation.VirtualScreen.Height);
+
+            //System.Drawing.SolidBrush myBrush = new System.Drawing.SolidBrush(System.Drawing.Color.Red);
+            //System.Drawing.Graphics formGraphics;
+            //formGraphics = this.CreateGraphics();
+            //formGraphics.FillRectangle(myBrush, new Rectangle(0, 0, 200, 300));
+            //myBrush.Dispose();
+            //formGraphics.Dispose();
+
         }
         bool keyPressed = false;
         bool escPressed = false;
 
         private void completeCover_Load(object sender, EventArgs e)
         {
+
 
         }
         /*
@@ -53,6 +66,7 @@ namespace imageDeCap
             }
             if (e.KeyCode == Keys.Escape)
             {
+                //MessageBox.Show("wa! ");
                 escPressed = true;
             }
         }

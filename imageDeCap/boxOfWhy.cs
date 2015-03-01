@@ -19,7 +19,6 @@ namespace imageDeCap
 
         private void boxOfWhy_Load(object sender, EventArgs e)
         {
-
         }
         int WM_NCHITTEST = 0x84;
         Int32 HTTRANSPARENT = -1;

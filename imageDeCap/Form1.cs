@@ -18,274 +18,263 @@ using System.Reflection;
 using System.Resources;
 using System.Media;
 using System.Diagnostics;
-
+using System.Threading;
 
 namespace imageDeCap
 {
     public partial class Form1 : Form
     {
-        [DllImport("User32.dll")]
-        static extern IntPtr GetDC(IntPtr hwnd);
 
-        [DllImport("User32.dll")]
-        static extern void ReleaseDC(IntPtr dc);
+        List<string> Links = new List<string>();
+        private void addToLinks(string link)
+        {
+            Links.Add(link);
+            listBox1.DataSource = null;
+            listBox1.DataSource = Links;
 
+            listBox1.SelectedIndex = listBox1.Items.Count - 1;
+        }
 
-        private KeyMessageFilter m_filter = new KeyMessageFilter();
+        private void listBox1_DoubleClick(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start(Links[listBox1.SelectedIndex]);
+        }
 
+        private void notifyIcon1_BalloonTipClicked(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start(Links[listBox1.SelectedIndex]);
+        }
 
         private System.Windows.Forms.ContextMenu contextMenu1;
-        private System.Windows.Forms.MenuItem menuItem1;
-        private System.Windows.Forms.MenuItem menuItem2;
-        private System.Windows.Forms.MenuItem menuItem3;
+        private System.Windows.Forms.MenuItem menuItem1 = new System.Windows.Forms.MenuItem();
+        private System.Windows.Forms.MenuItem menuItem2 = new System.Windows.Forms.MenuItem();
+        private System.Windows.Forms.MenuItem menuItem3 = new System.Windows.Forms.MenuItem();
 
         public Form1()
         {
             InitializeComponent();
-
-            //hotkeys
-            //HotKey wa = new HotKey(Keys.D2, HotKey.KeyModifiers.Shift | HotKey.KeyModifiers.Control, UploadToPasteBin, 0);
-
-            //new HotKey(Keys.D3, HotKey.KeyModifiers.Shift | HotKey.KeyModifiers.Control, UploadImgurScreen, 1);
-            //new HotKey(Keys.D4, HotKey.KeyModifiers.Shift | HotKey.KeyModifiers.Control, UploadToImgurBounds, 2);
-            //new HotKey(Keys.D5, HotKey.KeyModifiers.Shift | HotKey.KeyModifiers.Control, UploadImgurWindow, 3);
-
             this.contextMenu1 = new System.Windows.Forms.ContextMenu();
-            this.menuItem1 = new System.Windows.Forms.MenuItem();
-            this.menuItem2 = new System.Windows.Forms.MenuItem();
-            this.menuItem3 = new System.Windows.Forms.MenuItem();
 
-            // Initialize contextMenu1
-            this.contextMenu1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] { this.menuItem1, this.menuItem2, this.menuItem3 });
+            this.contextMenu1.MenuItems.Add(this.menuItem2);
+            this.contextMenu1.MenuItems.Add("-");
+            this.contextMenu1.MenuItems.Add(this.menuItem1);
+            this.contextMenu1.MenuItems.Add(this.menuItem3);
 
-            // Initialize menuItem1
-            this.menuItem1.Index = 0;
             this.menuItem1.Text = "Exit";
             this.menuItem1.Click += new System.EventHandler(this.menuItem1_Click);
 
-            // Initialize menuItem2
-            this.menuItem2.Index = 0;
-            this.menuItem2.Text = "Settings";
-            this.menuItem2.Click += new System.EventHandler(this.menuItem2_Click);
-
-            // Initialize menuItem2
-            this.menuItem3.Index = 0;
             this.menuItem3.Text = "Contact / Bugs";
             this.menuItem3.Click += new System.EventHandler(this.menuItem3_Click);
+
+            this.menuItem2.Text = "Open Window";
+            this.menuItem2.Click += new System.EventHandler(this.menuItem2_Click);
+
 
             notifyIcon1.ContextMenu = contextMenu1;
             notifyIcon1.Visible = true;
 
-            //this.ControlBox = false;
+            hook = new Hotkey(label1);
+            hook.registerHotkey(Modifier.Ctrl | Modifier.Shift, Keys.D2, gui_clipboardToPastebin);
+            hook.registerHotkey(Modifier.Ctrl | Modifier.Shift, Keys.D3, gui_windowToImgur);
+            hook.registerHotkey(Modifier.Ctrl | Modifier.Shift, Keys.D4, gui_boundsToImgur);
+            hook.registerHotkey(Modifier.Ctrl | Modifier.Shift, Keys.D5, gui_screenToImgur);
 
+            this.ShowInTaskbar = false;
+            this.Opacity = 0.0f;
+
+            listBox1.AllowDrop = true;
+            listBox1.DragEnter += new DragEventHandler(Form1_DragEnter);
+            listBox1.DragDrop += new DragEventHandler(Form1_DragDrop);
         }
-        bool ctrlDown = false;
-        bool shiftDown = false;
-        private void HookManager_KeyDown(object sender, KeyEventArgs e)
+        void Form1_DragEnter(object sender, DragEventArgs e)
         {
-            ctrlDown = e.KeyCode == Keys.ControlKey;
-            shiftDown = e.KeyCode == Keys.ShiftKey;
-            if (e.KeyCode == Keys.D4 && ctrlDown && shiftDown)
+            if (e.Data.GetDataPresent(DataFormats.FileDrop)) e.Effect = DragDropEffects.Copy;
+        }
+
+        void Form1_DragDrop(object sender, DragEventArgs e)
+        {
+            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+            if(files.Length > 0)
             {
-                MessageBox.Show("wah!");
+                uploadImageFile(files[0]);
             }
-            //textBoxLog.AppendText(string.Format("KeyDown - {0}\n", e.KeyCode));
-            //textBoxLog.ScrollToCaret();
         }
 
-        private void HookManager_KeyUp(object sender, KeyEventArgs e)
+        private void Form1_FormClosing_1(object sender, FormClosingEventArgs e)
         {
-            ctrlDown = e.KeyCode == Keys.ControlKey;
-            shiftDown = e.KeyCode == Keys.ShiftKey;
-            //textBoxLog.AppendText(string.Format("KeyUp - {0}\n", e.KeyCode));
-            //textBoxLog.ScrollToCaret();
-        }
-
-
-        private void HookManager_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            //textBoxLog.AppendText(string.Format("KeyPress - {0}\n", e.KeyChar));
-            //textBoxLog.ScrollToCaret();
-        }
-
-        private void menuItem1_Click(object Sender, EventArgs e)
-        {
-            // Close the form, which closes the application. 
-            //this.Close();
-            Application.Exit();
-        }
-        private void menuItem2_Click(object Sender, EventArgs e)
-        {
-            this.WindowState = FormWindowState.Normal;
-        }
-        private void menuItem3_Click(object Sender, EventArgs e)
-        {
-            System.Diagnostics.Process.Start("http://www.mattwestphal.com");
-        }
-        private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-            this.WindowState = FormWindowState.Normal;
-            this.ShowInTaskbar = true;
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            
             if (e.CloseReason == CloseReason.UserClosing)
             {
                 e.Cancel = true;
-                this.WindowState = FormWindowState.Minimized;
-            } 
-            
+                this.ShowInTaskbar = false;
+                this.Opacity = 0.0f;
+            }
+        }
+        private void menuItem2_Click(object Sender, EventArgs e)//Open Window
+        {
+            this.ShowInTaskbar = true;
+            this.Opacity = 1.0f;
+            this.Activate();
+
+        }
+        private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)//Double Click notifyIcon
+        {
+            this.ShowInTaskbar = true;
+            this.Opacity = 1.0f;
+            this.Activate();
+        }
+
+        Hotkey hook;
+
+        void gui_clipboardToPastebin(HotkeyEventArgs e)
+        {
+            UploadPastebinClipboard();
+        }
+        void gui_boundsToImgur(HotkeyEventArgs e)
+        {
+            UploadToImgurBounds();
+        }
+        void gui_windowToImgur(HotkeyEventArgs e)
+        {
+            UploadImgurWindow();
+        }
+        void gui_screenToImgur(HotkeyEventArgs e)
+        {
+            UploadImgurScreen();
+        }
+
+        private void UploadToPasteBin(object sender = null, EventArgs e = null)
+        {
+            UploadPastebinClipboard();
+        }
+
+        private void button3_Click_1(object sender, EventArgs e)
+        {
+            UploadToImgurBounds();
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            UploadImgurWindow();
+        }
+        private void button4_Click(object sender, EventArgs e)
+        {
+            UploadImgurScreen();
+        }
+
+
+        private void menuItem1_Click(object Sender, EventArgs e)//Exit button
+        {
+            Application.Exit();
         }
 
 
 
-
-
-        bool hasShownNotification = false;
-        private void Form1_Resize(object sender, EventArgs e)
+        private void menuItem3_Click(object Sender, EventArgs e)
         {
-            if (this.WindowState == FormWindowState.Minimized)
-            {
-                if (!hasShownNotification)
-                {
-                    notifyIcon1.ShowBalloonTip(1000, "imageDeCap", "Is still running in the background", ToolTipIcon.None);
-                    hasShownNotification = true;
-                }
-
-                this.ShowInTaskbar = false;
-            }
+            System.Diagnostics.Process.Start("http://www.mattwestphal.com");
         }
 
         private void button1_Click_1(object sender, EventArgs e)
         {
             Application.Exit();
-            /*
-            Bitmap result = cap.Capture();
-            result.Save("C:\\screenshot.png");
-            string url = (string)cap.UploadImage("C:\\screenshot.png");
-
-            textBox1.Text = url;
-             * */
         }
 
-        private void textBox1_TextChanged(object sender, EventArgs e)
+        private void UploadPastebinClipboard()
         {
-
+            uploadPastebin(Clipboard.GetText());
         }
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-            //UploadToPasteBin();
-        }
-        private void button3_Click(object sender, EventArgs e)
-        {
-            //UploadToImgur();
-        }
 
-        private void Form1_MouseMove(object sender, MouseEventArgs e)
-        {
-            //textBox2.Text = Cursor.Position.X + ", " + Cursor.Position.Y;
-            //textBox2.Text = SystemInformation.VirtualScreen.Width.ToString();
-        }
-
-        private void UploadToPasteBin(object sender = null, EventArgs e = null)
-        {
-            string pasteBinResult = cap.Send(Clipboard.GetText());
-            textBox1.Text = pasteBinResult;
-            if (pasteBinResult != null)
-            {
-                Clipboard.SetText(pasteBinResult);
-
-                notifyIcon1.ShowBalloonTip(500, "imageDeCap", "Pastebin link placed in clipboard!", ToolTipIcon.Info);
-                Assembly assembly = Assembly.GetExecutingAssembly();
-                SoundPlayer sp = new SoundPlayer(assembly.GetManifestResourceStream("imageDeCap.upload.wav"));
-                sp.Play();
-            }
-            else
-            {
-                notifyIcon1.ShowBalloonTip(500, "imageDeCap", "upload to pastebin failed!", ToolTipIcon.Error);
-                Assembly assembly = Assembly.GetExecutingAssembly();
-                SoundPlayer sp = new SoundPlayer(assembly.GetManifestResourceStream("imageDeCap.error.wav"));
-                sp.Play();
-            }
-
-        }
-
+        bool isTakingSnapshot = false;
         private void UploadToImgurBounds()
         {
-            //back cover used for pulling cursor position into updateSelectedArea()
-            completeCover backCover = new completeCover(this);
-            backCover.Show();
-            backCover.SetBounds(0, 0, SystemInformation.VirtualScreen.Width, SystemInformation.VirtualScreen.Height);
-            backCover.BackColor = Color.Black;
-            backCover.Opacity = 0.01;
+            if(!isTakingSnapshot)
+            {
+                isTakingSnapshot = true;
+                //back cover used for pulling cursor position into updateSelectedArea()
+                completeCover backCover = new completeCover(this);
+                backCover.Show();
+                //backCover.BackColor = Color.White;
+                //backCover.Opacity = 0.1;
 
-            //X = 0;
-            //Y = 0;
-            //tempX = 0;
-            //tempY = 0;
-            //Width = 0;
-            //Height = 0;
-            setBox(topBox);
-            setBox(leftBox);
-            setBox(bottomBox);
-            setBox(rightBox);
+                setBox(topBox);
+                setBox(leftBox);
+                setBox(bottomBox);
+                setBox(rightBox);
+            }
+
         }
-        private void UploadImgurWindow(object sender, EventArgs e)
+        private void UploadImgurWindow()
         {
             uploadImgur(enmScreenCaptureMode.Window);
         }
-        private void UploadImgurScreen(object sender, EventArgs e)
+        private void UploadImgurScreen()
         {
             uploadImgur(enmScreenCaptureMode.Screen);
         }
         private void uploadImgur(enmScreenCaptureMode mode)
         {
+            playSound("snip.wav");
             Bitmap result = cap.Capture(mode);
-            result.Save("C:\\screenshot.png");
-            string url = (string)cap.UploadImage("C:\\screenshot.png");
-            textBox1.Text = url;
-            if (url == null)
-            {
-                Clipboard.SetText(url);
-                notifyIcon1.ShowBalloonTip(500, "imageDeCap", "upload to imgur failed!", ToolTipIcon.Error);
+            result.Save(System.IO.Path.GetTempPath() + "screenshot.png");
+            result.Dispose();
+            uploadImageFile(System.IO.Path.GetTempPath() + "screenshot.png");
+        }
 
-                Assembly assembly = Assembly.GetExecutingAssembly();
-                SoundPlayer sp = new SoundPlayer(assembly.GetManifestResourceStream("imageDeCap.error.wav"));
-                sp.Play();
+        private void uploadImageFile(string filePath, bool edit = false)
+        {
+            if(edit)
+            {
+                imageEditor editor = new imageEditor(filePath);
+                editor.ShowDialog();
+                filePath = System.IO.Path.GetTempPath() + "screenshot_edited.png";
+            }
+            if (File.Exists(System.IO.Path.GetTempPath() + "screenshot_edited.png"))
+            {
+                string url = (string)cap.UploadImage(filePath);
+                if (url == null)
+                {
+                    Clipboard.SetText(url);
+                    notifyIcon1.ShowBalloonTip(500, "imageDeCap", "upload to imgur failed!", ToolTipIcon.Error);
+                    playSound("error.wav");
+                }
+                else
+                {
+                    notifyIcon1.ShowBalloonTip(500, "imageDeCap", "imgur URL copied to clipboard!", ToolTipIcon.Info);
+                    playSound("upload.wav");
+                    Clipboard.SetText(url);
+                    addToLinks(url);
+                }
+            }
+        }
+        private void uploadPastebin(string text)
+        {
+            playSound("snip.wav");
+            string pasteBinResult = cap.Send(text);
+            if (pasteBinResult != null)
+            {
+                Clipboard.SetText(pasteBinResult);
+                notifyIcon1.ShowBalloonTip(500, "imageDeCap", "Pastebin link placed in clipboard!", ToolTipIcon.Info);
+                playSound("upload.wav");
+                addToLinks(pasteBinResult);
             }
             else
             {
-                notifyIcon1.ShowBalloonTip(500, "imageDeCap", "imgur URL copied to clipboard!", ToolTipIcon.Info);//annoying-ass opoup
-
-                Assembly assembly = Assembly.GetExecutingAssembly();
-                SoundPlayer sp = new SoundPlayer(assembly.GetManifestResourceStream("imageDeCap.upload.wav"));//play FUCKING notification
-                sp.Play();
-
-                Clipboard.SetText(url);//cliboardfgbhloöijunsd
+                notifyIcon1.ShowBalloonTip(500, "imageDeCap", "upload to pastebin failed!", ToolTipIcon.Error);
+                playSound("error.wav");
             }
         }
-
-
         private void setBox(boxOfWhy box)
         {
             box.Show();
             box.BackColor = Color.Red;
             box.Opacity = 0.5;
-            bottomBox.SetBounds(0, 0, 0, 0);
+            box.SetBounds(0, 0, 0, 0);
         }
 
         bool wasPressed = false;
 
         ScreenCapturer cap = new ScreenCapturer();
-
 
         boxOfWhy topBox = new boxOfWhy();
         boxOfWhy bottomBox = new boxOfWhy();
@@ -299,13 +288,40 @@ namespace imageDeCap
         int Width = 0;
         int Height = 0;
 
+        public void playSound(string soundName)
+        {
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            SoundPlayer sp = new SoundPlayer(assembly.GetManifestResourceStream("imageDeCap." + soundName));
+            sp.Play();
+        }
+
         public void updateSelectedArea(completeCover backCover, bool keyPressed, bool escapePressed)//this thing is essentially a fucking frame-loop.
         {
-           
+            //backCover.Activate();
             if (wasPressed != (MouseButtons == MouseButtons.Left))
             {
                 if (wasPressed)//keyUp
                 {
+                    backCover.Close();
+
+                    topBox.Hide();
+                    bottomBox.Hide();
+                    leftBox.Hide();
+                    rightBox.Hide();
+                    if (Width > 0 && Height > 0)
+                    {
+                        playSound("snip.wav");
+                        Bitmap result = cap.Capture(enmScreenCaptureMode.Bounds, X, Y, Width, Height);
+                        File.Delete(System.IO.Path.GetTempPath() + "screenshot.png");
+                        result.Save(System.IO.Path.GetTempPath() + "screenshot.png");
+                        result.Dispose();
+                        uploadImageFile(System.IO.Path.GetTempPath() + "screenshot.png", true);
+                    }
+                    else
+                    {
+
+                    }
+                    isTakingSnapshot = false;
                 }
                 else//keyDown
                 {
@@ -313,13 +329,13 @@ namespace imageDeCap
                     tempY = Cursor.Position.Y;
                 }
             }
+
             if(MouseButtons == MouseButtons.Left)
             {
-                topBox.SetBounds(0, Y, SystemInformation.VirtualScreen.Width, 0);
-                bottomBox.SetBounds(0, Height + Y, SystemInformation.VirtualScreen.Width, 0);
-
-                leftBox.SetBounds(X, 0, 0, SystemInformation.VirtualScreen.Height);
-                rightBox.SetBounds(Width + X, 0, 0, SystemInformation.VirtualScreen.Height);
+                topBox.SetBounds(X, Y, Width, 0);
+                bottomBox.SetBounds(X, Height + Y, Width, 0);
+                leftBox.SetBounds(X, Y, 0, Height);
+                rightBox.SetBounds(Width + X, Y, 0, Height);
 
                 Width = Math.Abs(Cursor.Position.X - tempX);
                 Height = Math.Abs(Cursor.Position.Y - tempY);
@@ -341,49 +357,11 @@ namespace imageDeCap
                 bottomBox.Hide();
                 leftBox.Hide();
                 rightBox.Hide();
+                isTakingSnapshot = false;
             }
 
-            if(keyPressed)
-            {
-                backCover.Close();
-
-                topBox.Hide();
-                bottomBox.Hide();
-                leftBox.Hide();
-                rightBox.Hide();
-
-                Bitmap result = cap.Capture(enmScreenCaptureMode.Bounds, X, Y, Width, Height);
-                result.Save("C:\\screenshot.png");
-                string url = (string)cap.UploadImage("C:\\screenshot.png");
-                textBox1.Text = url;
-                if (url == null)
-                {
-                    Clipboard.SetText(url);
-                    notifyIcon1.ShowBalloonTip(500, "imageDeCap", "upload failed!", ToolTipIcon.Error);
-
-                    Assembly assembly = Assembly.GetExecutingAssembly();
-                    SoundPlayer sp = new SoundPlayer(assembly.GetManifestResourceStream("imageDeCap.error.wav"));
-                    sp.Play();
-                }
-                else
-                {
-                    notifyIcon1.ShowBalloonTip(500, "imageDeCap", "imgur URL copied to clipboard!", ToolTipIcon.Info);//annoying-ass opoup
-
-                    Assembly assembly = Assembly.GetExecutingAssembly();
-                    SoundPlayer sp = new SoundPlayer(assembly.GetManifestResourceStream("imageDeCap.upload.wav"));//play FUCKING notification
-                    sp.Play();
-
-                    Clipboard.SetText(url);//cliboardfgbhloöijunsd
-                }
-
-            }
 
             wasPressed = MouseButtons == MouseButtons.Left;
-
-        }
-
-        private void label2_Click(object sender, EventArgs e)
-        {
 
         }
 
@@ -392,10 +370,33 @@ namespace imageDeCap
 
         }
 
-        private void button3_Click_1(object sender, EventArgs e)
+        private void textBox1_TextChanged(object sender, EventArgs e)
         {
-            UploadToImgurBounds();
+
         }
+
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
+        {
+
+        }
+
+
+
+
+
+
+
+
 
 
     }
