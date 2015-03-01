@@ -15,6 +15,8 @@ namespace imageDeCap
 {
     public partial class imageEditor : Form
     {
+        Stack<Bitmap> undoHistory = new Stack<Bitmap>();
+
         bool closedIntentionally = false;
         string imagePath;
         string newImagePath = System.IO.Path.GetTempPath() + "screenshot_edited.png";
@@ -92,6 +94,7 @@ namespace imageDeCap
             label1.Text = mousePos.X.ToString() + ", " + mousePos.Y.ToString();
             if (!brush)
             {
+                undoHistory.Push(new Bitmap(theImage));
                 using (Graphics g = Graphics.FromImage(theImage))
                 {
                     Pen MyPen = new Pen(c);
@@ -112,6 +115,7 @@ namespace imageDeCap
                 if (!isPressed)
                 {
                     lastPos = mousePos;
+                    undoHistory.Push(new Bitmap(theImage));
                 }
                 if (brush)
                 {
@@ -294,6 +298,24 @@ namespace imageDeCap
             {
                 File.Delete(newImagePath);
             }
+        }
+        
+        private void button2_Click_1(object sender, EventArgs e)
+        {
+            using (Graphics g = Graphics.FromImage(theImage))
+            {
+                g.DrawImage((Image)undoHistory.Pop(), Point.Empty);
+            }
+            imageContainer.Refresh();
+        }
+
+        private void imageEditor_KeyDown(object sender, KeyEventArgs e)
+        {
+        }
+
+        private void imageEditor_KeyPress(object sender, KeyPressEventArgs e)
+        {
+
         }
 
 
