@@ -132,8 +132,7 @@ namespace imageDeCap
             _currentId += 1;
             if (!RegisterHotKey(_window.Handle, _currentId, (uint)modifier, (uint)key))
             {
-                lab.Text = "Hotkeys already in use?";
-                //throw new InvalidOperationException("Couldn't register hotkey.");
+                MessageBox.Show("Couldn't register hotkey " + modifier.ToString() + ", " + key.ToString()+"\nIs it already in use by another program?");
             }
 
             _window.callbacks.Add(new HotkeyCombo((int)modifier, (int)key), func);

@@ -22,5 +22,125 @@ namespace imageDeCap.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("2")]
+        public global::System.Windows.Forms.Keys shortcut_pastebin_key {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["shortcut_pastebin_key"]));
+            }
+            set {
+                this["shortcut_pastebin_key"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("3")]
+        public global::System.Windows.Forms.Keys shortcut_window_key {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["shortcut_window_key"]));
+            }
+            set {
+                this["shortcut_window_key"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("4")]
+        public global::System.Windows.Forms.Keys shortcut_region_key {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["shortcut_region_key"]));
+            }
+            set {
+                this["shortcut_region_key"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("5")]
+        public global::System.Windows.Forms.Keys shortcut_screen_key {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["shortcut_screen_key"]));
+            }
+            set {
+                this["shortcut_screen_key"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string SaveImagesHere {
+            get {
+                return ((string)(this["SaveImagesHere"]));
+            }
+            set {
+                this["SaveImagesHere"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Ctrl+Shift+None")]
+        public global::System.Windows.Forms.Keys shortcut_window_mod {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["shortcut_window_mod"]));
+            }
+            set {
+                this["shortcut_window_mod"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Ctrl+Shift+None")]
+        public global::System.Windows.Forms.Keys shortcut_region_mod {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["shortcut_region_mod"]));
+            }
+            set {
+                this["shortcut_region_mod"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Ctrl+Shift+None")]
+        public global::System.Windows.Forms.Keys shortcut_screen_mod {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["shortcut_screen_mod"]));
+            }
+            set {
+                this["shortcut_screen_mod"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Ctrl+Shift+None")]
+        public global::System.Windows.Forms.Keys shortcut_pastebin_mod {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["shortcut_pastebin_mod"]));
+            }
+            set {
+                this["shortcut_pastebin_mod"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool saveImageAtAll {
+            get {
+                return ((bool)(this["saveImageAtAll"]));
+            }
+            set {
+                this["saveImageAtAll"] = value;
+            }
+        }
     }
 }

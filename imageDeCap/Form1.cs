@@ -49,7 +49,9 @@ namespace imageDeCap
         private System.Windows.Forms.MenuItem menuItem1 = new System.Windows.Forms.MenuItem();
         private System.Windows.Forms.MenuItem menuItem2 = new System.Windows.Forms.MenuItem();
         private System.Windows.Forms.MenuItem menuItem3 = new System.Windows.Forms.MenuItem();
+        private System.Windows.Forms.MenuItem menuItem4 = new System.Windows.Forms.MenuItem();
 
+        SettingsWindow props;
         public Form1()
         {
             InitializeComponent();
@@ -58,6 +60,7 @@ namespace imageDeCap
             this.contextMenu1.MenuItems.Add(this.menuItem2);
             this.contextMenu1.MenuItems.Add("-");
             this.contextMenu1.MenuItems.Add(this.menuItem3);
+            this.contextMenu1.MenuItems.Add(this.menuItem4);
             this.contextMenu1.MenuItems.Add(this.menuItem1);
 
             this.menuItem1.Text = "Exit";
@@ -66,6 +69,9 @@ namespace imageDeCap
             this.menuItem3.Text = "Contact / Bugs";
             this.menuItem3.Click += new System.EventHandler(this.menuItem3_Click);
 
+            this.menuItem4.Text = "Properties";
+            this.menuItem4.Click += new System.EventHandler(this.menuItem4_Click);
+
             this.menuItem2.Text = "Open Window";
             this.menuItem2.Click += new System.EventHandler(this.menuItem2_Click);
 
@@ -73,11 +79,17 @@ namespace imageDeCap
             notifyIcon1.ContextMenu = contextMenu1;
             notifyIcon1.Visible = true;
 
+
             hook = new Hotkey(label1);
+            //setHotkeys();
+            props = new SettingsWindow(this);
+            //hook.Dispose();
             hook.registerHotkey(Modifier.Ctrl | Modifier.Shift, Keys.D2, gui_clipboardToPastebin);
             hook.registerHotkey(Modifier.Ctrl | Modifier.Shift, Keys.D3, gui_windowToImgur);
             hook.registerHotkey(Modifier.Ctrl | Modifier.Shift, Keys.D4, gui_boundsToImgur);
             hook.registerHotkey(Modifier.Ctrl | Modifier.Shift, Keys.D5, gui_screenToImgur);
+
+
 
             this.ShowInTaskbar = false;
             this.Opacity = 0.0f;
@@ -85,6 +97,23 @@ namespace imageDeCap
             listBox1.AllowDrop = true;
             listBox1.DragEnter += new DragEventHandler(Form1_DragEnter);
             listBox1.DragDrop += new DragEventHandler(Form1_DragDrop);
+        }
+
+        public void setHotkeys()
+        {
+            setHotkey(Properties.Settings.Default.shortcut_pastebin_mod, Properties.Settings.Default.shortcut_pastebin_key, gui_clipboardToPastebin);
+            setHotkey(Properties.Settings.Default.shortcut_window_mod, Properties.Settings.Default.shortcut_window_key, gui_windowToImgur);
+            setHotkey(Properties.Settings.Default.shortcut_region_mod, Properties.Settings.Default.shortcut_region_key, gui_boundsToImgur);
+            setHotkey(Properties.Settings.Default.shortcut_screen_mod, Properties.Settings.Default.shortcut_screen_key, gui_screenToImgur);
+
+        }
+        public void setHotkey(Keys modifier, Keys key, HotkeyPressedCb func)
+        {
+            hook.Dispose();
+            Modifier mod = (modifier.HasFlag(Keys.Control) ? Modifier.Ctrl : Modifier.None) |
+                (modifier.HasFlag(Keys.Shift) ? Modifier.Shift : Modifier.None) |
+                (modifier.HasFlag(Keys.Alt) ? Modifier.Alt : Modifier.None);
+            hook.registerHotkey(mod, key, func);
         }
 
         void Form1_DragEnter(object sender, DragEventArgs e)
@@ -124,21 +153,21 @@ namespace imageDeCap
             this.Activate();
         }
 
-        Hotkey hook;
+        public Hotkey hook;
 
-        void gui_clipboardToPastebin(HotkeyEventArgs e)
+        public void gui_clipboardToPastebin(HotkeyEventArgs e)
         {
             UploadPastebinClipboard();
         }
-        void gui_boundsToImgur(HotkeyEventArgs e)
+        public void gui_boundsToImgur(HotkeyEventArgs e)
         {
             UploadToImgurBounds();
         }
-        void gui_windowToImgur(HotkeyEventArgs e)
+        public void gui_windowToImgur(HotkeyEventArgs e)
         {
             UploadImgurWindow();
         }
-        void gui_screenToImgur(HotkeyEventArgs e)
+        public void gui_screenToImgur(HotkeyEventArgs e)
         {
             UploadImgurScreen();
         }
@@ -173,6 +202,10 @@ namespace imageDeCap
         private void menuItem3_Click(object Sender, EventArgs e)
         {
             System.Diagnostics.Process.Start("http://www.mattwestphal.com");
+        }
+        private void menuItem4_Click(object Sender, EventArgs e)
+        {
+            props.Show();
         }
 
         private void button1_Click_1(object sender, EventArgs e)
@@ -219,6 +252,24 @@ namespace imageDeCap
         {
             playSound("snip.wav");
             Bitmap result = cap.Capture(mode);
+            
+            
+            if(Properties.Settings.Default.saveImageAtAll)
+            {
+                Random rnd = new Random();
+                int rndom = rnd.Next(222, 999);
+                DateTime timeCreated = DateTime.Now;
+                string name = timeCreated.Year.ToString("0000") +
+                    timeCreated.Month.ToString("00") +
+                        timeCreated.Day.ToString("00") +
+                        timeCreated.Hour.ToString("00") +
+                        timeCreated.Minute.ToString("00") +
+                        timeCreated.Second.ToString("00") +
+                        rndom.ToString("000");
+
+                result.Save(Properties.Settings.Default.SaveImagesHere + @"\" + name + ".png");
+                result.Dispose();
+            }
             result.Save(System.IO.Path.GetTempPath() + "screenshot.png");
             result.Dispose();
             uploadImageFile(System.IO.Path.GetTempPath() + "screenshot.png");
@@ -317,6 +368,23 @@ namespace imageDeCap
                     {
                         playSound("snip.wav");
                         Bitmap result = cap.Capture(enmScreenCaptureMode.Bounds, X, Y, Width, Height);
+
+                        if (Properties.Settings.Default.saveImageAtAll)
+                        {
+                            Random rnd = new Random();
+                            int rndom = rnd.Next(222, 999);
+                            DateTime timeCreated = DateTime.Now;
+                            string name = timeCreated.Year.ToString("0000") +
+                                timeCreated.Month.ToString("00") +
+                                    timeCreated.Day.ToString("00") +
+                                    timeCreated.Hour.ToString("00") +
+                                    timeCreated.Minute.ToString("00") +
+                                    timeCreated.Second.ToString("00") +
+                                    rndom.ToString("000");
+
+                            result.Save(Properties.Settings.Default.SaveImagesHere + @"\" + name + ".png");
+                            result.Dispose();
+                        }
                         File.Delete(System.IO.Path.GetTempPath() + "screenshot.png");
                         result.Save(System.IO.Path.GetTempPath() + "screenshot.png");
                         result.Dispose();
@@ -399,6 +467,36 @@ namespace imageDeCap
         private void pictureBox1_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {   
+            Random rnd = new Random();
+
+            int rndom = rnd.Next(222, 999);
+            DateTime timeCreated = DateTime.Now;
+            string name = timeCreated.Year.ToString("0000") +
+                timeCreated.Month.ToString("00") +
+                    timeCreated.Day.ToString("00") +
+                    timeCreated.Hour.ToString("00") +
+                    timeCreated.Minute.ToString("00") +
+                    timeCreated.Second.ToString("00") +
+                    rndom.ToString("000");
+
+                File.Copy("", "" + name + ".png");
+            
+        }
+
+        private void button6_Click_1(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+
+
+        private void preferencesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            props.Show();
         }
 
 

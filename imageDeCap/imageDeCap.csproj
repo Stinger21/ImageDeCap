@@ -112,6 +112,13 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScreenCapturer.cs" />
+    <Compile Include="Settings.cs" />
+    <Compile Include="SettingsWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SettingsWindow.Designer.cs">
+      <DependentUpon>SettingsWindow.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="boxOfWhy.resx">
       <DependentUpon>boxOfWhy.cs</DependentUpon>
     </EmbeddedResource>
@@ -155,6 +162,9 @@
     <EmbeddedResource Include="error.wav" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="SettingsWindow.resx">
+      <DependentUpon>SettingsWindow.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="upload.wav" />
   </ItemGroup>
   <ItemGroup>
