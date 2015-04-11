@@ -52,6 +52,8 @@ namespace imageDeCap
         private System.Windows.Forms.MenuItem menuItem4 = new System.Windows.Forms.MenuItem();
 
         SettingsWindow props;
+        GlobalKeyboardHook gHook; 
+
         public Form1()
         {
             InitializeComponent();
@@ -81,13 +83,16 @@ namespace imageDeCap
 
 
             hook = new Hotkey(label1);
-            //setHotkeys();
             props = new SettingsWindow(this);
-            //hook.Dispose();
-            hook.registerHotkey(Modifier.Ctrl | Modifier.Shift, Keys.D2, gui_clipboardToPastebin);
-            hook.registerHotkey(Modifier.Ctrl | Modifier.Shift, Keys.D3, gui_windowToImgur);
-            hook.registerHotkey(Modifier.Ctrl | Modifier.Shift, Keys.D4, gui_boundsToImgur);
-            hook.registerHotkey(Modifier.Ctrl | Modifier.Shift, Keys.D5, gui_screenToImgur);
+
+            gHook = new GlobalKeyboardHook(); // Create a new GlobalKeyboardHook
+            gHook.KeyDown += new KeyEventHandler(gHook_KeyDown);// Declare a KeyDown Event
+            foreach (Keys key in Enum.GetValues(typeof(Keys)))// Add the keys you want to hook to the HookedKeys list
+                gHook.HookedKeys.Add(key);
+
+            gHook.KeyUp += new KeyEventHandler(gHook_KeyUp);// Declare a KeyDown Event
+            foreach (Keys key in Enum.GetValues(typeof(Keys)))// Add the keys you want to hook to the HookedKeys list
+                gHook.HookedKeys.Add(key);
 
 
 
@@ -98,15 +103,55 @@ namespace imageDeCap
             listBox1.DragEnter += new DragEventHandler(Form1_DragEnter);
             listBox1.DragDrop += new DragEventHandler(Form1_DragDrop);
         }
-
-        public void setHotkeys()
+        bool globalCtrlIsBeingHeldDown = false;
+        bool globalShiftIsBeingHeldDown = false;
+        // Handle the KeyDown Event
+        public void gHook_KeyDown(object sender, KeyEventArgs e)
         {
-            setHotkey(Properties.Settings.Default.shortcut_pastebin_mod, Properties.Settings.Default.shortcut_pastebin_key, gui_clipboardToPastebin);
-            setHotkey(Properties.Settings.Default.shortcut_window_mod, Properties.Settings.Default.shortcut_window_key, gui_windowToImgur);
-            setHotkey(Properties.Settings.Default.shortcut_region_mod, Properties.Settings.Default.shortcut_region_key, gui_boundsToImgur);
-            setHotkey(Properties.Settings.Default.shortcut_screen_mod, Properties.Settings.Default.shortcut_screen_key, gui_screenToImgur);
-
+            //textBox1.Text += " dn_" + (e.KeyValue).ToString();
+            if (e.KeyValue == 162)
+            {
+                globalCtrlIsBeingHeldDown = true;
+            }
+            if (e.KeyValue == 160)
+            {
+                globalShiftIsBeingHeldDown = true;
+            }
+            if (globalCtrlIsBeingHeldDown && globalShiftIsBeingHeldDown)
+            {
+                if (e.KeyValue == 50)//Ctrl+Shift+2
+                {
+                    UploadPastebinClipboard();
+                }
+                if (e.KeyValue == 51)//Ctrl+Shift+3
+                {
+                    UploadImgurWindow();
+                }
+                if (e.KeyValue == 52)//Ctrl+Shift+4
+                {
+                    UploadToImgurBounds();
+                }
+                if (e.KeyValue == 53)//Ctrl+Shift+5
+                {
+                    UploadImgurScreen();
+                }
+            }
         }
+        // Handle the KeyUp Event
+        public void gHook_KeyUp(object sender, KeyEventArgs e)
+        {
+            //textBox1.Text += " up_" + (e.KeyValue).ToString();
+            if (e.KeyValue == 162)
+            {
+                globalCtrlIsBeingHeldDown = false;
+            }
+            if (e.KeyValue == 160)
+            {
+                globalShiftIsBeingHeldDown = false;
+            }
+        }
+
+        /*
         public void setHotkey(Keys modifier, Keys key, HotkeyPressedCb func)
         {
             hook.Dispose();
@@ -114,7 +159,7 @@ namespace imageDeCap
                 (modifier.HasFlag(Keys.Shift) ? Modifier.Shift : Modifier.None) |
                 (modifier.HasFlag(Keys.Alt) ? Modifier.Alt : Modifier.None);
             hook.registerHotkey(mod, key, func);
-        }
+        }*/
 
         void Form1_DragEnter(object sender, DragEventArgs e)
         {
@@ -130,11 +175,15 @@ namespace imageDeCap
             }
         }
 
+        bool pushThroughCancel = false;
         private void Form1_FormClosing_1(object sender, FormClosingEventArgs e)
         {
             if (e.CloseReason == CloseReason.UserClosing)
             {
-                e.Cancel = true;
+                if (!pushThroughCancel)
+                {
+                    e.Cancel = true;
+                }
                 this.ShowInTaskbar = false;
                 this.Opacity = 0.0f;
             }
@@ -194,6 +243,13 @@ namespace imageDeCap
 
         private void menuItem1_Click(object Sender, EventArgs e)//Exit button
         {
+            actuallyCloseTheProgram();
+        }
+        private void actuallyCloseTheProgram()
+        {
+            pushThroughCancel = true;
+            props.Close();
+            this.Close();
             Application.Exit();
         }
 
@@ -210,7 +266,7 @@ namespace imageDeCap
 
         private void button1_Click_1(object sender, EventArgs e)
         {
-            Application.Exit();
+            Process.GetCurrentProcess().Kill();
         }
 
         private void UploadPastebinClipboard()
@@ -268,7 +324,6 @@ namespace imageDeCap
                         rndom.ToString("000");
 
                 result.Save(Properties.Settings.Default.SaveImagesHere + @"\" + name + ".png");
-                result.Dispose();
             }
             result.Save(System.IO.Path.GetTempPath() + "screenshot.png");
             result.Dispose();
@@ -281,34 +336,99 @@ namespace imageDeCap
             {
                 imageEditor editor = new imageEditor(filePath);
                 editor.ShowDialog();
-                filePath = System.IO.Path.GetTempPath() + "screenshot_edited.png";
+                filePath = System.IO.Path.GetTempPath() + "screenshot_edited.png";                
             }
+            else
+            {
+                if(File.Exists(System.IO.Path.GetTempPath() + "screenshot_edited.png"))
+                {
+                    File.Delete(System.IO.Path.GetTempPath() + "screenshot_edited.png");
+                }
+                File.Copy(filePath, System.IO.Path.GetTempPath() + "screenshot_edited.png");
+                filePath = System.IO.Path.GetTempPath() + "screenshot_edited.png";      
+            }
+
             if (File.Exists(System.IO.Path.GetTempPath() + "screenshot_edited.png"))
             {
+                if (Properties.Settings.Default.saveImageAtAll)
+                {
+                    if (Properties.Settings.Default.SaveImagesHere != "")
+                    {
+                        if (Directory.Exists(Properties.Settings.Default.SaveImagesHere))
+                        {
+                            Random rnd = new Random();
+                            int rndom = rnd.Next(222, 999);
+                            DateTime timeCreated = DateTime.Now;
+                            string name = timeCreated.Year.ToString("0000") +
+                                timeCreated.Month.ToString("00") +
+                                    timeCreated.Day.ToString("00") +
+                                    timeCreated.Hour.ToString("00") +
+                                    timeCreated.Minute.ToString("00") +
+                                    timeCreated.Second.ToString("00") +
+                                    rndom.ToString("000");
+
+                            //result.Save(Properties.Settings.Default.SaveImagesHere + @"\" + name + ".png");
+                            File.Copy(System.IO.Path.GetTempPath() + "screenshot_edited.png", Properties.Settings.Default.SaveImagesHere + @"\" + name + ".png");
+                        }
+                    }
+                }
+
+
                 string url = (string)cap.UploadImage(filePath);
                 if (url == null)
                 {
-                    Clipboard.SetText(url);
-                    notifyIcon1.ShowBalloonTip(500, "imageDeCap", "upload to imgur failed!", ToolTipIcon.Error);
+                    setClipboard(url);
+                    notifyIcon1.ShowBalloonTip(500, "imageDeCap", "Upload to imgur failed!", ToolTipIcon.Error);
                     playSound("error.wav");
                 }
                 else
                 {
-                    notifyIcon1.ShowBalloonTip(500, "imageDeCap", "imgur URL copied to clipboard!", ToolTipIcon.Info);
+                    if (Properties.Settings.Default.CopyLinksToClipboard)
+                    {
+                        notifyIcon1.ShowBalloonTip(500, "imageDeCap", "Imgur URL copied to clipboard!", ToolTipIcon.Info);
+                    }
+                    else
+                    {
+                        notifyIcon1.ShowBalloonTip(500, "imageDeCap", "Upload complete!", ToolTipIcon.Info);
+                    }
                     playSound("upload.wav");
-                    Clipboard.SetText(url);
+                    setClipboard(url);
                     addToLinks(url);
                 }
             }
         }
+
+        private void setClipboard(string text)
+        {
+            if(Properties.Settings.Default.CopyLinksToClipboard)
+            {
+                if (text != null)
+                {
+                    Clipboard.SetText(text);
+                }
+                else
+                {
+                    notifyIcon1.ShowBalloonTip(500, "imageDeCap", "failed to retrieve link.", ToolTipIcon.Error);
+                    playSound("error.wav");
+                }
+            }
+        }
+
         private void uploadPastebin(string text)
         {
             playSound("snip.wav");
             string pasteBinResult = cap.Send(text);
             if (pasteBinResult != null)
             {
-                Clipboard.SetText(pasteBinResult);
-                notifyIcon1.ShowBalloonTip(500, "imageDeCap", "Pastebin link placed in clipboard!", ToolTipIcon.Info);
+                setClipboard(pasteBinResult);
+                if (Properties.Settings.Default.CopyLinksToClipboard)
+                {
+                    notifyIcon1.ShowBalloonTip(500, "imageDeCap", "Pastebin link placed in clipboard!", ToolTipIcon.Info);
+                }
+                else
+                {
+                    notifyIcon1.ShowBalloonTip(500, "imageDeCap", "Upload complete!", ToolTipIcon.Info);
+                }
                 playSound("upload.wav");
                 addToLinks(pasteBinResult);
             }
@@ -344,9 +464,12 @@ namespace imageDeCap
 
         public void playSound(string soundName)
         {
-            Assembly assembly = Assembly.GetExecutingAssembly();
-            SoundPlayer sp = new SoundPlayer(assembly.GetManifestResourceStream("imageDeCap." + soundName));
-            sp.Play();
+            if (!Properties.Settings.Default.DisableSoundEffects)
+            {
+                Assembly assembly = Assembly.GetExecutingAssembly();
+                SoundPlayer sp = new SoundPlayer(assembly.GetManifestResourceStream("imageDeCap." + soundName));
+                sp.Play();
+            }
         }
 
         public void updateSelectedArea(completeCover backCover, bool keyPressed, bool escapePressed)//this thing is essentially a fucking frame-loop.
@@ -369,26 +492,18 @@ namespace imageDeCap
                         playSound("snip.wav");
                         Bitmap result = cap.Capture(enmScreenCaptureMode.Bounds, X, Y, Width, Height);
 
-                        if (Properties.Settings.Default.saveImageAtAll)
-                        {
-                            Random rnd = new Random();
-                            int rndom = rnd.Next(222, 999);
-                            DateTime timeCreated = DateTime.Now;
-                            string name = timeCreated.Year.ToString("0000") +
-                                timeCreated.Month.ToString("00") +
-                                    timeCreated.Day.ToString("00") +
-                                    timeCreated.Hour.ToString("00") +
-                                    timeCreated.Minute.ToString("00") +
-                                    timeCreated.Second.ToString("00") +
-                                    rndom.ToString("000");
 
-                            result.Save(Properties.Settings.Default.SaveImagesHere + @"\" + name + ".png");
-                            result.Dispose();
-                        }
                         File.Delete(System.IO.Path.GetTempPath() + "screenshot.png");
                         result.Save(System.IO.Path.GetTempPath() + "screenshot.png");
                         result.Dispose();
-                        uploadImageFile(System.IO.Path.GetTempPath() + "screenshot.png", true);
+                        if (Properties.Settings.Default.EditScreenshotAfterCapture)
+                        {
+                            uploadImageFile(System.IO.Path.GetTempPath() + "screenshot.png", true);
+                        }
+                        else
+                        {
+                            uploadImageFile(System.IO.Path.GetTempPath() + "screenshot.png");
+                        }
                     }
                     else
                     {
@@ -492,11 +607,27 @@ namespace imageDeCap
             this.Close();
         }
 
-
-
         private void preferencesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             props.Show();
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            actuallyCloseTheProgram();
+        }
+
+        private void hideToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            props.Close();
+            this.Close();
+        }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            aboutWindow about;
+            about = new aboutWindow();
+            about.Show();
         }
 
 

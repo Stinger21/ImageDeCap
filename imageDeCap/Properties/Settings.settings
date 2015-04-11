@@ -2,35 +2,20 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="imageDeCap.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="shortcut_pastebin_key" Type="System.Windows.Forms.Keys" Scope="User">
-      <Value Profile="(Default)">2</Value>
-    </Setting>
-    <Setting Name="shortcut_window_key" Type="System.Windows.Forms.Keys" Scope="User">
-      <Value Profile="(Default)">3</Value>
-    </Setting>
-    <Setting Name="shortcut_region_key" Type="System.Windows.Forms.Keys" Scope="User">
-      <Value Profile="(Default)">4</Value>
-    </Setting>
-    <Setting Name="shortcut_screen_key" Type="System.Windows.Forms.Keys" Scope="User">
-      <Value Profile="(Default)">5</Value>
-    </Setting>
     <Setting Name="SaveImagesHere" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="shortcut_window_mod" Type="System.Windows.Forms.Keys" Scope="User">
-      <Value Profile="(Default)">Ctrl+Shift+None</Value>
-    </Setting>
-    <Setting Name="shortcut_region_mod" Type="System.Windows.Forms.Keys" Scope="User">
-      <Value Profile="(Default)">Ctrl+Shift+None</Value>
-    </Setting>
-    <Setting Name="shortcut_screen_mod" Type="System.Windows.Forms.Keys" Scope="User">
-      <Value Profile="(Default)">Ctrl+Shift+None</Value>
-    </Setting>
-    <Setting Name="shortcut_pastebin_mod" Type="System.Windows.Forms.Keys" Scope="User">
-      <Value Profile="(Default)">Ctrl+Shift+None</Value>
-    </Setting>
     <Setting Name="saveImageAtAll" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="CopyLinksToClipboard" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="DisableSoundEffects" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="EditScreenshotAfterCapture" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
     </Setting>
   </Settings>
 </SettingsFile>

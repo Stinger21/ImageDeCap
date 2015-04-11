@@ -131,7 +131,7 @@
             // radioButton2
             // 
             this.radioButton2.AutoSize = true;
-            this.radioButton2.Location = new System.Drawing.Point(345, 10);
+            this.radioButton2.Location = new System.Drawing.Point(253, 12);
             this.radioButton2.Name = "radioButton2";
             this.radioButton2.Size = new System.Drawing.Size(45, 17);
             this.radioButton2.TabIndex = 25;
@@ -153,7 +153,7 @@
             // 
             this.radioButton1.AutoSize = true;
             this.radioButton1.Checked = true;
-            this.radioButton1.Location = new System.Drawing.Point(288, 10);
+            this.radioButton1.Location = new System.Drawing.Point(304, 12);
             this.radioButton1.Name = "radioButton1";
             this.radioButton1.Size = new System.Drawing.Size(51, 17);
             this.radioButton1.TabIndex = 24;
@@ -441,11 +441,14 @@
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.KeyPreview = true;
             this.Name = "imageEditor";
             this.Text = "imageDeCap Edit Screenshot";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.imageEditor_FormClosing);
+            this.Load += new System.EventHandler(this.imageEditor_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.imageEditor_KeyDown);
             this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.imageEditor_KeyPress);
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.imageEditor_KeyUp);
             ((System.ComponentModel.ISupportInitialize)(this.imageContainer)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

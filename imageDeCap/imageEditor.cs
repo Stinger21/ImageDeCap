@@ -28,6 +28,26 @@ namespace imageDeCap
             this.AcceptButton = button1;
             theImage = Image.FromFile(imagePath);
 
+            int width;
+            int height;
+            if (theImage.Width < 600)
+            {
+                width = 600;
+            }
+            else
+            {
+                width = theImage.Width;
+            }
+            if (theImage.Height < 200)
+            {
+                height = 200;
+            }
+            else
+            {
+                height = theImage.Height;
+            }
+            this.Size = new System.Drawing.Size(width + 50, height + 110);
+
             imageContainer.Image = theImage;
             //imageContainer.(0, 0, theImage.Width, theImage.Height);
 
@@ -71,21 +91,18 @@ namespace imageDeCap
 
         private void imageContainer_Click(object sender, EventArgs e)
         {
-
         }
 
         private void imageContainer_MouseHover(object sender, EventArgs e)
         {
-
-
         }
         int Width = 8;
         int Height = 8;
         Point lastPos;
         bool isPressed = false;
-        float size = 5.0f;
+        float brushSize = 6.0f;
+        float textSize = 12.0f;
         Color c = Color.Red;
-
         bool brush = true;
 
         private void imageContainer_MouseClick(object sender, MouseEventArgs e)
@@ -98,8 +115,8 @@ namespace imageDeCap
                 using (Graphics g = Graphics.FromImage(theImage))
                 {
                     Pen MyPen = new Pen(c);
-                    MyPen.Width = size;
-                    g.DrawString(textBox1.Text, new Font("Arial", size), new SolidBrush(c), mousePos);
+                    MyPen.Width = textSize;
+                    g.DrawString(textBox1.Text, new Font("Arial Black", textSize), new SolidBrush(c), mousePos);
                 }
                 imageContainer.Refresh();
             }
@@ -123,7 +140,7 @@ namespace imageDeCap
                     using (Graphics g = Graphics.FromImage(theImage))
                     {
                         Pen MyPen = new Pen(c);
-                        MyPen.Width = size;
+                        MyPen.Width = brushSize;
                         //MyPen.DashCap = System.Drawing.Drawing2D.DashCap.Round;
                         MyPen.EndCap = System.Drawing.Drawing2D.LineCap.Round;
                         MyPen.StartCap = System.Drawing.Drawing2D.LineCap.Round;
@@ -153,12 +170,33 @@ namespace imageDeCap
 
         private void trackBar1_Scroll(object sender, EventArgs e)
         {
-            size = ((float)trackBar1.Value)/100.0f;
-            label2.Text = "Size: " + size.ToString("0.0");
+            if(brush)
+            {
+                brushSize = ((float)trackBar1.Value) / 100.0f;
+                label2.Text = "Size: " + brushSize.ToString("0.0");
+            }
+            else
+            {
+                textSize = ((float)trackBar1.Value) / 100.0f;
+                label2.Text = "Size: " + textSize.ToString("0.0");
+            }
         }
 
         private void radioButton1_CheckedChanged_1(object sender, EventArgs e)
         {
+            brush = radioButton1.Checked;
+
+            if (brush)
+            {
+                trackBar1.Value = (int)brushSize * 100;
+                label2.Text = "Size: " + brushSize.ToString("0.0");
+            }
+            else
+            {
+                trackBar1.Value = (int)textSize * 100;
+                label2.Text = "Size: " + textSize.ToString("0.0");
+            }
+            /*
             // Executed when any radio button is changed.
             // ... It is wired up to every single radio button.
             // Search for first radio button in GroupBox.
@@ -187,7 +225,7 @@ namespace imageDeCap
                     }
                 }
             }
-            brush = result1 == null;
+            brush = result1 == null;*/
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -302,18 +340,46 @@ namespace imageDeCap
         
         private void button2_Click_1(object sender, EventArgs e)
         {
-            using (Graphics g = Graphics.FromImage(theImage))
+            undoImageEdit();
+        }
+        public void undoImageEdit()
+        {
+            if (undoHistory.Count > 0)
             {
-                g.DrawImage((Image)undoHistory.Pop(), Point.Empty);
+                using (Graphics g = Graphics.FromImage(theImage))
+                {
+                    g.DrawImage((Image)undoHistory.Pop(), Point.Empty);
+                }
+                imageContainer.Refresh();
             }
-            imageContainer.Refresh();
         }
 
+        bool ctrlIsPressed = false;
         private void imageEditor_KeyDown(object sender, KeyEventArgs e)
         {
+            if (e.KeyCode.ToString() == "Escape")
+            {
+                this.Close();
+            }
+            if(e.Control)
+            {
+                if(e.KeyCode.ToString() == "Z")
+                {
+                    undoImageEdit();
+                }
+            }
         }
 
         private void imageEditor_KeyPress(object sender, KeyPressEventArgs e)
+        {
+        }
+
+        private void imageEditor_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void imageEditor_KeyUp(object sender, KeyEventArgs e)
         {
 
         }

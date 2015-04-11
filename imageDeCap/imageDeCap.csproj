@@ -11,7 +11,8 @@
     <AssemblyName>imageDeCap</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <PublishUrl>publish\</PublishUrl>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>C:\Users\Stinger\Google Drive\public Unity Projects\imageDeCap\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
     <UpdateEnabled>false</UpdateEnabled>
@@ -21,10 +22,11 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
+    <UpdateUrl>http://www.mattwestphal.com/imagedecap/</UpdateUrl>
+    <WebPage>publish.htm</WebPage>
     <AutorunEnabled>true</AutorunEnabled>
-    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationRevision>5</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -61,6 +63,9 @@
   <PropertyGroup>
     <SignManifests>true</SignManifests>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Untitled-2.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -74,6 +79,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="aboutWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="aboutWindow.Designer.cs">
+      <DependentUpon>aboutWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="boxOfWhy.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -92,6 +103,7 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="GlobalKeyBoardHook.cs" />
     <Compile Include="HotKey.cs" />
     <Compile Include="imageEditor.cs">
       <SubType>Form</SubType>
@@ -119,6 +131,9 @@
     <Compile Include="SettingsWindow.Designer.cs">
       <DependentUpon>SettingsWindow.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="aboutWindow.resx">
+      <DependentUpon>aboutWindow.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="boxOfWhy.resx">
       <DependentUpon>boxOfWhy.cs</DependentUpon>
     </EmbeddedResource>
@@ -189,6 +204,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="canvas.png" />
+    <Content Include="Untitled-2.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
