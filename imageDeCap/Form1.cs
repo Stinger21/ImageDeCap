@@ -24,7 +24,7 @@ namespace imageDeCap
 {
     public partial class Form1 : Form
     {
-
+        
         List<string> Links = new List<string>();
         private void addToLinks(string link)
         {

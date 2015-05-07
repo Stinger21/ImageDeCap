@@ -27,6 +27,13 @@ namespace imageDeCap
 
     class ScreenCapturer
     {
+        public void recordScreen()
+        {
+            
+            // Get instance of the ScreenCapture object
+            //var screenCapture = Windows.Media.Capture.ScreenCapture.GetForCurrentView();
+        }
+
         string ClientId = "da05117bbfa9bda";
         public string UploadImage(string image)
         {
