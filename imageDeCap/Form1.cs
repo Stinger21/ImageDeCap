@@ -278,6 +278,7 @@ namespace imageDeCap
         bool isTakingSnapshot = false;
         private void UploadToImgurBounds()
         {
+            // prevent blackening
             if(!isTakingSnapshot)
             {
                 isTakingSnapshot = true;
@@ -323,10 +324,18 @@ namespace imageDeCap
 
         private void uploadImageFile(string filePath, bool edit = false)
         {
+            // save unedited capture
+            if (Properties.Settings.Default.saveImageAtAll && Directory.Exists(Properties.Settings.Default.SaveImagesHere))
+            {
+                string name = DateTime.Now.ToString("yyyyMMddHHmmssfff");
+
+                File.Copy(filePath, Properties.Settings.Default.SaveImagesHere + @"\" + name + ".png");
+            }
             if(edit)
             {
                 imageEditor editor = new imageEditor(filePath);
                 editor.ShowDialog();
+
                 filePath = System.IO.Path.GetTempPath() + "screenshot_edited.png";                
             }
             else
@@ -341,30 +350,6 @@ namespace imageDeCap
 
             if (File.Exists(System.IO.Path.GetTempPath() + "screenshot_edited.png"))
             {
-                if (Properties.Settings.Default.saveImageAtAll)
-                {
-                    if (Properties.Settings.Default.SaveImagesHere != "")
-                    {
-                        if (Directory.Exists(Properties.Settings.Default.SaveImagesHere))
-                        {
-                            Random rnd = new Random();
-                            int rndom = rnd.Next(222, 999);
-                            DateTime timeCreated = DateTime.Now;
-                            string name = timeCreated.Year.ToString("0000") +
-                                timeCreated.Month.ToString("00") +
-                                    timeCreated.Day.ToString("00") +
-                                    timeCreated.Hour.ToString("00") +
-                                    timeCreated.Minute.ToString("00") +
-                                    timeCreated.Second.ToString("00") +
-                                    rndom.ToString("000");
-
-                            //result.Save(Properties.Settings.Default.SaveImagesHere + @"\" + name + ".png");
-                            File.Copy(System.IO.Path.GetTempPath() + "screenshot_edited.png", Properties.Settings.Default.SaveImagesHere + @"\" + name + ".png");
-                        }
-                    }
-                }
-
-
                 string url = (string)cap.UploadImage(filePath);
                 if (url == null)
                 {
@@ -577,20 +562,7 @@ namespace imageDeCap
 
         private void button6_Click(object sender, EventArgs e)
         {   
-            Random rnd = new Random();
 
-            int rndom = rnd.Next(222, 999);
-            DateTime timeCreated = DateTime.Now;
-            string name = timeCreated.Year.ToString("0000") +
-                timeCreated.Month.ToString("00") +
-                    timeCreated.Day.ToString("00") +
-                    timeCreated.Hour.ToString("00") +
-                    timeCreated.Minute.ToString("00") +
-                    timeCreated.Second.ToString("00") +
-                    rndom.ToString("000");
-
-                File.Copy("", "" + name + ".png");
-            
         }
 
         private void button6_Click_1(object sender, EventArgs e)
