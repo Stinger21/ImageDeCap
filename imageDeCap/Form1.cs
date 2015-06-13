@@ -125,7 +125,7 @@ namespace imageDeCap
                 }
                 if (e.KeyValue == 51)//Ctrl+Shift+3
                 {
-                    UploadImgurWindow();
+                    UploadImgurScreen();
                 }
                 if (e.KeyValue == 52)//Ctrl+Shift+4
                 {
@@ -133,7 +133,7 @@ namespace imageDeCap
                 }
                 if (e.KeyValue == 53)//Ctrl+Shift+5
                 {
-                    UploadImgurScreen();
+                    UploadImgurWindow();
                 }
             }
         }
