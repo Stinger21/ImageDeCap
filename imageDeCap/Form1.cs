@@ -309,25 +309,16 @@ namespace imageDeCap
             playSound("snip.wav");
             Bitmap result = cap.Capture(mode);
             
-            
-            if(Properties.Settings.Default.saveImageAtAll)
-            {
-                Random rnd = new Random();
-                int rndom = rnd.Next(222, 999);
-                DateTime timeCreated = DateTime.Now;
-                string name = timeCreated.Year.ToString("0000") +
-                    timeCreated.Month.ToString("00") +
-                        timeCreated.Day.ToString("00") +
-                        timeCreated.Hour.ToString("00") +
-                        timeCreated.Minute.ToString("00") +
-                        timeCreated.Second.ToString("00") +
-                        rndom.ToString("000");
-
-                result.Save(Properties.Settings.Default.SaveImagesHere + @"\" + name + ".png");
-            }
             result.Save(System.IO.Path.GetTempPath() + "screenshot.png");
             result.Dispose();
-            uploadImageFile(System.IO.Path.GetTempPath() + "screenshot.png");
+            if (Properties.Settings.Default.EditScreenshotAfterCapture)
+            {
+                uploadImageFile(System.IO.Path.GetTempPath() + "screenshot.png", true);
+            }
+            else
+            {
+                uploadImageFile(System.IO.Path.GetTempPath() + "screenshot.png");
+            }
         }
 
         private void uploadImageFile(string filePath, bool edit = false)
