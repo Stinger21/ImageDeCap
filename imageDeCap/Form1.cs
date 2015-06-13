@@ -359,6 +359,12 @@ namespace imageDeCap
                 }
                 else
                 {
+                    if (Properties.Settings.Default.UseHTTPS)
+                    {
+                        StringBuilder builder = new StringBuilder(url);
+                        builder.Replace("http", "https");
+                        url = builder.ToString();
+                    }
                     if (Properties.Settings.Default.CopyLinksToClipboard)
                     {
                         notifyIcon1.ShowBalloonTip(500, "imageDeCap", "Imgur URL copied to clipboard!", ToolTipIcon.Info);

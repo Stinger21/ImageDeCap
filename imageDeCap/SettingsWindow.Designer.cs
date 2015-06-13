@@ -46,12 +46,14 @@
             this.button1 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
+            this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.imageContainer)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.checkBox2);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.label8);
@@ -67,7 +69,7 @@
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Left;
             this.groupBox1.Location = new System.Drawing.Point(0, 0);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(399, 185);
+            this.groupBox1.Size = new System.Drawing.Size(399, 186);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Preferences";
@@ -75,7 +77,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(6, 163);
+            this.label3.Location = new System.Drawing.Point(6, 165);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(391, 13);
             this.label3.TabIndex = 20;
@@ -83,7 +85,7 @@
             // 
             // label2
             // 
-            this.label2.Location = new System.Drawing.Point(6, 134);
+            this.label2.Location = new System.Drawing.Point(6, 136);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(214, 39);
             this.label2.TabIndex = 19;
@@ -95,18 +97,18 @@
             this.label8.AutoSize = true;
             this.label8.Location = new System.Drawing.Point(234, 138);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(148, 13);
+            this.label8.Size = new System.Drawing.Size(153, 13);
             this.label8.TabIndex = 18;
-            this.label8.Text = "Screen -> Imgur = Ctrl+Shift+5";
+            this.label8.Text = "Window -> Imgur = Ctrl+Shift+5";
             // 
             // label7
             // 
             this.label7.AutoSize = true;
             this.label7.Location = new System.Drawing.Point(229, 116);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(153, 13);
+            this.label7.Size = new System.Drawing.Size(148, 13);
             this.label7.TabIndex = 16;
-            this.label7.Text = "Window -> Imgur = Ctrl+Shift+4";
+            this.label7.Text = "Region -> Imgur = Ctrl+Shift+4";
             // 
             // label6
             // 
@@ -124,7 +126,7 @@
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(148, 13);
             this.label5.TabIndex = 12;
-            this.label5.Text = "Region -> Imgur = Ctrl+Shift+3";
+            this.label5.Text = "Screen -> Imgur = Ctrl+Shift+3";
             // 
             // checkBox7
             // 
@@ -133,7 +135,7 @@
             this.checkBox7.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBox7.Location = new System.Drawing.Point(12, 104);
             this.checkBox7.Name = "checkBox7";
-            this.checkBox7.Size = new System.Drawing.Size(161, 17);
+            this.checkBox7.Size = new System.Drawing.Size(162, 17);
             this.checkBox7.TabIndex = 8;
             this.checkBox7.Text = "Edit screenshot after capture";
             this.checkBox7.UseVisualStyleBackColor = true;
@@ -144,7 +146,7 @@
             this.checkBox4.AutoSize = true;
             this.checkBox4.Location = new System.Drawing.Point(12, 88);
             this.checkBox4.Name = "checkBox4";
-            this.checkBox4.Size = new System.Drawing.Size(127, 17);
+            this.checkBox4.Size = new System.Drawing.Size(128, 17);
             this.checkBox4.TabIndex = 5;
             this.checkBox4.Text = "Disable sound effects";
             this.checkBox4.UseVisualStyleBackColor = true;
@@ -155,9 +157,9 @@
             this.checkBox3.AutoSize = true;
             this.checkBox3.Checked = true;
             this.checkBox3.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox3.Location = new System.Drawing.Point(12, 73);
+            this.checkBox3.Location = new System.Drawing.Point(12, 72);
             this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(131, 17);
+            this.checkBox3.Size = new System.Drawing.Size(132, 17);
             this.checkBox3.TabIndex = 4;
             this.checkBox3.Text = "Copy links to clipboard";
             this.checkBox3.UseVisualStyleBackColor = true;
@@ -188,7 +190,7 @@
             this.checkBox1.AutoSize = true;
             this.checkBox1.Location = new System.Drawing.Point(12, 19);
             this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(175, 17);
+            this.checkBox1.Size = new System.Drawing.Size(176, 17);
             this.checkBox1.TabIndex = 0;
             this.checkBox1.Text = "Save Screenshots to this folder:";
             this.checkBox1.UseVisualStyleBackColor = true;
@@ -227,18 +229,29 @@
             // 
             this.folderBrowserDialog1.HelpRequest += new System.EventHandler(this.folderBrowserDialog1_HelpRequest);
             // 
+            // checkBox2
+            // 
+            this.checkBox2.AutoSize = true;
+            this.checkBox2.Location = new System.Drawing.Point(12, 120);
+            this.checkBox2.Name = "checkBox2";
+            this.checkBox2.Size = new System.Drawing.Size(188, 17);
+            this.checkBox2.TabIndex = 21;
+            this.checkBox2.Text = "Use HTTPS links (when available)";
+            this.checkBox2.UseVisualStyleBackColor = true;
+            this.checkBox2.CheckedChanged += new System.EventHandler(this.checkBox2_CheckedChanged_1);
+            // 
             // SettingsWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(489, 185);
+            this.ClientSize = new System.Drawing.Size(479, 186);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.imageContainer);
             this.Controls.Add(this.groupBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.MaximumSize = new System.Drawing.Size(495, 213);
-            this.MinimumSize = new System.Drawing.Size(495, 213);
+            this.MaximumSize = new System.Drawing.Size(495, 225);
+            this.MinimumSize = new System.Drawing.Size(495, 225);
             this.Name = "SettingsWindow";
             this.Text = "Image DeCap Settings";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SettingsWindow_FormClosing);
@@ -270,5 +283,6 @@
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.CheckBox checkBox2;
     }
 }

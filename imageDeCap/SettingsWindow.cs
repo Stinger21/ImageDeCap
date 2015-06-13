@@ -32,6 +32,8 @@ namespace imageDeCap
             checkBox7.Checked = Properties.Settings.Default.EditScreenshotAfterCapture;
             checkBox3.Checked = Properties.Settings.Default.CopyLinksToClipboard;
             checkBox4.Checked = Properties.Settings.Default.DisableSoundEffects;
+
+            checkBox2.Checked = Properties.Settings.Default.UseHTTPS;
         }
 
 
@@ -145,6 +147,12 @@ namespace imageDeCap
         private void checkBox4_CheckedChanged(object sender, EventArgs e)
         {
             Properties.Settings.Default.DisableSoundEffects = checkBox4.Checked;
+            Properties.Settings.Default.Save();
+        }
+
+        private void checkBox2_CheckedChanged_1(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.UseHTTPS = checkBox2.Checked;
             Properties.Settings.Default.Save();
         }
 
