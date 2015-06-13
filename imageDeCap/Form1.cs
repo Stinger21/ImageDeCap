@@ -257,7 +257,7 @@ namespace imageDeCap
 
         private void menuItem3_Click(object Sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start("http://www.mattwestphal.com");
+            System.Diagnostics.Process.Start("http://www.mattwestphal.com/imagedecap/");
         }
         private void menuItem4_Click(object Sender, EventArgs e)
         {
