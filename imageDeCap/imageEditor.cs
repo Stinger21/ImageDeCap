@@ -88,7 +88,7 @@ namespace imageDeCap
             // save to screenshots folder after clicking Done if user added some edits
             if (Properties.Settings.Default.saveImageAtAll && Directory.Exists(Properties.Settings.Default.SaveImagesHere) && undoHistory.Count > 0)
             {
-                string name = DateTime.Now.ToString("yyyyMMddHHmmssfff");
+                string name = DateTime.UtcNow.ToString("yyyyMMddHHmmssfff");
 
                 theImage.Save(Properties.Settings.Default.SaveImagesHere + @"\" + name + ".png");
             }

@@ -327,7 +327,7 @@ namespace imageDeCap
             // save unedited capture
             if (Properties.Settings.Default.saveImageAtAll && Directory.Exists(Properties.Settings.Default.SaveImagesHere))
             {
-                string name = DateTime.Now.ToString("yyyyMMddHHmmssfff");
+                string name = DateTime.UtcNow.ToString("yyyyMMddHHmmssfff");
 
                 File.Copy(filePath, Properties.Settings.Default.SaveImagesHere + @"\" + name + ".png");
             }
