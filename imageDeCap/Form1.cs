@@ -286,6 +286,7 @@ namespace imageDeCap
                 magn = new Magnificator();
                 completeCover backCover = new completeCover(this);
                 backCover.Show();
+                backCover.SetBounds(SystemInformation.VirtualScreen.X, SystemInformation.VirtualScreen.Y, SystemInformation.VirtualScreen.Width, SystemInformation.VirtualScreen.Height);
                 magn.Show();
                 //backCover.BackColor = Color.White;
                 //backCover.Opacity = 0.1;

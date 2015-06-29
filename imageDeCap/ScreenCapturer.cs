@@ -121,7 +121,8 @@ namespace imageDeCap
 
             if (screenCaptureMode == enmScreenCaptureMode.Screen)
             {
-                bounds = new Rectangle(0, 0, SystemInformation.VirtualScreen.Width, SystemInformation.VirtualScreen.Height);
+                //bounds = new Rectangle(0, 0, SystemInformation.VirtualScreen.Width, SystemInformation.VirtualScreen.Height);
+                bounds = SystemInformation.VirtualScreen;
                 CursorPosition = Cursor.Position;
             }
             else if (screenCaptureMode == enmScreenCaptureMode.Window)

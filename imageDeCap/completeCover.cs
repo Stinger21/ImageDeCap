@@ -20,8 +20,17 @@ namespace imageDeCap
 
             //ScreenCapturer cap = new ScreenCapturer();
             //Bitmap fullSnapshot = cap.Capture(enmScreenCaptureMode.Screen);
-            SetBounds(0, 0, SystemInformation.VirtualScreen.Width, SystemInformation.VirtualScreen.Height);
+            //SetBounds(SystemInformation.VirtualScreen.X, SystemInformation.VirtualScreen.Y, SystemInformation.VirtualScreen.Width, SystemInformation.VirtualScreen.Height);
 
+
+            //this.Left = 0;
+            //this.Top = 0;
+
+
+            //this.Location = new Point(SystemInformation.VirtualScreen.X, SystemInformation.VirtualScreen.Y);
+            //this.Size = new System.Drawing.Size(SystemInformation.VirtualScreen.Width, SystemInformation.VirtualScreen.Height);
+            
+            
             //System.Drawing.SolidBrush myBrush = new System.Drawing.SolidBrush(System.Drawing.Color.Red);
             //System.Drawing.Graphics formGraphics;
             //formGraphics = this.CreateGraphics();
