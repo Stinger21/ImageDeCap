@@ -37,12 +37,18 @@ namespace imageDeCap
 
         private void listBox1_DoubleClick(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start(Links[listBox1.SelectedIndex]);
+            if (Links.Count > 0)
+            {
+                System.Diagnostics.Process.Start(Links[listBox1.SelectedIndex]);
+            }
         }
 
         private void notifyIcon1_BalloonTipClicked(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start(Links[listBox1.SelectedIndex]);
+            if(Links.Count > 0)
+            {
+                System.Diagnostics.Process.Start(Links[listBox1.SelectedIndex]);
+            }
         }
 
         private System.Windows.Forms.ContextMenu contextMenu1;
@@ -84,7 +90,10 @@ namespace imageDeCap
 
             hook = new Hotkey(label1);
             props = new SettingsWindow(this);
-
+            if(!props.isInstalled())
+            {
+                props.Install();
+            }
             gHook = new GlobalKeyboardHook(); // Create a new GlobalKeyboardHook
             gHook.KeyDown += new KeyEventHandler(gHook_KeyDown);// Declare a KeyDown Event
             foreach (Keys key in Enum.GetValues(typeof(Keys)))// Add the keys you want to hook to the HookedKeys list
@@ -245,7 +254,7 @@ namespace imageDeCap
         {
             actuallyCloseTheProgram();
         }
-        private void actuallyCloseTheProgram()
+        public void actuallyCloseTheProgram()
         {
             pushThroughCancel = true;
             props.Close();
@@ -323,6 +332,7 @@ namespace imageDeCap
             }
         }
 
+
         private void uploadImageFile(string filePath, bool edit = false)
         {
             // save unedited capture
@@ -351,33 +361,46 @@ namespace imageDeCap
 
             if (File.Exists(System.IO.Path.GetTempPath() + "screenshot_edited.png"))
             {
-                string url = (string)cap.UploadImage(filePath);
-                if (url == null)
+                //string url = (string)cap.UploadImage(filePath);
+
+                BackgroundWorker bw = new BackgroundWorker();
+                bw.DoWork += cap.UploadImage;
+                bw.RunWorkerCompleted += uploadImageFileCompleted;
+                bw.RunWorkerAsync(filePath);
+            }
+        }
+
+        private void uploadImageFileCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            string url = (string)e.Result;
+            if (url.Contains("failed"))
+            {
+                setClipboard(url);
+                notifyIcon1.ShowBalloonTip(500, "imageDeCap", "Upload to imgur failed! \n"+ url + "\nAre you connected to the internet? \nis Imgur Down?", ToolTipIcon.Error);
+                playSound("error.wav");
+            }
+            else
+            {
+                if (Properties.Settings.Default.UseHTTPS)
                 {
-                    setClipboard(url);
-                    notifyIcon1.ShowBalloonTip(500, "imageDeCap", "Upload to imgur failed!", ToolTipIcon.Error);
-                    playSound("error.wav");
+                    StringBuilder builder = new StringBuilder(url);
+                    builder.Replace("http", "https");
+                    url = builder.ToString();
+                }
+                if (Properties.Settings.Default.CopyLinksToClipboard)
+                {
+                    notifyIcon1.ShowBalloonTip(500, "imageDeCap", "Imgur URL copied to clipboard!", ToolTipIcon.Info);
                 }
                 else
                 {
-                    if (Properties.Settings.Default.UseHTTPS)
-                    {
-                        StringBuilder builder = new StringBuilder(url);
-                        builder.Replace("http", "https");
-                        url = builder.ToString();
-                    }
-                    if (Properties.Settings.Default.CopyLinksToClipboard)
-                    {
-                        notifyIcon1.ShowBalloonTip(500, "imageDeCap", "Imgur URL copied to clipboard!", ToolTipIcon.Info);
-                    }
-                    else
-                    {
-                        notifyIcon1.ShowBalloonTip(500, "imageDeCap", "Upload complete!", ToolTipIcon.Info);
-                    }
-                    playSound("upload.wav");
-                    setClipboard(url);
-                    addToLinks(url);
+                    notifyIcon1.ShowBalloonTip(500, "imageDeCap", "Upload complete!", ToolTipIcon.Info);
                 }
+                if (!Environment.OSVersion.ToString().Contains("6.2.9200"))
+                {//means it's probably windows 10, in which case we should not play the noise as windows 10 plays a fucking noise on its own no matter what. :|
+                    playSound("upload.wav");
+                }
+                setClipboard(url);
+                addToLinks(url);
             }
         }
 
@@ -400,8 +423,17 @@ namespace imageDeCap
         private void uploadPastebin(string text)
         {
             playSound("snip.wav");
-            string pasteBinResult = cap.Send(text);
-            if (pasteBinResult != null)
+            //string pasteBinResult = cap.Send(text);
+            BackgroundWorker bw = new BackgroundWorker();
+            bw.DoWork += cap.Send;
+            bw.RunWorkerCompleted += uploadPastebinCompleted;
+            bw.RunWorkerAsync(text);
+            
+        }
+        private void uploadPastebinCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            string pasteBinResult = (string)e.Result;
+            if (!pasteBinResult.Contains("failed"))
             {
                 setClipboard(pasteBinResult);
                 if (Properties.Settings.Default.CopyLinksToClipboard)
@@ -412,12 +444,16 @@ namespace imageDeCap
                 {
                     notifyIcon1.ShowBalloonTip(500, "imageDeCap", "Upload complete!", ToolTipIcon.Info);
                 }
-                playSound("upload.wav");
+
+                if (!Environment.OSVersion.ToString().Contains("6.2.9200"))
+                {//means it's probably windows 10, in which case we should not play the noise as windows 10 plays a fucking noise on its own no matter what. :|
+                    playSound("upload.wav");
+                }
                 addToLinks(pasteBinResult);
             }
             else
             {
-                notifyIcon1.ShowBalloonTip(500, "imageDeCap", "upload to pastebin failed!", ToolTipIcon.Error);
+                notifyIcon1.ShowBalloonTip(500, "imageDeCap", "upload to pastebin failed!\n" + pasteBinResult + "\nAre you connected to the internet? \nIs pastebin Down?", ToolTipIcon.Error);
                 playSound("error.wav");
             }
         }

@@ -15,6 +15,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 
 using System.Collections.Specialized;
+using System.ComponentModel;
 
 namespace imageDeCap
 {
@@ -35,8 +36,10 @@ namespace imageDeCap
         }
 
         string ClientId = "da05117bbfa9bda";
-        public string UploadImage(string image)
+        public void UploadImage(object sender, DoWorkEventArgs e)
         {
+            string image = (string)e.Argument;
+
             WebClient w = new WebClient();
             w.Headers.Add("Authorization", "Client-ID " + ClientId);
             System.Collections.Specialized.NameValueCollection Keys = new System.Collections.Specialized.NameValueCollection();
@@ -49,12 +52,14 @@ namespace imageDeCap
                 Match match = reg.Match(result);
 
                 string url = match.ToString().Replace("link\":\"", "").Replace("\"", "").Replace("\\/", "/");
-                return url;
+                e.Result = url;
+                //return url;
             }
             catch (Exception s)
-            { 
+            {
                 //MessageBox.Show("Something went wrong. " + s.Message);
-                return null;
+                //return null;
+                e.Result = "failed, " + s.Message;
             }
         }
 
@@ -65,10 +70,13 @@ namespace imageDeCap
         private string IDevKey = "4d1c2c0bb6fa2e5c1403cedccc50bfd5";
         private string IUserKey = null;
 
-        public string Send(string IBody, string ISubj = "imageDeCap Upload", string IFormat = "php")
+        public void Send(object sender, DoWorkEventArgs e)
         {
-            if (string.IsNullOrEmpty(IBody.Trim())) { return null; }
-            if (string.IsNullOrEmpty(ISubj.Trim())) { return null; }
+            string IBody = (string)e.Argument;
+            string ISubj = Properties.Settings.Default.PastebinSubjectLine;
+
+            if (string.IsNullOrEmpty(IBody.Trim())) { e.Result = "failed"; }
+            if (string.IsNullOrEmpty(ISubj.Trim())) { e.Result = "failed"; }
 
             NameValueCollection IQuery = new NameValueCollection();
 
@@ -78,23 +86,25 @@ namespace imageDeCap
             IQuery.Add("api_paste_private",     "0");
             IQuery.Add("api_paste_name",        ISubj);
             IQuery.Add("api_paste_expire_date", "N");
-            IQuery.Add("api_paste_format",      "php");
+            IQuery.Add("api_paste_format",      "text");
             IQuery.Add("api_user_key",          IUserKey);
 
             string IResponse = "";
 
             using (WebClient IClient = new WebClient())
             {
-                IResponse = Encoding.UTF8.GetString(IClient.UploadValues(IPostURL, IQuery));
-
-                Uri isValid = null;
-                if (!Uri.TryCreate(IResponse, UriKind.Absolute, out isValid))
+                bool failed = false;
+                try
                 {
-                    IResponse = null;
-                    //throw new WebException("Paste Error", WebExceptionStatus.SendFailure);
+                    IResponse = Encoding.UTF8.GetString(IClient.UploadValues(IPostURL, IQuery));
+                }
+                catch(Exception ee)
+                {
+                    failed = true;
+                    IResponse = "failed, " + ee.Message;
                 }
             }
-            return IResponse;
+            e.Result = IResponse;
         }
 
 

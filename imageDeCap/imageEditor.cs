@@ -107,7 +107,7 @@ namespace imageDeCap
         int Height = 8;
         Point lastPos;
         bool isPressed = false;
-        float brushSize = 6.0f;
+        float brushSize = 4.0f;
         float textSize = 12.0f;
         Color c = Color.Red;
         bool brush = true;
@@ -126,6 +126,10 @@ namespace imageDeCap
                     g.DrawString(textBox1.Text, new Font("Arial Black", textSize), new SolidBrush(c), mousePos);
                 }
                 imageContainer.Refresh();
+
+                brush = true;
+                trackBar1.Value = (int)brushSize * 100;
+                label2.Text = "Size: " + brushSize.ToString("0.0");
             }
         }
 
@@ -191,18 +195,7 @@ namespace imageDeCap
 
         private void radioButton1_CheckedChanged_1(object sender, EventArgs e)
         {
-            brush = radioButton1.Checked;
-
-            if (brush)
-            {
-                trackBar1.Value = (int)brushSize * 100;
-                label2.Text = "Size: " + brushSize.ToString("0.0");
-            }
-            else
-            {
-                trackBar1.Value = (int)textSize * 100;
-                label2.Text = "Size: " + textSize.ToString("0.0");
-            }
+            
             /*
             // Executed when any radio button is changed.
             // ... It is wired up to every single radio button.
@@ -391,6 +384,18 @@ namespace imageDeCap
 
         }
 
+        private void addTextButton_Click(object sender, EventArgs e)
+        {
+            brush = false;
+            trackBar1.Value = (int)textSize * 100;
+            label2.Text = "Size: " + textSize.ToString("0.0");
 
+            if (brush)
+            {
+            }
+            else
+            {
+            }
+        }
     }
 }

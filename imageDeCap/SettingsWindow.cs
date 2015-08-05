@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using Microsoft.Win32;
+using System.IO;
+using IWshRuntimeLibrary;
 
 namespace imageDeCap
 {
@@ -34,8 +36,102 @@ namespace imageDeCap
             checkBox4.Checked = Properties.Settings.Default.DisableSoundEffects;
 
             checkBox2.Checked = Properties.Settings.Default.UseHTTPS;
-        }
+            
 
+            textBox2.Text = Properties.Settings.Default.PastebinSubjectLine;
+
+            //CHECK IF INSTALLED
+            isInstalled();
+            
+        }
+        public bool isInstalled()
+        {
+            bool installed = true;
+            string startMenuShortcutPath = Environment.GetFolderPath(Environment.SpecialFolder.StartMenu) + @"\imageDeCap.lnk";
+            string appdataDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\imageDeCap";
+            string startupDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Startup);
+            if (!Directory.Exists(appdataDirectory))
+            {
+                Directory.CreateDirectory(appdataDirectory);
+            }
+
+            if (System.IO.File.Exists(appdataDirectory + @"\imageDeCap.exe"))
+            {
+                if (System.IO.File.Exists(startupDirectory + @"\imageDeCap.lnk"))
+                {
+                    if(System.IO.File.Exists(startMenuShortcutPath))
+                    {
+                        installedLabel.Text = "Installed!";
+                        installButton.Enabled = false;
+                        uninstallButton.Enabled = true;
+                        installed = true;
+                        button3.Enabled = false;
+                    }
+                }
+            }
+
+            if (!System.IO.File.Exists(appdataDirectory + @"\imageDeCap.exe") || !System.IO.File.Exists(startupDirectory + @"\imageDeCap.lnk") || !System.IO.File.Exists(startMenuShortcutPath))
+            {
+                installedLabel.Text = "Not Installed.";
+                installButton.Enabled = true;
+                uninstallButton.Enabled = false;
+                installed = false;
+                button3.Enabled = true;
+            }
+            return installed;
+        }
+        private void CreateShortcut(string targetProgram, string shortcutPath)
+        {
+            object shDesktop = (object)"Desktop";
+            WshShell shell = new WshShell();
+            string shortcutAddress = shortcutPath;
+            IWshShortcut shortcut = (IWshShortcut)shell.CreateShortcut(shortcutAddress);
+            shortcut.Description = "imageDeCap auto-start";
+            //shortcut.Hotkey = "Ctrl+Shift+N";
+            shortcut.TargetPath = targetProgram;
+            shortcut.Save();
+        }
+        public void Install()
+        {
+            string shortcutPath = Environment.GetFolderPath(Environment.SpecialFolder.Startup) + @"\imageDeCap.lnk";
+            string startMenuShortcutPath = Environment.GetFolderPath(Environment.SpecialFolder.StartMenu) + @"\imageDeCap.lnk";
+            string programPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\imageDeCap\imageDeCap.exe";
+            if(System.IO.File.Exists(programPath))
+            {
+                System.IO.File.Delete(programPath);
+            }
+            if (System.IO.File.Exists(shortcutPath))
+            {
+                System.IO.File.Delete(shortcutPath);
+            }
+            if (System.IO.File.Exists(startMenuShortcutPath))
+            {
+                System.IO.File.Delete(startMenuShortcutPath);
+            }
+            System.IO.File.Copy(System.Reflection.Assembly.GetEntryAssembly().Location, programPath);
+            CreateShortcut(programPath, shortcutPath);
+            CreateShortcut(programPath, startMenuShortcutPath);
+            isInstalled();
+        }
+        public void UnInstall()
+        {
+            string shortcutPath = Environment.GetFolderPath(Environment.SpecialFolder.Startup) + @"\imageDeCap.lnk";
+            string startMenuShortcutPath = Environment.GetFolderPath(Environment.SpecialFolder.StartMenu) + @"\imageDeCap.lnk";
+            string programPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\imageDeCap\imageDeCap.exe";
+            System.IO.File.Delete(startMenuShortcutPath);
+            System.IO.File.Delete(shortcutPath);
+            System.IO.File.Delete(programPath);
+            isInstalled();
+        }
+        private void installButton_Click(object sender, EventArgs e)
+        {
+            Install();
+        }
+        
+        private void uninstallButton_Click(object sender, EventArgs e)
+        {
+            UnInstall();
+        }
 
         private void button5_Click(object sender, EventArgs e)//Apply
         {
@@ -156,5 +252,15 @@ namespace imageDeCap
             Properties.Settings.Default.Save();
         }
 
+        private void textBox2_TextChanged_1(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.PastebinSubjectLine = textBox2.Text;
+            Properties.Settings.Default.Save();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            parentForm.actuallyCloseTheProgram();
+        }
     }
 }
