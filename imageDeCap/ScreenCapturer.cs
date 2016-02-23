@@ -38,14 +38,15 @@ namespace imageDeCap
         string ClientId = "da05117bbfa9bda";
         public void UploadImage(object sender, DoWorkEventArgs e)
         {
-            string image = (string)e.Argument;
+            
+            string filepath = (string)e.Argument;
 
             WebClient w = new WebClient();
             w.Headers.Add("Authorization", "Client-ID " + ClientId);
             System.Collections.Specialized.NameValueCollection Keys = new System.Collections.Specialized.NameValueCollection();
             try
             {
-                Keys.Add("image", Convert.ToBase64String(File.ReadAllBytes(image)));
+                Keys.Add("image", Convert.ToBase64String(File.ReadAllBytes(filepath)));
                 byte[] responseArray = w.UploadValues("https://api.imgur.com/3/image", Keys);
                 dynamic result = Encoding.ASCII.GetString(responseArray); 
                 Regex reg = new System.Text.RegularExpressions.Regex("link\":\"(.*?)\"");
@@ -63,7 +64,37 @@ namespace imageDeCap
             }
         }
 
+        public void uploadToFTP(object sender, DoWorkEventArgs e)
+        {
+            string[] arguments = (string[])e.Argument;
+            string url = arguments[0];
+            string username = arguments[1];
+            string password = arguments[2];
+            string filepath = arguments[3];
+            string filename = arguments[4];
 
+            // Get the object used to communicate with the server.
+
+            FtpWebRequest request = (FtpWebRequest)WebRequest.Create(url + (url.EndsWith("/") ? "" : "/") + filename);
+            request.Method = WebRequestMethods.Ftp.UploadFile;
+
+            // This example assumes the FTP site uses anonymous logon.
+            request.Credentials = new NetworkCredential(username, password);
+
+            // Copy the contents of the file to the request stream.
+            byte[] fileContents = File.ReadAllBytes(filepath);
+            request.ContentLength = fileContents.Length;
+
+            Stream requestStream = request.GetRequestStream();
+            requestStream.Write(fileContents, 0, fileContents.Length);
+            requestStream.Close();
+
+            FtpWebResponse response = (FtpWebResponse)request.GetResponse();
+
+            Console.WriteLine("Upload File Complete, status {0}", response.StatusDescription);
+
+            response.Close();
+        }
 
         private string ILoginURL = "http://pastebin.com/api/api_login.php";
         private string IPostURL = "http://pastebin.com/api/api_post.php";
@@ -93,14 +124,12 @@ namespace imageDeCap
 
             using (WebClient IClient = new WebClient())
             {
-                bool failed = false;
                 try
                 {
                     IResponse = Encoding.UTF8.GetString(IClient.UploadValues(IPostURL, IQuery));
                 }
                 catch(Exception ee)
                 {
-                    failed = true;
                     IResponse = "failed, " + ee.Message;
                 }
             }
@@ -152,7 +181,8 @@ namespace imageDeCap
 
             using (var g = Graphics.FromImage(result))
             {
-                g.CopyFromScreen(new Point(bounds.Left, bounds.Top), Point.Empty, bounds.Size);
+                g.Clear(Color.Black);
+                g.CopyFromScreen(new Point(bounds.Left, bounds.Top), Point.Empty, bounds.Size, CopyPixelOperation.SourceCopy);
             }
 
             return result;

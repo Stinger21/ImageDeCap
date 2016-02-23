@@ -106,5 +106,173 @@ namespace imageDeCap.Properties {
                 this["PastebinSubjectLine"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool NeverUpload {
+            get {
+                return ((bool)(this["NeverUpload"]));
+            }
+            set {
+                this["NeverUpload"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool DisableNotifications {
+            get {
+                return ((bool)(this["DisableNotifications"]));
+            }
+            set {
+                this["DisableNotifications"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool FreezeScreenOnRegionShot {
+            get {
+                return ((bool)(this["FreezeScreenOnRegionShot"]));
+            }
+            set {
+                this["FreezeScreenOnRegionShot"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool IsInstalled {
+            get {
+                return ((bool)(this["IsInstalled"]));
+            }
+            set {
+                this["IsInstalled"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool uploadToFTP {
+            get {
+                return ((bool)(this["uploadToFTP"]));
+            }
+            set {
+                this["uploadToFTP"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("ftp://speedtest.tele2.net/upload/")]
+        public string FTPurl {
+            get {
+                return ((string)(this["FTPurl"]));
+            }
+            set {
+                this["FTPurl"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("anonymous")]
+        public string FTPusername {
+            get {
+                return ((string)(this["FTPusername"]));
+            }
+            set {
+                this["FTPusername"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string FTPpassword {
+            get {
+                return ((string)(this["FTPpassword"]));
+            }
+            set {
+                this["FTPpassword"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool AlsoSaveTextFiles {
+            get {
+                return ((bool)(this["AlsoSaveTextFiles"]));
+            }
+            set {
+                this["AlsoSaveTextFiles"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool AlsoFTPTextFiles {
+            get {
+                return ((bool)(this["AlsoFTPTextFiles"]));
+            }
+            set {
+                this["AlsoFTPTextFiles"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("LeftCtrl+LeftShift+D2")]
+        public string Hotkey1 {
+            get {
+                return ((string)(this["Hotkey1"]));
+            }
+            set {
+                this["Hotkey1"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("LeftCtrl+LeftShift+D3")]
+        public string Hotkey2 {
+            get {
+                return ((string)(this["Hotkey2"]));
+            }
+            set {
+                this["Hotkey2"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("LeftCtrl+LeftShift+D4")]
+        public string Hotkey3 {
+            get {
+                return ((string)(this["Hotkey3"]));
+            }
+            set {
+                this["Hotkey3"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("LeftCtrl+LeftShift+D5")]
+        public string Hotkey4 {
+            get {
+                return ((string)(this["Hotkey4"]));
+            }
+            set {
+                this["Hotkey4"] = value;
+            }
+        }
     }
 }

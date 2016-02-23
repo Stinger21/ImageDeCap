@@ -23,5 +23,47 @@
     <Setting Name="PastebinSubjectLine" Type="System.String" Scope="User">
       <Value Profile="(Default)">"Image DeCap Upload!"</Value>
     </Setting>
+    <Setting Name="NeverUpload" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="DisableNotifications" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="FreezeScreenOnRegionShot" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="IsInstalled" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="uploadToFTP" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="FTPurl" Type="System.String" Scope="User">
+      <Value Profile="(Default)">ftp://speedtest.tele2.net/upload/</Value>
+    </Setting>
+    <Setting Name="FTPusername" Type="System.String" Scope="User">
+      <Value Profile="(Default)">anonymous</Value>
+    </Setting>
+    <Setting Name="FTPpassword" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="AlsoSaveTextFiles" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="AlsoFTPTextFiles" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="Hotkey1" Type="System.String" Scope="User">
+      <Value Profile="(Default)">LeftCtrl+LeftShift+D2</Value>
+    </Setting>
+    <Setting Name="Hotkey2" Type="System.String" Scope="User">
+      <Value Profile="(Default)">LeftCtrl+LeftShift+D3</Value>
+    </Setting>
+    <Setting Name="Hotkey3" Type="System.String" Scope="User">
+      <Value Profile="(Default)">LeftCtrl+LeftShift+D4</Value>
+    </Setting>
+    <Setting Name="Hotkey4" Type="System.String" Scope="User">
+      <Value Profile="(Default)">LeftCtrl+LeftShift+D5</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

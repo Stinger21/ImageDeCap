@@ -18,19 +18,28 @@ namespace imageDeCap
             InitializeComponent();
             this.mainProgram = mainProgram;
 
-            //ScreenCapturer cap = new ScreenCapturer();
-            //Bitmap fullSnapshot = cap.Capture(enmScreenCaptureMode.Screen);
+            if (Properties.Settings.Default.FreezeScreenOnRegionShot)
+            {
+                ScreenCapturer cap = new ScreenCapturer();
+                Bitmap fullSnapshot = cap.Capture(enmScreenCaptureMode.Screen);
+                pictureBox1.Image = fullSnapshot;
+                pictureBox1.SetBounds(0, 0, SystemInformation.VirtualScreen.Width, SystemInformation.VirtualScreen.Height);
+            }
+            else
+            {
+                this.Opacity = 0.05;
+            }
+
             //SetBounds(SystemInformation.VirtualScreen.X, SystemInformation.VirtualScreen.Y, SystemInformation.VirtualScreen.Width, SystemInformation.VirtualScreen.Height);
-
-
+            
             //this.Left = 0;
             //this.Top = 0;
 
 
             //this.Location = new Point(SystemInformation.VirtualScreen.X, SystemInformation.VirtualScreen.Y);
             //this.Size = new System.Drawing.Size(SystemInformation.VirtualScreen.Width, SystemInformation.VirtualScreen.Height);
-            
-            
+
+
             //System.Drawing.SolidBrush myBrush = new System.Drawing.SolidBrush(System.Drawing.Color.Red);
             //System.Drawing.Graphics formGraphics;
             //formGraphics = this.CreateGraphics();
@@ -67,6 +76,13 @@ namespace imageDeCap
             keyPressed = false;
             escPressed = false;
         }
+        private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
+        {
+
+            mainProgram.updateSelectedArea(this, keyPressed, escPressed);
+            keyPressed = false;
+            escPressed = false;
+        }
 
         private void completeCover_KeyDown(object sender, KeyEventArgs e)
         {
@@ -78,7 +94,9 @@ namespace imageDeCap
             {
                 //MessageBox.Show("wa! ");
                 escPressed = true;
+                //this.Close();
             }
         }
+
     }
 }
