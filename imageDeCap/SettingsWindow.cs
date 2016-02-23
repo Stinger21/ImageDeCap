@@ -139,7 +139,14 @@ namespace imageDeCap
             System.IO.File.Copy(System.Reflection.Assembly.GetEntryAssembly().Location, programPath);
             CreateShortcut(programPath, shortcutPath);
             CreateShortcut(programPath, startMenuShortcutPath);
-            isInstalled();
+            if(isInstalled())
+            {
+                installButton.Text = "Install and add to startup";
+            }
+            else
+            {
+                installButton.Text = "Uninstall";
+            }
         }
         public void UnInstall()
         {

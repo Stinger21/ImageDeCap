@@ -33,6 +33,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.imageContainer)).BeginInit();
             this.SuspendLayout();
             // 
@@ -62,7 +63,7 @@
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(116, 13);
             this.label3.TabIndex = 5;
-            this.label3.Text = "Mattias Westphal 2015";
+            this.label3.Text = "Mattias Westphal 2016";
             // 
             // label5
             // 
@@ -77,11 +78,21 @@
             this.label5.Text = "mattwestphal.com";
             this.label5.Click += new System.EventHandler(this.label5_Click);
             // 
+            // label1
+            // 
+            this.label1.Location = new System.Drawing.Point(205, 9);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(117, 67);
+            this.label1.TabIndex = 8;
+            this.label1.Text = "Contributors:\r\nAlastair http://muto.so/\r\n";
+            this.label1.Click += new System.EventHandler(this.label1_Click_1);
+            // 
             // aboutWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(342, 92);
+            this.ClientSize = new System.Drawing.Size(334, 83);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
@@ -103,5 +114,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label1;
     }
 }
