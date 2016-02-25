@@ -19,6 +19,7 @@ using System.Media;
 using System.Diagnostics;
 using System.Threading;
 using System.Xml.Linq;
+using Microsoft.Win32;
 
 namespace imageDeCap
 {
@@ -537,7 +538,11 @@ namespace imageDeCap
                     if (!Properties.Settings.Default.DisableNotifications)
                         notifyIcon1.ShowBalloonTip(500, "imageDeCap", "Upload complete!", ToolTipIcon.Info);
                 }
-                if (!Environment.OSVersion.ToString().Contains("6.2.9200"))
+
+
+                var reg = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion");
+                string productName = (string)reg.GetValue("ProductName");
+                if (!productName.StartsWith("Windows 10"))
                 {//means it's probably windows 10, in which case we should not play the noise as windows 10 plays a fucking noise on its own no matter what. :|
                     playSound("upload.wav");
                 }
