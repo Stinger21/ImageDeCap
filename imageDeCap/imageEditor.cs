@@ -539,7 +539,15 @@ namespace imageDeCap
 
             EncoderParameter myEncoderParameter = new EncoderParameter(myEncoder, compressionLevel);
             myEncoderParameters.Param[0] = myEncoderParameter;
-            bmp.Save(path, jpgEncoder, myEncoderParameters);
+            try
+            {
+                bmp.Save(path, jpgEncoder, myEncoderParameters);
+            }
+            catch
+            {
+                Console.WriteLine("Failed to save jpg");
+            }
+            
             
 
         }
