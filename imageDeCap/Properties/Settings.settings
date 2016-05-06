@@ -21,7 +21,7 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="PastebinSubjectLine" Type="System.String" Scope="User">
-      <Value Profile="(Default)">"Image DeCap Upload!"</Value>
+      <Value Profile="(Default)">Image DeCap Upload!</Value>
     </Setting>
     <Setting Name="NeverUpload" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
@@ -31,9 +31,6 @@
     </Setting>
     <Setting Name="FreezeScreenOnRegionShot" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
-    </Setting>
-    <Setting Name="IsInstalled" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="uploadToFTP" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
@@ -45,7 +42,7 @@
       <Value Profile="(Default)">anonymous</Value>
     </Setting>
     <Setting Name="FTPpassword" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">password</Value>
     </Setting>
     <Setting Name="AlsoSaveTextFiles" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
@@ -64,6 +61,12 @@
     </Setting>
     <Setting Name="Hotkey4" Type="System.String" Scope="User">
       <Value Profile="(Default)">LeftCtrl+LeftShift+D5</Value>
+    </Setting>
+    <Setting Name="CopyImageToClipboard" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="firstLaunch" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
     </Setting>
   </Settings>
 </SettingsFile>

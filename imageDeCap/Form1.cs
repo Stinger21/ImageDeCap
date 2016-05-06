@@ -51,17 +51,15 @@ namespace imageDeCap
         private void listBox1_DoubleClick(object sender, EventArgs e)
         {
             if (Links.Count > 0)
-            {
-                System.Diagnostics.Process.Start(Links[listBox1.SelectedIndex]);
-            }
+                if (Links[listBox1.SelectedIndex].StartsWith("http"))
+                    System.Diagnostics.Process.Start(Links[listBox1.SelectedIndex]);
         }
 
         private void notifyIcon1_BalloonTipClicked(object sender, EventArgs e)
         {
             if(Links.Count > 0)
-            {
-                System.Diagnostics.Process.Start(Links[listBox1.SelectedIndex]);
-            }
+                if(Links[listBox1.SelectedIndex].StartsWith("http"))
+                    System.Diagnostics.Process.Start(Links[listBox1.SelectedIndex]);
         }
 
         private System.Windows.Forms.ContextMenu contextMenu1;
@@ -141,22 +139,23 @@ namespace imageDeCap
 
             this.ShowInTaskbar = false;
             this.Opacity = 0.0f;
-
-            Console.WriteLine(Properties.Settings.Default.IsInstalled);
+            
 
             props = new SettingsWindow(this);
+
             //Alert for install!
-            if (!Properties.Settings.Default.IsInstalled)
+            if (Properties.Settings.Default.firstLaunch)
             {
                 DialogResult d = MessageBox.Show("First Launch!\nInstall? (add to startup & start-menu)", "Image DeCap", MessageBoxButtons.YesNo);
-                if(d == DialogResult.Yes)
+                if (d == DialogResult.Yes)
                 {
                     props.Install();
+                    props.AddToStartup();
                     this.ShowInTaskbar = true;
                     this.Opacity = 1.0f;
                     this.Activate();
                 }
-                Properties.Settings.Default.IsInstalled = true;
+                Properties.Settings.Default.firstLaunch = false;
                 Properties.Settings.Default.Save();
             }
 
@@ -194,22 +193,7 @@ namespace imageDeCap
 
             notifyIcon1.ContextMenu = contextMenu1;
             notifyIcon1.Visible = true;
-
-
-            //hook = new Hotkey(label1);
-
-
-            //gHook = new GlobalKeyboardHook(); // Create a new GlobalKeyboardHook
-            //gHook.KeyDown += new KeyEventHandler(gHook_KeyDown);// Declare a KeyDown Event
-            //foreach (Keys key in Enum.GetValues(typeof(Keys)))// Add the keys you want to hook to the HookedKeys list
-            //    gHook.HookedKeys.Add(key);
-            //
-            //gHook.KeyUp += new KeyEventHandler(gHook_KeyUp);// Declare a KeyDown Event
-            //foreach (Keys key in Enum.GetValues(typeof(Keys)))// Add the keys you want to hook to the HookedKeys list
-            //    gHook.HookedKeys.Add(key);
-
-
-
+            
 
             listBox1.AllowDrop = true;
             listBox1.DragEnter += new DragEventHandler(Form1_DragEnter);
@@ -217,63 +201,6 @@ namespace imageDeCap
 
 
         }
-        //bool globalCtrlIsBeingHeldDown = false;
-        //bool globalShiftIsBeingHeldDown = false;
-        // Handle the KeyDown Event
-        //public void gHook_KeyDown(object sender, KeyEventArgs e)
-        //{
-        //    //textBox1.Text += " dn_" + (e.KeyValue).ToString();
-        //    if (e.KeyValue == 162)
-        //    {
-        //        globalCtrlIsBeingHeldDown = true;
-        //    }
-        //    if (e.KeyValue == 160)
-        //    {
-        //        globalShiftIsBeingHeldDown = true;
-        //    }
-        //    if (globalCtrlIsBeingHeldDown && globalShiftIsBeingHeldDown)
-        //    {
-        //        if (e.KeyValue == 50)//Ctrl+Shift+2
-        //        {
-        //            UploadPastebinClipboard();
-        //        }
-        //        if (e.KeyValue == 51)//Ctrl+Shift+3
-        //        {
-        //            UploadImgurScreen();
-        //        }
-        //        if (e.KeyValue == 52)//Ctrl+Shift+4
-        //        {
-        //            UploadToImgurBounds();
-        //        }
-        //        if (e.KeyValue == 53)//Ctrl+Shift+5
-        //        {
-        //            UploadImgurWindow();
-        //        }
-        //    }
-        //}
-        // Handle the KeyUp Event
-        //public void gHook_KeyUp(object sender, KeyEventArgs e)
-        //{
-        //    //textBox1.Text += " up_" + (e.KeyValue).ToString();
-        //    if (e.KeyValue == 162)
-        //    {
-        //        globalCtrlIsBeingHeldDown = false;
-        //    }
-        //    if (e.KeyValue == 160)
-        //    {
-        //        globalShiftIsBeingHeldDown = false;
-        //    }
-        //}
-
-        /*
-        public void setHotkey(Keys modifier, Keys key, HotkeyPressedCb func)
-        {
-            hook.Dispose();
-            Modifier mod = (modifier.HasFlag(Keys.Control) ? Modifier.Ctrl : Modifier.None) |
-                (modifier.HasFlag(Keys.Shift) ? Modifier.Shift : Modifier.None) |
-                (modifier.HasFlag(Keys.Alt) ? Modifier.Alt : Modifier.None);
-            hook.registerHotkey(mod, key, func);
-        }*/
 
         void Form1_DragEnter(object sender, DragEventArgs e)
         {
@@ -300,6 +227,7 @@ namespace imageDeCap
                 }
                 this.ShowInTaskbar = false;
                 this.Opacity = 0.0f;
+                props.Close();
             }
         }
         private void menuItem2_Click(object Sender, EventArgs e)//Open Window
@@ -466,8 +394,11 @@ namespace imageDeCap
                 //}
             }
             Image bitmapImage = Image.FromFile(filePath);
-            Clipboard.SetImage(bitmapImage);
-            bitmapImage.Dispose();
+            if (Properties.Settings.Default.CopyImageToClipboard)
+            {
+                Clipboard.SetImage(bitmapImage);
+                bitmapImage.Dispose();
+            }
 
             string editedPath = System.IO.Path.GetTempPath() + "screenshot_edited.png";
             if (edit)
@@ -482,9 +413,12 @@ namespace imageDeCap
                 filePath = editedPath;
                 if (File.Exists(editedPath))
                 {
-                    bitmapImage = Image.FromFile(filePath);
-                    Clipboard.SetImage(bitmapImage);
-                    bitmapImage.Dispose();
+                    if (Properties.Settings.Default.CopyImageToClipboard)
+                    {
+                        bitmapImage = Image.FromFile(filePath);
+                        Clipboard.SetImage(bitmapImage);
+                        bitmapImage.Dispose();
+                    }
                 }
             }
             else
@@ -540,9 +474,7 @@ namespace imageDeCap
                 }
 
 
-                var reg = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion");
-                string productName = (string)reg.GetValue("ProductName");
-                if (!productName.StartsWith("Windows 10"))
+                if (!IsWindows10() || Properties.Settings.Default.DisableNotifications)
                 {//means it's probably windows 10, in which case we should not play the noise as windows 10 plays a fucking noise on its own no matter what. :|
                     playSound("upload.wav");
                 }
@@ -637,7 +569,7 @@ namespace imageDeCap
                         notifyIcon1.ShowBalloonTip(500, "imageDeCap", "Upload complete!", ToolTipIcon.Info);
                 }
 
-                if (!Environment.OSVersion.ToString().Contains("6.2.9200"))
+                if (!IsWindows10() || Properties.Settings.Default.DisableNotifications)
                 {//means it's probably windows 10, in which case we should not play the noise as windows 10 plays a fucking noise on its own no matter what. :|
                     playSound("upload.wav");
                 }
@@ -648,6 +580,14 @@ namespace imageDeCap
                 notifyIcon1.ShowBalloonTip(500, "imageDeCap", "upload to pastebin failed!\n" + pasteBinResult + "\nAre you connected to the internet? \nIs pastebin Down?", ToolTipIcon.Error);
                 playSound("error.wav");
             }
+        }
+        static bool IsWindows10()
+        {
+            var reg = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion");
+
+            string productName = (string)reg.GetValue("ProductName");
+
+            return productName.StartsWith("Windows 10");
         }
         private void setBox(boxOfWhy box)
         {
@@ -850,6 +790,15 @@ namespace imageDeCap
             if (System.Windows.Input.Keyboard.IsKeyDown(System.Windows.Input.Key.B))
             {
                 Console.WriteLine("aa");
+            }
+        }
+
+        private void listBox1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if ((System.Windows.Input.Keyboard.IsKeyDown(System.Windows.Input.Key.RightCtrl) || System.Windows.Input.Keyboard.IsKeyDown(System.Windows.Input.Key.LeftCtrl)) &&
+                (System.Windows.Input.Keyboard.IsKeyDown(System.Windows.Input.Key.C)         || System.Windows.Input.Keyboard.IsKeyDown(System.Windows.Input.Key.Insert)))
+            {
+                Clipboard.SetText(Links[listBox1.SelectedIndex]);
             }
         }
     }

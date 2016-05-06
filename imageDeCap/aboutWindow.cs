@@ -31,5 +31,10 @@ namespace imageDeCap
         {
 
         }
+
+        private void label6_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://alastair.se/");
+        }
     }
 }

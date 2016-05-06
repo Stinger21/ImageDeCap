@@ -32,16 +32,20 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(imageEditor));
             this.imageContainer = new System.Windows.Forms.PictureBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.fileSizeLabel = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.button3 = new System.Windows.Forms.Button();
             this.currentColor = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
+            this.compressionSlider = new System.Windows.Forms.TrackBar();
+            this.button1 = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
             this.trackBar2 = new System.Windows.Forms.TrackBar();
             this.label2 = new System.Windows.Forms.Label();
             this.addTextButton = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
-            this.button1 = new System.Windows.Forms.Button();
             this.c_white = new System.Windows.Forms.Button();
             this.c_grey = new System.Windows.Forms.Button();
             this.c_black = new System.Windows.Forms.Button();
@@ -63,21 +67,17 @@
             this.trackBar1 = new System.Windows.Forms.TrackBar();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.jpegBox = new System.Windows.Forms.PictureBox();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
-            this.compressionSlider = new System.Windows.Forms.TrackBar();
-            this.jpegBox = new System.Windows.Forms.PictureBox();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.fileSizeLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.imageContainer)).BeginInit();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.compressionSlider)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.groupBox2.SuspendLayout();
             this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.compressionSlider)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.jpegBox)).BeginInit();
             this.SuspendLayout();
             // 
@@ -136,6 +136,38 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Tools";
             // 
+            // fileSizeLabel
+            // 
+            this.fileSizeLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.fileSizeLabel.AutoSize = true;
+            this.fileSizeLabel.Location = new System.Drawing.Point(108, 58);
+            this.fileSizeLabel.Name = "fileSizeLabel";
+            this.fileSizeLabel.Size = new System.Drawing.Size(25, 13);
+            this.fileSizeLabel.TabIndex = 36;
+            this.fileSizeLabel.Text = "0, 0";
+            // 
+            // label4
+            // 
+            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(660, 58);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(91, 13);
+            this.label4.TabIndex = 35;
+            this.label4.Text = "Compression: 100";
+            this.label4.Click += new System.EventHandler(this.label4_Click);
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(254, 55);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(174, 17);
+            this.checkBox1.TabIndex = 34;
+            this.checkBox1.Text = "Compress (Makes Editing Slow)";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            // 
             // button3
             // 
             this.button3.Location = new System.Drawing.Point(6, 39);
@@ -168,16 +200,6 @@
             this.label1.Text = "0, 0";
             this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
-            // label3
-            // 
-            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(687, 14);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(49, 13);
-            this.label3.TabIndex = 29;
-            this.label3.Text = "Text: 5.0";
-            // 
             // button2
             // 
             this.button2.Location = new System.Drawing.Point(57, 14);
@@ -187,6 +209,41 @@
             this.button2.Text = "Undo";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click_1);
+            // 
+            // compressionSlider
+            // 
+            this.compressionSlider.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.compressionSlider.AutoSize = false;
+            this.compressionSlider.Enabled = false;
+            this.compressionSlider.LargeChange = 1000;
+            this.compressionSlider.Location = new System.Drawing.Point(435, 57);
+            this.compressionSlider.Maximum = 100;
+            this.compressionSlider.Name = "compressionSlider";
+            this.compressionSlider.Size = new System.Drawing.Size(229, 22);
+            this.compressionSlider.SmallChange = 100;
+            this.compressionSlider.TabIndex = 32;
+            this.compressionSlider.TickFrequency = 5;
+            this.compressionSlider.Scroll += new System.EventHandler(this.compressionSlider_Scroll);
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(6, 14);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(49, 23);
+            this.button1.TabIndex = 0;
+            this.button1.Text = "Upload";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // label3
+            // 
+            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(687, 14);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(49, 13);
+            this.label3.TabIndex = 29;
+            this.label3.Text = "Text: 5.0";
             // 
             // trackBar2
             // 
@@ -236,16 +293,6 @@
             this.textBox1.Size = new System.Drawing.Size(117, 37);
             this.textBox1.TabIndex = 23;
             this.textBox1.Text = "Sample Text";
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(6, 14);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(49, 23);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "Upload";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // c_white
             // 
@@ -488,13 +535,13 @@
             this.trackBar1.AutoSize = false;
             this.trackBar1.LargeChange = 1000;
             this.trackBar1.Location = new System.Drawing.Point(435, 33);
-            this.trackBar1.Maximum = 10000;
+            this.trackBar1.Maximum = 80000;
             this.trackBar1.Minimum = 100;
             this.trackBar1.Name = "trackBar1";
             this.trackBar1.Size = new System.Drawing.Size(259, 22);
             this.trackBar1.SmallChange = 100;
             this.trackBar1.TabIndex = 2;
-            this.trackBar1.TickFrequency = 1000;
+            this.trackBar1.TickFrequency = 8000;
             this.trackBar1.Value = 100;
             this.trackBar1.Scroll += new System.EventHandler(this.trackBar1_Scroll);
             // 
@@ -524,32 +571,6 @@
             this.panel1.Leave += new System.EventHandler(this.panel1_Leave);
             this.panel1.MouseLeave += new System.EventHandler(this.panel1_MouseLeave);
             // 
-            // contextMenuStrip1
-            // 
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
-            // 
-            // imageList1
-            // 
-            this.imageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
-            this.imageList1.ImageSize = new System.Drawing.Size(16, 16);
-            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
-            // 
-            // compressionSlider
-            // 
-            this.compressionSlider.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.compressionSlider.AutoSize = false;
-            this.compressionSlider.Enabled = false;
-            this.compressionSlider.LargeChange = 1000;
-            this.compressionSlider.Location = new System.Drawing.Point(435, 57);
-            this.compressionSlider.Maximum = 100;
-            this.compressionSlider.Name = "compressionSlider";
-            this.compressionSlider.Size = new System.Drawing.Size(229, 22);
-            this.compressionSlider.SmallChange = 100;
-            this.compressionSlider.TabIndex = 32;
-            this.compressionSlider.TickFrequency = 5;
-            this.compressionSlider.Scroll += new System.EventHandler(this.compressionSlider_Scroll);
-            // 
             // jpegBox
             // 
             this.jpegBox.Location = new System.Drawing.Point(3, 3);
@@ -563,37 +584,16 @@
             this.jpegBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.imageContainer_MouseDown);
             this.jpegBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.imageContainer_MouseMove);
             // 
-            // checkBox1
+            // contextMenuStrip1
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(254, 55);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(174, 17);
-            this.checkBox1.TabIndex = 34;
-            this.checkBox1.Text = "Compress (Makes Editing Slow)";
-            this.checkBox1.UseVisualStyleBackColor = true;
-            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
-            // label4
+            // imageList1
             // 
-            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(660, 58);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(91, 13);
-            this.label4.TabIndex = 35;
-            this.label4.Text = "Compression: 100";
-            this.label4.Click += new System.EventHandler(this.label4_Click);
-            // 
-            // fileSizeLabel
-            // 
-            this.fileSizeLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.fileSizeLabel.AutoSize = true;
-            this.fileSizeLabel.Location = new System.Drawing.Point(108, 58);
-            this.fileSizeLabel.Name = "fileSizeLabel";
-            this.fileSizeLabel.Size = new System.Drawing.Size(25, 13);
-            this.fileSizeLabel.TabIndex = 36;
-            this.fileSizeLabel.Text = "0, 0";
+            this.imageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
+            this.imageList1.ImageSize = new System.Drawing.Size(16, 16);
+            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
             // 
             // imageEditor
             // 
@@ -615,12 +615,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.imageContainer)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.compressionSlider)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
             this.groupBox2.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.compressionSlider)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.jpegBox)).EndInit();
             this.ResumeLayout(false);
 

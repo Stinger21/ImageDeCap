@@ -21,9 +21,12 @@ namespace imageDeCap
         {
             InitializeComponent();
             this.parentForm = parentForm;
-            
             var converter = new KeysConverter();
-            
+            initSettings();
+        }
+
+        void initSettings()
+        {
             bool saveImagesAtAll = Properties.Settings.Default.saveImageAtAll;
             checkBox1.Checked = saveImagesAtAll;
             button2.Enabled = Properties.Settings.Default.saveImageAtAll;
@@ -48,17 +51,16 @@ namespace imageDeCap
             checkBox5.Checked = Properties.Settings.Default.DisableNotifications;
 
             textBox2.Text = Properties.Settings.Default.PastebinSubjectLine;
-            
+
             checkBox6.Checked = Properties.Settings.Default.FreezeScreenOnRegionShot;
 
-            checkBoxUploadToFTP.Checked = Properties.Settings.Default.uploadToFTP;
-            AlsoFTPTectFilesBox.Enabled = Properties.Settings.Default.uploadToFTP;
-            AlsoFTPTectFilesBox.Checked = Properties.Settings.Default.AlsoFTPTextFiles;
+            AlsoFTPTextFilesBox.Checked = Properties.Settings.Default.uploadToFTP;
+            AlsoFTPTextFilesBox.Enabled = Properties.Settings.Default.uploadToFTP;
+            AlsoFTPTextFilesBox.Checked = Properties.Settings.Default.AlsoFTPTextFiles;
             FTPURL.Enabled = Properties.Settings.Default.uploadToFTP;
             FTPUsername.Enabled = Properties.Settings.Default.uploadToFTP;
             FTPpassword.Enabled = Properties.Settings.Default.uploadToFTP;
-
-
+            
             HotkeyTextBox1.Text = Properties.Settings.Default.Hotkey1;
             HotkeyTextBox2.Text = Properties.Settings.Default.Hotkey2;
             HotkeyTextBox3.Text = Properties.Settings.Default.Hotkey3;
@@ -68,46 +70,9 @@ namespace imageDeCap
             FTPURL.Text = Properties.Settings.Default.FTPurl;
             FTPUsername.Text = Properties.Settings.Default.FTPusername;
 
-            //CHECK IF INSTALLED
-            isInstalled();
-            
+            CopyImageToClipboard.Checked = Properties.Settings.Default.CopyImageToClipboard;
         }
-        public bool isInstalled()
-        {
-            bool installed = true;
-            string startMenuShortcutPath = Environment.GetFolderPath(Environment.SpecialFolder.StartMenu) + @"\imageDeCap.lnk";
-            string appdataDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\imageDeCap";
-            string startupDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Startup);
-            if (!Directory.Exists(appdataDirectory))
-            {
-                Directory.CreateDirectory(appdataDirectory);
-            }
 
-            if (System.IO.File.Exists(appdataDirectory + @"\imageDeCap.exe"))
-            {
-                if (System.IO.File.Exists(startupDirectory + @"\imageDeCap.lnk"))
-                {
-                    if(System.IO.File.Exists(startMenuShortcutPath))
-                    {
-                        installedLabel.Text = "Installed!";
-                        //installButton.Enabled = false;
-                        //uninstallButton.Enabled = true;
-                        installed = true;
-                        //button3.Enabled = false;
-                    }
-                }
-            }
-
-            if (!System.IO.File.Exists(appdataDirectory + @"\imageDeCap.exe") || !System.IO.File.Exists(startupDirectory + @"\imageDeCap.lnk") || !System.IO.File.Exists(startMenuShortcutPath))
-            {
-                installedLabel.Text = "Not Installed.";
-                //installButton.Enabled = true;
-                //uninstallButton.Enabled = false;
-                installed = false;
-                //button3.Enabled = true;
-            }
-            return installed;
-        }
         private void CreateShortcut(string targetProgram, string shortcutPath)
         {
             object shDesktop = (object)"Desktop";
@@ -115,76 +80,48 @@ namespace imageDeCap
             string shortcutAddress = shortcutPath;
             IWshShortcut shortcut = (IWshShortcut)shell.CreateShortcut(shortcutAddress);
             shortcut.Description = "imageDeCap auto-start";
-            //shortcut.Hotkey = "Ctrl+Shift+N";
+
             shortcut.TargetPath = targetProgram;
             shortcut.Save();
         }
         public void Install()
         {
-            string shortcutPath = Environment.GetFolderPath(Environment.SpecialFolder.Startup) + @"\imageDeCap.lnk";
             string startMenuShortcutPath = Environment.GetFolderPath(Environment.SpecialFolder.StartMenu) + @"\imageDeCap.lnk";
             string programPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\imageDeCap\imageDeCap.exe";
             if(System.IO.File.Exists(programPath))
-            {
                 System.IO.File.Delete(programPath);
-            }
-            if (System.IO.File.Exists(shortcutPath))
-            {
-                System.IO.File.Delete(shortcutPath);
-            }
+            
             if (System.IO.File.Exists(startMenuShortcutPath))
-            {
                 System.IO.File.Delete(startMenuShortcutPath);
-            }
+
+            if(!Directory.Exists(Path.GetDirectoryName(programPath)))
+                Directory.CreateDirectory(Path.GetDirectoryName(programPath));
+            
             System.IO.File.Copy(System.Reflection.Assembly.GetEntryAssembly().Location, programPath);
-            CreateShortcut(programPath, shortcutPath);
             CreateShortcut(programPath, startMenuShortcutPath);
-            if(isInstalled())
-            {
-                installButton.Text = "Install and add to startup";
-            }
-            else
-            {
-                installButton.Text = "Uninstall";
-            }
+            
+        }
+        public void AddToStartup()
+        {
+            string shortcutPath = Environment.GetFolderPath(Environment.SpecialFolder.Startup) + @"\imageDeCap.lnk";
+            string programPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\imageDeCap\imageDeCap.exe";
+
+            if (System.IO.File.Exists(shortcutPath))
+                System.IO.File.Delete(shortcutPath);
+
+            CreateShortcut(programPath, shortcutPath);
         }
         public void UnInstall()
         {
-            string shortcutPath = Environment.GetFolderPath(Environment.SpecialFolder.Startup) + @"\imageDeCap.lnk";
             string startMenuShortcutPath = Environment.GetFolderPath(Environment.SpecialFolder.StartMenu) + @"\imageDeCap.lnk";
             string programPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\imageDeCap\imageDeCap.exe";
+            string shortcutPath = Environment.GetFolderPath(Environment.SpecialFolder.Startup) + @"\imageDeCap.lnk";
+
             System.IO.File.Delete(startMenuShortcutPath);
-            System.IO.File.Delete(shortcutPath);
             System.IO.File.Delete(programPath);
-            isInstalled();
+            System.IO.File.Delete(shortcutPath);
         }
-        private void installButton_Click(object sender, EventArgs e)
-        {
-            if(isInstalled())
-            {
-                UnInstall();
-                installButton.Text = "Install and add to startup";
-                Properties.Settings.Default.IsInstalled = false;
-                Properties.Settings.Default.Save();
-            }
-            else
-            {
-                Install();
-                installButton.Text = "Uninstall";
-                Properties.Settings.Default.IsInstalled = true;
-                Properties.Settings.Default.Save();
-            }
-            
-            //Properties.Settings.Default.IsInstalled = true;
-            //Properties.Settings.Default.Save();
-        }
-        
-        private void uninstallButton_Click(object sender, EventArgs e)
-        {
-            //UnInstall();
-            //Properties.Settings.Default.IsInstalled = false;
-            //Properties.Settings.Default.Save();
-        }
+
 
         private void button5_Click(object sender, EventArgs e)//Apply
         {
@@ -210,11 +147,7 @@ namespace imageDeCap
         }
         private void writeHotkey(KeyEventArgs e, TextBox box)
         {
-
         }
-
-
-
         private void button1_Click(object sender, EventArgs e)
         {
             this.Close();
@@ -222,7 +155,7 @@ namespace imageDeCap
 
         private void SettingsWindow_Load(object sender, EventArgs e)
         {
-
+            tabControl1.SelectedTab = tabControl1.TabPages[2];
         }
 
         private void SettingsWindow_FormClosing(object sender, FormClosingEventArgs e)
@@ -261,13 +194,7 @@ namespace imageDeCap
             Properties.Settings.Default.SaveImagesHere = textBox1.Text;
             Properties.Settings.Default.Save();
         }
-
-        private void checkBox2_CheckedChanged(object sender, EventArgs e)
-        {
-            //RegisterInStartup(checkBox2.Checked);
-            Properties.Settings.Default.Save();
-        }
-
+        
         private void RegisterInStartup(bool isChecked)
         {
             RegistryKey registryKey = Registry.CurrentUser.OpenSubKey
@@ -300,7 +227,7 @@ namespace imageDeCap
             Properties.Settings.Default.Save();
         }
 
-        private void checkBox2_CheckedChanged_1(object sender, EventArgs e)
+        private void checkBox2_CheckedChanged(object sender, EventArgs e)
         {
             Properties.Settings.Default.UseHTTPS = checkBox2.Checked;
             Properties.Settings.Default.Save();
@@ -324,7 +251,9 @@ namespace imageDeCap
 
         private void button3_Click(object sender, EventArgs e)
         {
-            parentForm.actuallyCloseTheProgram();
+            Properties.Settings.Default.Reset();
+            Properties.Settings.Default.Save();
+            initSettings();
         }
 
         private void checkBox5_CheckedChanged(object sender, EventArgs e)
@@ -343,11 +272,11 @@ namespace imageDeCap
 
         private void checkBoxUploadToFTP_CheckedChanged(object sender, EventArgs e)
         {
-            AlsoFTPTectFilesBox.Enabled = checkBoxUploadToFTP.Checked;
+            //checkBoxUploadToFTP.Enabled = checkBoxUploadToFTP.Checked;
             Properties.Settings.Default.uploadToFTP = checkBoxUploadToFTP.Checked;
             Properties.Settings.Default.Save();
 
-            AlsoFTPTectFilesBox.Enabled = Properties.Settings.Default.uploadToFTP;
+            AlsoFTPTextFilesBox.Enabled = Properties.Settings.Default.uploadToFTP;
             FTPURL.Enabled = Properties.Settings.Default.uploadToFTP;
             FTPUsername.Enabled = Properties.Settings.Default.uploadToFTP;
             FTPpassword.Enabled = Properties.Settings.Default.uploadToFTP;
@@ -379,7 +308,7 @@ namespace imageDeCap
 
         private void AlsoFTPTectFilesBox_CheckedChanged(object sender, EventArgs e)
         {
-            Properties.Settings.Default.AlsoFTPTextFiles = AlsoFTPTectFilesBox.Checked;
+            Properties.Settings.Default.AlsoFTPTextFiles = AlsoFTPTextFilesBox.Checked;
             Properties.Settings.Default.Save();
         }
 
@@ -487,6 +416,59 @@ namespace imageDeCap
         private void label7_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void HotkeyTextBox2_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void HotkeyTextBox3_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void HotkeyTextBox4_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void installedLabel_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void CopyImageToClipboard_CheckedChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.CopyImageToClipboard = CopyImageToClipboard.Checked;
+            Properties.Settings.Default.Save();
+        }
+
+        private void label3_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+
+
+
+
+        
+
+
+        private void AddToStartMenu_Click(object sender, EventArgs e)
+        {
+            Install();
+        }
+
+        private void AddToAutoStart_Click(object sender, EventArgs e)
+        {
+            AddToStartup();
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            UnInstall();
         }
     }
 }

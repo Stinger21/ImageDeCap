@@ -33,6 +33,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.imageContainer)).BeginInit();
             this.SuspendLayout();
@@ -40,7 +42,7 @@
             // imageContainer
             // 
             this.imageContainer.Image = ((System.Drawing.Image)(resources.GetObject("imageContainer.Image")));
-            this.imageContainer.Location = new System.Drawing.Point(12, 12);
+            this.imageContainer.Location = new System.Drawing.Point(10, 10);
             this.imageContainer.Name = "imageContainer";
             this.imageContainer.Size = new System.Drawing.Size(64, 64);
             this.imageContainer.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -78,25 +80,49 @@
             this.label5.Text = "mattwestphal.com";
             this.label5.Click += new System.EventHandler(this.label5_Click);
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(-1, 72);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(283, 13);
+            this.label4.TabIndex = 9;
+            this.label4.Text = "Send me money on paypal? : mattias.westphal@gmail.com";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.ForeColor = System.Drawing.Color.RoyalBlue;
+            this.label6.Location = new System.Drawing.Point(272, 22);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(54, 13);
+            this.label6.TabIndex = 10;
+            this.label6.Text = "alastair.se";
+            this.label6.Click += new System.EventHandler(this.label6_Click);
+            // 
             // label1
             // 
-            this.label1.Location = new System.Drawing.Point(205, 9);
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(223, 9);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(117, 67);
-            this.label1.TabIndex = 8;
-            this.label1.Text = "Contributors:\r\nAlastair http://muto.so/\r\n";
-            this.label1.Click += new System.EventHandler(this.label1_Click_1);
+            this.label1.Size = new System.Drawing.Size(103, 13);
+            this.label1.TabIndex = 11;
+            this.label1.Text = "Contributors: Alastair";
             // 
             // aboutWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(334, 83);
+            this.ClientSize = new System.Drawing.Size(334, 86);
             this.Controls.Add(this.label1);
+            this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.imageContainer);
+            this.Controls.Add(this.label4);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximumSize = new System.Drawing.Size(350, 122);
             this.MinimumSize = new System.Drawing.Size(350, 122);
@@ -114,6 +140,8 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label1;
     }
 }

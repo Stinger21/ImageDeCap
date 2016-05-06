@@ -52,7 +52,7 @@ namespace imageDeCap
             {
                 height = theImage.Height;
             }
-            this.Size = new System.Drawing.Size(width + 50, height + 110);
+            this.Size = new System.Drawing.Size(width + 40, height + 140);
 
             imageContainer.Image = theImage;
 
@@ -81,6 +81,12 @@ namespace imageDeCap
 
         private void button1_Click(object sender, EventArgs e)
         {
+            if (tempImage)
+            {
+                undoImageEdit();
+                tempImage = false;
+            }
+
             theImage.Save(newImagePath);
             // save to screenshots folder after clicking Done if user added some edits
             if (Properties.Settings.Default.saveImageAtAll && Directory.Exists(Properties.Settings.Default.SaveImagesHere) && undoHistory.Count > 0)
@@ -97,7 +103,8 @@ namespace imageDeCap
         
         int Width = 8;
         int Height = 8;
-        Point lastPos;
+        Point leftMouseLastPos;
+        Point rightMouseLastPos;
         bool isPressed = false;
         float brushSize = 4.0f;
         float textSize = 12.0f;
@@ -141,8 +148,41 @@ namespace imageDeCap
                     //trackBar1.Value = (int)brushSize * 100;
                     //label2.Text = "Size: " + brushSize.ToString("0.0");
                 }
+                else
+                {
+                    if(System.Windows.Input.Keyboard.IsKeyDown(System.Windows.Input.Key.LeftShift) ||
+                        System.Windows.Input.Keyboard.IsKeyDown(System.Windows.Input.Key.RightShift))
+                    {
+                        if (leftMouseLastPos == Point.Empty)
+                        {
+                            leftMouseLastPos = mousePos;
+                        }
+                        using (Graphics g = Graphics.FromImage(theImage))
+                        {
+                            Pen MyPen = new Pen(c);
+                            MyPen.Width = brushSize;
+                            MyPen.EndCap = System.Drawing.Drawing2D.LineCap.Round;
+                            MyPen.StartCap = System.Drawing.Drawing2D.LineCap.Round;
+                            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                            
+                            g.DrawLine(MyPen, leftMouseLastPos, mousePos);
+                        }
+                        ApplyCompression();
+                        imageContainer.Refresh();
+                        
+                        leftMouseLastPos = mousePos;
+                    }
+                }
+            }
+
+            if(e.Button == MouseButtons.Right)
+            {
+                Point mousePos = imageContainer.PointToClient(Cursor.Position);
+                rightMouseLastPos = mousePos;
             }
         }
+        
+
 
         private void imageContainer_MouseMove(object sender, MouseEventArgs e)
         {
@@ -151,35 +191,36 @@ namespace imageDeCap
 
             if (MouseButtons == MouseButtons.Left)
             {
-                
                 if (!isPressed)
                 {
-                    lastPos = mousePos;
+                    leftMouseLastPos = mousePos;
                     undoHistory.Push(new Bitmap(theImage));
                 }
                 if (brush)
                 {
-
                     using (Graphics g = Graphics.FromImage(theImage))
                     {
                         Pen MyPen = new Pen(c);
                         MyPen.Width = brushSize;
-                        //MyPen.DashCap = System.Drawing.Drawing2D.DashCap.Round;
                         MyPen.EndCap = System.Drawing.Drawing2D.LineCap.Round;
                         MyPen.StartCap = System.Drawing.Drawing2D.LineCap.Round;
-
                         g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-
-                        g.DrawLine(MyPen, lastPos, mousePos);
-
-                        //g.DrawArc(new Pen(Color.Red, 8), new Rectangle(mousePos.X - (Width / 2), mousePos.Y - (Width / 2), Width, Height),0,360);
+                        
+                        g.DrawLine(MyPen, leftMouseLastPos, mousePos);
                     }
                     ApplyCompression();
                 }
 
                 imageContainer.Refresh();
-                lastPos = mousePos;
+                leftMouseLastPos = mousePos;
                 isPressed = true;
+            }
+            else if(MouseButtons == MouseButtons.Right)
+            {
+                double targetValue = (mousePos.X - rightMouseLastPos.X) * 200;
+                Console.WriteLine(targetValue);
+                trackBar1.Value = (int)Math.Min(Math.Max(targetValue, (double)trackBar1.Minimum), (double)trackBar1.Maximum);
+                trackBar1_Scroll(null, null);
             }
             else
             {
@@ -199,20 +240,10 @@ namespace imageDeCap
                 }
 
                 isPressed = false;
-                //pictureBox2.Location = new Point(mousePos.X+2, mousePos.Y+2);
+
                 if (!brush)
                 {//if we are not holding down any button and are in text mode.
-
-                    //using (Graphics g = Graphics.FromImage(pictureBox2.Image))
-                    //{
-                    //    Pen MyPen = new Pen(c);
-                    //    MyPen.Width = textSize;
-                    //    g.DrawString(textBox1.Text, new Font("Arial Black", textSize), new SolidBrush(c), mousePos);
-                    //}
-                    //pictureBox2.Refresh();
                     
-                    // Placeholder image for users niceness
-                    //undoImageEdit();
                     undoHistory.Push(new Bitmap(theImage));
                     using (Graphics g = Graphics.FromImage(theImage))
                     {
@@ -246,8 +277,8 @@ namespace imageDeCap
             using (Graphics g = Graphics.FromImage(theImage))
             {
                 Pen MyPen = new Pen(Color.FromArgb(128, 255, 0, 0));
-                
-                g.FillEllipse(MyPen.Brush, imageContainer.Width / 2 - brushSize / 2, imageContainer.Height / 2 - brushSize / 2, brushSize, brushSize);
+                float halfBrush = brushSize / 2.0f;
+                g.FillEllipse(MyPen.Brush, rightMouseLastPos.X - halfBrush, rightMouseLastPos.Y - halfBrush, brushSize, brushSize);
             }
             ApplyCompression();
             imageContainer.Refresh();
@@ -276,7 +307,6 @@ namespace imageDeCap
         }
         private void trackBar2_DragLeave(object sender, EventArgs e)
         {
-            //undoImageEdit();
         }
 
         private void trackBar2_DragEnter(object sender, DragEventArgs e)
@@ -286,36 +316,6 @@ namespace imageDeCap
         private void radioButton1_CheckedChanged_1(object sender, EventArgs e)
         {
             
-            /*
-            // Executed when any radio button is changed.
-            // ... It is wired up to every single radio button.
-            // Search for first radio button in GroupBox.
-            string result1 = null;
-            foreach (Control control in this.groupBox1.Controls)
-            {
-                if (control is RadioButton)
-                {
-                    RadioButton radio = control as RadioButton;
-                    if (radio.Checked)
-                    {
-                        result1 = radio.Text;
-                    }
-                }
-            }
-            // Search second GroupBox.
-            string result2 = null;
-            foreach (Control control in this.groupBox2.Controls)
-            {
-                if (control is RadioButton)
-                {
-                    RadioButton radio = control as RadioButton;
-                    if (radio.Checked)
-                    {
-                        result2 = radio.Text;
-                    }
-                }
-            }
-            brush = result1 == null;*/
         }
 
         void setPalette(Button button)
@@ -547,9 +547,6 @@ namespace imageDeCap
             {
                 Console.WriteLine("Failed to save jpg");
             }
-            
-            
-
         }
 
         
@@ -611,6 +608,11 @@ namespace imageDeCap
         }
 
         private void label4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void HighlightCheckbox_CheckedChanged(object sender, EventArgs e)
         {
 
         }

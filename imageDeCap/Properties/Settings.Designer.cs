@@ -97,7 +97,7 @@ namespace imageDeCap.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("\"Image DeCap Upload!\"")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Image DeCap Upload!")]
         public string PastebinSubjectLine {
             get {
                 return ((string)(this["PastebinSubjectLine"]));
@@ -146,18 +146,6 @@ namespace imageDeCap.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool IsInstalled {
-            get {
-                return ((bool)(this["IsInstalled"]));
-            }
-            set {
-                this["IsInstalled"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool uploadToFTP {
             get {
                 return ((bool)(this["uploadToFTP"]));
@@ -193,7 +181,7 @@ namespace imageDeCap.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("password")]
         public string FTPpassword {
             get {
                 return ((string)(this["FTPpassword"]));
@@ -272,6 +260,30 @@ namespace imageDeCap.Properties {
             }
             set {
                 this["Hotkey4"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool CopyImageToClipboard {
+            get {
+                return ((bool)(this["CopyImageToClipboard"]));
+            }
+            set {
+                this["CopyImageToClipboard"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool firstLaunch {
+            get {
+                return ((bool)(this["firstLaunch"]));
+            }
+            set {
+                this["firstLaunch"] = value;
             }
         }
     }

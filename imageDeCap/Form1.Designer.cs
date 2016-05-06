@@ -39,6 +39,7 @@
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -49,7 +50,6 @@
             this.preferencesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.label2 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -134,6 +134,7 @@
             this.listBox1.TabIndex = 14;
             this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             this.listBox1.DoubleClick += new System.EventHandler(this.listBox1_DoubleClick);
+            this.listBox1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.listBox1_KeyDown);
             // 
             // groupBox2
             // 
@@ -147,6 +148,16 @@
             this.groupBox2.TabIndex = 16;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Links";
+            // 
+            // label2
+            // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(1, 303);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(182, 13);
+            this.label2.TabIndex = 16;
+            this.label2.Text = "Created in Memory of Hyperdesktop. ";
             // 
             // label1
             // 
@@ -233,16 +244,6 @@
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
             this.aboutToolStripMenuItem.Text = "About Image DeCap";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
-            // 
-            // label2
-            // 
-            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(1, 303);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(182, 13);
-            this.label2.TabIndex = 16;
-            this.label2.Text = "Created in Memory of Hyperdesktop. ";
             // 
             // Form1
             // 
