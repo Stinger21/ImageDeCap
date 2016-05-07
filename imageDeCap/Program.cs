@@ -46,6 +46,11 @@ namespace imageDeCap
         [STAThread]
         static void Main()
         {
+            if (Process.GetProcessesByName(Process.GetCurrentProcess().ProcessName).Length > 1)
+            {
+                return;
+            }
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Form1 f1 = new Form1();
@@ -54,14 +59,8 @@ namespace imageDeCap
 
             while (!mQuit)
             {
-                     
                 Application.DoEvents();
-
                 f1.mainLoop();
-
-                
-                
-
                 System.Threading.Thread.Sleep(10);
             } 
         }

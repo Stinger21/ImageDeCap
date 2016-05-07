@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingsWindow));
             this.HotkeyTextBox4 = new System.Windows.Forms.TextBox();
             this.HotkeyTextBox3 = new System.Windows.Forms.TextBox();
@@ -37,7 +38,6 @@
             this.FTPUsername = new System.Windows.Forms.TextBox();
             this.FTPURL = new System.Windows.Forms.TextBox();
             this.button3 = new System.Windows.Forms.Button();
-            this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.checkBox2 = new System.Windows.Forms.CheckBox();
@@ -52,7 +52,6 @@
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.checkBox5 = new System.Windows.Forms.CheckBox();
             this.alsoSaveTextFilesBox = new System.Windows.Forms.CheckBox();
-            this.neverUpload = new System.Windows.Forms.CheckBox();
             this.AlsoFTPTextFilesBox = new System.Windows.Forms.CheckBox();
             this.checkBoxUploadToFTP = new System.Windows.Forms.CheckBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
@@ -62,25 +61,41 @@
             this.label7 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.button4 = new System.Windows.Forms.Button();
             this.checkBox6 = new System.Windows.Forms.CheckBox();
             this.AddToStartMenu = new System.Windows.Forms.Button();
             this.AddToAutoStart = new System.Windows.Forms.Button();
             this.CopyImageToClipboard = new System.Windows.Forms.CheckBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.button4 = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.eventLog1 = new System.Diagnostics.EventLog();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.neverUpload = new System.Windows.Forms.CheckBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.imageContainer)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.tabPage3.SuspendLayout();
+            this.groupBox1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            this.groupBox3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.eventLog1)).BeginInit();
+            this.groupBox4.SuspendLayout();
             this.SuspendLayout();
             // 
             // HotkeyTextBox4
             // 
-            this.HotkeyTextBox4.Location = new System.Drawing.Point(6, 82);
+            this.HotkeyTextBox4.Location = new System.Drawing.Point(6, 142);
+            this.HotkeyTextBox4.Multiline = true;
             this.HotkeyTextBox4.Name = "HotkeyTextBox4";
-            this.HotkeyTextBox4.Size = new System.Drawing.Size(152, 20);
+            this.HotkeyTextBox4.Size = new System.Drawing.Size(209, 17);
             this.HotkeyTextBox4.TabIndex = 33;
             this.HotkeyTextBox4.Text = "ctrl shift 4";
             this.HotkeyTextBox4.TextChanged += new System.EventHandler(this.HotkeyTextBox4_TextChanged);
@@ -90,9 +105,10 @@
             // 
             // HotkeyTextBox3
             // 
-            this.HotkeyTextBox3.Location = new System.Drawing.Point(6, 61);
+            this.HotkeyTextBox3.Location = new System.Drawing.Point(6, 106);
+            this.HotkeyTextBox3.Multiline = true;
             this.HotkeyTextBox3.Name = "HotkeyTextBox3";
-            this.HotkeyTextBox3.Size = new System.Drawing.Size(152, 20);
+            this.HotkeyTextBox3.Size = new System.Drawing.Size(209, 17);
             this.HotkeyTextBox3.TabIndex = 32;
             this.HotkeyTextBox3.Text = "ctrl shift 4";
             this.HotkeyTextBox3.TextChanged += new System.EventHandler(this.HotkeyTextBox3_TextChanged);
@@ -102,9 +118,10 @@
             // 
             // HotkeyTextBox2
             // 
-            this.HotkeyTextBox2.Location = new System.Drawing.Point(6, 40);
+            this.HotkeyTextBox2.Location = new System.Drawing.Point(6, 70);
+            this.HotkeyTextBox2.Multiline = true;
             this.HotkeyTextBox2.Name = "HotkeyTextBox2";
-            this.HotkeyTextBox2.Size = new System.Drawing.Size(152, 20);
+            this.HotkeyTextBox2.Size = new System.Drawing.Size(209, 17);
             this.HotkeyTextBox2.TabIndex = 31;
             this.HotkeyTextBox2.Text = "ctrl shift 3";
             this.HotkeyTextBox2.TextChanged += new System.EventHandler(this.HotkeyTextBox2_TextChanged);
@@ -114,9 +131,10 @@
             // 
             // HotkeyTextBox1
             // 
-            this.HotkeyTextBox1.Location = new System.Drawing.Point(6, 19);
+            this.HotkeyTextBox1.Location = new System.Drawing.Point(6, 34);
+            this.HotkeyTextBox1.Multiline = true;
             this.HotkeyTextBox1.Name = "HotkeyTextBox1";
-            this.HotkeyTextBox1.Size = new System.Drawing.Size(152, 20);
+            this.HotkeyTextBox1.Size = new System.Drawing.Size(209, 17);
             this.HotkeyTextBox1.TabIndex = 30;
             this.HotkeyTextBox1.Text = "ctrl shift 2";
             this.HotkeyTextBox1.TextChanged += new System.EventHandler(this.HotkeyTextBox1_TextChanged);
@@ -126,7 +144,7 @@
             // 
             // FTPpassword
             // 
-            this.FTPpassword.Location = new System.Drawing.Point(125, 86);
+            this.FTPpassword.Location = new System.Drawing.Point(125, 64);
             this.FTPpassword.Name = "FTPpassword";
             this.FTPpassword.PasswordChar = '*';
             this.FTPpassword.Size = new System.Drawing.Size(110, 20);
@@ -136,7 +154,7 @@
             // 
             // FTPUsername
             // 
-            this.FTPUsername.Location = new System.Drawing.Point(6, 86);
+            this.FTPUsername.Location = new System.Drawing.Point(6, 64);
             this.FTPUsername.Name = "FTPUsername";
             this.FTPUsername.Size = new System.Drawing.Size(113, 20);
             this.FTPUsername.TabIndex = 28;
@@ -145,7 +163,7 @@
             // 
             // FTPURL
             // 
-            this.FTPURL.Location = new System.Drawing.Point(6, 60);
+            this.FTPURL.Location = new System.Drawing.Point(6, 38);
             this.FTPURL.Name = "FTPURL";
             this.FTPURL.Size = new System.Drawing.Size(229, 20);
             this.FTPURL.TabIndex = 27;
@@ -154,37 +172,30 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(406, 93);
+            this.button3.Location = new System.Drawing.Point(356, 92);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(117, 26);
+            this.button3.Size = new System.Drawing.Size(110, 26);
             this.button3.TabIndex = 26;
             this.button3.Text = "Reset All Settings";
+            this.toolTip1.SetToolTip(this.button3, "Re-Sets All Preferences and settings, Including First-Time Startup.");
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(3, 3);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(49, 13);
-            this.label2.TabIndex = 24;
-            this.label2.Text = "Hotkeys:";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 9);
+            this.label1.Location = new System.Drawing.Point(3, 15);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(113, 13);
+            this.label1.Size = new System.Drawing.Size(69, 13);
             this.label1.TabIndex = 23;
-            this.label1.Text = "Pastebin Subject Line:";
+            this.label1.Text = "Subject Line:";
+            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // textBox2
             // 
-            this.textBox2.Location = new System.Drawing.Point(125, 6);
+            this.textBox2.Location = new System.Drawing.Point(4, 31);
             this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(249, 20);
+            this.textBox2.Size = new System.Drawing.Size(228, 20);
             this.textBox2.TabIndex = 22;
             this.textBox2.Text = "Image DeCap Upload!";
             this.textBox2.TextChanged += new System.EventHandler(this.textBox2_TextChanged_1);
@@ -192,7 +203,7 @@
             // checkBox2
             // 
             this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(241, 76);
+            this.checkBox2.Location = new System.Drawing.Point(9, 115);
             this.checkBox2.Name = "checkBox2";
             this.checkBox2.Size = new System.Drawing.Size(108, 17);
             this.checkBox2.TabIndex = 21;
@@ -205,7 +216,7 @@
             this.checkBox7.AutoSize = true;
             this.checkBox7.Checked = true;
             this.checkBox7.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox7.Location = new System.Drawing.Point(3, 74);
+            this.checkBox7.Location = new System.Drawing.Point(6, 107);
             this.checkBox7.Name = "checkBox7";
             this.checkBox7.Size = new System.Drawing.Size(162, 17);
             this.checkBox7.TabIndex = 8;
@@ -216,7 +227,7 @@
             // checkBox4
             // 
             this.checkBox4.AutoSize = true;
-            this.checkBox4.Location = new System.Drawing.Point(3, 60);
+            this.checkBox4.Location = new System.Drawing.Point(6, 176);
             this.checkBox4.Name = "checkBox4";
             this.checkBox4.Size = new System.Drawing.Size(128, 17);
             this.checkBox4.TabIndex = 5;
@@ -229,17 +240,17 @@
             this.checkBox3.AutoSize = true;
             this.checkBox3.Checked = true;
             this.checkBox3.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox3.Location = new System.Drawing.Point(241, 90);
+            this.checkBox3.Location = new System.Drawing.Point(9, 92);
             this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(132, 17);
+            this.checkBox3.Size = new System.Drawing.Size(133, 17);
             this.checkBox3.TabIndex = 4;
-            this.checkBox3.Text = "Copy links to clipboard";
+            this.checkBox3.Text = "Copy links to Clipboard";
             this.checkBox3.UseVisualStyleBackColor = true;
             this.checkBox3.CheckedChanged += new System.EventHandler(this.checkBox3_CheckedChanged);
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(286, 18);
+            this.button2.Location = new System.Drawing.Point(251, 36);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 2;
@@ -249,10 +260,10 @@
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(3, 20);
+            this.textBox1.Location = new System.Drawing.Point(6, 36);
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(277, 20);
+            this.textBox1.Size = new System.Drawing.Size(239, 20);
             this.textBox1.TabIndex = 1;
             this.textBox1.Text = "C:\\";
             this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
@@ -260,29 +271,31 @@
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(3, 3);
+            this.checkBox1.Location = new System.Drawing.Point(6, 18);
             this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(176, 17);
+            this.checkBox1.Size = new System.Drawing.Size(173, 17);
             this.checkBox1.TabIndex = 0;
-            this.checkBox1.Text = "Save Screenshots to this folder:";
+            this.checkBox1.Text = "Save Screenshots to this folder";
             this.checkBox1.UseVisualStyleBackColor = true;
             this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
             // imageContainer
             // 
+            this.imageContainer.Cursor = System.Windows.Forms.Cursors.Hand;
             this.imageContainer.Image = ((System.Drawing.Image)(resources.GetObject("imageContainer.Image")));
-            this.imageContainer.Location = new System.Drawing.Point(432, 12);
+            this.imageContainer.Location = new System.Drawing.Point(379, 11);
             this.imageContainer.Name = "imageContainer";
             this.imageContainer.Size = new System.Drawing.Size(64, 64);
             this.imageContainer.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.imageContainer.TabIndex = 1;
             this.imageContainer.TabStop = false;
+            this.imageContainer.Click += new System.EventHandler(this.imageContainer_Click);
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(406, 121);
+            this.button1.Location = new System.Drawing.Point(356, 251);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(117, 23);
+            this.button1.Size = new System.Drawing.Size(110, 23);
             this.button1.TabIndex = 2;
             this.button1.Text = "Close";
             this.button1.UseVisualStyleBackColor = true;
@@ -295,39 +308,28 @@
             // checkBox5
             // 
             this.checkBox5.AutoSize = true;
-            this.checkBox5.Location = new System.Drawing.Point(3, 46);
+            this.checkBox5.Location = new System.Drawing.Point(6, 153);
             this.checkBox5.Name = "checkBox5";
-            this.checkBox5.Size = new System.Drawing.Size(158, 17);
+            this.checkBox5.Size = new System.Drawing.Size(309, 17);
             this.checkBox5.TabIndex = 5;
-            this.checkBox5.Text = "Disable Bubble Notifications";
+            this.checkBox5.Text = "Disable Bubble Notifications (side-bar things on windows 10)";
             this.checkBox5.UseVisualStyleBackColor = true;
             this.checkBox5.CheckedChanged += new System.EventHandler(this.checkBox5_CheckedChanged);
             // 
             // alsoSaveTextFilesBox
             // 
             this.alsoSaveTextFilesBox.AutoSize = true;
-            this.alsoSaveTextFilesBox.Location = new System.Drawing.Point(239, 3);
+            this.alsoSaveTextFilesBox.Location = new System.Drawing.Point(204, 18);
             this.alsoSaveTextFilesBox.Name = "alsoSaveTextFilesBox";
             this.alsoSaveTextFilesBox.Size = new System.Drawing.Size(122, 17);
             this.alsoSaveTextFilesBox.TabIndex = 6;
             this.alsoSaveTextFilesBox.Text = "Also Save Text Files";
             this.alsoSaveTextFilesBox.UseVisualStyleBackColor = true;
             // 
-            // neverUpload
-            // 
-            this.neverUpload.AutoSize = true;
-            this.neverUpload.Location = new System.Drawing.Point(241, 62);
-            this.neverUpload.Name = "neverUpload";
-            this.neverUpload.Size = new System.Drawing.Size(133, 17);
-            this.neverUpload.TabIndex = 7;
-            this.neverUpload.Text = "Never upload anything";
-            this.neverUpload.UseVisualStyleBackColor = true;
-            this.neverUpload.CheckedChanged += new System.EventHandler(this.neverUpload_CheckedChanged);
-            // 
             // AlsoFTPTextFilesBox
             // 
             this.AlsoFTPTextFilesBox.AutoSize = true;
-            this.AlsoFTPTextFilesBox.Location = new System.Drawing.Point(110, 41);
+            this.AlsoFTPTextFilesBox.Location = new System.Drawing.Point(101, 19);
             this.AlsoFTPTextFilesBox.Name = "AlsoFTPTextFilesBox";
             this.AlsoFTPTextFilesBox.Size = new System.Drawing.Size(142, 17);
             this.AlsoFTPTextFilesBox.TabIndex = 8;
@@ -338,7 +340,7 @@
             // checkBoxUploadToFTP
             // 
             this.checkBoxUploadToFTP.AutoSize = true;
-            this.checkBoxUploadToFTP.Location = new System.Drawing.Point(9, 41);
+            this.checkBoxUploadToFTP.Location = new System.Drawing.Point(6, 19);
             this.checkBoxUploadToFTP.Name = "checkBoxUploadToFTP";
             this.checkBoxUploadToFTP.Size = new System.Drawing.Size(95, 17);
             this.checkBoxUploadToFTP.TabIndex = 9;
@@ -351,47 +353,36 @@
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage3);
-            this.tabControl1.Location = new System.Drawing.Point(4, 3);
+            this.tabControl1.Location = new System.Drawing.Point(3, 6);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(396, 145);
+            this.tabControl1.Size = new System.Drawing.Size(351, 272);
             this.tabControl1.TabIndex = 27;
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.checkBox3);
-            this.tabPage1.Controls.Add(this.checkBox2);
-            this.tabPage1.Controls.Add(this.FTPURL);
-            this.tabPage1.Controls.Add(this.neverUpload);
-            this.tabPage1.Controls.Add(this.checkBoxUploadToFTP);
-            this.tabPage1.Controls.Add(this.textBox2);
-            this.tabPage1.Controls.Add(this.AlsoFTPTextFilesBox);
-            this.tabPage1.Controls.Add(this.label1);
-            this.tabPage1.Controls.Add(this.FTPUsername);
-            this.tabPage1.Controls.Add(this.FTPpassword);
+            this.tabPage1.Controls.Add(this.groupBox2);
+            this.tabPage1.Controls.Add(this.CopyImageToClipboard);
+            this.tabPage1.Controls.Add(this.checkBox7);
+            this.tabPage1.Controls.Add(this.checkBox4);
+            this.tabPage1.Controls.Add(this.checkBox6);
+            this.tabPage1.Controls.Add(this.checkBox5);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(388, 119);
+            this.tabPage1.Size = new System.Drawing.Size(343, 246);
             this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Upload Settings";
+            this.tabPage1.Text = "General";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
             // tabPage2
             // 
-            this.tabPage2.Controls.Add(this.label6);
-            this.tabPage2.Controls.Add(this.label7);
-            this.tabPage2.Controls.Add(this.label5);
-            this.tabPage2.Controls.Add(this.label4);
-            this.tabPage2.Controls.Add(this.label2);
-            this.tabPage2.Controls.Add(this.HotkeyTextBox1);
-            this.tabPage2.Controls.Add(this.HotkeyTextBox4);
-            this.tabPage2.Controls.Add(this.HotkeyTextBox2);
-            this.tabPage2.Controls.Add(this.HotkeyTextBox3);
+            this.tabPage2.Controls.Add(this.label8);
+            this.tabPage2.Controls.Add(this.groupBox3);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(388, 119);
+            this.tabPage2.Size = new System.Drawing.Size(343, 246);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Hotkeys";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -399,7 +390,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(164, 85);
+            this.label6.Location = new System.Drawing.Point(3, 126);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(155, 13);
             this.label6.TabIndex = 37;
@@ -408,7 +399,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(164, 64);
+            this.label7.Location = new System.Drawing.Point(3, 90);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(159, 13);
             this.label7.TabIndex = 36;
@@ -417,7 +408,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(164, 43);
+            this.label5.Location = new System.Drawing.Point(3, 54);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(148, 13);
             this.label5.TabIndex = 35;
@@ -426,37 +417,27 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(164, 22);
+            this.label4.Location = new System.Drawing.Point(3, 19);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(176, 13);
             this.label4.TabIndex = 34;
             this.label4.Text = "Upload text in clipboard to pastebin.";
             // 
-            // tabPage3
+            // button4
             // 
-            this.tabPage3.Controls.Add(this.button4);
-            this.tabPage3.Controls.Add(this.checkBox6);
-            this.tabPage3.Controls.Add(this.AddToStartMenu);
-            this.tabPage3.Controls.Add(this.AddToAutoStart);
-            this.tabPage3.Controls.Add(this.CopyImageToClipboard);
-            this.tabPage3.Controls.Add(this.checkBox7);
-            this.tabPage3.Controls.Add(this.checkBox4);
-            this.tabPage3.Controls.Add(this.checkBox5);
-            this.tabPage3.Controls.Add(this.checkBox1);
-            this.tabPage3.Controls.Add(this.textBox1);
-            this.tabPage3.Controls.Add(this.button2);
-            this.tabPage3.Controls.Add(this.alsoSaveTextFilesBox);
-            this.tabPage3.Location = new System.Drawing.Point(4, 22);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(388, 119);
-            this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "Misc";
-            this.tabPage3.UseVisualStyleBackColor = true;
+            this.button4.Location = new System.Drawing.Point(356, 142);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(55, 20);
+            this.button4.TabIndex = 31;
+            this.button4.Text = "Uninstall";
+            this.toolTip1.SetToolTip(this.button4, "Removes shortcuts to this program in start menu and windows startup");
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // checkBox6
             // 
             this.checkBox6.AutoSize = true;
-            this.checkBox6.Location = new System.Drawing.Point(3, 102);
+            this.checkBox6.Location = new System.Drawing.Point(6, 84);
             this.checkBox6.Name = "checkBox6";
             this.checkBox6.Size = new System.Drawing.Size(147, 17);
             this.checkBox6.TabIndex = 29;
@@ -466,28 +447,30 @@
             // 
             // AddToStartMenu
             // 
-            this.AddToStartMenu.Location = new System.Drawing.Point(339, 71);
+            this.AddToStartMenu.Location = new System.Drawing.Point(411, 142);
             this.AddToStartMenu.Name = "AddToStartMenu";
-            this.AddToStartMenu.Size = new System.Drawing.Size(46, 23);
+            this.AddToStartMenu.Size = new System.Drawing.Size(55, 20);
             this.AddToStartMenu.TabIndex = 28;
             this.AddToStartMenu.Text = "Install";
+            this.toolTip1.SetToolTip(this.AddToStartMenu, "Adds a shortcut to this program in the start menu.");
             this.AddToStartMenu.UseVisualStyleBackColor = true;
             this.AddToStartMenu.Click += new System.EventHandler(this.AddToStartMenu_Click);
             // 
             // AddToAutoStart
             // 
-            this.AddToAutoStart.Location = new System.Drawing.Point(242, 71);
+            this.AddToAutoStart.Location = new System.Drawing.Point(356, 120);
             this.AddToAutoStart.Name = "AddToAutoStart";
-            this.AddToAutoStart.Size = new System.Drawing.Size(91, 23);
+            this.AddToAutoStart.Size = new System.Drawing.Size(110, 20);
             this.AddToAutoStart.TabIndex = 27;
             this.AddToAutoStart.Text = "Add to autostart";
+            this.toolTip1.SetToolTip(this.AddToAutoStart, "Adds a shortcut to this program in windows startup");
             this.AddToAutoStart.UseVisualStyleBackColor = true;
             this.AddToAutoStart.Click += new System.EventHandler(this.AddToAutoStart_Click);
             // 
             // CopyImageToClipboard
             // 
             this.CopyImageToClipboard.AutoSize = true;
-            this.CopyImageToClipboard.Location = new System.Drawing.Point(3, 88);
+            this.CopyImageToClipboard.Location = new System.Drawing.Point(6, 130);
             this.CopyImageToClipboard.Name = "CopyImageToClipboard";
             this.CopyImageToClipboard.Size = new System.Drawing.Size(141, 17);
             this.CopyImageToClipboard.TabIndex = 9;
@@ -498,36 +481,149 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(429, 76);
+            this.label3.Location = new System.Drawing.Point(376, 75);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(72, 13);
             this.label3.TabIndex = 27;
             this.label3.Text = "Image DeCap";
             this.label3.Click += new System.EventHandler(this.label3_Click_1);
             // 
-            // button4
+            // label2
             // 
-            this.button4.Location = new System.Drawing.Point(242, 96);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(143, 20);
-            this.button4.TabIndex = 31;
-            this.button4.Text = "Uninstall";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(4, 281);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(162, 13);
+            this.label2.TabIndex = 30;
+            this.label2.Text = "Settings are saved automatically.";
+            this.toolTip1.SetToolTip(this.label2, "Whenever a setting is changed, it is saved immedietly.");
+            // 
+            // label8
+            // 
+            this.label8.Location = new System.Drawing.Point(3, 180);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(334, 63);
+            this.label8.TabIndex = 38;
+            this.label8.Text = "If you are experiencing problems with region screenshots try disabling windows sc" +
+    "aling in display settings.\r\n";
+            // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.groupBox4);
+            this.tabPage3.Controls.Add(this.neverUpload);
+            this.tabPage3.Controls.Add(this.checkBox2);
+            this.tabPage3.Controls.Add(this.groupBox1);
+            this.tabPage3.Controls.Add(this.checkBox3);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Size = new System.Drawing.Size(343, 246);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "Uploading";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.checkBoxUploadToFTP);
+            this.groupBox1.Controls.Add(this.FTPURL);
+            this.groupBox1.Controls.Add(this.FTPpassword);
+            this.groupBox1.Controls.Add(this.AlsoFTPTextFilesBox);
+            this.groupBox1.Controls.Add(this.FTPUsername);
+            this.groupBox1.Location = new System.Drawing.Point(3, 138);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(337, 106);
+            this.groupBox1.TabIndex = 30;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "FTP Settings";
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.textBox1);
+            this.groupBox2.Controls.Add(this.checkBox1);
+            this.groupBox2.Controls.Add(this.alsoSaveTextFilesBox);
+            this.groupBox2.Controls.Add(this.button2);
+            this.groupBox2.Location = new System.Drawing.Point(3, 3);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(335, 72);
+            this.groupBox2.TabIndex = 30;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "File Saving";
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.HotkeyTextBox1);
+            this.groupBox3.Controls.Add(this.HotkeyTextBox3);
+            this.groupBox3.Controls.Add(this.label6);
+            this.groupBox3.Controls.Add(this.HotkeyTextBox2);
+            this.groupBox3.Controls.Add(this.HotkeyTextBox4);
+            this.groupBox3.Controls.Add(this.label7);
+            this.groupBox3.Controls.Add(this.label4);
+            this.groupBox3.Controls.Add(this.label5);
+            this.groupBox3.Location = new System.Drawing.Point(3, 3);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(337, 174);
+            this.groupBox3.TabIndex = 31;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Hotkeys";
+            // 
+            // eventLog1
+            // 
+            this.eventLog1.SynchronizingObject = this;
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.textBox2);
+            this.groupBox4.Controls.Add(this.label1);
+            this.groupBox4.Location = new System.Drawing.Point(3, 3);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(337, 60);
+            this.groupBox4.TabIndex = 31;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Pastebin";
+            // 
+            // neverUpload
+            // 
+            this.neverUpload.AutoSize = true;
+            this.neverUpload.Location = new System.Drawing.Point(9, 69);
+            this.neverUpload.Name = "neverUpload";
+            this.neverUpload.Size = new System.Drawing.Size(157, 17);
+            this.neverUpload.TabIndex = 7;
+            this.neverUpload.Text = "Never upload to public sites";
+            this.neverUpload.UseVisualStyleBackColor = true;
+            this.neverUpload.CheckedChanged += new System.EventHandler(this.neverUpload_CheckedChanged);
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label10.ForeColor = System.Drawing.Color.RoyalBlue;
+            this.label10.Location = new System.Drawing.Point(272, 281);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(188, 13);
+            this.label10.TabIndex = 31;
+            this.label10.Text = "Check mattwestphal.com for updates! ";
+            this.label10.Click += new System.EventHandler(this.label10_Click);
             // 
             // SettingsWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(526, 153);
+            this.ClientSize = new System.Drawing.Size(472, 299);
+            this.Controls.Add(this.label10);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.button4);
             this.Controls.Add(this.tabControl1);
+            this.Controls.Add(this.AddToAutoStart);
+            this.Controls.Add(this.AddToStartMenu);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.imageContainer);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
+            this.MaximumSize = new System.Drawing.Size(488, 335);
             this.MinimizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(488, 335);
             this.Name = "SettingsWindow";
             this.Text = "Image DeCap Settings";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SettingsWindow_FormClosing);
@@ -537,9 +633,17 @@
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
-            this.tabPage2.PerformLayout();
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.eventLog1)).EndInit();
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -558,11 +662,9 @@
         private System.Windows.Forms.CheckBox checkBox2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.CheckBox checkBox5;
         private System.Windows.Forms.CheckBox alsoSaveTextFilesBox;
-        private System.Windows.Forms.CheckBox neverUpload;
         private System.Windows.Forms.CheckBox AlsoFTPTextFilesBox;
         private System.Windows.Forms.TextBox FTPpassword;
         private System.Windows.Forms.TextBox FTPUsername;
@@ -575,7 +677,6 @@
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
-        private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.CheckBox CopyImageToClipboard;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label6;
@@ -586,5 +687,16 @@
         private System.Windows.Forms.Button AddToAutoStart;
         private System.Windows.Forms.CheckBox checkBox6;
         private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Diagnostics.EventLog eventLog1;
+        private System.Windows.Forms.CheckBox neverUpload;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }

@@ -71,6 +71,7 @@
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.imageContainer)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.compressionSlider)).BeginInit();
@@ -175,6 +176,7 @@
             this.button3.Size = new System.Drawing.Size(96, 23);
             this.button3.TabIndex = 31;
             this.button3.Text = "Pick Color";
+            this.toolTip1.SetToolTip(this.button3, "Hotkey: Hold Alt & Left-Click the image.");
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click_1);
             // 
@@ -207,6 +209,7 @@
             this.button2.Size = new System.Drawing.Size(45, 23);
             this.button2.TabIndex = 26;
             this.button2.Text = "Undo";
+            this.toolTip1.SetToolTip(this.button2, "Hotkey: Ctrl + Z");
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click_1);
             // 
@@ -232,6 +235,7 @@
             this.button1.Size = new System.Drawing.Size(49, 23);
             this.button1.TabIndex = 0;
             this.button1.Text = "Upload";
+            this.toolTip1.SetToolTip(this.button1, "Hotkey: Enter");
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
@@ -282,6 +286,7 @@
             this.addTextButton.Size = new System.Drawing.Size(37, 37);
             this.addTextButton.TabIndex = 27;
             this.addTextButton.Text = "Add Text";
+            this.toolTip1.SetToolTip(this.addTextButton, "Hotkey: Ctrl + T");
             this.addTextButton.UseVisualStyleBackColor = true;
             this.addTextButton.Click += new System.EventHandler(this.addTextButton_Click);
             // 
@@ -542,6 +547,7 @@
             this.trackBar1.SmallChange = 100;
             this.trackBar1.TabIndex = 2;
             this.trackBar1.TickFrequency = 8000;
+            this.toolTip1.SetToolTip(this.trackBar1, "Can also be edited by holding right-click and dragging on the image");
             this.trackBar1.Value = 100;
             this.trackBar1.Scroll += new System.EventHandler(this.trackBar1_Scroll);
             // 
@@ -669,5 +675,6 @@
         private System.Windows.Forms.Label label4;
         public System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.Label fileSizeLabel;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }

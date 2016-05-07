@@ -36,5 +36,27 @@ namespace imageDeCap
         {
             System.Diagnostics.Process.Start("https://alastair.se/");
         }
+        
+
+        private void label7_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start("http://www.mattwestphal.com/imagedecap/");
+        }
+
+        private void label1_Click_2(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void imageContainer_Click(object sender, EventArgs e)
+        {
+
+            System.Diagnostics.Process.Start("http://www.mattwestphal.com/imagedecap/");
+        }
     }
 }

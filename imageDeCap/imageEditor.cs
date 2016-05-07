@@ -105,6 +105,7 @@ namespace imageDeCap
         int Height = 8;
         Point leftMouseLastPos;
         Point rightMouseLastPos;
+        Point rightMouseDownPos;
         bool isPressed = false;
         float brushSize = 4.0f;
         float textSize = 12.0f;
@@ -125,6 +126,13 @@ namespace imageDeCap
             {
                 Point mousePos = imageContainer.PointToClient(Cursor.Position);
                 label1.Text = mousePos.X.ToString() + ", " + mousePos.Y.ToString() + " - " + colorName;
+
+                if(System.Windows.Input.Keyboard.IsKeyDown(System.Windows.Input.Key.LeftAlt))
+                {
+                    c = ((Bitmap)theImage).GetPixel(mousePos.X, mousePos.Y);
+                    currentColor.BackColor = c;
+                }
+
                 if (pickColor)
                 {
                     c = ((Bitmap)theImage).GetPixel(mousePos.X, mousePos.Y);
@@ -169,15 +177,16 @@ namespace imageDeCap
                         }
                         ApplyCompression();
                         imageContainer.Refresh();
-                        
-                        leftMouseLastPos = mousePos;
+
                     }
+                    leftMouseLastPos = mousePos;
                 }
             }
 
             if(e.Button == MouseButtons.Right)
             {
                 Point mousePos = imageContainer.PointToClient(Cursor.Position);
+                rightMouseDownPos = mousePos;
                 rightMouseLastPos = mousePos;
             }
         }
@@ -217,10 +226,14 @@ namespace imageDeCap
             }
             else if(MouseButtons == MouseButtons.Right)
             {
-                double targetValue = (mousePos.X - rightMouseLastPos.X) * 200;
+                int targetValue = (mousePos.X - rightMouseLastPos.X) * 200;
                 Console.WriteLine(targetValue);
-                trackBar1.Value = (int)Math.Min(Math.Max(targetValue, (double)trackBar1.Minimum), (double)trackBar1.Maximum);
+                int newVal = trackBar1.Value;
+                newVal += targetValue;
+                newVal = (int)Math.Min(Math.Max((double)newVal, (double)trackBar1.Minimum), (double)trackBar1.Maximum);
+                trackBar1.Value = newVal;
                 trackBar1_Scroll(null, null);
+                rightMouseLastPos = mousePos;
             }
             else
             {
@@ -278,7 +291,7 @@ namespace imageDeCap
             {
                 Pen MyPen = new Pen(Color.FromArgb(128, 255, 0, 0));
                 float halfBrush = brushSize / 2.0f;
-                g.FillEllipse(MyPen.Brush, rightMouseLastPos.X - halfBrush, rightMouseLastPos.Y - halfBrush, brushSize, brushSize);
+                g.FillEllipse(MyPen.Brush, rightMouseDownPos.X - halfBrush, rightMouseDownPos.Y - halfBrush, brushSize, brushSize);
             }
             ApplyCompression();
             imageContainer.Refresh();
@@ -464,6 +477,13 @@ namespace imageDeCap
                 if(e.KeyCode.ToString() == "Z")
                 {
                     undoImageEdit();
+                }
+                if (e.KeyCode.ToString() == "T")
+                {
+                    if (brush)
+                    {
+                        addTextButton_Click(null, null);
+                    }
                 }
             }
         }

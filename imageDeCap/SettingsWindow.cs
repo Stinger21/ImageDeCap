@@ -21,14 +21,12 @@ namespace imageDeCap
         {
             InitializeComponent();
             this.parentForm = parentForm;
-            var converter = new KeysConverter();
             initSettings();
         }
 
         void initSettings()
         {
-            bool saveImagesAtAll = Properties.Settings.Default.saveImageAtAll;
-            checkBox1.Checked = saveImagesAtAll;
+            checkBox1.Checked = Properties.Settings.Default.saveImageAtAll;
             button2.Enabled = Properties.Settings.Default.saveImageAtAll;
             alsoSaveTextFilesBox.Enabled = Properties.Settings.Default.saveImageAtAll;
             alsoSaveTextFilesBox.Checked = Properties.Settings.Default.AlsoSaveTextFiles;
@@ -88,16 +86,25 @@ namespace imageDeCap
         {
             string startMenuShortcutPath = Environment.GetFolderPath(Environment.SpecialFolder.StartMenu) + @"\imageDeCap.lnk";
             string programPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\imageDeCap\imageDeCap.exe";
-            if(System.IO.File.Exists(programPath))
-                System.IO.File.Delete(programPath);
+
+            if (System.Reflection.Assembly.GetEntryAssembly().Location == programPath)
+            {
+                // If we got here that means that the user pressed the install button when the program is already running from the install directory.
+
+            }
+            else
+            {
+                if (System.IO.File.Exists(programPath))
+                    System.IO.File.Delete(programPath);
+                if (!Directory.Exists(Path.GetDirectoryName(programPath)))
+                    Directory.CreateDirectory(Path.GetDirectoryName(programPath));
+                System.IO.File.Copy(System.Reflection.Assembly.GetEntryAssembly().Location, programPath);
+            }
+
             
             if (System.IO.File.Exists(startMenuShortcutPath))
                 System.IO.File.Delete(startMenuShortcutPath);
-
-            if(!Directory.Exists(Path.GetDirectoryName(programPath)))
-                Directory.CreateDirectory(Path.GetDirectoryName(programPath));
             
-            System.IO.File.Copy(System.Reflection.Assembly.GetEntryAssembly().Location, programPath);
             CreateShortcut(programPath, startMenuShortcutPath);
             
         }
@@ -114,11 +121,11 @@ namespace imageDeCap
         public void UnInstall()
         {
             string startMenuShortcutPath = Environment.GetFolderPath(Environment.SpecialFolder.StartMenu) + @"\imageDeCap.lnk";
-            string programPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\imageDeCap\imageDeCap.exe";
+            //string programPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\imageDeCap\imageDeCap.exe";
             string shortcutPath = Environment.GetFolderPath(Environment.SpecialFolder.Startup) + @"\imageDeCap.lnk";
 
             System.IO.File.Delete(startMenuShortcutPath);
-            System.IO.File.Delete(programPath);
+            //System.IO.File.Delete(programPath); // Don't delete the exe itself, just the references to it.
             System.IO.File.Delete(shortcutPath);
         }
 
@@ -155,7 +162,6 @@ namespace imageDeCap
 
         private void SettingsWindow_Load(object sender, EventArgs e)
         {
-            tabControl1.SelectedTab = tabControl1.TabPages[2];
         }
 
         private void SettingsWindow_FormClosing(object sender, FormClosingEventArgs e)
@@ -252,7 +258,7 @@ namespace imageDeCap
         private void button3_Click(object sender, EventArgs e)
         {
             Properties.Settings.Default.Reset();
-            Properties.Settings.Default.Save();
+            //Properties.Settings.Default.Save();
             initSettings();
         }
 
@@ -326,6 +332,7 @@ namespace imageDeCap
                     if (isDown)
                     {
                         textToPutInBox += ((System.Windows.Input.Key)i).ToString() + "+";
+                        //textToPutInBox += i.ToString() + "+";
                     }
                 }
             }
@@ -469,6 +476,21 @@ namespace imageDeCap
         private void button4_Click(object sender, EventArgs e)
         {
             UnInstall();
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label10_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start("http://www.mattwestphal.com/imagedecap/");
+        }
+
+        private void imageContainer_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start("http://www.mattwestphal.com/imagedecap/");
         }
     }
 }

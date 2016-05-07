@@ -137,8 +137,9 @@ namespace imageDeCap
         {
             InitializeComponent();
 
+            this.Hide();
             this.ShowInTaskbar = false;
-            this.Opacity = 0.0f;
+            //this.Opacity = 0.0f;
             
 
             props = new SettingsWindow(this);
@@ -146,20 +147,19 @@ namespace imageDeCap
             //Alert for install!
             if (Properties.Settings.Default.firstLaunch)
             {
+                Properties.Settings.Default.firstLaunch = false;
+                Properties.Settings.Default.Save();
                 DialogResult d = MessageBox.Show("First Launch!\nInstall? (add to startup & start-menu)", "Image DeCap", MessageBoxButtons.YesNo);
                 if (d == DialogResult.Yes)
                 {
                     props.Install();
                     props.AddToStartup();
                     this.ShowInTaskbar = true;
-                    this.Opacity = 1.0f;
+                    this.Show();
                     this.Activate();
                 }
-                Properties.Settings.Default.firstLaunch = false;
-                Properties.Settings.Default.Save();
             }
-
-
+            
             if (File.Exists(xmlLinksPath))
             {
                 xmlLinks = XElement.Load(xmlLinksPath);
@@ -168,8 +168,7 @@ namespace imageDeCap
                     addToLinks(e.Value, false);
                 }
             }
-
-
+            
             this.contextMenu1 = new System.Windows.Forms.ContextMenu();
 
             this.contextMenu1.MenuItems.Add(this.menuItem2);
@@ -189,17 +188,13 @@ namespace imageDeCap
 
             this.menuItem2.Text = "Open Window";
             this.menuItem2.Click += new System.EventHandler(this.menuItem2_Click);
-
-
+            
             notifyIcon1.ContextMenu = contextMenu1;
             notifyIcon1.Visible = true;
             
-
             listBox1.AllowDrop = true;
             listBox1.DragEnter += new DragEventHandler(Form1_DragEnter);
             listBox1.DragDrop += new DragEventHandler(Form1_DragDrop);
-
-
         }
 
         void Form1_DragEnter(object sender, DragEventArgs e)
@@ -225,22 +220,23 @@ namespace imageDeCap
                 {
                     e.Cancel = true;
                 }
+                
+                this.Hide();
                 this.ShowInTaskbar = false;
-                this.Opacity = 0.0f;
                 props.Close();
             }
         }
         private void menuItem2_Click(object Sender, EventArgs e)//Open Window
         {
             this.ShowInTaskbar = true;
-            this.Opacity = 1.0f;
+            this.Show();
             this.Activate();
 
         }
         private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)//Double Click notifyIcon
         {
             this.ShowInTaskbar = true;
-            this.Opacity = 1.0f;
+            this.Show();
             this.Activate();
         }
 
@@ -303,7 +299,12 @@ namespace imageDeCap
         }
         private void menuItem4_Click(object Sender, EventArgs e)
         {
+            if(props == null)
+            {
+                props = new SettingsWindow(this);
+            }
             props.Show();
+            props.BringToFront();
         }
 
         private void button1_Click_1(object sender, EventArgs e)
@@ -643,7 +644,7 @@ namespace imageDeCap
                     if (Width > 0 && Height > 0)
                     {
                         playSound("snip.wav");
-                        Bitmap result = cap.Capture(enmScreenCaptureMode.Bounds, X, Y, Width, Height);
+                        Bitmap result = cap.Capture(enmScreenCaptureMode.Bounds, X-1, Y-1, Width+1, Height+1);
 
                         if (Properties.Settings.Default.FreezeScreenOnRegionShot)
                             backCover.Close();
@@ -678,10 +679,10 @@ namespace imageDeCap
 
             if(MouseButtons == MouseButtons.Left)
             {
-                topBox.SetBounds(X, Y, Width, 0);
-                bottomBox.SetBounds(X, Height + Y, Width, 0);
-                leftBox.SetBounds(X, Y, 0, Height);
-                rightBox.SetBounds(Width + X, Y, 0, Height);
+                topBox.SetBounds(       X-3,            Y-3,            Width+3,    0);
+                leftBox.SetBounds(      X-3,            Y-1,          0,          Height+1);
+                bottomBox.SetBounds(    X - 3,          Height + Y,     Width+5,    0);
+                rightBox.SetBounds(     Width + X,      Y-3,            0,          Height+3);
 
 
                 Width = Math.Abs(Cursor.Position.X - tempX);
@@ -746,7 +747,12 @@ namespace imageDeCap
 
         private void preferencesToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (props == null)
+            {
+                props = new SettingsWindow(this);
+            }
             props.Show();
+            props.BringToFront();
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
