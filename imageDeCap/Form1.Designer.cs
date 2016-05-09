@@ -155,7 +155,7 @@
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(212, 13);
             this.label2.TabIndex = 16;
-            this.label2.Text = "Created in Memory of Hyperdesktop.  v1.22";
+            this.label2.Text = "Created in Memory of Hyperdesktop.  v1.23";
             // 
             // menuStrip1
             // 
@@ -213,7 +213,7 @@
             // preferencesToolStripMenuItem
             // 
             this.preferencesToolStripMenuItem.Name = "preferencesToolStripMenuItem";
-            this.preferencesToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.preferencesToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
             this.preferencesToolStripMenuItem.Text = "Preferences";
             this.preferencesToolStripMenuItem.Click += new System.EventHandler(this.preferencesToolStripMenuItem_Click);
             // 

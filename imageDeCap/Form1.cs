@@ -299,7 +299,11 @@ namespace imageDeCap
         }
         private void menuItem4_Click(object Sender, EventArgs e)
         {
-            if(props == null)
+            try
+            {
+                props.Show();
+            }
+            catch
             {
                 props = new SettingsWindow(this);
             }
@@ -747,7 +751,11 @@ namespace imageDeCap
 
         private void preferencesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (props == null)
+            try
+            {
+                props.Show();
+            }
+            catch
             {
                 props = new SettingsWindow(this);
             }
