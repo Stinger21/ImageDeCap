@@ -159,11 +159,23 @@ namespace imageDeCap
                     this.Activate();
                 }
             }
-            
+
+            if (File.Exists(xmlLinksPath))
+            {
+                try
+                {
+                    XElement.Load(xmlLinksPath);
+                }
+                catch
+                {
+                    File.Delete(xmlLinksPath);
+                }
+            }
+
             if (File.Exists(xmlLinksPath))
             {
                 xmlLinks = XElement.Load(xmlLinksPath);
-                foreach(XElement e in xmlLinks.Elements())
+                foreach (XElement e in xmlLinks.Elements())
                 {
                     addToLinks(e.Value, false);
                 }
