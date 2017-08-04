@@ -29,23 +29,6 @@ namespace imageDeCap
             {
                 this.Opacity = 0.05;
             }
-
-            //SetBounds(SystemInformation.VirtualScreen.X, SystemInformation.VirtualScreen.Y, SystemInformation.VirtualScreen.Width, SystemInformation.VirtualScreen.Height);
-            
-            //this.Left = 0;
-            //this.Top = 0;
-
-
-            //this.Location = new Point(SystemInformation.VirtualScreen.X, SystemInformation.VirtualScreen.Y);
-            //this.Size = new System.Drawing.Size(SystemInformation.VirtualScreen.Width, SystemInformation.VirtualScreen.Height);
-
-
-            //System.Drawing.SolidBrush myBrush = new System.Drawing.SolidBrush(System.Drawing.Color.Red);
-            //System.Drawing.Graphics formGraphics;
-            //formGraphics = this.CreateGraphics();
-            //formGraphics.FillRectangle(myBrush, new Rectangle(0, 0, 200, 300));
-            //myBrush.Dispose();
-            //formGraphics.Dispose();
             this.ShowInTaskbar = false;
 
         }
@@ -57,19 +40,6 @@ namespace imageDeCap
 
 
         }
-        /*
-        int WM_NCHITTEST = 0x84;
-        Int32 HTTRANSPARENT = -1;
-
-        protected override void WndProc(ref Message m)
-        {
-            if (m.Msg == (int)WM_NCHITTEST)
-                m.Result = (IntPtr)HTTRANSPARENT;
-            else
-                base.WndProc(ref m);
-        }
-        */
-
         private void completeCover_MouseMove(object sender, MouseEventArgs e)
         {
             mainProgram.updateSelectedArea(this, keyPressed, escPressed);
@@ -92,9 +62,7 @@ namespace imageDeCap
             }
             if (e.KeyCode == Keys.Escape)
             {
-                //MessageBox.Show("wa! ");
                 escPressed = true;
-                //this.Close();
             }
         }
 

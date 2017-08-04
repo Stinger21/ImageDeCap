@@ -64,7 +64,7 @@
     <SignManifests>false</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Untitled-2.ico</ApplicationIcon>
+    <ApplicationIcon>Images\Untitled-2.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Google.Apis">
@@ -118,74 +118,77 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="aboutWindow.cs">
+    <Compile Include="Code\ClipboardHandler.cs" />
+    <Compile Include="Code\Utilities.cs" />
+    <Compile Include="Windows\aboutWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="aboutWindow.Designer.cs">
+    <Compile Include="Windows\aboutWindow.Designer.cs">
       <DependentUpon>aboutWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="boxOfWhy.cs">
+    <Compile Include="Windows\boxOfWhy.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="boxOfWhy.Designer.cs">
+    <Compile Include="Windows\boxOfWhy.Designer.cs">
       <DependentUpon>boxOfWhy.cs</DependentUpon>
     </Compile>
-    <Compile Include="completeCover.cs">
+    <Compile Include="Windows\completeCover.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="completeCover.Designer.cs">
+    <Compile Include="Windows\completeCover.Designer.cs">
       <DependentUpon>completeCover.cs</DependentUpon>
     </Compile>
-    <Compile Include="Form1.cs">
+    <Compile Include="Windows\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
+    <Compile Include="Windows\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="GlobalKeyBoardHook.cs" />
-    <Compile Include="HotKey.cs" />
-    <Compile Include="imageEditor.cs">
+    <Compile Include="Code\GlobalKeyBoardHook.cs" />
+    <Compile Include="Code\HotKey.cs" />
+    <Compile Include="Windows\imageEditor.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="imageEditor.Designer.cs">
+    <Compile Include="Windows\imageEditor.Designer.cs">
       <DependentUpon>imageEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="KeyMessageFilter.cs" />
-    <Compile Include="Magnificator.cs">
+    <Compile Include="Code\KeyMessageFilter.cs" />
+    <Compile Include="Windows\Magnificator.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Magnificator.Designer.cs">
+    <Compile Include="Windows\Magnificator.Designer.cs">
       <DependentUpon>Magnificator.cs</DependentUpon>
     </Compile>
-    <Compile Include="PictureBoxWithInterpolationMode.cs">
+    <Compile Include="Code\PictureBoxWithInterpolationMode.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Program.cs" />
+    <Compile Include="Code\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ScreenCapturer.cs" />
-    <Compile Include="Settings.cs" />
-    <Compile Include="SettingsWindow.cs">
+    <Compile Include="Code\ScreenCapturer.cs" />
+    <Compile Include="Code\Settings.cs" />
+    <Compile Include="Windows\SettingsWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SettingsWindow.Designer.cs">
+    <Compile Include="Windows\SettingsWindow.Designer.cs">
       <DependentUpon>SettingsWindow.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="aboutWindow.resx">
+    <Compile Include="Code\SystemTrayContextMenu.cs" />
+    <EmbeddedResource Include="Windows\aboutWindow.resx">
       <DependentUpon>aboutWindow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="boxOfWhy.resx">
+    <EmbeddedResource Include="Windows\boxOfWhy.resx">
       <DependentUpon>boxOfWhy.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="completeCover.resx">
+    <EmbeddedResource Include="Windows\completeCover.resx">
       <DependentUpon>completeCover.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Form1.resx">
+    <EmbeddedResource Include="Windows\Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="imageEditor.resx">
+    <EmbeddedResource Include="Windows\imageEditor.resx">
       <DependentUpon>imageEditor.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Magnificator.resx">
+    <EmbeddedResource Include="Windows\Magnificator.resx">
       <DependentUpon>Magnificator.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -213,13 +216,13 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="error.wav" />
+    <EmbeddedResource Include="Sounds\error.wav" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="SettingsWindow.resx">
+    <EmbeddedResource Include="Windows\SettingsWindow.resx">
       <DependentUpon>SettingsWindow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="upload.wav" />
+    <EmbeddedResource Include="Sounds\upload.wav" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">
@@ -239,12 +242,12 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="snip.wav" />
+    <EmbeddedResource Include="Sounds\snip.wav" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="canvas.png" />
-    <Content Include="Untitled-2.ico" />
-    <Content Include="Untitled-2_256x256.png" />
+    <Content Include="Images\Untitled-2.ico" />
+    <Content Include="Images\Untitled-2_256x256.png" />
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="IWshRuntimeLibrary">
@@ -257,6 +260,7 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
   <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">

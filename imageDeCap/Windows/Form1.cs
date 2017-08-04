@@ -41,7 +41,7 @@ namespace imageDeCap
             {
 
             }
-            if(addToXML)
+            if (addToXML)
             {
                 xmlLinks.Add(new XElement("Link", link));
                 xmlLinks.Save(xmlLinksPath);
@@ -57,8 +57,8 @@ namespace imageDeCap
 
         private void notifyIcon1_BalloonTipClicked(object sender, EventArgs e)
         {
-            if(Links.Count > 0)
-                if(Links[listBox1.SelectedIndex].StartsWith("http"))
+            if (Links.Count > 0)
+                if (Links[listBox1.SelectedIndex].StartsWith("http"))
                     System.Diagnostics.Process.Start(Links[listBox1.SelectedIndex]);
         }
 
@@ -77,7 +77,7 @@ namespace imageDeCap
         bool hKey4Pressed = false;
         public void mainLoop()
         {
-            if(textToCopyToClipboard != "")
+            if (textToCopyToClipboard != "")
             {
                 Clipboard.SetText(textToCopyToClipboard);
                 textToCopyToClipboard = "";
@@ -140,7 +140,7 @@ namespace imageDeCap
             this.Hide();
             this.ShowInTaskbar = false;
             //this.Opacity = 0.0f;
-            
+
 
             props = new SettingsWindow(this);
 
@@ -180,7 +180,7 @@ namespace imageDeCap
                     addToLinks(e.Value, false);
                 }
             }
-            
+
             this.contextMenu1 = new System.Windows.Forms.ContextMenu();
 
             this.contextMenu1.MenuItems.Add(this.menuItem2);
@@ -200,10 +200,10 @@ namespace imageDeCap
 
             this.menuItem2.Text = "Open Window";
             this.menuItem2.Click += new System.EventHandler(this.menuItem2_Click);
-            
+
             notifyIcon1.ContextMenu = contextMenu1;
             notifyIcon1.Visible = true;
-            
+
             listBox1.AllowDrop = true;
             listBox1.DragEnter += new DragEventHandler(Form1_DragEnter);
             listBox1.DragDrop += new DragEventHandler(Form1_DragDrop);
@@ -217,7 +217,7 @@ namespace imageDeCap
         void Form1_DragDrop(object sender, DragEventArgs e)
         {
             string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
-            if(files.Length > 0)
+            if (files.Length > 0)
             {
                 uploadImageFile(files[0]);
             }
@@ -232,7 +232,7 @@ namespace imageDeCap
                 {
                     e.Cancel = true;
                 }
-                
+
                 this.Hide();
                 this.ShowInTaskbar = false;
                 props.Close();
@@ -341,7 +341,7 @@ namespace imageDeCap
         private void UploadToImgurBounds()
         {
             // prevent blackening
-            if(!isTakingSnapshot)
+            if (!isTakingSnapshot)
             {
                 isTakingSnapshot = true;
                 Program.hotkeysEnabled = false;
@@ -361,7 +361,7 @@ namespace imageDeCap
                 setBox(leftBox);
                 setBox(bottomBox);
                 setBox(rightBox);
-                
+
             }
 
         }
@@ -383,7 +383,7 @@ namespace imageDeCap
         {
             playSound("snip.wav");
             Bitmap result = cap.Capture(mode);
-            
+
             result.Save(System.IO.Path.GetTempPath() + "screenshot.png");
             result.Dispose();
             if (Properties.Settings.Default.EditScreenshotAfterCapture)
@@ -407,7 +407,7 @@ namespace imageDeCap
             {
                 //if (!edit)
                 //{
-                    File.Copy(filePath, whereToSave);
+                File.Copy(filePath, whereToSave);
                 //}
             }
             Image bitmapImage = Image.FromFile(filePath);
@@ -422,7 +422,7 @@ namespace imageDeCap
             {
                 imageEditor editor = new imageEditor(filePath, whereToSave);
                 editor.ShowDialog();
-                if(editor.checkBox1.Checked)//If compressed, pick the compressed version.
+                if (editor.checkBox1.Checked)//If compressed, pick the compressed version.
                 {
                     editedPath = System.IO.Path.GetTempPath() + "screenshot_edited.jpg";
                 }
@@ -440,14 +440,14 @@ namespace imageDeCap
             }
             else
             {
-                if(File.Exists(editedPath))
+                if (File.Exists(editedPath))
                 {
                     File.Delete(editedPath);
                 }
                 File.Copy(filePath, editedPath);
-                filePath = editedPath;      
+                filePath = editedPath;
             }
-            if(!Properties.Settings.Default.NeverUpload)
+            if (!Properties.Settings.Default.NeverUpload)
             {
                 if (File.Exists(editedPath))
                 {
@@ -459,7 +459,7 @@ namespace imageDeCap
                     bw.RunWorkerAsync(filePath);
                 }
             }
-            
+
         }
 
         private void uploadImageFileCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -468,7 +468,7 @@ namespace imageDeCap
             if (url.Contains("failed"))
             {
                 setClipboard(url);
-                notifyIcon1.ShowBalloonTip(500, "imageDeCap", "Upload to imgur failed! \n"+ url + "\nAre you connected to the internet? \nis Imgur Down?", ToolTipIcon.Error);
+                notifyIcon1.ShowBalloonTip(500, "imageDeCap", "Upload to imgur failed! \n" + url + "\nAre you connected to the internet? \nis Imgur Down?", ToolTipIcon.Error);
                 playSound("error.wav");
             }
             else
@@ -517,7 +517,7 @@ namespace imageDeCap
         string textToCopyToClipboard = "";
         private void setClipboard(string text)
         {
-            if(Properties.Settings.Default.CopyLinksToClipboard)
+            if (Properties.Settings.Default.CopyLinksToClipboard)
             {
                 if (text != null)
                 {
@@ -534,7 +534,7 @@ namespace imageDeCap
 
         private void uploadPastebin(string text)
         {
-            if(!Properties.Settings.Default.NeverUpload)
+            if (!Properties.Settings.Default.NeverUpload)
             {
                 playSound("snip.wav");
                 //string pasteBinResult = cap.Send(text);
@@ -556,9 +556,9 @@ namespace imageDeCap
                                                     Properties.Settings.Default.FTPpassword,
                                                     tempTextFileFolder,
                                                     name +".txt" });
-                
+
             }
-            if(Properties.Settings.Default.AlsoSaveTextFiles)
+            if (Properties.Settings.Default.AlsoSaveTextFiles)
             {
                 if (Properties.Settings.Default.saveImageAtAll && Directory.Exists(Properties.Settings.Default.SaveImagesHere))
                 {
@@ -567,7 +567,7 @@ namespace imageDeCap
                     File.WriteAllText(whereToSave, text);
                 }
             }
-            
+
         }
         private void uploadPastebinCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
@@ -582,7 +582,7 @@ namespace imageDeCap
                 }
                 else
                 {
-                    if(!Properties.Settings.Default.DisableNotifications)
+                    if (!Properties.Settings.Default.DisableNotifications)
                         notifyIcon1.ShowBalloonTip(500, "imageDeCap", "Upload complete!", ToolTipIcon.Info);
                 }
 
@@ -650,7 +650,7 @@ namespace imageDeCap
                 if (wasPressed)//keyUp
                 {
                     magn.Close();
-                    if(!Properties.Settings.Default.FreezeScreenOnRegionShot)
+                    if (!Properties.Settings.Default.FreezeScreenOnRegionShot)
                         backCover.Close();
 
                     topBox.Hide();
@@ -660,7 +660,7 @@ namespace imageDeCap
                     if (Width > 0 && Height > 0)
                     {
                         playSound("snip.wav");
-                        Bitmap result = cap.Capture(enmScreenCaptureMode.Bounds, X-1, Y-1, Width+1, Height+1);
+                        Bitmap result = cap.Capture(enmScreenCaptureMode.Bounds, X - 1, Y - 1, Width + 1, Height + 1);
 
                         if (Properties.Settings.Default.FreezeScreenOnRegionShot)
                             backCover.Close();
@@ -693,12 +693,12 @@ namespace imageDeCap
                 }
             }
 
-            if(MouseButtons == MouseButtons.Left)
+            if (MouseButtons == MouseButtons.Left)
             {
-                topBox.SetBounds(       X-3,            Y-3,            Width+3,    0);
-                leftBox.SetBounds(      X-3,            Y-1,          0,          Height+1);
-                bottomBox.SetBounds(    X - 3,          Height + Y,     Width+5,    0);
-                rightBox.SetBounds(     Width + X,      Y-3,            0,          Height+3);
+                topBox.SetBounds(X - 3, Y - 3, Width + 3, 0);
+                leftBox.SetBounds(X - 3, Y - 1, 0, Height + 1);
+                bottomBox.SetBounds(X - 3, Height + Y, Width + 5, 0);
+                rightBox.SetBounds(Width + X, Y - 3, 0, Height + 3);
 
 
                 Width = Math.Abs(Cursor.Position.X - tempX);
@@ -822,7 +822,7 @@ namespace imageDeCap
         private void listBox1_KeyDown(object sender, KeyEventArgs e)
         {
             if ((System.Windows.Input.Keyboard.IsKeyDown(System.Windows.Input.Key.RightCtrl) || System.Windows.Input.Keyboard.IsKeyDown(System.Windows.Input.Key.LeftCtrl)) &&
-                (System.Windows.Input.Keyboard.IsKeyDown(System.Windows.Input.Key.C)         || System.Windows.Input.Keyboard.IsKeyDown(System.Windows.Input.Key.Insert)))
+                (System.Windows.Input.Keyboard.IsKeyDown(System.Windows.Input.Key.C) || System.Windows.Input.Keyboard.IsKeyDown(System.Windows.Input.Key.Insert)))
             {
                 Clipboard.SetText(Links[listBox1.SelectedIndex]);
             }

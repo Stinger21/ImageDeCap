@@ -130,9 +130,9 @@
             this.groupBox1.Controls.Add(this.c_red_1);
             this.groupBox1.Controls.Add(this.trackBar1);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.groupBox1.Location = new System.Drawing.Point(0, 316);
+            this.groupBox1.Location = new System.Drawing.Point(0, 249);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(754, 74);
+            this.groupBox1.Size = new System.Drawing.Size(702, 74);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Tools";
@@ -151,7 +151,7 @@
             // 
             this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(660, 58);
+            this.label4.Location = new System.Drawing.Point(608, 58);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(91, 13);
             this.label4.TabIndex = 35;
@@ -222,7 +222,7 @@
             this.compressionSlider.Location = new System.Drawing.Point(435, 57);
             this.compressionSlider.Maximum = 100;
             this.compressionSlider.Name = "compressionSlider";
-            this.compressionSlider.Size = new System.Drawing.Size(229, 22);
+            this.compressionSlider.Size = new System.Drawing.Size(177, 22);
             this.compressionSlider.SmallChange = 100;
             this.compressionSlider.TabIndex = 32;
             this.compressionSlider.TickFrequency = 5;
@@ -243,7 +243,7 @@
             // 
             this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(687, 14);
+            this.label3.Location = new System.Drawing.Point(635, 14);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(49, 13);
             this.label3.TabIndex = 29;
@@ -259,7 +259,7 @@
             this.trackBar2.Maximum = 10000;
             this.trackBar2.Minimum = 100;
             this.trackBar2.Name = "trackBar2";
-            this.trackBar2.Size = new System.Drawing.Size(259, 22);
+            this.trackBar2.Size = new System.Drawing.Size(207, 22);
             this.trackBar2.SmallChange = 100;
             this.trackBar2.TabIndex = 28;
             this.trackBar2.TickFrequency = 1000;
@@ -272,7 +272,7 @@
             // 
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(687, 36);
+            this.label2.Location = new System.Drawing.Point(635, 36);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(55, 13);
             this.label2.TabIndex = 3;
@@ -543,7 +543,7 @@
             this.trackBar1.Maximum = 80000;
             this.trackBar1.Minimum = 100;
             this.trackBar1.Name = "trackBar1";
-            this.trackBar1.Size = new System.Drawing.Size(259, 22);
+            this.trackBar1.Size = new System.Drawing.Size(207, 22);
             this.trackBar1.SmallChange = 100;
             this.trackBar1.TabIndex = 2;
             this.trackBar1.TickFrequency = 8000;
@@ -557,7 +557,7 @@
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox2.Location = new System.Drawing.Point(0, 0);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(754, 316);
+            this.groupBox2.Size = new System.Drawing.Size(702, 249);
             this.groupBox2.TabIndex = 2;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Screenshot";
@@ -571,7 +571,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(3, 16);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(748, 297);
+            this.panel1.Size = new System.Drawing.Size(696, 230);
             this.panel1.TabIndex = 1;
             this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             this.panel1.Leave += new System.EventHandler(this.panel1_Leave);
@@ -606,7 +606,7 @@
             this.AcceptButton = this.button1;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(754, 390);
+            this.ClientSize = new System.Drawing.Size(702, 323);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
