@@ -12,11 +12,9 @@ namespace imageDeCap
 {
     public partial class completeCover : Form
     {
-        Form1 mainProgram;
-        public completeCover(Form1 mainProgram)
+        public completeCover()
         {
             InitializeComponent();
-            this.mainProgram = mainProgram;
 
             if (Properties.Settings.Default.FreezeScreenOnRegionShot)
             {
@@ -32,37 +30,60 @@ namespace imageDeCap
             this.ShowInTaskbar = false;
 
         }
-        bool keyPressed = false;
-        bool escPressed = false;
+        bool EnterPressed = false;
+        bool EscapePressed = false;
+
+        bool LmbDown = false;
+        bool LmbUp = false;
+        bool Lmb = false;
+
+        bool wasPressed = false;
 
         private void completeCover_Load(object sender, EventArgs e)
         {
-
-
+            
         }
+
         private void completeCover_MouseMove(object sender, MouseEventArgs e)
         {
-            mainProgram.updateSelectedArea(this, keyPressed, escPressed);
-            keyPressed = false;
-            escPressed = false;
+            Updatee();
         }
         private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
         {
+            Updatee();
+        }
+        private void Updatee()
+        {
+            Lmb = MouseButtons == MouseButtons.Left;
+            if(wasPressed != (MouseButtons == MouseButtons.Left))
+            {
+                if(wasPressed)
+                {
+                    LmbUp = true;
+                }
+                else
+                {
+                    LmbDown = true;
+                }
+            }
 
-            mainProgram.updateSelectedArea(this, keyPressed, escPressed);
-            keyPressed = false;
-            escPressed = false;
+            Program.ImageDeCap.updateSelectedArea(this, EnterPressed, EscapePressed, LmbDown, LmbUp, Lmb);
+            EnterPressed = false;
+            EscapePressed = false;
+            wasPressed = MouseButtons == MouseButtons.Left;
+            LmbDown = false;
+            LmbUp = false;
         }
 
         private void completeCover_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Return)
             {
-                keyPressed = true;
+                EnterPressed = true;
             }
             if (e.KeyCode == Keys.Escape)
             {
-                escPressed = true;
+                EscapePressed = true;
             }
         }
 

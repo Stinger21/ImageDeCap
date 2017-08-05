@@ -145,7 +145,12 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="Code\GlobalKeyBoardHook.cs" />
-    <Compile Include="Code\HotKey.cs" />
+    <Compile Include="Windows\GifEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Windows\GifEditor.Designer.cs">
+      <DependentUpon>GifEditor.cs</DependentUpon>
+    </Compile>
     <Compile Include="Windows\imageEditor.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -184,6 +189,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Windows\Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Windows\GifEditor.resx">
+      <DependentUpon>GifEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Windows\imageEditor.resx">
       <DependentUpon>imageEditor.cs</DependentUpon>

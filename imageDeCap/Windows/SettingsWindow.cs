@@ -132,7 +132,6 @@ namespace imageDeCap
 
         private void button5_Click(object sender, EventArgs e)//Apply
         {
-            parentForm.hook.Dispose();
             Properties.Settings.Default.saveImageAtAll = checkBox1.Checked;
             Properties.Settings.Default.SaveImagesHere = textBox1.Text;
 

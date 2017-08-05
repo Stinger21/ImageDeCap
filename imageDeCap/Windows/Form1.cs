@@ -90,7 +90,8 @@ namespace imageDeCap
                 {
                     if (!hKey2Pressed)
                     {
-                        UploadImgurScreen();
+                        //UploadImgurScreen();
+                        UploadToImgurBounds();
                         Console.WriteLine("HOTKEY2");
                     }
                     hKey2Pressed = true;
@@ -219,25 +220,7 @@ namespace imageDeCap
         {
             OpenWindow();
         }
-
-        public Hotkey hook;
-
-        public void gui_clipboardToPastebin(HotkeyEventArgs e)
-        {
-            UploadPastebinClipboard();
-        }
-        public void gui_boundsToImgur(HotkeyEventArgs e)
-        {
-            UploadToImgurBounds();
-        }
-        public void gui_windowToImgur(HotkeyEventArgs e)
-        {
-            UploadImgurWindow();
-        }
-        public void gui_screenToImgur(HotkeyEventArgs e)
-        {
-            UploadImgurScreen();
-        }
+        
 
         private void UploadToPasteBin(object sender = null, EventArgs e = null)
         {
@@ -288,7 +271,7 @@ namespace imageDeCap
                 Program.hotkeysEnabled = false;
                 //back cover used for pulling cursor position into updateSelectedArea()
                 magn = new Magnificator();
-                completeCover backCover = new completeCover(this);
+                completeCover backCover = new completeCover();
                 backCover.Show();
                 backCover.SetBounds(SystemInformation.VirtualScreen.X, SystemInformation.VirtualScreen.Y, SystemInformation.VirtualScreen.Width, SystemInformation.VirtualScreen.Height);
                 backCover.TopMost = false;
@@ -539,66 +522,63 @@ namespace imageDeCap
         int tempWidth = 0;
         int tempHeight = 0;
 
-        public void updateSelectedArea(completeCover backCover, bool keyPressed, bool escapePressed)//this thing is essentially a fucking frame-loop.
+        public void updateSelectedArea(completeCover backCover, bool EnterPressed, bool EscapePressed, bool LmbDown, bool LmbUp, bool Lmb)//this thing is essentially a fucking frame-loop.
         {
+            bool UseBackCover = imageDeCap.Properties.Settings.Default.FreezeScreenOnRegionShot;
+
             backCover.Activate();
             magn.Bounds = new Rectangle(Cursor.Position.X + 32, Cursor.Position.Y - 32, 124, 124);
-            if (wasPressed != (MouseButtons == MouseButtons.Left))
+            
+                                                                                
+            if (LmbUp) // keyUp
             {
-                if (wasPressed)//keyUp
+                magn.Close();
+                if (!UseBackCover)
+                    backCover.Close();
+
+                topBox.Hide();
+                bottomBox.Hide();
+                leftBox.Hide();
+                rightBox.Hide();
+
+                // Make sure we actually selected a region to take a screenshot of.
+                if (tempWidth > 0 && tempHeight > 0)
                 {
-                    magn.Close();
-                    if (!imageDeCap.Properties.Settings.Default.FreezeScreenOnRegionShot)
+                    Utilities.playSound("snip.wav");
+                    Bitmap result = cap.Capture(enmScreenCaptureMode.Bounds, X - 1, Y - 1, tempWidth + 1, tempHeight + 1);
+
+                    if (UseBackCover)
                         backCover.Close();
 
-                    topBox.Hide();
-                    bottomBox.Hide();
-                    leftBox.Hide();
-                    rightBox.Hide();
-                    if (tempWidth > 0 && tempHeight > 0)
-                    {
-                        Utilities.playSound("snip.wav");
-                        Bitmap result = cap.Capture(enmScreenCaptureMode.Bounds, X - 1, Y - 1, tempWidth + 1, tempHeight + 1);
+                    File.Delete(Path.GetTempPath() + "screenshot.png");
+                    result.Save(Path.GetTempPath() + "screenshot.png");
+                    result.Dispose();
 
-                        if (imageDeCap.Properties.Settings.Default.FreezeScreenOnRegionShot)
-                            backCover.Close();
-
-                        File.Delete(Path.GetTempPath() + "screenshot.png");
-                        result.Save(Path.GetTempPath() + "screenshot.png");
-                        result.Dispose();
-                        if (imageDeCap.Properties.Settings.Default.EditScreenshotAfterCapture)
-                        {
-                            uploadImageFile(Path.GetTempPath() + "screenshot.png", true);
-                        }
-                        else
-                        {
-                            uploadImageFile(Path.GetTempPath() + "screenshot.png");
-                        }
-                    }
-                    else
-                    {
-
-                    }
-                    if (imageDeCap.Properties.Settings.Default.FreezeScreenOnRegionShot)
-                        backCover.Close();
-                    isTakingSnapshot = false;
-                    Program.hotkeysEnabled = true;
+                    uploadImageFile(Path.GetTempPath() + "screenshot.png", imageDeCap.Properties.Settings.Default.EditScreenshotAfterCapture);
                 }
-                else//keyDown
-                {
-                    tempX = Cursor.Position.X;
-                    tempY = Cursor.Position.Y;
-                }
+
+                if (UseBackCover)
+                    backCover.Close();
+
+                isTakingSnapshot = false;
+                Program.hotkeysEnabled = true;
             }
 
-            if (MouseButtons == MouseButtons.Left)
+            if (LmbDown)
+            {
+                tempX = Cursor.Position.X;
+                tempY = Cursor.Position.Y;
+            }
+            
+
+            // Holding M1
+            if (Lmb)
             {
                 topBox.SetBounds(X - 3, Y - 3, tempWidth + 3, 0);
                 leftBox.SetBounds(X - 3, Y - 1, 0, tempHeight + 1);
                 bottomBox.SetBounds(X - 3, tempHeight + Y, tempWidth + 5, 0);
                 rightBox.SetBounds(tempWidth + X, Y - 3, 0, tempHeight + 3);
-
-
+                
                 tempWidth = Math.Abs(Cursor.Position.X - tempX);
                 tempHeight = Math.Abs(Cursor.Position.Y - tempY);
 
@@ -611,7 +591,7 @@ namespace imageDeCap
                 if ((Cursor.Position.X - tempX) < 0)
                     X = tempX + (Cursor.Position.X - tempX);
             }
-            if (escapePressed)
+            if (EscapePressed)
             {
                 magn.Close();
                 backCover.Close();
@@ -623,10 +603,7 @@ namespace imageDeCap
                 isTakingSnapshot = false;
                 Program.hotkeysEnabled = true;
             }
-
-
-            wasPressed = MouseButtons == MouseButtons.Left;
-
+            //wasPressed = MouseButtons == MouseButtons.Left;
         }
 
         private void preferencesToolStripMenuItem_Click(object sender, EventArgs e)
