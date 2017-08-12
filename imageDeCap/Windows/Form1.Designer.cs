@@ -49,6 +49,7 @@
             this.preferencesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.GifCaptureTimer = new System.Windows.Forms.Timer(this.components);
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -226,6 +227,10 @@
             this.aboutToolStripMenuItem.Text = "About Image DeCap";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
+            // GifCaptureTimer
+            // 
+            this.GifCaptureTimer.Tick += new System.EventHandler(this.GifCaptureTimer_Tick);
+            // 
             // Form1
             // 
             this.AllowDrop = true;
@@ -246,6 +251,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Image DeCap";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing_1);
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
@@ -277,6 +283,7 @@
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem clearLinksToolStripMenuItem;
         public System.Windows.Forms.Label label2;
+        public System.Windows.Forms.Timer GifCaptureTimer;
     }
 }
 

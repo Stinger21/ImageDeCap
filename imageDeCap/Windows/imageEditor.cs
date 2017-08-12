@@ -24,7 +24,7 @@ namespace imageDeCap
         string compressedImagePath = System.IO.Path.GetTempPath() + "screenshot_edited.jpg";
         Image theImage;
         string whereToSave;
-        public imageEditor(string imagePath, string whereToSave)//on start
+        public imageEditor(string imagePath, string whereToSave, int X, int Y)//on start
         {
             this.whereToSave = whereToSave;
             this.imagePath = imagePath;
@@ -53,6 +53,8 @@ namespace imageDeCap
                 height = theImage.Height;
             }
             this.Size = new System.Drawing.Size(width + 40, height + 140);
+            this.StartPosition = FormStartPosition.Manual;
+            this.Location = new Point(X - 7, Y - 20);
 
             imageContainer.Image = theImage;
 
@@ -91,9 +93,6 @@ namespace imageDeCap
             // save to screenshots folder after clicking Done if user added some edits
             if (Properties.Settings.Default.saveImageAtAll && Directory.Exists(Properties.Settings.Default.SaveImagesHere) && undoHistory.Count > 0)
             {
-                //string name = DateTime.UtcNow.ToString("yyyyMMddHHmmssfff");
-
-                //theImage.Save(Properties.Settings.Default.SaveImagesHere + @"\" + name + ".png");
                 theImage.Save(this.whereToSave);
             }
             theImage.Dispose();

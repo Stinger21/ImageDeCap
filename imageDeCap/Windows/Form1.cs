@@ -15,12 +15,14 @@ using System.Media;
 using System.IO;
 using System.Reflection;
 using System.Resources;
-using System.Media;
 using System.Diagnostics;
 using System.Threading;
 using System.Xml.Linq;
 using Microsoft.Win32;
-using System.IO;
+using System.Windows.Media.Imaging;
+using ImageMagick;
+using AnimatedGif;
+//using AnimatedGif;
 
 namespace imageDeCap
 {
@@ -91,7 +93,7 @@ namespace imageDeCap
                     if (!hKey2Pressed)
                     {
                         //UploadImgurScreen();
-                        UploadToImgurBounds();
+                        UploadToImgurBounds(true);
                         Console.WriteLine("HOTKEY2");
                     }
                     hKey2Pressed = true;
@@ -116,7 +118,7 @@ namespace imageDeCap
                 }
                 else
                 {
-                    //no recognized hotkey
+                    // no recognized hotkey
                     hKey1Pressed = false;
                     hKey2Pressed = false;
                     hKey3Pressed = false;
@@ -124,6 +126,71 @@ namespace imageDeCap
                 }
             }
         }
+
+        bool useImageMagick = true;
+        MagickImageCollection gEnc;
+        Gifed.AnimatedGif gCreat;
+        public void StartRecordingGif()
+        {
+
+            gEnc = new MagickImageCollection();
+            gCreat = new Gifed.AnimatedGif();
+
+            counter = 0;
+            GifCaptureTimer.Enabled = true;
+
+            this.topBox.BackColor = Color.Green;
+            this.bottomBox.BackColor = Color.Green;
+            this.leftBox.BackColor = Color.Green;
+            this.rightBox.BackColor = Color.Green;
+
+        }
+        public void StopRecordingGif(completeCover cover, bool abort)
+        {
+            if(GifCaptureTimer.Enabled)
+            {
+                Program.ImageDeCap.topBox.Hide();
+                Program.ImageDeCap.bottomBox.Hide();
+                Program.ImageDeCap.leftBox.Hide();
+                Program.ImageDeCap.rightBox.Hide();
+                cover.Close();
+                if (!abort)
+                {
+                    Utilities.playSound("snip.wav");
+
+                    File.Delete(Path.GetTempPath() + "screenshot.gif");
+
+                    if(useImageMagick)
+                    {
+                        gEnc.Write(Path.GetTempPath() + "screenshot.gif");
+                    }
+                    else
+                    {
+                        gCreat.Save(Path.GetTempPath() + "screenshot.gif");
+                    }
+
+                    
+                    uploadImageFile(Path.GetTempPath() + "screenshot.gif", imageDeCap.Properties.Settings.Default.EditScreenshotAfterCapture);
+                }
+
+                Program.ImageDeCap.isTakingSnapshot = false;
+                Program.hotkeysEnabled = true;
+                GifCaptureTimer.Enabled = false;
+            }
+        }
+        int counter = 0;
+        private void GifCaptureTimer_Tick(object sender, EventArgs e)
+        {
+            // Capture Bitmap
+            Bitmap b = cap.Capture(enmScreenCaptureMode.Bounds, tempX, tempY, tempWidth, tempHeight);
+            gCreat.AddFrame(b, 10);
+            gEnc.Add(new MagickImage(b));
+            gEnc[counter].AnimationDelay = 10;
+            
+            counter++;
+
+        }
+
         public Form1()
         {
             InitializeComponent();
@@ -135,7 +202,7 @@ namespace imageDeCap
 
             props = new SettingsWindow(this);
 
-            //Alert for install!
+            // Alert for install!
             if (imageDeCap.Properties.Settings.Default.firstLaunch)
             {
                 imageDeCap.Properties.Settings.Default.firstLaunch = false;
@@ -259,10 +326,10 @@ namespace imageDeCap
                 uploadPastebin(Clipboard.GetText());
             }
         }
-
-        Magnificator magn;
-        bool isTakingSnapshot = false;
-        private void UploadToImgurBounds()
+        completeCover CurrentBackCover;
+        public Magnificator magn;
+        public bool isTakingSnapshot = false;
+        private void UploadToImgurBounds(bool Gif = false)
         {
             // prevent blackening
             if (!isTakingSnapshot)
@@ -271,10 +338,10 @@ namespace imageDeCap
                 Program.hotkeysEnabled = false;
                 //back cover used for pulling cursor position into updateSelectedArea()
                 magn = new Magnificator();
-                completeCover backCover = new completeCover();
-                backCover.Show();
-                backCover.SetBounds(SystemInformation.VirtualScreen.X, SystemInformation.VirtualScreen.Y, SystemInformation.VirtualScreen.Width, SystemInformation.VirtualScreen.Height);
-                backCover.TopMost = false;
+                CurrentBackCover = new completeCover(Gif);
+                CurrentBackCover.Show();
+                CurrentBackCover.SetBounds(SystemInformation.VirtualScreen.X, SystemInformation.VirtualScreen.Y, SystemInformation.VirtualScreen.Width, SystemInformation.VirtualScreen.Height);
+                CurrentBackCover.TopMost = false;
 
                 magn.Show();
                 magn.TopMost = true;
@@ -285,6 +352,7 @@ namespace imageDeCap
                 setBox(rightBox);
             }
         }
+
         private void UploadImgurWindow()
         {
             if (!isTakingSnapshot)
@@ -306,52 +374,71 @@ namespace imageDeCap
 
             result.Save(Path.GetTempPath() + "screenshot.png");
             result.Dispose();
-            if (imageDeCap.Properties.Settings.Default.EditScreenshotAfterCapture)
-            {
-                uploadImageFile(Path.GetTempPath() + "screenshot.png", true);
-            }
-            else
-            {
-                uploadImageFile(Path.GetTempPath() + "screenshot.png");
-            }
+
+            uploadImageFile(Path.GetTempPath() + "screenshot.png", imageDeCap.Properties.Settings.Default.EditScreenshotAfterCapture);
+
         }
 
 
-        private void uploadImageFile(string filePath, bool edit = false)
+        public  void uploadImageFile(string filePath, bool edit = false)
         {
             string name = DateTime.UtcNow.ToString("yyyyMMddHHmmssfff");
             // Will always be .png here. Weather to compress or not is decided in the editor.
-            string whereToSave = imageDeCap.Properties.Settings.Default.SaveImagesHere + @"\" + name + (filePath.EndsWith(".png") ? ".png" : ".jpg");
+            string ending = ".png";
+            bool IsGif = false;
+            if(filePath.EndsWith(".jpg"))
+            {
+                ending = ".jpg";
+            }
+            else if(filePath.EndsWith(".gif"))
+            {
+                ending = ".gif";
+                IsGif = true;
+            }
+            string whereToSave = imageDeCap.Properties.Settings.Default.SaveImagesHere + @"\" + name + ending;
             // save unedited capture
             if (imageDeCap.Properties.Settings.Default.saveImageAtAll && Directory.Exists(imageDeCap.Properties.Settings.Default.SaveImagesHere))
             {
                 File.Copy(filePath, whereToSave);
             }
-            Image bitmapImage = Image.FromFile(filePath);
-            if (imageDeCap.Properties.Settings.Default.CopyImageToClipboard)
+            if (IsGif == false)
             {
-                Clipboard.SetImage(bitmapImage);
-                bitmapImage.Dispose();
-            }
-
+                Image bitmapImage = Image.FromFile(filePath);
+                if (imageDeCap.Properties.Settings.Default.CopyImageToClipboard)
+                {
+                    Clipboard.SetImage(bitmapImage);
+                    bitmapImage.Dispose();
+                }
+            } 
             string editedPath = Path.GetTempPath() + "screenshot_edited.png";
+            
             if (edit)
             {
-                imageEditor editor = new imageEditor(filePath, whereToSave);
-                editor.ShowDialog();
-                if (editor.checkBox1.Checked)//If compressed, pick the compressed version.
+                if (IsGif)
                 {
-                    editedPath = Path.GetTempPath() + "screenshot_edited.jpg";
+                    GifEditor editor = new GifEditor(filePath, whereToSave);
+                    editor.ShowDialog();
+                    editedPath = Path.GetTempPath() + "screenshot_edited.gif";
                 }
-
-                filePath = editedPath;
-                if (File.Exists(editedPath))
+                else
                 {
-                    if (imageDeCap.Properties.Settings.Default.CopyImageToClipboard)
+                    imageEditor editor = new imageEditor(filePath, whereToSave, tempX, tempY);
+                    editor.ShowDialog();
+                    if (editor.checkBox1.Checked)//If compressed, pick the compressed version.
                     {
-                        bitmapImage = Image.FromFile(filePath);
-                        Clipboard.SetImage(bitmapImage);
-                        bitmapImage.Dispose();
+                        editedPath = Path.GetTempPath() + "screenshot_edited.jpg";
+                    }
+
+                    filePath = editedPath;
+                    if (File.Exists(editedPath))
+                    {
+                        if (imageDeCap.Properties.Settings.Default.CopyImageToClipboard)
+                        {
+                            Image bitmapImage = Image.FromFile(filePath);
+                            bitmapImage = Image.FromFile(filePath);
+                            Clipboard.SetImage(bitmapImage);
+                            bitmapImage.Dispose();
+                        }
                     }
                 }
             }
@@ -364,6 +451,7 @@ namespace imageDeCap
                 File.Copy(filePath, editedPath);
                 filePath = editedPath;
             }
+
             if (!imageDeCap.Properties.Settings.Default.NeverUpload)
             {
                 if (File.Exists(editedPath))
@@ -505,26 +593,33 @@ namespace imageDeCap
             box.SetBounds(0, 0, 0, 0);
             box.TopMost = true;
         }
+        
+        public ScreenCapturer cap = new ScreenCapturer();
 
-        bool wasPressed = false;
+        public boxOfWhy topBox = new boxOfWhy();
+        public boxOfWhy bottomBox = new boxOfWhy();
+        public boxOfWhy leftBox = new boxOfWhy();
+        public boxOfWhy rightBox = new boxOfWhy();
 
-        ScreenCapturer cap = new ScreenCapturer();
-
-        boxOfWhy topBox = new boxOfWhy();
-        boxOfWhy bottomBox = new boxOfWhy();
-        boxOfWhy leftBox = new boxOfWhy();
-        boxOfWhy rightBox = new boxOfWhy();
-
-        int X = 0;
-        int Y = 0;
+        public int X = 0;
+        public int Y = 0;
         int tempX = 0;
         int tempY = 0;
-        int tempWidth = 0;
-        int tempHeight = 0;
+        public int tempWidth = 0;
+        public int tempHeight = 0;
 
-        public void updateSelectedArea(completeCover backCover, bool EnterPressed, bool EscapePressed, bool LmbDown, bool LmbUp, bool Lmb)//this thing is essentially a fucking frame-loop.
+        public void updateSelectedArea(completeCover backCover, bool EnterPressed, bool EscapePressed, bool LmbDown, bool LmbUp, bool Lmb, bool Gif) // this thing is essentially a fucking frame-loop.
         {
-            bool UseBackCover = imageDeCap.Properties.Settings.Default.FreezeScreenOnRegionShot;
+            bool UseBackCover = false;
+            if(imageDeCap.Properties.Settings.Default.FreezeScreenOnRegionShot)
+            {
+                UseBackCover = true;
+            }
+            if(Gif)
+            {
+                UseBackCover = false;
+            }
+                
 
             backCover.Activate();
             magn.Bounds = new Rectangle(Cursor.Position.X + 32, Cursor.Position.Y - 32, 124, 124);
@@ -532,36 +627,10 @@ namespace imageDeCap
                                                                                 
             if (LmbUp) // keyUp
             {
-                magn.Close();
-                if (!UseBackCover)
-                    backCover.Close();
 
-                topBox.Hide();
-                bottomBox.Hide();
-                leftBox.Hide();
-                rightBox.Hide();
-
-                // Make sure we actually selected a region to take a screenshot of.
-                if (tempWidth > 0 && tempHeight > 0)
-                {
-                    Utilities.playSound("snip.wav");
-                    Bitmap result = cap.Capture(enmScreenCaptureMode.Bounds, X - 1, Y - 1, tempWidth + 1, tempHeight + 1);
-
-                    if (UseBackCover)
-                        backCover.Close();
-
-                    File.Delete(Path.GetTempPath() + "screenshot.png");
-                    result.Save(Path.GetTempPath() + "screenshot.png");
-                    result.Dispose();
-
-                    uploadImageFile(Path.GetTempPath() + "screenshot.png", imageDeCap.Properties.Settings.Default.EditScreenshotAfterCapture);
-                }
-
-                if (UseBackCover)
-                    backCover.Close();
-
-                isTakingSnapshot = false;
-                Program.hotkeysEnabled = true;
+                //* This should be a function to call for what happens when we have aquired a region.
+                backCover.CompletedSelection();
+                // End function thing
             }
 
             if (LmbDown)
@@ -570,7 +639,6 @@ namespace imageDeCap
                 tempY = Cursor.Position.Y;
             }
             
-
             // Holding M1
             if (Lmb)
             {
@@ -603,7 +671,6 @@ namespace imageDeCap
                 isTakingSnapshot = false;
                 Program.hotkeysEnabled = true;
             }
-            //wasPressed = MouseButtons == MouseButtons.Left;
         }
 
         private void preferencesToolStripMenuItem_Click(object sender, EventArgs e)
@@ -657,6 +724,13 @@ namespace imageDeCap
             {
                 Clipboard.SetText(Links[listBox1.SelectedIndex]);
             }
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            string path = Path.GetTempPath() + "screenshot.gif";
+            //GifEditor editor = new GifEditor(path, "asdf");
+            //editor.Show();
         }
     }
 }

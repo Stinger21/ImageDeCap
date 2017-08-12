@@ -17,6 +17,11 @@ using System.Text.RegularExpressions;
 using System.Collections.Specialized;
 using System.ComponentModel;
 
+using Imgur.API.Authentication.Impl;
+using Imgur.API.Endpoints.Impl;
+using Imgur.API;
+using Imgur.API.Models;
+
 namespace imageDeCap
 {
     public enum enmScreenCaptureMode
@@ -26,43 +31,53 @@ namespace imageDeCap
         Bounds
     }
 
-    class ScreenCapturer
+    public class ScreenCapturer
     {
-        public void recordScreen()
-        {
-            
-            // Get instance of the ScreenCapture object
-            //var screenCapture = Windows.Media.Capture.ScreenCapture.GetForCurrentView();
-        }
 
         string ClientId = "da05117bbfa9bda";
+
         public void UploadImage(object sender, DoWorkEventArgs e)
         {
-            
             string filepath = (string)e.Argument;
-
-            WebClient w = new WebClient();
-            w.Headers.Add("Authorization", "Client-ID " + ClientId);
-            System.Collections.Specialized.NameValueCollection Keys = new System.Collections.Specialized.NameValueCollection();
+        
             try
             {
-                Keys.Add("image", Convert.ToBase64String(File.ReadAllBytes(filepath)));
-                byte[] responseArray = w.UploadValues("https://api.imgur.com/3/image", Keys);
-                dynamic result = Encoding.ASCII.GetString(responseArray); 
-                Regex reg = new System.Text.RegularExpressions.Regex("link\":\"(.*?)\"");
-                Match match = reg.Match(result);
-
-                string url = match.ToString().Replace("link\":\"", "").Replace("\"", "").Replace("\\/", "/");
-                e.Result = url;
-                //return url;
+                var client = new ImgurClient(ClientId);
+                var endpoint = new ImageEndpoint(client);
+                IImage image = endpoint.UploadImageBinaryAsync(File.ReadAllBytes(filepath)).GetAwaiter().GetResult();
+                e.Result = image.Link;
             }
-            catch (Exception s)
+            catch (ImgurException imgurEx)
             {
-                //MessageBox.Show("Something went wrong. " + s.Message);
-                //return null;
-                e.Result = "failed, " + s.Message;
+                e.Result = "failed, " + imgurEx.Message;
             }
         }
+        
+        //public void UploadImage(object sender, DoWorkEventArgs e)
+        //{
+        //    string filepath = (string)e.Argument;
+        //
+        //    WebClient w = new WebClient();
+        //    w.Headers.Add("Authorization", "Client-ID " + ClientId);
+        //    System.Collections.Specialized.NameValueCollection Keys = new System.Collections.Specialized.NameValueCollection();
+        //    try
+        //    {
+        //        Keys.Add("image", Convert.ToBase64String(File.ReadAllBytes(filepath)));
+        //        byte[] responseArray = w.UploadValues("https://api.imgur.com/3/image", Keys);
+        //        dynamic result = Encoding.ASCII.GetString(responseArray); 
+        //        Regex reg = new System.Text.RegularExpressions.Regex("link\":\"(.*?)\"");
+        //        Match match = reg.Match(result);
+        //
+        //        string url = match.ToString().Replace("link\":\"", "").Replace("\"", "").Replace("\\/", "/");
+        //        e.Result = url;
+        //    }
+        //    catch (Exception s)
+        //    {
+        //        //MessageBox.Show("Something went wrong. " + s.Message);
+        //        //return null;
+        //        e.Result = "failed, " + s.Message;
+        //    }
+        //}
 
         public void uploadToFTP(object sender, DoWorkEventArgs e)
         {
