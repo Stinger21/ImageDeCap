@@ -38,18 +38,18 @@ namespace imageDeCap
 
         public void UploadImage(object sender, DoWorkEventArgs e)
         {
-            string filepath = (string)e.Argument;
+            byte[] FileData = (byte[])e.Argument;
         
             try
             {
                 var client = new ImgurClient(ClientId);
                 var endpoint = new ImageEndpoint(client);
-                IImage image = endpoint.UploadImageBinaryAsync(File.ReadAllBytes(filepath)).GetAwaiter().GetResult();
-                e.Result = image.Link;
+                IImage image = endpoint.UploadImageBinaryAsync(FileData).GetAwaiter().GetResult();
+                e.Result = (image.Link, FileData);
             }
             catch (ImgurException imgurEx)
             {
-                e.Result = "failed, " + imgurEx.Message;
+                e.Result = ("failed, " + imgurEx.Message, FileData);
             }
         }
         
@@ -81,12 +81,12 @@ namespace imageDeCap
 
         public void uploadToFTP(object sender, DoWorkEventArgs e)
         {
-            string[] arguments = (string[])e.Argument;
-            string url = arguments[0];
-            string username = arguments[1];
-            string password = arguments[2];
-            string filepath = arguments[3];
-            string filename = arguments[4];
+            object[] arguments = (object[])e.Argument;
+            string url = (string)arguments[0];
+            string username = (string)arguments[1];
+            string password = (string)arguments[2];
+            byte[] filedata = (byte[])arguments[3];
+            string filename = (string)arguments[4];
 
             // Get the object used to communicate with the server.
 
@@ -97,7 +97,7 @@ namespace imageDeCap
             request.Credentials = new NetworkCredential(username, password);
 
             // Copy the contents of the file to the request stream.
-            byte[] fileContents = File.ReadAllBytes(filepath);
+            byte[] fileContents = filedata;
             request.ContentLength = fileContents.Length;
 
             Stream requestStream = request.GetRequestStream();
@@ -198,15 +198,148 @@ namespace imageDeCap
             {
                 g.Clear(Color.Black);
                 g.CopyFromScreen(new Point(bounds.Left, bounds.Top), Point.Empty, bounds.Size, CopyPixelOperation.SourceCopy);
+                int cursorX = 0;
+                int cursorY = 0;
+                Bitmap cursorBMP = CaptureCursor(ref cursorX, ref cursorY);
+                if (cursorBMP != null)
+                {
+                    g.DrawImage(cursorBMP, new Rectangle(cursorX - Program.ImageDeCap.X, cursorY - Program.ImageDeCap.Y, cursorBMP.Width, cursorBMP.Height));
+                    g.Flush();
+                }
             }
-
             return result;
         }
+
+
+        static Bitmap CaptureCursor(ref int x, ref int y)
+        {
+            Bitmap bmp;
+            IntPtr hicon;
+            Win32Stuff.CURSORINFO ci = new Win32Stuff.CURSORINFO();
+            Win32Stuff.ICONINFO icInfo;
+            ci.cbSize = Marshal.SizeOf(ci);
+            if (Win32Stuff.GetCursorInfo(out ci))
+            {
+                if (ci.flags == Win32Stuff.CURSOR_SHOWING)
+                {
+                    hicon = Win32Stuff.CopyIcon(ci.hCursor);
+                    if (Win32Stuff.GetIconInfo(hicon, out icInfo))
+                    {
+                        x = ci.ptScreenPos.x - ((int)icInfo.xHotspot);
+                        y = ci.ptScreenPos.y - ((int)icInfo.yHotspot);
+                        Icon ic = Icon.FromHandle(hicon);
+                        bmp = ic.ToBitmap();
+
+                        return bmp;
+                    }
+                }
+            }
+            return null;
+        }
+
+        //public static Bitmap CaptureDesktopWithCursor()
+        //{
+        //    int cursorX = 0;
+        //    int cursorY = 0;
+        //    Bitmap desktopBMP;
+        //    Bitmap cursorBMP;
+        //    Bitmap finalBMP;
+        //    Graphics g;
+        //    Rectangle r;
+        //    desktopBMP = CaptureDesktop();
+        //    cursorBMP = CaptureCursor(ref cursorX, ref cursorY);
+        //    if (desktopBMP != null)
+        //    {
+        //        if (cursorBMP != null)
+        //        {
+        //            r = new Rectangle(cursorX, cursorY, cursorBMP.Width, cursorBMP.Height);
+        //            g = Graphics.FromImage(desktopBMP);
+        //            g.DrawImage(cursorBMP, r);
+        //            g.Flush();
+        //            return desktopBMP;
+        //        }
+        //        else
+        //            return desktopBMP;
+        //    }
+        //    return null;
+        //}
+
 
         public Point CursorPosition
         {
             get;
             protected set;
         }
+    }
+    
+
+
+    class Win32Stuff
+    {
+
+        #region Class Variables
+
+        public const int SM_CXSCREEN = 0;
+        public const int SM_CYSCREEN = 1;
+
+        public const Int32 CURSOR_SHOWING = 0x00000001;
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct ICONINFO
+        {
+            public bool fIcon;         // Specifies whether this structure defines an icon or a cursor. A value of TRUE specifies
+            public Int32 xHotspot;     // Specifies the x-coordinate of a cursor's hot spot. If this structure defines an icon, the hot
+            public Int32 yHotspot;     // Specifies the y-coordinate of the cursor's hot spot. If this structure defines an icon, the hot
+            public IntPtr hbmMask;     // (HBITMAP) Specifies the icon bitmask bitmap. If this structure defines a black and white icon,
+            public IntPtr hbmColor;    // (HBITMAP) Handle to the icon color bitmap. This member can be optional if this
+        }
+        [StructLayout(LayoutKind.Sequential)]
+        public struct POINT
+        {
+            public Int32 x;
+            public Int32 y;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct CURSORINFO
+        {
+            public Int32 cbSize;        // Specifies the size, in bytes, of the structure.
+            public Int32 flags;         // Specifies the cursor state. This parameter can be one of the following values:
+            public IntPtr hCursor;          // Handle to the cursor.
+            public POINT ptScreenPos;       // A POINT structure that receives the screen coordinates of the cursor.
+        }
+
+        #endregion
+
+
+        #region Class Functions
+
+        [DllImport("user32.dll", EntryPoint = "GetDesktopWindow")]
+        public static extern IntPtr GetDesktopWindow();
+
+        [DllImport("user32.dll", EntryPoint = "GetDC")]
+        public static extern IntPtr GetDC(IntPtr ptr);
+
+        [DllImport("user32.dll", EntryPoint = "GetSystemMetrics")]
+        public static extern int GetSystemMetrics(int abc);
+
+        [DllImport("user32.dll", EntryPoint = "GetWindowDC")]
+        public static extern IntPtr GetWindowDC(Int32 ptr);
+
+        [DllImport("user32.dll", EntryPoint = "ReleaseDC")]
+        public static extern IntPtr ReleaseDC(IntPtr hWnd, IntPtr hDc);
+
+
+        [DllImport("user32.dll", EntryPoint = "GetCursorInfo")]
+        public static extern bool GetCursorInfo(out CURSORINFO pci);
+
+        [DllImport("user32.dll", EntryPoint = "CopyIcon")]
+        public static extern IntPtr CopyIcon(IntPtr hIcon);
+
+        [DllImport("user32.dll", EntryPoint = "GetIconInfo")]
+        public static extern bool GetIconInfo(IntPtr hIcon, out ICONINFO piconinfo);
+
+
+        #endregion
     }
 }

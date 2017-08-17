@@ -16,47 +16,59 @@ namespace imageDeCap
 {
     public partial class imageEditor : Form
     {
+        public (bool Aborted, byte[] Data) FinalFunction()
+        {
+            byte[] outputData;
+            if(checkBox1.Checked)
+            {
+                outputData = completeCover.GetBytes(jpgImage, ImageFormat.Jpeg);
+            }
+            else
+            {
+                outputData = completeCover.GetBytes(mainImage, ImageFormat.Png);
+            }
+            return (Aborted, outputData);
+        }
+
         Stack<Bitmap> undoHistory = new Stack<Bitmap>();
 
-        bool closedIntentionally = false;
-        string imagePath;
-        string newImagePath = System.IO.Path.GetTempPath() + "screenshot_edited.png";
-        string compressedImagePath = System.IO.Path.GetTempPath() + "screenshot_edited.jpg";
-        Image theImage;
-        string whereToSave;
-        public imageEditor(string imagePath, string whereToSave, int X, int Y)//on start
+        bool Aborted = true;
+
+        Image mainImage;
+        Image jpgImage;
+        int FileSize;
+        public imageEditor(byte[] ImageData, int X, int Y)//on start
         {
-            this.whereToSave = whereToSave;
-            this.imagePath = imagePath;
             InitializeComponent();
             this.AcceptButton = button1;
-            theImage = Image.FromFile(imagePath);
+            mainImage = Image.FromStream(new MemoryStream(ImageData));
 
-            fileSizeLabel.Text = (new FileInfo(imagePath).Length / 1000) + "KB";
+            FileSize = ImageData.Length;
+            fileSizeLabel.Text = (ImageData.Length / 1000) + "KB";
 
             int width;
             int height;
-            if (theImage.Width < 600)
+            if (mainImage.Width < 600)
             {
                 width = 600;
             }
             else
             {
-                width = theImage.Width;
+                width = mainImage.Width;
             }
-            if (theImage.Height < 200)
+            if (mainImage.Height < 200)
             {
                 height = 200;
             }
             else
             {
-                height = theImage.Height;
+                height = mainImage.Height;
             }
             this.Size = new System.Drawing.Size(width + 40, height + 140);
             this.StartPosition = FormStartPosition.Manual;
             this.Location = new Point(X - 7, Y - 20);
 
-            imageContainer.Image = theImage;
+            imageContainer.Image = mainImage;
 
 
             trackBar1.Value = (int)brushSize * 100;
@@ -89,14 +101,13 @@ namespace imageDeCap
                 tempImage = false;
             }
 
-            theImage.Save(newImagePath);
+            //theImage.Save(newImagePath);
             // save to screenshots folder after clicking Done if user added some edits
-            if (Properties.Settings.Default.saveImageAtAll && Directory.Exists(Properties.Settings.Default.SaveImagesHere) && undoHistory.Count > 0)
-            {
-                theImage.Save(this.whereToSave);
-            }
-            theImage.Dispose();
-            closedIntentionally = true;
+            //if (Properties.Settings.Default.saveImageAtAll && Directory.Exists(Properties.Settings.Default.SaveImagesHere) && undoHistory.Count > 0)
+            //{
+            //    theImage.Save(this.whereToSave);
+            //}
+            Aborted = false;
             Close();
         }
         
@@ -128,21 +139,21 @@ namespace imageDeCap
 
                 if(System.Windows.Input.Keyboard.IsKeyDown(System.Windows.Input.Key.LeftAlt))
                 {
-                    c = ((Bitmap)theImage).GetPixel(mousePos.X, mousePos.Y);
+                    c = ((Bitmap)mainImage).GetPixel(mousePos.X, mousePos.Y);
                     currentColor.BackColor = c;
                 }
 
                 if (pickColor)
                 {
-                    c = ((Bitmap)theImage).GetPixel(mousePos.X, mousePos.Y);
+                    c = ((Bitmap)mainImage).GetPixel(mousePos.X, mousePos.Y);
                     currentColor.BackColor = c;
                     imageContainer.Cursor = Cursors.Default;
                     pickColor = false;
                 }
                 if (!brush)
                 {
-                    undoHistory.Push(new Bitmap(theImage));
-                    using (Graphics g = Graphics.FromImage(theImage))
+                    undoHistory.Push(new Bitmap(mainImage));
+                    using (Graphics g = Graphics.FromImage(mainImage))
                     {
                         Pen MyPen = new Pen(c);
                         MyPen.Width = textSize;
@@ -164,7 +175,7 @@ namespace imageDeCap
                         {
                             leftMouseLastPos = mousePos;
                         }
-                        using (Graphics g = Graphics.FromImage(theImage))
+                        using (Graphics g = Graphics.FromImage(mainImage))
                         {
                             Pen MyPen = new Pen(c);
                             MyPen.Width = brushSize;
@@ -202,11 +213,11 @@ namespace imageDeCap
                 if (!isPressed)
                 {
                     leftMouseLastPos = mousePos;
-                    undoHistory.Push(new Bitmap(theImage));
+                    undoHistory.Push(new Bitmap(mainImage));
                 }
                 if (brush)
                 {
-                    using (Graphics g = Graphics.FromImage(theImage))
+                    using (Graphics g = Graphics.FromImage(mainImage))
                     {
                         Pen MyPen = new Pen(c);
                         MyPen.Width = brushSize;
@@ -238,7 +249,7 @@ namespace imageDeCap
             {
                 if(pickColor)
                 {
-                    currentColor.BackColor = ((Bitmap)theImage).GetPixel(mousePos.X, mousePos.Y);
+                    currentColor.BackColor = ((Bitmap)mainImage).GetPixel(mousePos.X, mousePos.Y);
                 }
                 if (tempImage)
                 {
@@ -256,8 +267,8 @@ namespace imageDeCap
                 if (!brush)
                 {//if we are not holding down any button and are in text mode.
                     
-                    undoHistory.Push(new Bitmap(theImage));
-                    using (Graphics g = Graphics.FromImage(theImage))
+                    undoHistory.Push(new Bitmap(mainImage));
+                    using (Graphics g = Graphics.FromImage(mainImage))
                     {
                         Pen MyPen = new Pen(c);
                         MyPen.Width = textSize;
@@ -285,8 +296,8 @@ namespace imageDeCap
             {
                 undoImageEdit();
             }
-            undoHistory.Push(new Bitmap(theImage));
-            using (Graphics g = Graphics.FromImage(theImage))
+            undoHistory.Push(new Bitmap(mainImage));
+            using (Graphics g = Graphics.FromImage(mainImage))
             {
                 Pen MyPen = new Pen(Color.FromArgb(128, 255, 0, 0));
                 float halfBrush = brushSize / 2.0f;
@@ -305,8 +316,8 @@ namespace imageDeCap
             {
                 undoImageEdit();
             }
-            undoHistory.Push(new Bitmap(theImage));
-            using (Graphics g = Graphics.FromImage(theImage))
+            undoHistory.Push(new Bitmap(mainImage));
+            using (Graphics g = Graphics.FromImage(mainImage))
             {
                 Pen MyPen = new Pen(c);
                 MyPen.Width = textSize;
@@ -339,95 +350,24 @@ namespace imageDeCap
             label1.Text = mousePos.X.ToString() + ", " + mousePos.Y.ToString() + " - " + colorName;
         }
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-            setPalette(c_red_1);
-        }
-
-        private void c_red_2_Click(object sender, EventArgs e)
-        {
-            setPalette(c_red_2);
-        }
-
-        private void c_red_3_Click(object sender, EventArgs e)
-        {
-            setPalette(c_red_3);
-        }
-
-        private void c_yellow_1_Click(object sender, EventArgs e)
-        {
-            setPalette(c_yellow_1);
-        }
-
-        private void c_yellow_2_Click(object sender, EventArgs e)
-        {
-            setPalette(c_yellow_2);
-        }
-
-        private void c_yellow_3_Click(object sender, EventArgs e)
-        {
-            setPalette(c_yellow_3);
-        }
-
-        private void c_green_1_Click(object sender, EventArgs e)
-        {
-            setPalette(c_green_1);
-        }
-
-        private void c_green_2_Click(object sender, EventArgs e)
-        {
-            setPalette(c_green_2);
-        }
-
-        private void c_green_3_Click(object sender, EventArgs e)
-        {
-            setPalette(c_green_3);
-        }
-
-        private void c_blue_1_Click(object sender, EventArgs e)
-        {
-            setPalette(c_blue_1);
-        }
-
-        private void c_blue_2_Click(object sender, EventArgs e)
-        {
-            setPalette(c_blue_2);
-        }
-
-        private void c_blue_3_Click(object sender, EventArgs e)
-        {
-            setPalette(c_blue_3);
-        }
-
-        private void c_purple_1_Click(object sender, EventArgs e)
-        {
-            setPalette(c_purple_1);
-        }
-
-        private void c_purple_2_Click(object sender, EventArgs e)
-        {
-            setPalette(c_purple_2);
-        }
-
-        private void c_purple_3_Click(object sender, EventArgs e)
-        {
-            setPalette(c_purple_3);
-        }
-
-        private void c_black_Click(object sender, EventArgs e)
-        {
-            setPalette(c_black);
-        }
-
-        private void c_grey_Click(object sender, EventArgs e)
-        {
-            setPalette(c_grey);
-        }
-
-        private void c_white_Click(object sender, EventArgs e)
-        {
-            setPalette(c_white);
-        }
+        private void button2_Click(object sender, EventArgs e){setPalette(c_red_1);}
+        private void c_red_2_Click(object sender, EventArgs e){setPalette(c_red_2);}
+        private void c_red_3_Click(object sender, EventArgs e){setPalette(c_red_3);}
+        private void c_yellow_1_Click(object sender, EventArgs e){setPalette(c_yellow_1);}
+        private void c_yellow_2_Click(object sender, EventArgs e){setPalette(c_yellow_2);}
+        private void c_yellow_3_Click(object sender, EventArgs e){setPalette(c_yellow_3);}
+        private void c_green_1_Click(object sender, EventArgs e){setPalette(c_green_1);}
+        private void c_green_2_Click(object sender, EventArgs e){setPalette(c_green_2);}
+        private void c_green_3_Click(object sender, EventArgs e){setPalette(c_green_3);}
+        private void c_blue_1_Click(object sender, EventArgs e){setPalette(c_blue_1);}
+        private void c_blue_2_Click(object sender, EventArgs e){setPalette(c_blue_2);}
+        private void c_blue_3_Click(object sender, EventArgs e){setPalette(c_blue_3);}
+        private void c_purple_1_Click(object sender, EventArgs e){setPalette(c_purple_1);}
+        private void c_purple_2_Click(object sender, EventArgs e){setPalette(c_purple_2);}
+        private void c_purple_3_Click(object sender, EventArgs e){setPalette(c_purple_3);}
+        private void c_black_Click(object sender, EventArgs e){setPalette(c_black);}
+        private void c_grey_Click(object sender, EventArgs e){setPalette(c_grey);}
+        private void c_white_Click(object sender, EventArgs e){setPalette(c_white);}
 
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
         {
@@ -441,11 +381,10 @@ namespace imageDeCap
 
         private void imageEditor_FormClosing(object sender, FormClosingEventArgs e)
         {
-            theImage.Dispose();
-            if (!closedIntentionally)
-            {
-                File.Delete(newImagePath);
-            }
+            //if (Aborted)
+            //{
+            //    File.Delete(newImagePath);
+            //}
         }
         
         private void button2_Click_1(object sender, EventArgs e)
@@ -456,7 +395,7 @@ namespace imageDeCap
         {
             if (undoHistory.Count > 0)
             {
-                using (Graphics g = Graphics.FromImage(theImage))
+                using (Graphics g = Graphics.FromImage(mainImage))
                 {
                     g.DrawImage((Image)undoHistory.Pop(), Point.Empty);
                 }
@@ -509,7 +448,7 @@ namespace imageDeCap
                 undoImageEdit();
                 tempImage = false;
             }
-            undoHistory.Push(new Bitmap(theImage));
+            undoHistory.Push(new Bitmap(mainImage));
         }
 
         private void panel1_MouseLeave(object sender, EventArgs e)
@@ -552,10 +491,8 @@ namespace imageDeCap
         private void saveJpg(Bitmap bmp, string path, long compressionLevel)
         {
             ImageCodecInfo jpgEncoder = GetEncoder(ImageFormat.Jpeg);
-            
             System.Drawing.Imaging.Encoder myEncoder = System.Drawing.Imaging.Encoder.Quality;
             EncoderParameters myEncoderParameters = new EncoderParameters(1);
-
             EncoderParameter myEncoderParameter = new EncoderParameter(myEncoder, compressionLevel);
             myEncoderParameters.Param[0] = myEncoderParameter;
             try
@@ -569,26 +506,30 @@ namespace imageDeCap
         }
 
         
-        Image jpgImage;
         void ApplyCompression()
         {
             try
             {
                 jpgImage.Dispose();
-            }
-            catch { }
-            string path = compressedImagePath;
+            }catch { }
+            
             int compressionNumber = (int)Math.Abs(100 - compressionSlider.Value);
-            saveJpg(theImage as Bitmap, path, compressionNumber);
-            jpgImage = Image.FromFile(path);
+            
+            EncoderParameters myEncoderParameters = new EncoderParameters(1);
+            myEncoderParameters.Param[0] = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, compressionNumber);
+
+            var ms = new MemoryStream();
+            mainImage.Save(ms, GetEncoder(ImageFormat.Jpeg), myEncoderParameters);
+            jpgImage = Image.FromStream(ms);
+            
             jpegBox.Image = jpgImage;
             if(compressionNumber < 10)
             {
-                fileSizeLabel.Text = (new FileInfo(path).Length / 1000) + "KB [Do I look like I know what a jpeg is?]";
+                fileSizeLabel.Text = (ms.Length / 1000) + "KB [Do I look like I know what a jpeg is?]";
             }
             else
             {
-                fileSizeLabel.Text = (new FileInfo(path).Length / 1000) + "KB";
+                fileSizeLabel.Text = (ms.Length / 1000) + "KB";
             }
             label4.Text = "Compression: " + compressionNumber.ToString();
         }
@@ -609,7 +550,7 @@ namespace imageDeCap
             {
                 jpegBox.Hide();
                 compressionSlider.Enabled = false;
-                fileSizeLabel.Text = (new FileInfo(imagePath).Length / 1000) + "KB";
+                fileSizeLabel.Text = (FileSize / 1000) + "KB";
             }
         }
 

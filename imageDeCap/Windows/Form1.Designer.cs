@@ -34,7 +34,6 @@
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.listBox1 = new System.Windows.Forms.ListBox();
@@ -87,30 +86,19 @@
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(112, 47);
+            this.button4.Location = new System.Drawing.Point(6, 47);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(97, 23);
+            this.button4.Size = new System.Drawing.Size(203, 23);
             this.button4.TabIndex = 11;
             this.button4.Text = "Gif -> Imgur";
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click);
-            // 
-            // button5
-            // 
-            this.button5.Location = new System.Drawing.Point(6, 47);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(100, 23);
-            this.button5.TabIndex = 12;
-            this.button5.Text = "Window -> Imgur";
-            this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.button2);
             this.groupBox1.Controls.Add(this.button3);
             this.groupBox1.Controls.Add(this.button4);
-            this.groupBox1.Controls.Add(this.button5);
             this.groupBox1.Location = new System.Drawing.Point(12, 24);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(215, 108);
@@ -149,9 +137,9 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(1, 303);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(212, 13);
+            this.label2.Size = new System.Drawing.Size(211, 13);
             this.label2.TabIndex = 16;
-            this.label2.Text = "Created in Memory of Hyperdesktop.  v1.24";
+            this.label2.Text = "Created in memory of Hyperdesktop.  v1.24";
             // 
             // menuStrip1
             // 
@@ -229,6 +217,7 @@
             // 
             // GifCaptureTimer
             // 
+            this.GifCaptureTimer.Interval = 16;
             this.GifCaptureTimer.Tick += new System.EventHandler(this.GifCaptureTimer_Tick);
             // 
             // Form1
@@ -268,7 +257,6 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button button5;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private System.Windows.Forms.ListBox listBox1;

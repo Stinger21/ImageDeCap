@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -33,6 +34,8 @@ namespace imageDeCap
                 Bitmap fullSnapshot = cap.Capture(enmScreenCaptureMode.Screen);
                 pictureBox1.Image = fullSnapshot;
                 pictureBox1.SetBounds(0, 0, SystemInformation.VirtualScreen.Width, SystemInformation.VirtualScreen.Height);
+                //this.Opacity = 1;
+                this.Opacity = 0.005;
             }
             else
             {
@@ -54,7 +57,6 @@ namespace imageDeCap
 
         private void completeCover_Load(object sender, EventArgs e)
         {
-            
         }
 
         private void completeCover_MouseMove(object sender, MouseEventArgs e)
@@ -96,18 +98,27 @@ namespace imageDeCap
 
         private void completeCover_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Return)
+            //if (e.KeyCode == Keys.Return)
+            //{
+            //    EnterPressed = true;
+            //    //Program.ImageDeCap.StopRecordingGif(this, false);
+            //}
+            if(Program.ImageDeCap.GifCaptureTimer.Enabled == false)
             {
-                EnterPressed = true;
-                Program.ImageDeCap.StopRecordingGif(this, false);
+                if (e.KeyCode == Keys.Escape)
+                {
+                    EscapePressed = true;
+                    Program.ImageDeCap.StopRecordingGif(this, true);
+                }
             }
-            if (e.KeyCode == Keys.Escape)
-            {
-                EscapePressed = true;
-                Program.ImageDeCap.StopRecordingGif(this, true);
-            }
+            
         }
-
+        public static byte[] GetBytes(Image image, ImageFormat format)
+        {
+            var ms = new MemoryStream();
+            image.Save(ms, format);
+            return ms.ToArray();
+        }
         // this is called from Form1's updateSelectedArea when it considers itself done figuring out what region to capture.
         public void CompletedSelection()
         {
@@ -136,11 +147,7 @@ namespace imageDeCap
                     if (UseBackCover)
                         this.Close();
 
-                    File.Delete(Path.GetTempPath() + "screenshot.png");
-                    result.Save(Path.GetTempPath() + "screenshot.png");
-                    result.Dispose();
-
-                    Program.ImageDeCap.uploadImageFile(Path.GetTempPath() + "screenshot.png", imageDeCap.Properties.Settings.Default.EditScreenshotAfterCapture);
+                    Program.ImageDeCap.UploadImageData(GetBytes(result, ImageFormat.Png), Form1.filetype.png);
                 }
 
                 if (UseBackCover)
@@ -156,8 +163,42 @@ namespace imageDeCap
                 {
                     Program.ImageDeCap.magn.Close();
                     Program.ImageDeCap.StartRecordingGif();
+
+                    this.Location = new Point(Program.ImageDeCap.X, Program.ImageDeCap.Y + Program.ImageDeCap.tempHeight);
+                    this.Width = Math.Max(Program.ImageDeCap.tempWidth, 300);
+                    this.Height = 50;
+                    this.Opacity = 1.0;
+                    
+                    this.ResumeLayout(false);
+                    this.TopMost = true;
+
+                    pictureBox1.Hide();
+
+                    System.Drawing.SolidBrush myBrush = new System.Drawing.SolidBrush(System.Drawing.Color.Red);
+                    System.Drawing.Graphics formGraphics;
+                    formGraphics = this.CreateGraphics();
+                    formGraphics.FillRectangle(myBrush, new Rectangle(0, 0, this.Width, this.Height));
+                    myBrush.Dispose();
+                    formGraphics.Dispose();
+
                 }
             }
+        }
+        public void SetTimer(string time, string frames)
+        {
+            label1.Text = time;
+            label2.Text = frames;
+        }
+        private void doneButton_Click(object sender, EventArgs e)
+        {
+            EnterPressed = true;
+            Program.ImageDeCap.StopRecordingGif(this, false);
+        }
+
+        private void cancelButton_Click(object sender, EventArgs e)
+        {
+            EscapePressed = true;
+            Program.ImageDeCap.StopRecordingGif(this, true);
         }
     }
 }

@@ -39,7 +39,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.HelpButton = true;
             this.Name = "boxOfWhy";
-            this.Opacity = 0D;
+            this.Opacity = 0.1D;
             this.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.ShowInTaskbar = false;
             this.Text = "boxOfWhy";

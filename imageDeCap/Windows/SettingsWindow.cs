@@ -491,5 +491,10 @@ namespace imageDeCap
         {
             System.Diagnostics.Process.Start("http://www.mattwestphal.com/imagedecap/");
         }
+
+        private void label8_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

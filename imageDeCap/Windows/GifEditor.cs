@@ -16,17 +16,21 @@ namespace imageDeCap
 
     public partial class GifEditor : Form
     {
+        public (bool Aborted, byte[] Data) FinalFunction()
+        {
+            return (Aborted, EditedImage.ToByteArray(MagickFormat.Gif));
+        }
+
+
+        bool Aborted = true;
         MagickImageCollection theImage = new MagickImageCollection();
+        public MagickImageCollection EditedImage = new MagickImageCollection();
         IMagickImage CurrentImage;
         int frames = 0;
-        string whereToSave;
-        string newImagePath;
-        public GifEditor(string filepath, string whereToSave)
+        public GifEditor(byte[] ImageData)
         {
-            this.whereToSave = whereToSave;
             InitializeComponent();
-            theImage.Read(filepath);
-            newImagePath = filepath;
+            theImage.Read(ImageData);
 
             CurrentImage = theImage[0];
             PictureBox.Image = CurrentImage.ToBitmap();
@@ -56,6 +60,7 @@ namespace imageDeCap
             this.AcceptButton = uploadButton;
 
             CalculateFileSizeAndSaveOutputImage();
+            frameTimer.Interval = (int)(1000.0f / Program.ImageDeCap.GifRecorderFPS);
         }
 
         private void GifEditor_Load(object sender, EventArgs e)
@@ -66,12 +71,21 @@ namespace imageDeCap
         int CurrentFrame = 0;
         private void frameTimer_Tick(object sender, EventArgs e)
         {
-            if(Scrolling == false)
+            int ActualFrameNumber = 0;
+            if (Scrolling == false)
             {
                 CurrentFrame++;
+                ActualFrameNumber = (CurrentFrame % (endTrack.Value - startTrack.Value)) + startTrack.Value;
             }
-            CurrentImage = theImage[(CurrentFrame % (endTrack.Value - startTrack.Value)) + startTrack.Value];
+            else
+            {
+                ActualFrameNumber = (CurrentFrame % theImage.Count);
+            }
+
+            Console.WriteLine(ActualFrameNumber);
+            CurrentImage = theImage[ActualFrameNumber];
             PictureBox.Image = CurrentImage.ToBitmap();
+            BackgroundTrack.Value = ActualFrameNumber;
         }
 
         
@@ -88,6 +102,7 @@ namespace imageDeCap
                 endTrack.Value = startTrack.Value + 1;
             }
             SetTracks();
+            CurrentFrame = startTrack.Value;
         }
         private void endTrack_ValueChanged(object sender, EventArgs e)
         {
@@ -100,6 +115,7 @@ namespace imageDeCap
                 startTrack.Value = endTrack.Value - 1;
             }
             SetTracks();
+            CurrentFrame = endTrack.Value-1;
         }
         private void GifEditor_Resize(object sender, EventArgs e)
         {
@@ -124,13 +140,11 @@ namespace imageDeCap
         {
             Scrolling = true;
             startTrack.Value = Convert.ToInt32(((double)e.X / (double)startTrack.Width) * (startTrack.Maximum - startTrack.Minimum));
-            CurrentFrame = startTrack.Value;
         }
         private void endTrack_MouseDown(object sender, MouseEventArgs e)
         {
             Scrolling = true;
             endTrack.Value = Convert.ToInt32(((double)e.X / (double)endTrack.Width) * (endTrack.Maximum - endTrack.Minimum));
-            CurrentFrame = endTrack.Value;
         }
         private void endTrack_MouseUp(object sender, MouseEventArgs e)
         {
@@ -147,10 +161,17 @@ namespace imageDeCap
         private void CalculateFileSizeAndSaveOutputImage()
         {
             List<IMagickImage> subImageList = theImage.ToList().GetRange(startTrack.Value, endTrack.Value - startTrack.Value);
-            MagickImageCollection newImage = new MagickImageCollection(subImageList);
-            newImage.Write(newImagePath);
+            EditedImage = new MagickImageCollection();
+            foreach (IMagickImage i in subImageList)
+            {
+                i.AnimationDelay = (int)(100.0f / Program.ImageDeCap.GifRecorderFPS);
+                EditedImage.Add(i);
+            }
 
-            sizeText.Text = "File-Size: " + (Math.Round(new FileInfo(newImagePath).Length / 10000.0f)/100.0f).ToString() + " MB";
+            MemoryStream ms = new MemoryStream();
+            EditedImage.Write(ms);
+
+            sizeText.Text = "File-Size: " + (Math.Round(ms.Length / 10000.0f)/100.0f).ToString() + " MB";
         }
         private void calcSizeButton_Click(object sender, EventArgs e)
         {
@@ -159,11 +180,8 @@ namespace imageDeCap
 
         private void uploadButton_Click(object sender, EventArgs e)
         {
-            theImage.Write(newImagePath);
-            if (Properties.Settings.Default.saveImageAtAll && Directory.Exists(Properties.Settings.Default.SaveImagesHere))
-            {
-                theImage.Write(this.whereToSave);
-            }
+            CalculateFileSizeAndSaveOutputImage();
+            Aborted = false;
             this.Close();
         }
 
@@ -171,10 +189,12 @@ namespace imageDeCap
         {
             if (e.KeyCode.ToString() == "Escape")
             {
-                // Delete file, so it does not upload :)
-                File.Delete(newImagePath);
                 this.Close();
             }
+        }
+
+        private void GifEditor_FormClosing(object sender, FormClosingEventArgs e)
+        {
         }
     }
 }

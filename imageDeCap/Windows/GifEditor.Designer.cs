@@ -38,11 +38,14 @@
             this.uploadButton = new System.Windows.Forms.Button();
             this.calcSizeButton = new System.Windows.Forms.Button();
             this.sizeText = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.startTrack)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.endTrack)).BeginInit();
             this.toolsBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.BackgroundTrack)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.SuspendLayout();
             // 
             // PictureBox
@@ -89,6 +92,8 @@
             // 
             // toolsBox
             // 
+            this.toolsBox.Controls.Add(this.label9);
+            this.toolsBox.Controls.Add(this.numericUpDown1);
             this.toolsBox.Controls.Add(this.sizeText);
             this.toolsBox.Controls.Add(this.calcSizeButton);
             this.toolsBox.Controls.Add(this.uploadButton);
@@ -147,6 +152,22 @@
             this.sizeText.TabIndex = 7;
             this.sizeText.Text = "File-Size: ";
             // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(502, 13);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(129, 13);
+            this.label9.TabIndex = 37;
+            this.label9.Text = "GIF Recording frame-rate:";
+            // 
+            // numericUpDown1
+            // 
+            this.numericUpDown1.Location = new System.Drawing.Point(505, 28);
+            this.numericUpDown1.Name = "numericUpDown1";
+            this.numericUpDown1.Size = new System.Drawing.Size(120, 20);
+            this.numericUpDown1.TabIndex = 36;
+            // 
             // GifEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -154,8 +175,10 @@
             this.ClientSize = new System.Drawing.Size(643, 379);
             this.Controls.Add(this.toolsBox);
             this.Controls.Add(this.PictureBox);
+            this.KeyPreview = true;
             this.Name = "GifEditor";
             this.Text = "GifEditor";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.GifEditor_FormClosing);
             this.Load += new System.EventHandler(this.GifEditor_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.GifEditor_KeyDown);
             this.Resize += new System.EventHandler(this.GifEditor_Resize);
@@ -165,6 +188,7 @@
             this.toolsBox.ResumeLayout(false);
             this.toolsBox.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.BackgroundTrack)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -180,5 +204,7 @@
         private System.Windows.Forms.Button uploadButton;
         private System.Windows.Forms.Button calcSizeButton;
         private System.Windows.Forms.Label sizeText;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.NumericUpDown numericUpDown1;
     }
 }

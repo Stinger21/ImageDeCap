@@ -135,7 +135,7 @@ namespace imageDeCap
 
             gEnc = new MagickImageCollection();
             gCreat = new Gifed.AnimatedGif();
-
+            GifCaptureTimer.Interval = (int)(1000.0f / GifRecorderFPS);
             counter = 0;
             GifCaptureTimer.Enabled = true;
 
@@ -158,19 +158,9 @@ namespace imageDeCap
                 {
                     Utilities.playSound("snip.wav");
 
-                    File.Delete(Path.GetTempPath() + "screenshot.gif");
+                    byte[] gifData = gEnc.ToByteArray(MagickFormat.Gif);
 
-                    if(useImageMagick)
-                    {
-                        gEnc.Write(Path.GetTempPath() + "screenshot.gif");
-                    }
-                    else
-                    {
-                        gCreat.Save(Path.GetTempPath() + "screenshot.gif");
-                    }
-
-                    
-                    uploadImageFile(Path.GetTempPath() + "screenshot.gif", imageDeCap.Properties.Settings.Default.EditScreenshotAfterCapture);
+                    UploadImageData(gifData, filetype.gif);
                 }
 
                 Program.ImageDeCap.isTakingSnapshot = false;
@@ -178,15 +168,25 @@ namespace imageDeCap
                 GifCaptureTimer.Enabled = false;
             }
         }
+
+        public float GifRecorderFPS = 16.0f;
         int counter = 0;
         private void GifCaptureTimer_Tick(object sender, EventArgs e)
         {
             // Capture Bitmap
             Bitmap b = cap.Capture(enmScreenCaptureMode.Bounds, tempX, tempY, tempWidth, tempHeight);
-            gCreat.AddFrame(b, 10);
-            gEnc.Add(new MagickImage(b));
-            gEnc[counter].AnimationDelay = 10;
-            
+            gCreat.AddFrame(b, (uint)(100.0f / GifRecorderFPS));
+
+            MagickImage newImage = new MagickImage();
+            newImage.Format = MagickFormat.Gif;
+            newImage.Read(b);
+            gEnc.Add(newImage);
+            gEnc[counter].AnimationDelay = (int)(100.0f / GifRecorderFPS);
+
+            int minutes = counter / 600;
+            int seconds = (counter/10) % 600;
+            int csecs = counter % 10;
+            CurrentBackCover.SetTimer("Time: " + minutes + ":" + seconds + "." + csecs, "Frames: " + counter);
             counter++;
 
         }
@@ -257,7 +257,7 @@ namespace imageDeCap
             string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
             if (files.Length > 0)
             {
-                uploadImageFile(files[0]);
+                UploadImageFile(files[0]);
             }
         }
 
@@ -305,7 +305,7 @@ namespace imageDeCap
         }
         private void button4_Click(object sender, EventArgs e)
         {
-            UploadImgurScreen();
+            UploadToImgurBounds(true);
         }
 
 
@@ -329,7 +329,7 @@ namespace imageDeCap
         completeCover CurrentBackCover;
         public Magnificator magn;
         public bool isTakingSnapshot = false;
-        private void UploadToImgurBounds(bool Gif = false)
+        private void UploadToImgurBounds(bool isGif = false)
         {
             // prevent blackening
             if (!isTakingSnapshot)
@@ -338,7 +338,7 @@ namespace imageDeCap
                 Program.hotkeysEnabled = false;
                 //back cover used for pulling cursor position into updateSelectedArea()
                 magn = new Magnificator();
-                CurrentBackCover = new completeCover(Gif);
+                CurrentBackCover = new completeCover(isGif);
                 CurrentBackCover.Show();
                 CurrentBackCover.SetBounds(SystemInformation.VirtualScreen.X, SystemInformation.VirtualScreen.Y, SystemInformation.VirtualScreen.Width, SystemInformation.VirtualScreen.Height);
                 CurrentBackCover.TopMost = false;
@@ -371,103 +371,117 @@ namespace imageDeCap
         {
             Utilities.playSound("snip.wav");
             Bitmap result = cap.Capture(mode);
-
-            result.Save(Path.GetTempPath() + "screenshot.png");
-            result.Dispose();
-
-            uploadImageFile(Path.GetTempPath() + "screenshot.png", imageDeCap.Properties.Settings.Default.EditScreenshotAfterCapture);
-
+            UploadImageData(completeCover.GetBytes(result, System.Drawing.Imaging.ImageFormat.Png), filetype.png);
         }
 
-
-        public  void uploadImageFile(string filePath, bool edit = false)
+        public enum filetype
         {
-            string name = DateTime.UtcNow.ToString("yyyyMMddHHmmssfff");
-            // Will always be .png here. Weather to compress or not is decided in the editor.
-            string ending = ".png";
-            bool IsGif = false;
-            if(filePath.EndsWith(".jpg"))
+            jpg,
+            png,
+            bmp,
+            gif,
+            error,
+        }
+
+        public filetype getImageType(string filepath)
+        {
+            filepath = filepath.ToLower();
+            if (filepath.EndsWith(".jpg") || filepath.EndsWith(".jpeg"))
             {
-                ending = ".jpg";
+                return filetype.jpg;
             }
-            else if(filePath.EndsWith(".gif"))
+            else if (filepath.EndsWith(".png"))
             {
-                ending = ".gif";
-                IsGif = true;
+                return filetype.png;
             }
-            string whereToSave = imageDeCap.Properties.Settings.Default.SaveImagesHere + @"\" + name + ending;
+            else if (filepath.EndsWith(".bmp"))
+            {
+                return filetype.bmp;
+            }
+            else if (filepath.EndsWith(".gif"))
+            {
+                return filetype.gif;
+            }
+            else
+            {
+                return filetype.error;
+            }
+        }
+
+        public void UploadImageFile(string filepath)
+        {
+            UploadImageData(File.ReadAllBytes(filepath), getImageType(filepath), true);
+        }
+
+        public void UploadImageData(byte[] FileData, filetype imageType, bool ForceNoEdit = false)
+        {
+            if(imageType == filetype.error)
+            {
+                return;
+            }
+            
             // save unedited capture
             if (imageDeCap.Properties.Settings.Default.saveImageAtAll && Directory.Exists(imageDeCap.Properties.Settings.Default.SaveImagesHere))
             {
-                File.Copy(filePath, whereToSave);
+                string SaveFileName = DateTime.UtcNow.ToString("yyyyMMddHHmmssfff");
+                string whereToSave = imageDeCap.Properties.Settings.Default.SaveImagesHere + @"\" + SaveFileName + "." + imageType.ToString();
+                File.WriteAllBytes(whereToSave, FileData);
             }
-            if (IsGif == false)
-            {
-                Image bitmapImage = Image.FromFile(filePath);
-                if (imageDeCap.Properties.Settings.Default.CopyImageToClipboard)
-                {
-                    Clipboard.SetImage(bitmapImage);
-                    bitmapImage.Dispose();
-                }
-            } 
-            string editedPath = Path.GetTempPath() + "screenshot_edited.png";
-            
-            if (edit)
-            {
-                if (IsGif)
-                {
-                    GifEditor editor = new GifEditor(filePath, whereToSave);
-                    editor.ShowDialog();
-                    editedPath = Path.GetTempPath() + "screenshot_edited.gif";
-                }
-                else
-                {
-                    imageEditor editor = new imageEditor(filePath, whereToSave, tempX, tempY);
-                    editor.ShowDialog();
-                    if (editor.checkBox1.Checked)//If compressed, pick the compressed version.
-                    {
-                        editedPath = Path.GetTempPath() + "screenshot_edited.jpg";
-                    }
 
-                    filePath = editedPath;
-                    if (File.Exists(editedPath))
+            bool CanceledUpload = false;
+            // Edit the image if we are going to
+            if (imageDeCap.Properties.Settings.Default.EditScreenshotAfterCapture)
+            {
+                if (ForceNoEdit == false)
+                {
+                    if(imageType == filetype.gif)
                     {
-                        if (imageDeCap.Properties.Settings.Default.CopyImageToClipboard)
-                        {
-                            Image bitmapImage = Image.FromFile(filePath);
-                            bitmapImage = Image.FromFile(filePath);
-                            Clipboard.SetImage(bitmapImage);
-                            bitmapImage.Dispose();
-                        }
+                        GifEditor editor = new GifEditor(FileData);
+                        editor.ShowDialog();
+                        (CanceledUpload, FileData) = editor.FinalFunction();
+                    }
+                    else
+                    {
+                        imageEditor editor = new imageEditor(FileData, tempX, tempY);
+                        editor.ShowDialog();
+                        (CanceledUpload, FileData) = editor.FinalFunction();
                     }
                 }
             }
             else
             {
-                if (File.Exists(editedPath))
-                {
-                    File.Delete(editedPath);
-                }
-                File.Copy(filePath, editedPath);
-                filePath = editedPath;
+
             }
 
-            if (!imageDeCap.Properties.Settings.Default.NeverUpload)
+            // Copy image to clipboard if it's not a gif
+            if (imageType != filetype.gif)
             {
-                if (File.Exists(editedPath))
+                if (imageDeCap.Properties.Settings.Default.CopyImageToClipboard)
+                {
+                    Image bitmapImage = Image.FromStream(new MemoryStream(FileData));
+                    Clipboard.SetImage(bitmapImage);
+                    bitmapImage.Dispose();
+                }
+            }
+
+
+            // Upload the image
+            if(!CanceledUpload)
+            {
+                if (!imageDeCap.Properties.Settings.Default.NeverUpload)
                 {
                     BackgroundWorker bw = new BackgroundWorker();
                     bw.DoWork += cap.UploadImage;
                     bw.RunWorkerCompleted += uploadImageFileCompleted;
-                    bw.RunWorkerAsync(filePath);
+                    bw.RunWorkerAsync(FileData);
                 }
             }
-
         }
 
         private void uploadImageFileCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            string url = (string)e.Result;
+            (string url, byte[] ImageData) = (ValueTuple<string, byte[]>)e.Result;
+
             if (url.Contains("failed"))
             {
                 ClipboardHandler.setClipboard(url);
@@ -492,8 +506,7 @@ namespace imageDeCap
                     if (!imageDeCap.Properties.Settings.Default.DisableNotifications)
                         notifyIcon1.ShowBalloonTip(500, "imageDeCap", "Upload complete!", ToolTipIcon.Info);
                 }
-
-
+                
                 if (!Utilities.IsWindows10() || imageDeCap.Properties.Settings.Default.DisableNotifications)
                 {//means it's probably windows 10, in which case we should not play the noise as windows 10 plays a fucking noise of its own no matter what. :|
                     Utilities.playSound("upload.wav");
@@ -504,17 +517,14 @@ namespace imageDeCap
 
             if (imageDeCap.Properties.Settings.Default.uploadToFTP)
             {
-                if (File.Exists(Path.GetTempPath() + "screenshot_edited.png") || File.Exists(Path.GetTempPath() + "screenshot_edited.jpg"))
-                {
-                    string name = DateTime.UtcNow.ToString("yyyyMMddHHmmssfff");
-                    BackgroundWorker bw = new BackgroundWorker();
-                    bw.DoWork += cap.uploadToFTP;
-                    bw.RunWorkerAsync(new string[] {    imageDeCap.Properties.Settings.Default.FTPurl,
-                                                        imageDeCap.Properties.Settings.Default.FTPusername,
-                                                        imageDeCap.Properties.Settings.Default.FTPpassword,
-                                                        Path.GetTempPath() + "screenshot_edited.png", name + (url.EndsWith(".png") ? ".png" : ".jpg") });
-                }
-
+                string name = DateTime.UtcNow.ToString("yyyyMMddHHmmssfff");
+                BackgroundWorker bw = new BackgroundWorker();
+                bw.DoWork += cap.uploadToFTP;
+                bw.RunWorkerAsync(new object[] {    imageDeCap.Properties.Settings.Default.FTPurl,
+                                                    imageDeCap.Properties.Settings.Default.FTPusername,
+                                                    imageDeCap.Properties.Settings.Default.FTPpassword,
+                                                    ImageData,
+                                                    name + (url.EndsWith(".png") ? ".png" : ".jpg") });
             }
         }
 
