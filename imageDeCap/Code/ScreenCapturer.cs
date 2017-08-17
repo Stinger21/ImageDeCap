@@ -236,33 +236,7 @@ namespace imageDeCap
             }
             return null;
         }
-
-        //public static Bitmap CaptureDesktopWithCursor()
-        //{
-        //    int cursorX = 0;
-        //    int cursorY = 0;
-        //    Bitmap desktopBMP;
-        //    Bitmap cursorBMP;
-        //    Bitmap finalBMP;
-        //    Graphics g;
-        //    Rectangle r;
-        //    desktopBMP = CaptureDesktop();
-        //    cursorBMP = CaptureCursor(ref cursorX, ref cursorY);
-        //    if (desktopBMP != null)
-        //    {
-        //        if (cursorBMP != null)
-        //        {
-        //            r = new Rectangle(cursorX, cursorY, cursorBMP.Width, cursorBMP.Height);
-        //            g = Graphics.FromImage(desktopBMP);
-        //            g.DrawImage(cursorBMP, r);
-        //            g.Flush();
-        //            return desktopBMP;
-        //        }
-        //        else
-        //            return desktopBMP;
-        //    }
-        //    return null;
-        //}
+        
 
 
         public Point CursorPosition

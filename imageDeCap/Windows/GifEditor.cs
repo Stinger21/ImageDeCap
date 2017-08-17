@@ -27,7 +27,7 @@ namespace imageDeCap
         public MagickImageCollection EditedImage = new MagickImageCollection();
         IMagickImage CurrentImage;
         int frames = 0;
-        public GifEditor(byte[] ImageData)
+        public GifEditor(byte[] ImageData, int X, int Y)
         {
             InitializeComponent();
             theImage.Read(ImageData);
@@ -42,6 +42,8 @@ namespace imageDeCap
 
             this.Size = new Size(width, height);
             this.frames = theImage.Count;
+            this.StartPosition = FormStartPosition.Manual;
+            this.Location = new Point(X - 7, Y - 20);
 
             //PictureBox.Location = new Point((width / 2) - (CurrentImage.Width / 2), 12);
             startTrack.Maximum = frames;

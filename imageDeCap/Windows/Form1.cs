@@ -21,8 +21,6 @@ using System.Xml.Linq;
 using Microsoft.Win32;
 using System.Windows.Media.Imaging;
 using ImageMagick;
-using AnimatedGif;
-//using AnimatedGif;
 
 namespace imageDeCap
 {
@@ -84,7 +82,6 @@ namespace imageDeCap
                     if (!hKey1Pressed)
                     {
                         UploadPastebinClipboard();
-                        Console.WriteLine("HOTKEY1");
                     }
                     hKey1Pressed = true;
                 }
@@ -92,9 +89,7 @@ namespace imageDeCap
                 {
                     if (!hKey2Pressed)
                     {
-                        //UploadImgurScreen();
                         UploadToImgurBounds(true);
-                        Console.WriteLine("HOTKEY2");
                     }
                     hKey2Pressed = true;
                 }
@@ -103,7 +98,6 @@ namespace imageDeCap
                     if (!hKey3Pressed)
                     {
                         UploadToImgurBounds();
-                        Console.WriteLine("HOTKEY3");
                     }
                     hKey3Pressed = true;
                 }
@@ -112,7 +106,6 @@ namespace imageDeCap
                     if (!hKey4Pressed)
                     {
                         UploadImgurWindow();
-                        Console.WriteLine("HOTKEY4");
                     }
                     hKey4Pressed = true;
                 }
@@ -126,15 +119,12 @@ namespace imageDeCap
                 }
             }
         }
-
-        bool useImageMagick = true;
+        
         MagickImageCollection gEnc;
-        Gifed.AnimatedGif gCreat;
         public void StartRecordingGif()
         {
 
             gEnc = new MagickImageCollection();
-            gCreat = new Gifed.AnimatedGif();
             GifCaptureTimer.Interval = (int)(1000.0f / GifRecorderFPS);
             counter = 0;
             GifCaptureTimer.Enabled = true;
@@ -175,7 +165,6 @@ namespace imageDeCap
         {
             // Capture Bitmap
             Bitmap b = cap.Capture(enmScreenCaptureMode.Bounds, tempX, tempY, tempWidth, tempHeight);
-            gCreat.AddFrame(b, (uint)(100.0f / GifRecorderFPS));
 
             MagickImage newImage = new MagickImage();
             newImage.Format = MagickFormat.Gif;
@@ -197,8 +186,6 @@ namespace imageDeCap
 
             this.Hide();
             this.ShowInTaskbar = false;
-            //this.Opacity = 0.0f;
-
 
             props = new SettingsWindow(this);
 
@@ -436,7 +423,7 @@ namespace imageDeCap
                 {
                     if(imageType == filetype.gif)
                     {
-                        GifEditor editor = new GifEditor(FileData);
+                        GifEditor editor = new GifEditor(FileData, tempX, tempY);
                         editor.ShowDialog();
                         (CanceledUpload, FileData) = editor.FinalFunction();
                     }
@@ -447,10 +434,6 @@ namespace imageDeCap
                         (CanceledUpload, FileData) = editor.FinalFunction();
                     }
                 }
-            }
-            else
-            {
-
             }
 
             // Copy image to clipboard if it's not a gif
@@ -533,7 +516,6 @@ namespace imageDeCap
             if (!imageDeCap.Properties.Settings.Default.NeverUpload)
             {
                 Utilities.playSound("snip.wav");
-                //string pasteBinResult = cap.Send(text);
                 BackgroundWorker bw = new BackgroundWorker();
                 bw.DoWork += cap.Send;
                 bw.RunWorkerCompleted += uploadPastebinCompleted;
@@ -542,16 +524,14 @@ namespace imageDeCap
 
             if (imageDeCap.Properties.Settings.Default.AlsoFTPTextFiles)
             {
-                string tempTextFileFolder = Path.GetTempPath() + "textfile.txt";
-                File.WriteAllText(tempTextFileFolder, text);
                 BackgroundWorker bw = new BackgroundWorker();
                 bw.DoWork += cap.uploadToFTP;
                 string name = DateTime.UtcNow.ToString("yyyyMMddHHmmssfff");
-                bw.RunWorkerAsync(new string[] {    imageDeCap.Properties.Settings.Default.FTPurl,
+                bw.RunWorkerAsync(new object[] {    imageDeCap.Properties.Settings.Default.FTPurl,
                                                     imageDeCap.Properties.Settings.Default.FTPusername,
                                                     imageDeCap.Properties.Settings.Default.FTPpassword,
-                                                    tempTextFileFolder,
-                                                    name +".txt" });
+                                                    Encoding.ASCII.GetBytes(text),
+                                                    name + ".txt" });
 
             }
             if (imageDeCap.Properties.Settings.Default.AlsoSaveTextFiles)
@@ -738,9 +718,6 @@ namespace imageDeCap
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            string path = Path.GetTempPath() + "screenshot.gif";
-            //GifEditor editor = new GifEditor(path, "asdf");
-            //editor.Show();
         }
     }
 }
