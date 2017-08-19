@@ -56,6 +56,8 @@
             this.checkBoxUploadToFTP = new System.Windows.Forms.CheckBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.label9 = new System.Windows.Forms.Label();
+            this.gifFPS = new System.Windows.Forms.NumericUpDown();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.CopyImageToClipboard = new System.Windows.Forms.CheckBox();
             this.checkBox6 = new System.Windows.Forms.CheckBox();
@@ -70,19 +72,17 @@
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.neverUpload = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.button4 = new System.Windows.Forms.Button();
-            this.AddToStartMenu = new System.Windows.Forms.Button();
-            this.AddToAutoStart = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.eventLog1 = new System.Diagnostics.EventLog();
             this.label10 = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
-            this.label9 = new System.Windows.Forms.Label();
+            this.AddToAutoStart = new System.Windows.Forms.Button();
+            this.label12 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.imageContainer)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gifFPS)).BeginInit();
             this.groupBox2.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -90,7 +90,6 @@
             this.groupBox4.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.eventLog1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.SuspendLayout();
             // 
             // HotkeyTextBox4
@@ -208,9 +207,9 @@
             this.checkBox2.AutoSize = true;
             this.checkBox2.Location = new System.Drawing.Point(9, 115);
             this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(108, 17);
+            this.checkBox2.Size = new System.Drawing.Size(192, 17);
             this.checkBox2.TabIndex = 21;
-            this.checkBox2.Text = "Use HTTPS links";
+            this.checkBox2.Text = "Open uploaded file in web browser.";
             this.checkBox2.UseVisualStyleBackColor = true;
             this.checkBox2.CheckedChanged += new System.EventHandler(this.checkBox2_CheckedChanged);
             // 
@@ -245,9 +244,9 @@
             this.checkBox3.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBox3.Location = new System.Drawing.Point(9, 92);
             this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(133, 17);
+            this.checkBox3.Size = new System.Drawing.Size(135, 17);
             this.checkBox3.TabIndex = 4;
-            this.checkBox3.Text = "Copy links to Clipboard";
+            this.checkBox3.Text = "Copy links to clipboard.";
             this.checkBox3.UseVisualStyleBackColor = true;
             this.checkBox3.CheckedChanged += new System.EventHandler(this.checkBox3_CheckedChanged);
             // 
@@ -334,9 +333,9 @@
             this.AlsoFTPTextFilesBox.AutoSize = true;
             this.AlsoFTPTextFilesBox.Location = new System.Drawing.Point(101, 19);
             this.AlsoFTPTextFilesBox.Name = "AlsoFTPTextFilesBox";
-            this.AlsoFTPTextFilesBox.Size = new System.Drawing.Size(142, 17);
+            this.AlsoFTPTextFilesBox.Size = new System.Drawing.Size(136, 17);
             this.AlsoFTPTextFilesBox.TabIndex = 8;
-            this.AlsoFTPTextFilesBox.Text = "Also Upload Text to FTP";
+            this.AlsoFTPTextFilesBox.Text = "Also upload text to FTP";
             this.AlsoFTPTextFilesBox.UseVisualStyleBackColor = true;
             this.AlsoFTPTextFilesBox.CheckedChanged += new System.EventHandler(this.AlsoFTPTectFilesBox_CheckedChanged);
             // 
@@ -364,8 +363,9 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.label12);
             this.tabPage1.Controls.Add(this.label9);
-            this.tabPage1.Controls.Add(this.numericUpDown1);
+            this.tabPage1.Controls.Add(this.gifFPS);
             this.tabPage1.Controls.Add(this.groupBox2);
             this.tabPage1.Controls.Add(this.CopyImageToClipboard);
             this.tabPage1.Controls.Add(this.checkBox7);
@@ -379,6 +379,38 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "General";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(200, 85);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(129, 13);
+            this.label9.TabIndex = 35;
+            this.label9.Text = "GIF Recording frame-rate:";
+            // 
+            // gifFPS
+            // 
+            this.gifFPS.Location = new System.Drawing.Point(203, 100);
+            this.gifFPS.Maximum = new decimal(new int[] {
+            15,
+            0,
+            0,
+            0});
+            this.gifFPS.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.gifFPS.Name = "gifFPS";
+            this.gifFPS.Size = new System.Drawing.Size(120, 20);
+            this.gifFPS.TabIndex = 31;
+            this.gifFPS.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.gifFPS.ValueChanged += new System.EventHandler(this.gifFPS_ValueChanged);
             // 
             // groupBox2
             // 
@@ -519,9 +551,9 @@
             this.neverUpload.AutoSize = true;
             this.neverUpload.Location = new System.Drawing.Point(9, 69);
             this.neverUpload.Name = "neverUpload";
-            this.neverUpload.Size = new System.Drawing.Size(157, 17);
+            this.neverUpload.Size = new System.Drawing.Size(160, 17);
             this.neverUpload.TabIndex = 7;
-            this.neverUpload.Text = "Never upload to public sites";
+            this.neverUpload.Text = "Never upload to public sites.";
             this.neverUpload.UseVisualStyleBackColor = true;
             this.neverUpload.CheckedChanged += new System.EventHandler(this.neverUpload_CheckedChanged);
             // 
@@ -539,39 +571,6 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "FTP Settings";
             // 
-            // button4
-            // 
-            this.button4.Location = new System.Drawing.Point(356, 142);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(55, 20);
-            this.button4.TabIndex = 31;
-            this.button4.Text = "Uninstall";
-            this.toolTip1.SetToolTip(this.button4, "Removes shortcuts to this program in start menu and windows startup");
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
-            // 
-            // AddToStartMenu
-            // 
-            this.AddToStartMenu.Location = new System.Drawing.Point(411, 142);
-            this.AddToStartMenu.Name = "AddToStartMenu";
-            this.AddToStartMenu.Size = new System.Drawing.Size(55, 20);
-            this.AddToStartMenu.TabIndex = 28;
-            this.AddToStartMenu.Text = "Install";
-            this.toolTip1.SetToolTip(this.AddToStartMenu, "Adds a shortcut to this program in the start menu.");
-            this.AddToStartMenu.UseVisualStyleBackColor = true;
-            this.AddToStartMenu.Click += new System.EventHandler(this.AddToStartMenu_Click);
-            // 
-            // AddToAutoStart
-            // 
-            this.AddToAutoStart.Location = new System.Drawing.Point(356, 120);
-            this.AddToAutoStart.Name = "AddToAutoStart";
-            this.AddToAutoStart.Size = new System.Drawing.Size(110, 20);
-            this.AddToAutoStart.TabIndex = 27;
-            this.AddToAutoStart.Text = "Add to autostart";
-            this.toolTip1.SetToolTip(this.AddToAutoStart, "Adds a shortcut to this program in windows startup");
-            this.AddToAutoStart.UseVisualStyleBackColor = true;
-            this.AddToAutoStart.Click += new System.EventHandler(this.AddToAutoStart_Click);
-            // 
             // label3
             // 
             this.label3.AutoSize = true;
@@ -585,7 +584,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(4, 281);
+            this.label2.Location = new System.Drawing.Point(4, 280);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(162, 13);
             this.label2.TabIndex = 30;
@@ -602,28 +601,33 @@
             this.label10.Cursor = System.Windows.Forms.Cursors.Hand;
             this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label10.ForeColor = System.Drawing.Color.RoyalBlue;
-            this.label10.Location = new System.Drawing.Point(272, 281);
+            this.label10.Location = new System.Drawing.Point(272, 280);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(188, 13);
             this.label10.TabIndex = 31;
             this.label10.Text = "Check mattwestphal.com for updates! ";
             this.label10.Click += new System.EventHandler(this.label10_Click);
             // 
-            // numericUpDown1
+            // AddToAutoStart
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(6, 219);
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(120, 20);
-            this.numericUpDown1.TabIndex = 31;
+            this.AddToAutoStart.Location = new System.Drawing.Point(356, 124);
+            this.AddToAutoStart.Name = "AddToAutoStart";
+            this.AddToAutoStart.Size = new System.Drawing.Size(110, 25);
+            this.AddToAutoStart.TabIndex = 27;
+            this.AddToAutoStart.Text = "Add to autostart";
+            this.toolTip1.SetToolTip(this.AddToAutoStart, "Adds a shortcut to this program in windows startup");
+            this.AddToAutoStart.UseVisualStyleBackColor = true;
+            this.AddToAutoStart.Click += new System.EventHandler(this.AddToAutoStart_Click);
             // 
-            // label9
+            // label12
             // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(3, 204);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(129, 13);
-            this.label9.TabIndex = 35;
-            this.label9.Text = "GIF Recording frame-rate:";
+            this.label12.Location = new System.Drawing.Point(5, 196);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(331, 47);
+            this.label12.TabIndex = 39;
+            this.label12.Text = "Protip: Even when Edit Image is switched off, you can bring up the image-editor b" +
+    "y pressing right-click when selecting what region to cpature.\r\n";
+            this.label12.Click += new System.EventHandler(this.label12_Click);
             // 
             // SettingsWindow
             // 
@@ -632,10 +636,8 @@
             this.ClientSize = new System.Drawing.Size(472, 296);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.button4);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.AddToAutoStart);
-            this.Controls.Add(this.AddToStartMenu);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.imageContainer);
             this.Controls.Add(this.button3);
@@ -653,6 +655,7 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gifFPS)).EndInit();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.tabPage2.ResumeLayout(false);
@@ -665,7 +668,6 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.eventLog1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -705,10 +707,7 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Button AddToStartMenu;
-        private System.Windows.Forms.Button AddToAutoStart;
         private System.Windows.Forms.CheckBox checkBox6;
-        private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TabPage tabPage3;
@@ -721,6 +720,8 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.NumericUpDown gifFPS;
+        private System.Windows.Forms.Button AddToAutoStart;
+        private System.Windows.Forms.Label label12;
     }
 }

@@ -119,6 +119,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Code\ClipboardHandler.cs" />
+    <Compile Include="Code\Preferences.cs" />
     <Compile Include="Code\Utilities.cs" />
     <Compile Include="Windows\aboutWindow.cs">
       <SubType>Form</SubType>
@@ -144,7 +145,6 @@
     <Compile Include="Windows\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Code\GlobalKeyBoardHook.cs" />
     <Compile Include="Windows\GifEditor.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -157,7 +157,6 @@
     <Compile Include="Windows\imageEditor.Designer.cs">
       <DependentUpon>imageEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="Code\KeyMessageFilter.cs" />
     <Compile Include="Windows\Magnificator.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -170,7 +169,6 @@
     <Compile Include="Code\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Code\ScreenCapturer.cs" />
-    <Compile Include="Code\Settings.cs" />
     <Compile Include="Windows\SettingsWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -210,15 +208,6 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <None Include="packages.config" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -254,7 +243,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="canvas.png" />
-    <Content Include="Gif.Components.dll" />
     <Content Include="Images\Untitled-2.ico" />
     <Content Include="Images\Untitled-2_256x256.png" />
   </ItemGroup>

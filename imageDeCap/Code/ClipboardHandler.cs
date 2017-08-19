@@ -22,7 +22,7 @@ namespace imageDeCap
 
         public static void setClipboard(string text)
         {
-            if (imageDeCap.Properties.Settings.Default.CopyLinksToClipboard)
+            if (imageDeCap.Preferences.CopyLinksToClipboard)
             {
                 if (text != null)
                 {

@@ -25,9 +25,12 @@ namespace imageDeCap
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+
+            Preferences.Load();
+
             ImageDeCap = new Form1();
             ImageDeCap.FormClosed += QuitLoop;
-            ImageDeCap.Show();
+            //ImageDeCap.Show();
 
             while (!mQuit)
             {

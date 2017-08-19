@@ -26,49 +26,51 @@ namespace imageDeCap
 
         void initSettings()
         {
-            checkBox1.Checked = Properties.Settings.Default.saveImageAtAll;
-            button2.Enabled = Properties.Settings.Default.saveImageAtAll;
-            alsoSaveTextFilesBox.Enabled = Properties.Settings.Default.saveImageAtAll;
-            alsoSaveTextFilesBox.Checked = Properties.Settings.Default.AlsoSaveTextFiles;
+            checkBox1.Checked = Preferences.saveImageAtAll;
+            button2.Enabled = Preferences.saveImageAtAll;
+            alsoSaveTextFilesBox.Enabled = Preferences.saveImageAtAll;
+            alsoSaveTextFilesBox.Checked = Preferences.AlsoSaveTextFiles;
 
-            textBox1.Text = Properties.Settings.Default.SaveImagesHere;
+            textBox1.Text = Preferences.SaveImagesHere;
             textBox1.Enabled = checkBox1.Checked;
 
-            checkBox7.Checked = Properties.Settings.Default.EditScreenshotAfterCapture;
-            checkBox3.Checked = Properties.Settings.Default.CopyLinksToClipboard;
-            checkBox4.Checked = Properties.Settings.Default.DisableSoundEffects;
+            checkBox7.Checked = Preferences.EditScreenshotAfterCapture;
+            checkBox3.Checked = Preferences.CopyLinksToClipboard;
+            checkBox4.Checked = Preferences.DisableSoundEffects;
 
-            checkBox2.Checked = Properties.Settings.Default.UseHTTPS;
-            checkBox2.Enabled = !Properties.Settings.Default.NeverUpload;
-            checkBox3.Enabled = !Properties.Settings.Default.NeverUpload;
-            checkBox5.Enabled = !Properties.Settings.Default.NeverUpload;
-            textBox2.Enabled = !Properties.Settings.Default.NeverUpload;
+            checkBox2.Checked = Preferences.OpenInBrowser;
+            checkBox2.Enabled = !Preferences.NeverUpload;
+            checkBox3.Enabled = !Preferences.NeverUpload;
+            checkBox5.Enabled = !Preferences.NeverUpload;
+            textBox2.Enabled = !Preferences.NeverUpload;
 
-            neverUpload.Checked = Properties.Settings.Default.NeverUpload;
+            neverUpload.Checked = Preferences.NeverUpload;
 
-            checkBox5.Checked = Properties.Settings.Default.DisableNotifications;
+            checkBox5.Checked = Preferences.DisableNotifications;
 
-            textBox2.Text = Properties.Settings.Default.PastebinSubjectLine;
+            textBox2.Text = Preferences.PastebinSubjectLine;
 
-            checkBox6.Checked = Properties.Settings.Default.FreezeScreenOnRegionShot;
+            checkBox6.Checked = Preferences.FreezeScreenOnRegionShot;
 
-            AlsoFTPTextFilesBox.Checked = Properties.Settings.Default.uploadToFTP;
-            AlsoFTPTextFilesBox.Enabled = Properties.Settings.Default.uploadToFTP;
-            AlsoFTPTextFilesBox.Checked = Properties.Settings.Default.AlsoFTPTextFiles;
-            FTPURL.Enabled = Properties.Settings.Default.uploadToFTP;
-            FTPUsername.Enabled = Properties.Settings.Default.uploadToFTP;
-            FTPpassword.Enabled = Properties.Settings.Default.uploadToFTP;
+            AlsoFTPTextFilesBox.Checked = Preferences.uploadToFTP;
+            AlsoFTPTextFilesBox.Enabled = Preferences.uploadToFTP;
+            AlsoFTPTextFilesBox.Checked = Preferences.AlsoFTPTextFiles;
+            FTPURL.Enabled = Preferences.uploadToFTP;
+            FTPUsername.Enabled = Preferences.uploadToFTP;
+            FTPpassword.Enabled = Preferences.uploadToFTP;
             
-            HotkeyTextBox1.Text = Properties.Settings.Default.Hotkey1;
-            HotkeyTextBox2.Text = Properties.Settings.Default.Hotkey2;
-            HotkeyTextBox3.Text = Properties.Settings.Default.Hotkey3;
-            HotkeyTextBox4.Text = Properties.Settings.Default.Hotkey4;
+            HotkeyTextBox1.Text = Preferences.Hotkey1;
+            HotkeyTextBox2.Text = Preferences.Hotkey2;
+            HotkeyTextBox3.Text = Preferences.Hotkey3;
+            HotkeyTextBox4.Text = Preferences.Hotkey4;
 
-            FTPpassword.Text = Properties.Settings.Default.FTPpassword;
-            FTPURL.Text = Properties.Settings.Default.FTPurl;
-            FTPUsername.Text = Properties.Settings.Default.FTPusername;
+            FTPpassword.Text = Preferences.FTPpassword;
+            FTPURL.Text = Preferences.FTPurl;
+            FTPUsername.Text = Preferences.FTPusername;
 
-            CopyImageToClipboard.Checked = Properties.Settings.Default.CopyImageToClipboard;
+            gifFPS.Value = Preferences.GIFRecordingFramerate;
+
+            CopyImageToClipboard.Checked = Preferences.CopyImageToClipboard;
         }
 
         private void CreateShortcut(string targetProgram, string shortcutPath)
@@ -132,10 +134,10 @@ namespace imageDeCap
 
         private void button5_Click(object sender, EventArgs e)//Apply
         {
-            Properties.Settings.Default.saveImageAtAll = checkBox1.Checked;
-            Properties.Settings.Default.SaveImagesHere = textBox1.Text;
+            Preferences.saveImageAtAll = checkBox1.Checked;
+            Preferences.SaveImagesHere = textBox1.Text;
 
-            Properties.Settings.Default.Save();
+            Preferences.Save();
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -184,8 +186,8 @@ namespace imageDeCap
             textBox1.Enabled = checkBox1.Checked;
             button2.Enabled = checkBox1.Checked;
             alsoSaveTextFilesBox.Enabled = checkBox1.Checked;
-            Properties.Settings.Default.saveImageAtAll = checkBox1.Checked;
-            Properties.Settings.Default.Save();
+            Preferences.saveImageAtAll = checkBox1.Checked;
+            Preferences.Save();
         }
 
 
@@ -196,8 +198,8 @@ namespace imageDeCap
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
-            Properties.Settings.Default.SaveImagesHere = textBox1.Text;
-            Properties.Settings.Default.Save();
+            Preferences.SaveImagesHere = textBox1.Text;
+            Preferences.Save();
         }
         
         private void RegisterInStartup(bool isChecked)
@@ -216,105 +218,105 @@ namespace imageDeCap
 
         private void checkBox7_CheckedChanged(object sender, EventArgs e)
         {
-            Properties.Settings.Default.EditScreenshotAfterCapture = checkBox7.Checked;
-            Properties.Settings.Default.Save();
+            Preferences.EditScreenshotAfterCapture = checkBox7.Checked;
+            Preferences.Save();
         }
 
         private void checkBox3_CheckedChanged(object sender, EventArgs e)
         {
-            Properties.Settings.Default.CopyLinksToClipboard = checkBox3.Checked;
-            Properties.Settings.Default.Save();
+            Preferences.CopyLinksToClipboard = checkBox3.Checked;
+            Preferences.Save();
         }
 
         private void checkBox4_CheckedChanged(object sender, EventArgs e)
         {
-            Properties.Settings.Default.DisableSoundEffects = checkBox4.Checked;
-            Properties.Settings.Default.Save();
+            Preferences.DisableSoundEffects = checkBox4.Checked;
+            Preferences.Save();
         }
 
         private void checkBox2_CheckedChanged(object sender, EventArgs e)
         {
-            Properties.Settings.Default.UseHTTPS = checkBox2.Checked;
-            Properties.Settings.Default.Save();
+            Preferences.OpenInBrowser = checkBox2.Checked;
+            Preferences.Save();
         }
 
         private void textBox2_TextChanged_1(object sender, EventArgs e)
         {
-            Properties.Settings.Default.PastebinSubjectLine = textBox2.Text;
-            Properties.Settings.Default.Save();
+            Preferences.PastebinSubjectLine = textBox2.Text;
+            Preferences.Save();
         }
 
         private void neverUpload_CheckedChanged(object sender, EventArgs e)
         {
-            Properties.Settings.Default.NeverUpload = neverUpload.Checked;
-            Properties.Settings.Default.Save();
-            checkBox2.Enabled = !Properties.Settings.Default.NeverUpload;
-            checkBox3.Enabled = !Properties.Settings.Default.NeverUpload;
-            checkBox5.Enabled = !Properties.Settings.Default.NeverUpload;
-            textBox2.Enabled = !Properties.Settings.Default.NeverUpload;
+            Preferences.NeverUpload = neverUpload.Checked;
+            Preferences.Save();
+            checkBox2.Enabled = !Preferences.NeverUpload;
+            checkBox3.Enabled = !Preferences.NeverUpload;
+            checkBox5.Enabled = !Preferences.NeverUpload;
+            textBox2.Enabled = !Preferences.NeverUpload;
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            Properties.Settings.Default.Reset();
-            //Properties.Settings.Default.Save();
+            Preferences.Reset();
+            //Preferences.Save();
             initSettings();
         }
 
         private void checkBox5_CheckedChanged(object sender, EventArgs e)
         {
-            Properties.Settings.Default.DisableNotifications = checkBox5.Checked;
-            Properties.Settings.Default.Save();
+            Preferences.DisableNotifications = checkBox5.Checked;
+            Preferences.Save();
             
         }
 
         private void checkBox6_CheckedChanged(object sender, EventArgs e)
         {
 
-            Properties.Settings.Default.FreezeScreenOnRegionShot = checkBox6.Checked;
-            Properties.Settings.Default.Save();
+            Preferences.FreezeScreenOnRegionShot = checkBox6.Checked;
+            Preferences.Save();
         }
 
         private void checkBoxUploadToFTP_CheckedChanged(object sender, EventArgs e)
         {
             //checkBoxUploadToFTP.Enabled = checkBoxUploadToFTP.Checked;
-            Properties.Settings.Default.uploadToFTP = checkBoxUploadToFTP.Checked;
-            Properties.Settings.Default.Save();
+            Preferences.uploadToFTP = checkBoxUploadToFTP.Checked;
+            Preferences.Save();
 
-            AlsoFTPTextFilesBox.Enabled = Properties.Settings.Default.uploadToFTP;
-            FTPURL.Enabled = Properties.Settings.Default.uploadToFTP;
-            FTPUsername.Enabled = Properties.Settings.Default.uploadToFTP;
-            FTPpassword.Enabled = Properties.Settings.Default.uploadToFTP;
+            AlsoFTPTextFilesBox.Enabled = Preferences.uploadToFTP;
+            FTPURL.Enabled = Preferences.uploadToFTP;
+            FTPUsername.Enabled = Preferences.uploadToFTP;
+            FTPpassword.Enabled = Preferences.uploadToFTP;
         }
 
         private void FTPURL_TextChanged(object sender, EventArgs e)
         {
-            Properties.Settings.Default.FTPurl = FTPURL.Text;
-            Properties.Settings.Default.Save();
+            Preferences.FTPurl = FTPURL.Text;
+            Preferences.Save();
         }
 
         private void FTPUsername_TextChanged(object sender, EventArgs e)
         {
-            Properties.Settings.Default.FTPusername = FTPUsername.Text;
-            Properties.Settings.Default.Save();
+            Preferences.FTPusername = FTPUsername.Text;
+            Preferences.Save();
         }
 
         private void FTPpassword_TextChanged(object sender, EventArgs e)
         {
-            Properties.Settings.Default.FTPpassword = FTPpassword.Text;
-            Properties.Settings.Default.Save();
+            Preferences.FTPpassword = FTPpassword.Text;
+            Preferences.Save();
         }
 
         private void alsoSaveTextFilesBox_CheckedChanged(object sender, EventArgs e)
         {
-            Properties.Settings.Default.AlsoSaveTextFiles = alsoSaveTextFilesBox.Checked;
-            Properties.Settings.Default.Save();
+            Preferences.AlsoSaveTextFiles = alsoSaveTextFilesBox.Checked;
+            Preferences.Save();
         }
 
         private void AlsoFTPTectFilesBox_CheckedChanged(object sender, EventArgs e)
         {
-            Properties.Settings.Default.AlsoFTPTextFiles = AlsoFTPTextFilesBox.Checked;
-            Properties.Settings.Default.Save();
+            Preferences.AlsoFTPTextFiles = AlsoFTPTextFilesBox.Checked;
+            Preferences.Save();
         }
 
         public static string getCurrentHotkey()
@@ -348,8 +350,8 @@ namespace imageDeCap
         private void HotkeyTextBox1_KeyDown(object sender, KeyEventArgs e)
         {
             HotkeyTextBox1.Text = getCurrentHotkey();
-            Properties.Settings.Default.Hotkey1 = HotkeyTextBox1.Text;
-            Properties.Settings.Default.Save();
+            Preferences.Hotkey1 = HotkeyTextBox1.Text;
+            Preferences.Save();
         }
         private void HotkeyTextBox1_GotFocus(object sender, EventArgs e)
         {
@@ -363,8 +365,8 @@ namespace imageDeCap
         private void HotkeyTextBox2_KeyDown(object sender, KeyEventArgs e)
         {
             HotkeyTextBox2.Text = getCurrentHotkey();
-            Properties.Settings.Default.Hotkey2 = HotkeyTextBox2.Text;
-            Properties.Settings.Default.Save();
+            Preferences.Hotkey2 = HotkeyTextBox2.Text;
+            Preferences.Save();
         }
         private void HotkeyTextBox2_GotFocus(object sender, EventArgs e)
         {
@@ -377,8 +379,8 @@ namespace imageDeCap
         private void HotkeyTextBox3_KeyDown(object sender, KeyEventArgs e)
         {
             HotkeyTextBox3.Text = getCurrentHotkey();
-            Properties.Settings.Default.Hotkey3 = HotkeyTextBox3.Text;
-            Properties.Settings.Default.Save();
+            Preferences.Hotkey3 = HotkeyTextBox3.Text;
+            Preferences.Save();
         }
         private void HotkeyTextBox3_GotFocus(object sender, EventArgs e)
         {
@@ -392,8 +394,8 @@ namespace imageDeCap
         private void HotkeyTextBox4_KeyDown(object sender, KeyEventArgs e)
         {
             HotkeyTextBox4.Text = getCurrentHotkey();
-            Properties.Settings.Default.Hotkey4 = HotkeyTextBox4.Text;
-            Properties.Settings.Default.Save();
+            Preferences.Hotkey4 = HotkeyTextBox4.Text;
+            Preferences.Save();
         }
         private void HotkeyTextBox4_GotFocus(object sender, EventArgs e)
         {
@@ -446,8 +448,8 @@ namespace imageDeCap
 
         private void CopyImageToClipboard_CheckedChanged(object sender, EventArgs e)
         {
-            Properties.Settings.Default.CopyImageToClipboard = CopyImageToClipboard.Checked;
-            Properties.Settings.Default.Save();
+            Preferences.CopyImageToClipboard = CopyImageToClipboard.Checked;
+            Preferences.Save();
         }
 
         private void label3_Click_1(object sender, EventArgs e)
@@ -495,6 +497,16 @@ namespace imageDeCap
         private void label8_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void label12_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void gifFPS_ValueChanged(object sender, EventArgs e)
+        {
+            Preferences.GIFRecordingFramerate = (int)gifFPS.Value;
         }
     }
 }

@@ -21,7 +21,7 @@ namespace imageDeCap
 
         public static void playSound(string soundName)
         {
-            if (!imageDeCap.Properties.Settings.Default.DisableSoundEffects)
+            if (!imageDeCap.Preferences.DisableSoundEffects)
             {
                 Assembly assembly = Assembly.GetExecutingAssembly();
                 string soundPath = "imageDeCap.Sounds." + soundName;

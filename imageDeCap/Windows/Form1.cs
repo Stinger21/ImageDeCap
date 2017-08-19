@@ -21,13 +21,14 @@ using System.Xml.Linq;
 using Microsoft.Win32;
 using System.Windows.Media.Imaging;
 using ImageMagick;
+using System.Text.RegularExpressions;
 
 namespace imageDeCap
 {
     public partial class Form1 : Form
     {
-        string xmlLinksPath = Path.GetTempPath() + "imageDecapLinks.xml";
-        XElement xmlLinks = new XElement("uploadList");
+        string LinksFilePath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\imageDeCap\imageDecapLinks.ini";
+
         List<string> Links = new List<string>();
         private void addToLinks(string link, bool addToXML = true)
         {
@@ -44,8 +45,8 @@ namespace imageDeCap
             }
             if (addToXML)
             {
-                xmlLinks.Add(new XElement("Link", link));
-                xmlLinks.Save(xmlLinksPath);
+                string links = String.Join("\n", Links);
+                File.WriteAllText(LinksFilePath, links);
             }
         }
 
@@ -65,7 +66,6 @@ namespace imageDeCap
 
 
         SettingsWindow props;
-
         bool hKey1Pressed = false;
         bool hKey2Pressed = false;
         bool hKey3Pressed = false;
@@ -77,7 +77,7 @@ namespace imageDeCap
             if (Program.hotkeysEnabled)
             {
                 string hotkey = SettingsWindow.getCurrentHotkey();
-                if (imageDeCap.Properties.Settings.Default.Hotkey1 == hotkey)
+                if (Preferences.Hotkey1 == hotkey)
                 {
                     if (!hKey1Pressed)
                     {
@@ -85,7 +85,7 @@ namespace imageDeCap
                     }
                     hKey1Pressed = true;
                 }
-                else if (imageDeCap.Properties.Settings.Default.Hotkey2 == hotkey)
+                else if (Preferences.Hotkey2 == hotkey)
                 {
                     if (!hKey2Pressed)
                     {
@@ -93,7 +93,7 @@ namespace imageDeCap
                     }
                     hKey2Pressed = true;
                 }
-                else if (imageDeCap.Properties.Settings.Default.Hotkey3 == hotkey)
+                else if (Preferences.Hotkey3 == hotkey)
                 {
                     if (!hKey3Pressed)
                     {
@@ -101,7 +101,7 @@ namespace imageDeCap
                     }
                     hKey3Pressed = true;
                 }
-                else if (imageDeCap.Properties.Settings.Default.Hotkey4 == hotkey)
+                else if (Preferences.Hotkey4 == hotkey)
                 {
                     if (!hKey4Pressed)
                     {
@@ -121,13 +121,14 @@ namespace imageDeCap
         }
         
         MagickImageCollection gEnc;
-        public void StartRecordingGif()
+        public void StartRecordingGif(bool ForceEdit)
         {
 
             gEnc = new MagickImageCollection();
-            GifCaptureTimer.Interval = (int)(1000.0f / GifRecorderFPS);
+            GifCaptureTimer.Interval = (int)(1000.0f / Preferences.GIFRecordingFramerate);
             counter = 0;
             GifCaptureTimer.Enabled = true;
+            GifCaptureTimer.Tag = ForceEdit;
 
             this.topBox.BackColor = Color.Green;
             this.bottomBox.BackColor = Color.Green;
@@ -149,8 +150,8 @@ namespace imageDeCap
                     Utilities.playSound("snip.wav");
 
                     byte[] gifData = gEnc.ToByteArray(MagickFormat.Gif);
-
-                    UploadImageData(gifData, filetype.gif);
+                    // Feed in through the tag weather the user right-clicked to force editor even when it's disabled.
+                    UploadImageData(gifData, filetype.gif, false, (bool)GifCaptureTimer.Tag);
                 }
 
                 Program.ImageDeCap.isTakingSnapshot = false;
@@ -159,25 +160,29 @@ namespace imageDeCap
             }
         }
 
-        public float GifRecorderFPS = 16.0f;
+        //public float GifRecorderFPS = 16.0f;
         int counter = 0;
         private void GifCaptureTimer_Tick(object sender, EventArgs e)
         {
-            // Capture Bitmap
-            Bitmap b = cap.Capture(enmScreenCaptureMode.Bounds, tempX, tempY, tempWidth, tempHeight);
+            // Capture Bitma
+            Bitmap b = Program.ImageDeCap.cap.Capture(
+                enmScreenCaptureMode.Bounds,
+                Program.ImageDeCap.X - 1,
+                Program.ImageDeCap.Y - 1,
+                Program.ImageDeCap.tempWidth + 1,
+                Program.ImageDeCap.tempHeight + 1);
 
             MagickImage newImage = new MagickImage();
             newImage.Format = MagickFormat.Gif;
             newImage.Read(b);
             gEnc.Add(newImage);
-            gEnc[counter].AnimationDelay = (int)(100.0f / GifRecorderFPS);
+            gEnc[counter].AnimationDelay = (int)(100.0f / Preferences.GIFRecordingFramerate);
 
             int minutes = counter / 600;
             int seconds = (counter/10) % 600;
             int csecs = counter % 10;
             CurrentBackCover.SetTimer("Time: " + minutes + ":" + seconds + "." + csecs, "Frames: " + counter);
             counter++;
-
         }
 
         public Form1()
@@ -190,10 +195,10 @@ namespace imageDeCap
             props = new SettingsWindow(this);
 
             // Alert for install!
-            if (imageDeCap.Properties.Settings.Default.firstLaunch)
+            if (Preferences.firstLaunch)
             {
-                imageDeCap.Properties.Settings.Default.firstLaunch = false;
-                imageDeCap.Properties.Settings.Default.Save();
+                Preferences.firstLaunch = false;
+                Preferences.Save();
                 DialogResult d = MessageBox.Show("First Launch!\nInstall? (add to startup & start-menu)", "Image DeCap", MessageBoxButtons.YesNo);
                 if (d == DialogResult.Yes)
                 {
@@ -205,25 +210,18 @@ namespace imageDeCap
                 }
             }
 
-            if (File.Exists(xmlLinksPath))
+            if (File.Exists(LinksFilePath))
             {
-                try
+                string links = File.ReadAllText(LinksFilePath);
+                links = Regex.Replace(links, @"^\s+$[\r\n]*", "", RegexOptions.Multiline);
+                foreach (string s in links.Split('\n'))
                 {
-                    XElement.Load(xmlLinksPath);
-                }
-                catch
-                {
-                    File.Delete(xmlLinksPath);
+                    addToLinks(s, false);
                 }
             }
-
-            if (File.Exists(xmlLinksPath))
+            else
             {
-                xmlLinks = XElement.Load(xmlLinksPath);
-                foreach (XElement e in xmlLinks.Elements())
-                {
-                    addToLinks(e.Value, false);
-                }
+                File.WriteAllText(LinksFilePath, "");
             }
 
             SystemTrayContextMenu.Initialize();
@@ -294,8 +292,6 @@ namespace imageDeCap
         {
             UploadToImgurBounds(true);
         }
-
-
 
         public void actuallyCloseTheProgram()
         {
@@ -400,7 +396,7 @@ namespace imageDeCap
             UploadImageData(File.ReadAllBytes(filepath), getImageType(filepath), true);
         }
 
-        public void UploadImageData(byte[] FileData, filetype imageType, bool ForceNoEdit = false)
+        public void UploadImageData(byte[] FileData, filetype imageType, bool ForceNoEdit = false, bool ForceEdit = false)
         {
             if(imageType == filetype.error)
             {
@@ -408,28 +404,28 @@ namespace imageDeCap
             }
             
             // save unedited capture
-            if (imageDeCap.Properties.Settings.Default.saveImageAtAll && Directory.Exists(imageDeCap.Properties.Settings.Default.SaveImagesHere))
+            if (Preferences.saveImageAtAll && Directory.Exists(Preferences.SaveImagesHere))
             {
                 string SaveFileName = DateTime.UtcNow.ToString("yyyyMMddHHmmssfff");
-                string whereToSave = imageDeCap.Properties.Settings.Default.SaveImagesHere + @"\" + SaveFileName + "." + imageType.ToString();
+                string whereToSave = Preferences.SaveImagesHere + @"\" + SaveFileName + "." + imageType.ToString();
                 File.WriteAllBytes(whereToSave, FileData);
             }
 
             bool CanceledUpload = false;
             // Edit the image if we are going to
-            if (imageDeCap.Properties.Settings.Default.EditScreenshotAfterCapture)
+            if (Preferences.EditScreenshotAfterCapture || ForceEdit)
             {
                 if (ForceNoEdit == false)
                 {
                     if(imageType == filetype.gif)
                     {
-                        GifEditor editor = new GifEditor(FileData, tempX, tempY);
+                        GifEditor editor = new GifEditor(FileData, topBox.Location.X, topBox.Location.Y);
                         editor.ShowDialog();
                         (CanceledUpload, FileData) = editor.FinalFunction();
                     }
                     else
                     {
-                        imageEditor editor = new imageEditor(FileData, tempX, tempY);
+                        imageEditor editor = new imageEditor(FileData, topBox.Location.X, topBox.Location.Y);
                         editor.ShowDialog();
                         (CanceledUpload, FileData) = editor.FinalFunction();
                     }
@@ -439,19 +435,18 @@ namespace imageDeCap
             // Copy image to clipboard if it's not a gif
             if (imageType != filetype.gif)
             {
-                if (imageDeCap.Properties.Settings.Default.CopyImageToClipboard)
+                if (Preferences.CopyImageToClipboard)
                 {
                     Image bitmapImage = Image.FromStream(new MemoryStream(FileData));
                     Clipboard.SetImage(bitmapImage);
                     bitmapImage.Dispose();
                 }
             }
-
-
+            
             // Upload the image
             if(!CanceledUpload)
             {
-                if (!imageDeCap.Properties.Settings.Default.NeverUpload)
+                if (!Preferences.NeverUpload)
                 {
                     BackgroundWorker bw = new BackgroundWorker();
                     bw.DoWork += cap.UploadImage;
@@ -473,24 +468,22 @@ namespace imageDeCap
             }
             else
             {
-                if (imageDeCap.Properties.Settings.Default.UseHTTPS)
+                if(Preferences.OpenInBrowser)
                 {
-                    StringBuilder builder = new StringBuilder(url);
-                    builder.Replace("http", "https");
-                    url = builder.ToString();
+                    Process.Start(url);
                 }
-                if (!imageDeCap.Properties.Settings.Default.CopyLinksToClipboard)
+                if (!Preferences.CopyLinksToClipboard)
                 {
-                    if (imageDeCap.Properties.Settings.Default.DisableNotifications)
+                    if (Preferences.DisableNotifications)
                         notifyIcon1.ShowBalloonTip(500, "imageDeCap", "Imgur URL copied to clipboard!", ToolTipIcon.Info);
                 }
                 else
                 {
-                    if (!imageDeCap.Properties.Settings.Default.DisableNotifications)
+                    if (!Preferences.DisableNotifications)
                         notifyIcon1.ShowBalloonTip(500, "imageDeCap", "Upload complete!", ToolTipIcon.Info);
                 }
                 
-                if (!Utilities.IsWindows10() || imageDeCap.Properties.Settings.Default.DisableNotifications)
+                if (!Utilities.IsWindows10() || Preferences.DisableNotifications)
                 {//means it's probably windows 10, in which case we should not play the noise as windows 10 plays a fucking noise of its own no matter what. :|
                     Utilities.playSound("upload.wav");
                 }
@@ -498,14 +491,14 @@ namespace imageDeCap
                 addToLinks(url);
             }
 
-            if (imageDeCap.Properties.Settings.Default.uploadToFTP)
+            if (Preferences.uploadToFTP)
             {
                 string name = DateTime.UtcNow.ToString("yyyyMMddHHmmssfff");
                 BackgroundWorker bw = new BackgroundWorker();
                 bw.DoWork += cap.uploadToFTP;
-                bw.RunWorkerAsync(new object[] {    imageDeCap.Properties.Settings.Default.FTPurl,
-                                                    imageDeCap.Properties.Settings.Default.FTPusername,
-                                                    imageDeCap.Properties.Settings.Default.FTPpassword,
+                bw.RunWorkerAsync(new object[] {    Preferences.FTPurl,
+                                                    Preferences.FTPusername,
+                                                    Preferences.FTPpassword,
                                                     ImageData,
                                                     name + (url.EndsWith(".png") ? ".png" : ".jpg") });
             }
@@ -513,7 +506,7 @@ namespace imageDeCap
 
         private void uploadPastebin(string text)
         {
-            if (!imageDeCap.Properties.Settings.Default.NeverUpload)
+            if (!Preferences.NeverUpload)
             {
                 Utilities.playSound("snip.wav");
                 BackgroundWorker bw = new BackgroundWorker();
@@ -522,24 +515,24 @@ namespace imageDeCap
                 bw.RunWorkerAsync(text);
             }
 
-            if (imageDeCap.Properties.Settings.Default.AlsoFTPTextFiles)
+            if (Preferences.AlsoFTPTextFiles)
             {
                 BackgroundWorker bw = new BackgroundWorker();
                 bw.DoWork += cap.uploadToFTP;
                 string name = DateTime.UtcNow.ToString("yyyyMMddHHmmssfff");
-                bw.RunWorkerAsync(new object[] {    imageDeCap.Properties.Settings.Default.FTPurl,
-                                                    imageDeCap.Properties.Settings.Default.FTPusername,
-                                                    imageDeCap.Properties.Settings.Default.FTPpassword,
+                bw.RunWorkerAsync(new object[] {    Preferences.FTPurl,
+                                                    Preferences.FTPusername,
+                                                    Preferences.FTPpassword,
                                                     Encoding.ASCII.GetBytes(text),
                                                     name + ".txt" });
 
             }
-            if (imageDeCap.Properties.Settings.Default.AlsoSaveTextFiles)
+            if (Preferences.AlsoSaveTextFiles)
             {
-                if (imageDeCap.Properties.Settings.Default.saveImageAtAll && Directory.Exists(imageDeCap.Properties.Settings.Default.SaveImagesHere))
+                if (Preferences.saveImageAtAll && Directory.Exists(Preferences.SaveImagesHere))
                 {
                     string name = DateTime.UtcNow.ToString("yyyyMMddHHmmssfff");
-                    string whereToSave = imageDeCap.Properties.Settings.Default.SaveImagesHere + @"\" + name + ".txt";
+                    string whereToSave = Preferences.SaveImagesHere + @"\" + name + ".txt";
                     File.WriteAllText(whereToSave, text);
                 }
             }
@@ -551,18 +544,18 @@ namespace imageDeCap
             if (!pasteBinResult.Contains("failed"))
             {
                 ClipboardHandler.setClipboard(pasteBinResult);
-                if (imageDeCap.Properties.Settings.Default.CopyLinksToClipboard)
+                if (Preferences.CopyLinksToClipboard)
                 {
-                    if (!imageDeCap.Properties.Settings.Default.DisableNotifications)
+                    if (!Preferences.DisableNotifications)
                         notifyIcon1.ShowBalloonTip(500, "imageDeCap", "Pastebin link placed in clipboard!", ToolTipIcon.Info);
                 }
                 else
                 {
-                    if (!imageDeCap.Properties.Settings.Default.DisableNotifications)
+                    if (!Preferences.DisableNotifications)
                         notifyIcon1.ShowBalloonTip(500, "imageDeCap", "Upload complete!", ToolTipIcon.Info);
                 }
 
-                if (!Utilities.IsWindows10() || imageDeCap.Properties.Settings.Default.DisableNotifications)
+                if (!Utilities.IsWindows10() || Preferences.DisableNotifications)
                 {//means it's probably windows 10, in which case we should not play the noise as windows 10 plays a fucking noise on its own no matter what. :|
                     Utilities.playSound("upload.wav");
                 }
@@ -598,18 +591,8 @@ namespace imageDeCap
         public int tempWidth = 0;
         public int tempHeight = 0;
 
-        public void updateSelectedArea(completeCover backCover, bool EnterPressed, bool EscapePressed, bool LmbDown, bool LmbUp, bool Lmb, bool Gif) // this thing is essentially a fucking frame-loop.
+        public void updateSelectedArea(completeCover backCover, bool EnterPressed, bool EscapePressed, bool LmbDown, bool LmbUp, bool Lmb, bool Gif, bool RMB) // this thing is essentially a fucking frame-loop.
         {
-            bool UseBackCover = false;
-            if(imageDeCap.Properties.Settings.Default.FreezeScreenOnRegionShot)
-            {
-                UseBackCover = true;
-            }
-            if(Gif)
-            {
-                UseBackCover = false;
-            }
-                
 
             backCover.Activate();
             magn.Bounds = new Rectangle(Cursor.Position.X + 32, Cursor.Position.Y - 32, 124, 124);
@@ -619,7 +602,7 @@ namespace imageDeCap
             {
 
                 //* This should be a function to call for what happens when we have aquired a region.
-                backCover.CompletedSelection();
+                backCover.CompletedSelection(RMB);
                 // End function thing
             }
 
@@ -704,7 +687,7 @@ namespace imageDeCap
             Links.Clear();
             listBox1.DataSource = null;
             listBox1.DataSource = Links;
-            File.Delete(xmlLinksPath);
+            File.Delete(LinksFilePath);
         }
 
         private void listBox1_KeyDown(object sender, KeyEventArgs e)

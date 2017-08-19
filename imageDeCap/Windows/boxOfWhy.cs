@@ -16,7 +16,6 @@ using System.Media;
 using System.IO;
 using System.Reflection;
 using System.Resources;
-using System.Media;
 using System.Diagnostics;
 using System.Threading;
 

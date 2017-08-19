@@ -10,7 +10,6 @@ using System.Drawing;
 using System.Windows.Forms;
 
 using System.Net;
-using System.Text;
 using System.IO;
 using System.Text.RegularExpressions;
 
@@ -52,32 +51,7 @@ namespace imageDeCap
                 e.Result = ("failed, " + imgurEx.Message, FileData);
             }
         }
-        
-        //public void UploadImage(object sender, DoWorkEventArgs e)
-        //{
-        //    string filepath = (string)e.Argument;
-        //
-        //    WebClient w = new WebClient();
-        //    w.Headers.Add("Authorization", "Client-ID " + ClientId);
-        //    System.Collections.Specialized.NameValueCollection Keys = new System.Collections.Specialized.NameValueCollection();
-        //    try
-        //    {
-        //        Keys.Add("image", Convert.ToBase64String(File.ReadAllBytes(filepath)));
-        //        byte[] responseArray = w.UploadValues("https://api.imgur.com/3/image", Keys);
-        //        dynamic result = Encoding.ASCII.GetString(responseArray); 
-        //        Regex reg = new System.Text.RegularExpressions.Regex("link\":\"(.*?)\"");
-        //        Match match = reg.Match(result);
-        //
-        //        string url = match.ToString().Replace("link\":\"", "").Replace("\"", "").Replace("\\/", "/");
-        //        e.Result = url;
-        //    }
-        //    catch (Exception s)
-        //    {
-        //        //MessageBox.Show("Something went wrong. " + s.Message);
-        //        //return null;
-        //        e.Result = "failed, " + s.Message;
-        //    }
-        //}
+
 
         public void uploadToFTP(object sender, DoWorkEventArgs e)
         {
@@ -111,7 +85,7 @@ namespace imageDeCap
             response.Close();
         }
 
-        private string ILoginURL = "http://pastebin.com/api/api_login.php";
+        //private string ILoginURL = "http://pastebin.com/api/api_login.php";
         private string IPostURL = "http://pastebin.com/api/api_post.php";
         private string IDevKey = "4d1c2c0bb6fa2e5c1403cedccc50bfd5";
         private string IUserKey = null;
@@ -119,7 +93,7 @@ namespace imageDeCap
         public void Send(object sender, DoWorkEventArgs e)
         {
             string IBody = (string)e.Argument;
-            string ISubj = Properties.Settings.Default.PastebinSubjectLine;
+            string ISubj = Preferences.PastebinSubjectLine;
 
             if (string.IsNullOrEmpty(IBody.Trim())) { e.Result = "failed"; }
             if (string.IsNullOrEmpty(ISubj.Trim())) { e.Result = "failed"; }

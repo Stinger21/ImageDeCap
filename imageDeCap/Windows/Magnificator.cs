@@ -16,7 +16,6 @@ using System.Media;
 using System.IO;
 using System.Reflection;
 using System.Resources;
-using System.Media;
 using System.Diagnostics;
 using System.Threading;
 
@@ -32,35 +31,40 @@ namespace imageDeCap
             InitializeComponent();
             //SetStyle(ControlStyles.SupportsTransparentBackColor, true);
 
-            PictureBox wa = new PictureBox();
-            wa.SetBounds(58, 58, 4, 4);
-            wa.BackColor = Color.Red;
-            Boxes.Add(wa);
-            this.Controls.Add(wa);
+            MakeBox(58, 57, 4, 4, Color.Red);
 
+            // left
+            MakeBox(50 - 28, 58, 32, 2, Color.Black);
+            MakeBox(50 - 28, 58+2, 32, 1, Color.White);
+            MakeBox(50 - 28, 58-1, 32, 1, Color.White);
 
-             wa = new PictureBox();
-            wa.SetBounds(50, 58, 4, 4);
-            wa.BackColor = Color.Black;
-            Boxes.Add(wa);
-            this.Controls.Add(wa);
-             wa = new PictureBox();
-            wa.SetBounds(58, 50, 4, 4);
-            wa.BackColor = Color.Black;
-            Boxes.Add(wa);
-            this.Controls.Add(wa);
-             wa = new PictureBox();
-            wa.SetBounds(66, 58, 4, 4);
-            wa.BackColor = Color.Black;
-            Boxes.Add(wa);
-            this.Controls.Add(wa);
-             wa = new PictureBox();
-            wa.SetBounds(58, 66, 4, 4);
-            wa.BackColor = Color.Black;
-            Boxes.Add(wa);
-            this.Controls.Add(wa);
+            // up
+            MakeBox(59, 49 - 28, 2, 32, Color.Black);
+            MakeBox(59 + 2, 49 - 28, 1, 32, Color.White);
+            MakeBox(59 - 1, 49 - 28, 1, 32, Color.White);
+
+            // right
+            MakeBox(66, 58, 32, 2, Color.Black);
+            MakeBox(66, 58 + 2, 32, 1, Color.White);
+            MakeBox(66, 58 - 1, 32, 1, Color.White);
+
+            // down
+            MakeBox(59, 65, 2, 32, Color.Black);
+            MakeBox(59 + 2, 65, 1, 32, Color.White);
+            MakeBox(59 - 1, 65, 1, 32, Color.White);
+
             this.ShowInTaskbar = false;
         }
+
+        private void MakeBox(int x, int y, int with, int height, Color color)
+        {
+            PictureBox wa = new PictureBox();
+            wa.SetBounds(x, y, with, height);
+            wa.BackColor = color;
+            Boxes.Add(wa);
+            this.Controls.Add(wa);
+        }
+
         Graphics g;
         Bitmap bmp;
         private void timer1_Tick(object sender, EventArgs e)

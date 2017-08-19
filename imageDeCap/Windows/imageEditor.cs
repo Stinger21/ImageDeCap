@@ -8,7 +8,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-using System.Drawing;
 using System.IO;
 using System.Drawing.Imaging;
 
@@ -78,7 +77,7 @@ namespace imageDeCap
             label3.Text = "Text: " + textSize.ToString("0.0");
 
 
-            if (Properties.Settings.Default.NeverUpload)
+            if (Preferences.NeverUpload)
             {
                 button1.Text = "Done";
             }
@@ -100,19 +99,11 @@ namespace imageDeCap
                 undoImageEdit();
                 tempImage = false;
             }
-
-            //theImage.Save(newImagePath);
-            // save to screenshots folder after clicking Done if user added some edits
-            //if (Properties.Settings.Default.saveImageAtAll && Directory.Exists(Properties.Settings.Default.SaveImagesHere) && undoHistory.Count > 0)
-            //{
-            //    theImage.Save(this.whereToSave);
-            //}
+            
             Aborted = false;
             Close();
         }
         
-        int Width = 8;
-        int Height = 8;
         Point leftMouseLastPos;
         Point rightMouseLastPos;
         Point rightMouseDownPos;
@@ -162,9 +153,6 @@ namespace imageDeCap
                         g.DrawString(textBox1.Text, new Font("Arial Black", textSize), new SolidBrush(c), new Point(mousePos.X - tsize.Width / 2, mousePos.Y - tsize.Height / 2));
                     }
                     imageContainer.Refresh();
-
-                    //trackBar1.Value = (int)brushSize * 100;
-                    //label2.Text = "Size: " + brushSize.ToString("0.0");
                 }
                 else
                 {
@@ -236,13 +224,24 @@ namespace imageDeCap
             }
             else if(MouseButtons == MouseButtons.Right)
             {
+                TrackBar TargetTrackbar;
+                if (brush)
+                    TargetTrackbar = trackBar1;
+                else
+                    TargetTrackbar = trackBar2;
+
                 int targetValue = (mousePos.X - rightMouseLastPos.X) * 200;
                 Console.WriteLine(targetValue);
-                int newVal = trackBar1.Value;
+                int newVal = TargetTrackbar.Value;
                 newVal += targetValue;
-                newVal = (int)Math.Min(Math.Max((double)newVal, (double)trackBar1.Minimum), (double)trackBar1.Maximum);
-                trackBar1.Value = newVal;
-                trackBar1_Scroll(null, null);
+                newVal = (int)Math.Min(Math.Max((double)newVal, (double)TargetTrackbar.Minimum), (double)TargetTrackbar.Maximum);
+
+                TargetTrackbar.Value = newVal;
+                if (brush)
+                    trackBar1_Scroll(null, null);
+                else
+                    trackBar2_Scroll(null, null);
+
                 rightMouseLastPos = mousePos;
             }
             else
@@ -381,10 +380,6 @@ namespace imageDeCap
 
         private void imageEditor_FormClosing(object sender, FormClosingEventArgs e)
         {
-            //if (Aborted)
-            //{
-            //    File.Delete(newImagePath);
-            //}
         }
         
         private void button2_Click_1(object sender, EventArgs e)

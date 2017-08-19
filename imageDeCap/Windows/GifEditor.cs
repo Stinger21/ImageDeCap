@@ -45,13 +45,12 @@ namespace imageDeCap
             this.StartPosition = FormStartPosition.Manual;
             this.Location = new Point(X - 7, Y - 20);
 
-            //PictureBox.Location = new Point((width / 2) - (CurrentImage.Width / 2), 12);
             startTrack.Maximum = frames;
             endTrack.Maximum = frames;
             endTrack.Value = frames;
             BackgroundTrack.Maximum = frames;
 
-            if (Properties.Settings.Default.NeverUpload)
+            if (Preferences.NeverUpload)
             {
                 uploadButton.Text = "Done";
             }
@@ -62,7 +61,7 @@ namespace imageDeCap
             this.AcceptButton = uploadButton;
 
             CalculateFileSizeAndSaveOutputImage();
-            frameTimer.Interval = (int)(1000.0f / Program.ImageDeCap.GifRecorderFPS);
+            frameTimer.Interval = (int)(1000.0f / Preferences.GIFRecordingFramerate);
         }
 
         private void GifEditor_Load(object sender, EventArgs e)
@@ -166,7 +165,7 @@ namespace imageDeCap
             EditedImage = new MagickImageCollection();
             foreach (IMagickImage i in subImageList)
             {
-                i.AnimationDelay = (int)(100.0f / Program.ImageDeCap.GifRecorderFPS);
+                i.AnimationDelay = (int)(100.0f / Preferences.GIFRecordingFramerate);
                 EditedImage.Add(i);
             }
 

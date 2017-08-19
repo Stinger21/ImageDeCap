@@ -20,7 +20,7 @@ namespace imageDeCap
             InitializeComponent();
 
             UseBackCover = false;
-            if (imageDeCap.Properties.Settings.Default.FreezeScreenOnRegionShot)
+            if (imageDeCap.Preferences.FreezeScreenOnRegionShot)
             {
                 UseBackCover = true;
             }
@@ -71,7 +71,9 @@ namespace imageDeCap
         // Called by mainloop in now heuheuhe
         public void Updatee()
         {
-            if(Program.ImageDeCap.GifCaptureTimer.Enabled) // Don't update if we are capturing a gif
+            Cursor.Current = Cursors.Cross;
+
+            if (Program.ImageDeCap.GifCaptureTimer.Enabled) // Don't update if we are capturing a gif
             {
                 return;
             }
@@ -88,7 +90,7 @@ namespace imageDeCap
                 }
             }
 
-            Program.ImageDeCap.updateSelectedArea(this, EnterPressed, EscapePressed, LmbDown, LmbUp, Lmb, Gif);
+            Program.ImageDeCap.updateSelectedArea(this, EnterPressed, EscapePressed, LmbDown, LmbUp, Lmb, Gif, MouseButtons == (MouseButtons.Left | MouseButtons.Right));
             EnterPressed = false;
             EscapePressed = false;
             wasPressed = MouseButtons == MouseButtons.Left;
@@ -98,11 +100,6 @@ namespace imageDeCap
 
         private void completeCover_KeyDown(object sender, KeyEventArgs e)
         {
-            //if (e.KeyCode == Keys.Return)
-            //{
-            //    EnterPressed = true;
-            //    //Program.ImageDeCap.StopRecordingGif(this, false);
-            //}
             if(Program.ImageDeCap.GifCaptureTimer.Enabled == false)
             {
                 if (e.KeyCode == Keys.Escape)
@@ -120,7 +117,7 @@ namespace imageDeCap
             return ms.ToArray();
         }
         // this is called from Form1's updateSelectedArea when it considers itself done figuring out what region to capture.
-        public void CompletedSelection()
+        public void CompletedSelection(bool ForceEdit = false)
         {
             if(!Gif) // If it's not a gif, hide everything and fire off an upload thread instantly.
             {
@@ -147,7 +144,7 @@ namespace imageDeCap
                     if (UseBackCover)
                         this.Close();
 
-                    Program.ImageDeCap.UploadImageData(GetBytes(result, ImageFormat.Png), Form1.filetype.png);
+                    Program.ImageDeCap.UploadImageData(GetBytes(result, ImageFormat.Png), Form1.filetype.png, false, ForceEdit);
                 }
 
                 if (UseBackCover)
@@ -162,7 +159,7 @@ namespace imageDeCap
                 if (Program.ImageDeCap.tempWidth > 0 && Program.ImageDeCap.tempHeight > 0)
                 {
                     Program.ImageDeCap.magn.Close();
-                    Program.ImageDeCap.StartRecordingGif();
+                    Program.ImageDeCap.StartRecordingGif(ForceEdit);
 
                     this.Location = new Point(Program.ImageDeCap.X, Program.ImageDeCap.Y + Program.ImageDeCap.tempHeight);
                     this.Width = Math.Max(Program.ImageDeCap.tempWidth, 300);
