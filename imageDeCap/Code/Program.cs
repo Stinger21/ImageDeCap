@@ -16,9 +16,23 @@ namespace imageDeCap
         public static Form1 ImageDeCap;
         public static bool hotkeysEnabled = true;
         [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
-            if (Process.GetProcessesByName(Process.GetCurrentProcess().ProcessName).Length > 1)
+            // Commands:
+            // -ForceStartup:
+            //      Forces the program to start even if there are other instances of the program already running.
+
+
+            bool ForceStartup = false;
+            if(args.Length > 0)
+            {
+                if(args[0].Contains("ForceStartup"))
+                {
+                    ForceStartup = true;
+                    System.Threading.Thread.Sleep(2000);
+                }
+            }
+            if (Process.GetProcessesByName(Process.GetCurrentProcess().ProcessName).Length > 1 && ForceStartup == false)
             {
                 return;
             }
@@ -26,23 +40,17 @@ namespace imageDeCap
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            Preferences.Load();
-
+            
             ImageDeCap = new Form1();
-            ImageDeCap.FormClosed += QuitLoop;
-            //ImageDeCap.Show();
 
-            while (!mQuit)
+            Quit = false;
+            while (!Quit)
             {
                 Application.DoEvents();
                 ImageDeCap.mainLoop();
                 System.Threading.Thread.Sleep(10);
             } 
         }
-        private static bool mQuit;
-        private static void QuitLoop(object sender, FormClosedEventArgs e)
-        {
-            mQuit = true;
-        }
+        public static bool Quit;
     }
 }

@@ -27,10 +27,10 @@ namespace imageDeCap
         public MagickImageCollection EditedImage = new MagickImageCollection();
         IMagickImage CurrentImage;
         int frames = 0;
-        public GifEditor(byte[] ImageData, int X, int Y)
+        public GifEditor(MagickImageCollection ImageData, int X, int Y)
         {
             InitializeComponent();
-            theImage.Read(ImageData);
+            theImage = ImageData;
 
             CurrentImage = theImage[0];
             PictureBox.Image = CurrentImage.ToBitmap();
@@ -60,7 +60,7 @@ namespace imageDeCap
             }
             this.AcceptButton = uploadButton;
 
-            CalculateFileSizeAndSaveOutputImage();
+            //CalculateFileSizeAndSaveOutputImage();
             frameTimer.Interval = (int)(1000.0f / Preferences.GIFRecordingFramerate);
         }
 
@@ -86,7 +86,7 @@ namespace imageDeCap
             Console.WriteLine(ActualFrameNumber);
             CurrentImage = theImage[ActualFrameNumber];
             PictureBox.Image = CurrentImage.ToBitmap();
-            BackgroundTrack.Value = ActualFrameNumber;
+            BackgroundTrack.Value = Math.Min(Math.Max(ActualFrameNumber, BackgroundTrack.Minimum), BackgroundTrack.Maximum);
         }
 
         
@@ -165,10 +165,12 @@ namespace imageDeCap
             EditedImage = new MagickImageCollection();
             foreach (IMagickImage i in subImageList)
             {
+                i.Resize((int)(i.Width * ((float)ScaleThing.Value / 100.0f)),
+                         (int)(i.Height * ((float)ScaleThing.Value / 100.0f)));
                 i.AnimationDelay = (int)(100.0f / Preferences.GIFRecordingFramerate);
                 EditedImage.Add(i);
             }
-
+            
             MemoryStream ms = new MemoryStream();
             EditedImage.Write(ms);
 

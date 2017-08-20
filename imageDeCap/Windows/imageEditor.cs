@@ -71,7 +71,7 @@ namespace imageDeCap
 
 
             trackBar1.Value = (int)brushSize * 100;
-            trackBar2.Value = (int)textSize * 100;
+            trackBar2.Value = (int)textSize * 200;
 
             label2.Text = "Brush: " + brushSize.ToString("0.0");
             label3.Text = "Text: " + textSize.ToString("0.0");
@@ -115,9 +115,12 @@ namespace imageDeCap
         string colorName = "DarkRed";
         private void imageContainer_MouseClick(object sender, MouseEventArgs e)
         {
-            if (!brush)
+            if(e.Button == MouseButtons.Left)
             {
-                brush = true;
+                if (!brush)
+                {
+                    brush = true;
+                }
             }
         }
 
@@ -231,7 +234,6 @@ namespace imageDeCap
                     TargetTrackbar = trackBar2;
 
                 int targetValue = (mousePos.X - rightMouseLastPos.X) * 200;
-                Console.WriteLine(targetValue);
                 int newVal = TargetTrackbar.Value;
                 newVal += targetValue;
                 newVal = (int)Math.Min(Math.Max((double)newVal, (double)TargetTrackbar.Minimum), (double)TargetTrackbar.Maximum);
@@ -241,46 +243,53 @@ namespace imageDeCap
                     trackBar1_Scroll(null, null);
                 else
                     trackBar2_Scroll(null, null);
-
+                
                 rightMouseLastPos = mousePos;
             }
             else
             {
-                if(pickColor)
-                {
-                    currentColor.BackColor = ((Bitmap)mainImage).GetPixel(mousePos.X, mousePos.Y);
-                }
-                if (tempImage)
-                {
-                    undoImageEdit();
-                    tempImage = false;
-                }
-                if(moveBrushIsOnScreen)
-                {
-                    undoImageEdit();
-                    moveBrushIsOnScreen = false;
-                }
-
-                isPressed = false;
-
-                if (!brush)
-                {//if we are not holding down any button and are in text mode.
-                    
-                    undoHistory.Push(new Bitmap(mainImage));
-                    using (Graphics g = Graphics.FromImage(mainImage))
-                    {
-                        Pen MyPen = new Pen(c);
-                        MyPen.Width = textSize;
-                        g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
-                        Size tsize = TextRenderer.MeasureText(textBox1.Text, new Font("Arial Black", textSize));
-                        g.DrawString(textBox1.Text, new Font("Arial Black", textSize), new SolidBrush(c), new Point(mousePos.X - tsize.Width/2, mousePos.Y - tsize.Height / 2));
-                    }
-                    ApplyCompression();
-                    imageContainer.Refresh();
-                    moveBrushIsOnScreen = true;
-                }
+                UpdateImage();
             }
         }
+        private void UpdateImage()
+        {
+            Point mousePos = imageContainer.PointToClient(Cursor.Position);
+            if (pickColor)
+            {
+                currentColor.BackColor = ((Bitmap)mainImage).GetPixel(mousePos.X, mousePos.Y);
+            }
+            if (tempImage)
+            {
+                undoImageEdit();
+                tempImage = false;
+            }
+            if (moveBrushIsOnScreen)
+            {
+                undoImageEdit();
+                moveBrushIsOnScreen = false;
+            }
+
+            isPressed = false;
+
+            if (!brush)
+            {//if we are not holding down any button and are in text mode.
+
+                undoHistory.Push(new Bitmap(mainImage));
+                using (Graphics g = Graphics.FromImage(mainImage))
+                {
+                    Pen MyPen = new Pen(c);
+                    MyPen.Width = textSize;
+                    g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
+                    Size tsize = TextRenderer.MeasureText(textBox1.Text, new Font("Arial Black", textSize));
+                    g.DrawString(textBox1.Text, new Font("Arial Black", textSize), new SolidBrush(c), new Point(mousePos.X - tsize.Width / 2, mousePos.Y - tsize.Height / 2));
+                }
+                ApplyCompression();
+                imageContainer.Refresh();
+                moveBrushIsOnScreen = true;
+            }
+        }
+
+
         bool moveBrushIsOnScreen = false;
         private void label2_Click(object sender, EventArgs e)
         {
@@ -309,7 +318,7 @@ namespace imageDeCap
         bool tempImage = false;
         private void trackBar2_Scroll(object sender, EventArgs e)
         {
-            textSize = ((float)trackBar2.Value) / 100.0f;
+            textSize = ((float)trackBar2.Value) / 200.0f;
             label3.Text = "Text: " + textSize.ToString("0.0");
             if(tempImage)
             {
@@ -318,10 +327,12 @@ namespace imageDeCap
             undoHistory.Push(new Bitmap(mainImage));
             using (Graphics g = Graphics.FromImage(mainImage))
             {
+                Point mousePos = imageContainer.PointToClient(Cursor.Position);
                 Pen MyPen = new Pen(c);
                 MyPen.Width = textSize;
                 g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
-                g.DrawString(textBox1.Text, new Font("Arial Black", textSize), new SolidBrush(Color.FromArgb(128, 255, 0, 0)), 100,100);
+                Size tsize = TextRenderer.MeasureText(textBox1.Text, new Font("Arial Black", textSize));
+                g.DrawString(textBox1.Text, new Font("Arial Black", textSize), new SolidBrush(Color.FromArgb(128, 255, 0, 0)), new Point(mousePos.X - tsize.Width / 2, mousePos.Y - tsize.Height / 2));
             }
             ApplyCompression();
             imageContainer.Refresh();
@@ -444,6 +455,8 @@ namespace imageDeCap
                 tempImage = false;
             }
             undoHistory.Push(new Bitmap(mainImage));
+            textBox1.Focus();
+            textBox1.SelectAll();
         }
 
         private void panel1_MouseLeave(object sender, EventArgs e)
@@ -570,6 +583,38 @@ namespace imageDeCap
         private void HighlightCheckbox_CheckedChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            //textBox1.Select(textBox1.Text.Length, 0);
+            UpdateImage();
+        }
+
+        private void textBox1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.KeyCode == Keys.Back)
+            {
+                if(e.Control)
+                {
+                    int lastSpace = textBox1.Text.LastIndexOf(' ');
+                    if(lastSpace > 0)
+                    {
+                        textBox1.Text = textBox1.Text.Substring(0, lastSpace);
+                        textBox1.Text = textBox1.Text.Replace('\u007f', ' ');
+                        textBox1.Select(textBox1.Text.Length, 0);
+                    }
+                    else
+                    {
+                        textBox1.Text = "";
+                    }
+                }
+            }
+        }
+
+        private void checkBox2_CheckedChanged(object sender, EventArgs e)
+        {
+            InfoText.Visible = checkBox2.Checked;
         }
     }
 }

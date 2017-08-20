@@ -10,7 +10,6 @@ using System.Windows.Forms;
 
 using Microsoft.Win32;
 using System.IO;
-using IWshRuntimeLibrary;
 
 namespace imageDeCap
 {
@@ -70,66 +69,112 @@ namespace imageDeCap
 
             gifFPS.Value = Preferences.GIFRecordingFramerate;
 
+            //Uninstallbutton.Enabled = !Preferences.Portable;
+            //AddToAutoStart.Enabled = !Preferences.Portable;
+            //button4.Enabled = !Preferences.Portable;
+
             CopyImageToClipboard.Checked = Preferences.CopyImageToClipboard;
         }
 
-        private void CreateShortcut(string targetProgram, string shortcutPath)
-        {
-            object shDesktop = (object)"Desktop";
-            WshShell shell = new WshShell();
-            string shortcutAddress = shortcutPath;
-            IWshShortcut shortcut = (IWshShortcut)shell.CreateShortcut(shortcutAddress);
-            shortcut.Description = "imageDeCap auto-start";
+        //static void CreateShortcut(string targetProgram, string shortcutPath)
+        //{
+        //    object shDesktop = (object)"Desktop";
+        //    IWshRuntimeLibrary.WshShell shell = new IWshRuntimeLibrary.WshShell();
+        //    string shortcutAddress = shortcutPath;
+        //    IWshRuntimeLibrary.IWshShortcut shortcut = (IWshRuntimeLibrary.IWshShortcut)shell.CreateShortcut(shortcutAddress);
+        //    shortcut.Description = "imageDeCap auto-start";
+        //
+        //    shortcut.TargetPath = targetProgram;
+        //    shortcut.Save();
+        //}
 
-            shortcut.TargetPath = targetProgram;
-            shortcut.Save();
-        }
-        public void Install()
-        {
-            string startMenuShortcutPath = Environment.GetFolderPath(Environment.SpecialFolder.StartMenu) + @"\imageDeCap.lnk";
-            string programPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\imageDeCap\imageDeCap.exe";
 
-            if (System.Reflection.Assembly.GetEntryAssembly().Location == programPath)
-            {
-                // If we got here that means that the user pressed the install button when the program is already running from the install directory.
+        //string exeName = Path.GetFileName(System.Reflection.Assembly.GetEntryAssembly().Location);
 
-            }
-            else
-            {
-                if (System.IO.File.Exists(programPath))
-                    System.IO.File.Delete(programPath);
-                if (!Directory.Exists(Path.GetDirectoryName(programPath)))
-                    Directory.CreateDirectory(Path.GetDirectoryName(programPath));
-                System.IO.File.Copy(System.Reflection.Assembly.GetEntryAssembly().Location, programPath);
-            }
+        //public static string PortablePath;
+        //public static string InstallPath;
+        //public static string PortableSettingsPath;
+        //public static string InstallSettingsPath;
+        //public static string PortableExePath;
+        //public static string InstallExePath;
+        //public static string PortableLinksPath;
+        //public static string InstallLinksPath; 
+        //public static void LoadInstall()
+        //{
+        //    Preferences.Load(InstallSettingsPath);
+        //    Preferences.SettingsFilePath = InstallPath;
+        //}
+        //public static void LoadPortable()
+        //{
+        //    Preferences.Load(PortableSettingsPath);
+        //    Preferences.SettingsFilePath = PortablePath;
+        //}
+        //public static void PortableToInstall()
+        //{
+        //    if (System.IO.File.Exists(InstallExePath))
+        //        System.IO.File.Delete(InstallExePath);
+        //    if (!Directory.Exists(InstallPath))
+        //        Directory.CreateDirectory(InstallPath);
+        //
+        //    SettingsWindow.TryMoveFile(PortableSettingsPath, InstallSettingsPath);
+        //    SettingsWindow.TryMoveFile(PortableLinksPath, InstallLinksPath);
+        //    System.IO.File.Copy(PortableExePath, InstallExePath);
+        //}
+        //public static void InstallToPortable()
+        //{
+        //    SettingsWindow.TryMoveFile(InstallSettingsPath, PortableSettingsPath);
+        //    SettingsWindow.TryMoveFile(InstallLinksPath, PortableLinksPath);
+        //}
 
-            
-            if (System.IO.File.Exists(startMenuShortcutPath))
-                System.IO.File.Delete(startMenuShortcutPath);
-            
-            CreateShortcut(programPath, startMenuShortcutPath);
-            
-        }
-        public void AddToStartup()
-        {
-            string shortcutPath = Environment.GetFolderPath(Environment.SpecialFolder.Startup) + @"\imageDeCap.lnk";
-            string programPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\imageDeCap\imageDeCap.exe";
-
-            if (System.IO.File.Exists(shortcutPath))
-                System.IO.File.Delete(shortcutPath);
-
-            CreateShortcut(programPath, shortcutPath);
-        }
-        public void UnInstall()
-        {
-            string startMenuShortcutPath = Environment.GetFolderPath(Environment.SpecialFolder.StartMenu) + @"\imageDeCap.lnk";
-            //string programPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\imageDeCap\imageDeCap.exe";
-            string shortcutPath = Environment.GetFolderPath(Environment.SpecialFolder.Startup) + @"\imageDeCap.lnk";
-
-            System.IO.File.Delete(startMenuShortcutPath);
-            //System.IO.File.Delete(programPath); // Don't delete the exe itself, just the references to it.
-            System.IO.File.Delete(shortcutPath);
-        }
+        //public static void TryMoveFile(string from, string to)
+        //{
+        //    if (System.IO.File.Exists(to))
+        //    {
+        //        try { System.IO.File.Delete(to); } catch { }
+        //    }
+        //    if (System.IO.File.Exists(from))
+        //    {
+        //        System.IO.File.Copy(from, to);
+        //        try { System.IO.File.Delete(from); } catch { }
+        //    }
+        //}
+        //public static void TryCopyFile(string from, string to)
+        //{
+        //    if (System.IO.File.Exists(from))
+        //    {
+        //        System.IO.File.Copy(from, to);
+        //        try { System.IO.File.Delete(from); } catch { }
+        //    }
+        //}
+        //public static void TryDelete(string file)
+        //{
+        //    if(File.Exists(file))
+        //    {
+        //        File.Delete(file);
+        //    }
+        //}
+        //
+        //public static void AddToStartup()
+        //{
+        //    string startMenuShortcutPath = Environment.GetFolderPath(Environment.SpecialFolder.StartMenu) + @"\imageDeCap.lnk";
+        //    string shortcutPath = Environment.GetFolderPath(Environment.SpecialFolder.Startup) + @"\imageDeCap.lnk";
+        //
+        //    if (System.IO.File.Exists(shortcutPath))
+        //        System.IO.File.Delete(shortcutPath);
+        //    if (System.IO.File.Exists(startMenuShortcutPath))
+        //        System.IO.File.Delete(startMenuShortcutPath);
+        //
+        //    CreateShortcut(InstallExePath, shortcutPath);
+        //    CreateShortcut(InstallExePath, startMenuShortcutPath);
+        //}
+        //public void RemoveFromStartup()
+        //{
+        //    string startMenuShortcutPath = Environment.GetFolderPath(Environment.SpecialFolder.StartMenu) + @"\imageDeCap.lnk";
+        //    string shortcutPath = Environment.GetFolderPath(Environment.SpecialFolder.Startup) + @"\imageDeCap.lnk";
+        //
+        //    System.IO.File.Delete(startMenuShortcutPath);
+        //    System.IO.File.Delete(shortcutPath);
+        //}
 
 
         private void button5_Click(object sender, EventArgs e)//Apply
@@ -464,20 +509,20 @@ namespace imageDeCap
         
 
 
-        private void AddToStartMenu_Click(object sender, EventArgs e)
-        {
-            Install();
-        }
-
-        private void AddToAutoStart_Click(object sender, EventArgs e)
-        {
-            AddToStartup();
-        }
-
-        private void button4_Click(object sender, EventArgs e)
-        {
-            UnInstall();
-        }
+        //private void AddToStartMenu_Click(object sender, EventArgs e)
+        //{
+        //    //Install();
+        //}
+        //
+        //private void AddToAutoStart_Click(object sender, EventArgs e)
+        //{
+        //    AddToStartup();
+        //}
+        //
+        //private void button4_Click(object sender, EventArgs e)
+        //{
+        //    //UnInstall();
+        //}
 
         private void label1_Click(object sender, EventArgs e)
         {
@@ -486,12 +531,12 @@ namespace imageDeCap
 
         private void label10_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start("http://www.mattwestphal.com/imagedecap/");
+            System.Diagnostics.Process.Start("http://www.mattwestphal.com/");
         }
 
         private void imageContainer_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start("http://www.mattwestphal.com/imagedecap/");
+            System.Diagnostics.Process.Start("http://www.mattwestphal.com/");
         }
 
         private void label8_Click(object sender, EventArgs e)
@@ -508,5 +553,23 @@ namespace imageDeCap
         {
             Preferences.GIFRecordingFramerate = (int)gifFPS.Value;
         }
+
+        //private void Uninstallbutton_Click(object sender, EventArgs e)
+        //{
+        //    var d = MessageBox.Show("Uninstall and Exit?", "Uninstall", MessageBoxButtons.OKCancel);
+        //    if(d == DialogResult.OK)
+        //    {
+        //        TryDelete(InstallExePath);
+        //        TryDelete(InstallLinksPath);
+        //        TryDelete(InstallSettingsPath);
+        //        RemoveFromStartup();
+        //        Program.ImageDeCap.actuallyCloseTheProgram();
+        //    }
+        //}
+
+        //private void button4_Click_1(object sender, EventArgs e)
+        //{
+        //    RemoveFromStartup();
+        //}
     }
 }

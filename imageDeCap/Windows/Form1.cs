@@ -27,7 +27,6 @@ namespace imageDeCap
 {
     public partial class Form1 : Form
     {
-        string LinksFilePath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\imageDeCap\imageDecapLinks.ini";
 
         List<string> Links = new List<string>();
         private void addToLinks(string link, bool addToXML = true)
@@ -149,9 +148,9 @@ namespace imageDeCap
                 {
                     Utilities.playSound("snip.wav");
 
-                    byte[] gifData = gEnc.ToByteArray(MagickFormat.Gif);
+                    //byte[] gifData = gEnc.ToByteArray(MagickFormat.Gif);
                     // Feed in through the tag weather the user right-clicked to force editor even when it's disabled.
-                    UploadImageData(gifData, filetype.gif, false, (bool)GifCaptureTimer.Tag);
+                    UploadImageData(new byte[] { }, filetype.gif, false, (bool)GifCaptureTimer.Tag, gEnc);
                 }
 
                 Program.ImageDeCap.isTakingSnapshot = false;
@@ -170,7 +169,7 @@ namespace imageDeCap
                 Program.ImageDeCap.X - 1,
                 Program.ImageDeCap.Y - 1,
                 Program.ImageDeCap.tempWidth + 1,
-                Program.ImageDeCap.tempHeight + 1);
+                Program.ImageDeCap.tempHeight + 1, true);
 
             MagickImage newImage = new MagickImage();
             newImage.Format = MagickFormat.Gif;
@@ -185,31 +184,59 @@ namespace imageDeCap
             counter++;
         }
 
+
+        private bool hasWriteAccessToFolder(string folderPath)
+        {
+            try
+            {
+                // Attempt to get a list of security permissions from the folder. 
+                // This will raise an exception if the path is read only or do not have access to view the permissions. 
+                System.Security.AccessControl.DirectorySecurity ds = Directory.GetAccessControl(folderPath);
+                return true;
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return false;
+            }
+        }
+
+        public static string LinksFilePath = "ERROR";
+        public static string PreferencesPath = "ERROR";
+
         public Form1()
         {
             InitializeComponent();
+            string exeDir = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
+            string appdataDir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\imageDeCap";
+            if (exeDir.Contains("Program Files"))
+            {
+                // If it's in an install folder, put the settings files in appdata.
+                if (!Directory.Exists(appdataDir))
+                    Directory.CreateDirectory(appdataDir);
+                LinksFilePath = appdataDir + @"\imageDecapLinks.ini";
+                PreferencesPath = appdataDir + @"\ImageDeCap.ini";
+            }
+            else
+            {
+                // If it's not in Program Files that means the user is trying to use it portable and we should write settings next to the exe.
+
+                // If we can't write settings, tell the user they need to run the program as administrator to proceed.
+                if(!hasWriteAccessToFolder(exeDir))
+                {
+                    MessageBox.Show("Insufficient permissions to write settings, try starting the program from somewhere else or start it as as administrator.", "Could not write settings.", MessageBoxButtons.OK);
+                    actuallyCloseTheProgram();
+                    return;
+                }
+                LinksFilePath = exeDir + @"\imageDecapLinks.ini";
+                PreferencesPath = exeDir + @"\ImageDeCap.ini";
+            }
 
             this.Hide();
             this.ShowInTaskbar = false;
 
+            Preferences.Load();
+
             props = new SettingsWindow(this);
-
-            // Alert for install!
-            if (Preferences.firstLaunch)
-            {
-                Preferences.firstLaunch = false;
-                Preferences.Save();
-                DialogResult d = MessageBox.Show("First Launch!\nInstall? (add to startup & start-menu)", "Image DeCap", MessageBoxButtons.YesNo);
-                if (d == DialogResult.Yes)
-                {
-                    props.Install();
-                    props.AddToStartup();
-                    this.ShowInTaskbar = true;
-                    this.Show();
-                    this.Activate();
-                }
-            }
-
             if (File.Exists(LinksFilePath))
             {
                 string links = File.ReadAllText(LinksFilePath);
@@ -299,6 +326,7 @@ namespace imageDeCap
             props.Close();
             this.Close();
             Application.Exit();
+            Program.Quit = true;
         }
 
 
@@ -396,20 +424,13 @@ namespace imageDeCap
             UploadImageData(File.ReadAllBytes(filepath), getImageType(filepath), true);
         }
 
-        public void UploadImageData(byte[] FileData, filetype imageType, bool ForceNoEdit = false, bool ForceEdit = false)
+        public void UploadImageData(byte[] FileData, filetype imageType, bool ForceNoEdit = false, bool ForceEdit = false, MagickImageCollection GifImage = null)
         {
             if(imageType == filetype.error)
             {
                 return;
             }
             
-            // save unedited capture
-            if (Preferences.saveImageAtAll && Directory.Exists(Preferences.SaveImagesHere))
-            {
-                string SaveFileName = DateTime.UtcNow.ToString("yyyyMMddHHmmssfff");
-                string whereToSave = Preferences.SaveImagesHere + @"\" + SaveFileName + "." + imageType.ToString();
-                File.WriteAllBytes(whereToSave, FileData);
-            }
 
             bool CanceledUpload = false;
             // Edit the image if we are going to
@@ -419,7 +440,7 @@ namespace imageDeCap
                 {
                     if(imageType == filetype.gif)
                     {
-                        GifEditor editor = new GifEditor(FileData, topBox.Location.X, topBox.Location.Y);
+                        GifEditor editor = new GifEditor(GifImage, topBox.Location.X, topBox.Location.Y);
                         editor.ShowDialog();
                         (CanceledUpload, FileData) = editor.FinalFunction();
                     }
@@ -430,6 +451,21 @@ namespace imageDeCap
                         (CanceledUpload, FileData) = editor.FinalFunction();
                     }
                 }
+            }
+            else
+            {
+                if(imageType == filetype.gif)
+                {
+                    FileData = gEnc.ToByteArray(MagickFormat.Gif);
+                }
+            }
+
+            // save the capture
+            if (Preferences.saveImageAtAll && Directory.Exists(Preferences.SaveImagesHere))
+            {
+                string SaveFileName = DateTime.UtcNow.ToString("yyyyMMddHHmmssfff");
+                string whereToSave = Preferences.SaveImagesHere + @"\" + SaveFileName + "." + imageType.ToString();
+                File.WriteAllBytes(whereToSave, FileData);
             }
 
             // Copy image to clipboard if it's not a gif
@@ -590,8 +626,9 @@ namespace imageDeCap
         int tempY = 0;
         public int tempWidth = 0;
         public int tempHeight = 0;
-
-        public void updateSelectedArea(completeCover backCover, bool EnterPressed, bool EscapePressed, bool LmbDown, bool LmbUp, bool Lmb, bool Gif, bool RMB) // this thing is essentially a fucking frame-loop.
+        int LastCursorX = 0;
+        int LastCursorY = 0;
+        public void updateSelectedArea(completeCover backCover, bool EnterPressed, bool EscapePressed, bool LmbDown, bool LmbUp, bool Lmb, bool Gif, bool RMB, bool HoldingAlt) // this thing is essentially a fucking frame-loop.
         {
 
             backCover.Activate();
@@ -619,18 +656,27 @@ namespace imageDeCap
                 leftBox.SetBounds(X - 3, Y - 1, 0, tempHeight + 1);
                 bottomBox.SetBounds(X - 3, tempHeight + Y, tempWidth + 5, 0);
                 rightBox.SetBounds(tempWidth + X, Y - 3, 0, tempHeight + 3);
+
                 
                 tempWidth = Math.Abs(Cursor.Position.X - tempX);
                 tempHeight = Math.Abs(Cursor.Position.Y - tempY);
 
-                Y = tempY;
                 X = tempX;
+                Y = tempY;
 
                 if ((Cursor.Position.Y - tempY) < 0)
                     Y = tempY + (Cursor.Position.Y - tempY);
 
                 if ((Cursor.Position.X - tempX) < 0)
                     X = tempX + (Cursor.Position.X - tempX);
+
+                if (HoldingAlt)
+                {
+                    tempX += Cursor.Position.X - LastCursorX;
+                    tempY += Cursor.Position.Y - LastCursorY;
+                }
+                LastCursorX = Cursor.Position.X;
+                LastCursorY = Cursor.Position.Y;
             }
             if (EscapePressed)
             {

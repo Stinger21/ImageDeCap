@@ -55,6 +55,8 @@ namespace imageDeCap
 
         bool wasPressed = false;
 
+        bool AltKeyDown = false;
+
         private void completeCover_Load(object sender, EventArgs e)
         {
         }
@@ -90,7 +92,7 @@ namespace imageDeCap
                 }
             }
 
-            Program.ImageDeCap.updateSelectedArea(this, EnterPressed, EscapePressed, LmbDown, LmbUp, Lmb, Gif, MouseButtons == (MouseButtons.Left | MouseButtons.Right));
+            Program.ImageDeCap.updateSelectedArea(this, EnterPressed, EscapePressed, LmbDown, LmbUp, Lmb, Gif, MouseButtons == (MouseButtons.Left | MouseButtons.Right), AltKeyDown);
             EnterPressed = false;
             EscapePressed = false;
             wasPressed = MouseButtons == MouseButtons.Left;
@@ -108,8 +110,17 @@ namespace imageDeCap
                     Program.ImageDeCap.StopRecordingGif(this, true);
                 }
             }
-            
+            if(e.Alt)
+            {
+                AltKeyDown = true;
+            }
         }
+
+        private void completeCover_KeyUp(object sender, KeyEventArgs e)
+        {
+            AltKeyDown = false;
+        }
+
         public static byte[] GetBytes(Image image, ImageFormat format)
         {
             var ms = new MemoryStream();
@@ -196,6 +207,15 @@ namespace imageDeCap
         {
             EscapePressed = true;
             Program.ImageDeCap.StopRecordingGif(this, true);
+        }
+
+        private void completeCover_KeyPress(object sender, KeyPressEventArgs e)
+        {
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

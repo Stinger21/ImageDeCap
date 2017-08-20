@@ -48,11 +48,11 @@ namespace imageDeCap
         }
         private static void Preferences_Click(object Sender, EventArgs e)
         {
-            //Program.ImageDeCap.ShowProperties();
+            Program.ImageDeCap.ShowProperties();
         }
         private static void OpenWindowButton_Click(object Sender, EventArgs e)//Open Window
         {
-            //Program.ImageDeCap.OpenWindow();
+            Program.ImageDeCap.OpenWindow();
         }
     }
 }

@@ -31,6 +31,7 @@
             this.components = new System.ComponentModel.Container();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.pictureBoxWithInterpolationMode1 = new imageDeCap.PictureBoxWithInterpolationMode();
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxWithInterpolationMode1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -53,11 +54,22 @@
             this.pictureBoxWithInterpolationMode1.TabStop = false;
             this.pictureBoxWithInterpolationMode1.Click += new System.EventHandler(this.pictureBoxWithInterpolationMode1_Click);
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(6, 5);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(24, 13);
+            this.label1.TabIndex = 3;
+            this.label1.Text = "0x0";
+            this.label1.Click += new System.EventHandler(this.label1_Click);
+            // 
             // Magnificator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(124, 124);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.pictureBoxWithInterpolationMode1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "Magnificator";
@@ -65,6 +77,7 @@
             this.Load += new System.EventHandler(this.Magnificator_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxWithInterpolationMode1)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -72,5 +85,6 @@
 
         private System.Windows.Forms.Timer timer1;
         private PictureBoxWithInterpolationMode pictureBoxWithInterpolationMode1;
+        private System.Windows.Forms.Label label1;
     }
 }

@@ -20,7 +20,7 @@ namespace imageDeCap
         public static bool CopyImageToClipboard = true;
         public static bool DisableNotifications = false;
         public static bool DisableSoundEffects = false;
-        public static int GIFRecordingFramerate = 10; // unimplemented
+        public static int GIFRecordingFramerate = 15; // unimplemented
 
         // Hotkeys
         public static string c_Hotkeys;
@@ -41,13 +41,7 @@ namespace imageDeCap
         public static string FTPpassword = "password";
         public static bool AlsoFTPTextFiles = false;
 
-        // System
-        public static string c_System;
-        public static bool firstLaunch = true;
-        public static bool Portable = false;
-
         
-
         // Metaprogramming shenanigans to make the data above avilable as an ini file.
         static List<object> Defaults = new List<object>();
         public static void Reset()
@@ -59,7 +53,7 @@ namespace imageDeCap
                 fields[i].SetValue(typeof(Preferences), Defaults[i]);
             }
         }
-
+        
         public static void Load()
         {
             // Get Defaults and save them so we can reset at any point
@@ -68,14 +62,12 @@ namespace imageDeCap
             {
                 Defaults.Add(f.GetValue(typeof(Preferences)));
             }
-
-
-            string PreferencesPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\imageDeCap\ImageDeCap.ini";
-            if(!File.Exists(PreferencesPath)) // If the file does not exist, we need to save it.
+            
+            if (!File.Exists(Form1.PreferencesPath)) // If the file does not exist, we need to save it.
             {
                 Save();
             }
-            string FileData = File.ReadAllText(PreferencesPath);
+            string FileData = File.ReadAllText(Form1.PreferencesPath);
             foreach(string s in FileData.Split('\n'))
             {
                 if(!s.Contains("="))
@@ -107,11 +99,9 @@ namespace imageDeCap
                     }
                 }
             }
-            
         }
         public static void Save()
         {
-            string PreferencesPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\imageDeCap\ImageDeCap.ini";
             FieldInfo[] fields = typeof(Preferences).GetFields();
 
             string FileData = "";
@@ -127,7 +117,7 @@ namespace imageDeCap
                     FileData += f.Name + "=" + f.GetValue(typeof(Preferences)).ToString() + "\n";
                 }
             }
-            File.WriteAllText(PreferencesPath, FileData);
+            File.WriteAllText(Form1.PreferencesPath, FileData);
         }
     }
 }

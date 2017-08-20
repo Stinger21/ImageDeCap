@@ -49,6 +49,8 @@
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.GifCaptureTimer = new System.Windows.Forms.Timer(this.components);
+            this.label1 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -122,6 +124,8 @@
             // groupBox2
             // 
             this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
+            this.groupBox2.Controls.Add(this.label3);
+            this.groupBox2.Controls.Add(this.label1);
             this.groupBox2.Controls.Add(this.label2);
             this.groupBox2.Controls.Add(this.listBox1);
             this.groupBox2.Location = new System.Drawing.Point(12, 138);
@@ -137,9 +141,9 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(1, 303);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(211, 13);
+            this.label2.Size = new System.Drawing.Size(97, 13);
             this.label2.TabIndex = 16;
-            this.label2.Text = "Created in memory of Hyperdesktop.  v1.24";
+            this.label2.Text = "RIP Hyperdesktop.";
             // 
             // menuStrip1
             // 
@@ -220,6 +224,27 @@
             this.GifCaptureTimer.Interval = 16;
             this.GifCaptureTimer.Tick += new System.EventHandler(this.GifCaptureTimer_Tick);
             // 
+            // label1
+            // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(175, 303);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(34, 13);
+            this.label1.TabIndex = 17;
+            this.label1.Text = "v1.24";
+            // 
+            // label3
+            // 
+            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            this.label3.Location = new System.Drawing.Point(5, 282);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(207, 22);
+            this.label3.TabIndex = 19;
+            this.label3.Text = "(WORK IN PROGRESS)";
+            // 
             // Form1
             // 
             this.AllowDrop = true;
@@ -272,6 +297,8 @@
         private System.Windows.Forms.ToolStripMenuItem clearLinksToolStripMenuItem;
         public System.Windows.Forms.Label label2;
         public System.Windows.Forms.Timer GifCaptureTimer;
+        public System.Windows.Forms.Label label1;
+        public System.Windows.Forms.Label label3;
     }
 }
 

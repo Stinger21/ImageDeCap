@@ -47,7 +47,6 @@
             this.button2 = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.imageContainer = new System.Windows.Forms.PictureBox();
             this.button1 = new System.Windows.Forms.Button();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.checkBox5 = new System.Windows.Forms.CheckBox();
@@ -56,6 +55,7 @@
             this.checkBoxUploadToFTP = new System.Windows.Forms.CheckBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.label12 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.gifFPS = new System.Windows.Forms.NumericUpDown();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -72,14 +72,14 @@
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.neverUpload = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.eventLog1 = new System.Diagnostics.EventLog();
             this.label10 = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.AddToAutoStart = new System.Windows.Forms.Button();
-            this.label12 = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.imageContainer)).BeginInit();
+            this.imageContainer = new System.Windows.Forms.PictureBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gifFPS)).BeginInit();
@@ -89,7 +89,9 @@
             this.tabPage3.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            this.tabPage4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.eventLog1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.imageContainer)).BeginInit();
             this.SuspendLayout();
             // 
             // HotkeyTextBox4
@@ -178,7 +180,7 @@
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(110, 26);
             this.button3.TabIndex = 26;
-            this.button3.Text = "Reset All Settings";
+            this.button3.Text = "Reset Preferences";
             this.toolTip1.SetToolTip(this.button3, "Re-Sets All Preferences and settings, Including First-Time Startup.");
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
@@ -281,18 +283,6 @@
             this.checkBox1.UseVisualStyleBackColor = true;
             this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
-            // imageContainer
-            // 
-            this.imageContainer.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.imageContainer.Image = ((System.Drawing.Image)(resources.GetObject("imageContainer.Image")));
-            this.imageContainer.Location = new System.Drawing.Point(379, 11);
-            this.imageContainer.Name = "imageContainer";
-            this.imageContainer.Size = new System.Drawing.Size(64, 64);
-            this.imageContainer.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.imageContainer.TabIndex = 1;
-            this.imageContainer.TabStop = false;
-            this.imageContainer.Click += new System.EventHandler(this.imageContainer_Click);
-            // 
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(356, 251);
@@ -327,6 +317,7 @@
             this.alsoSaveTextFilesBox.TabIndex = 6;
             this.alsoSaveTextFilesBox.Text = "Also save text files.";
             this.alsoSaveTextFilesBox.UseVisualStyleBackColor = true;
+            this.alsoSaveTextFilesBox.CheckedChanged += new System.EventHandler(this.alsoSaveTextFilesBox_CheckedChanged);
             // 
             // AlsoFTPTextFilesBox
             // 
@@ -355,6 +346,7 @@
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage3);
+            this.tabControl1.Controls.Add(this.tabPage4);
             this.tabControl1.Location = new System.Drawing.Point(3, 6);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -380,10 +372,20 @@
             this.tabPage1.Text = "General";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // label12
+            // 
+            this.label12.Location = new System.Drawing.Point(3, 216);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(338, 30);
+            this.label12.TabIndex = 39;
+            this.label12.Text = "Protip: When edit Image is switched off you can bring up the image editor by pres" +
+    "sing right-click when selecting what region to capture.";
+            this.label12.Click += new System.EventHandler(this.label12_Click);
+            // 
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(200, 85);
+            this.label9.Location = new System.Drawing.Point(200, 178);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(129, 13);
             this.label9.TabIndex = 35;
@@ -391,7 +393,7 @@
             // 
             // gifFPS
             // 
-            this.gifFPS.Location = new System.Drawing.Point(203, 100);
+            this.gifFPS.Location = new System.Drawing.Point(203, 193);
             this.gifFPS.Maximum = new decimal(new int[] {
             15,
             0,
@@ -571,10 +573,29 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "FTP Settings";
             // 
+            // tabPage4
+            // 
+            this.tabPage4.Controls.Add(this.groupBox5);
+            this.tabPage4.Location = new System.Drawing.Point(4, 22);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Size = new System.Drawing.Size(343, 246);
+            this.tabPage4.TabIndex = 3;
+            this.tabPage4.Text = "Misc";
+            this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // groupBox5
+            // 
+            this.groupBox5.Location = new System.Drawing.Point(5, 3);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(325, 100);
+            this.groupBox5.TabIndex = 0;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "Sounds";
+            // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(376, 75);
+            this.label3.Location = new System.Drawing.Point(375, 75);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(72, 13);
             this.label3.TabIndex = 27;
@@ -608,26 +629,17 @@
             this.label10.Text = "Check mattwestphal.com for updates! ";
             this.label10.Click += new System.EventHandler(this.label10_Click);
             // 
-            // AddToAutoStart
+            // imageContainer
             // 
-            this.AddToAutoStart.Location = new System.Drawing.Point(356, 124);
-            this.AddToAutoStart.Name = "AddToAutoStart";
-            this.AddToAutoStart.Size = new System.Drawing.Size(110, 25);
-            this.AddToAutoStart.TabIndex = 27;
-            this.AddToAutoStart.Text = "Add to autostart";
-            this.toolTip1.SetToolTip(this.AddToAutoStart, "Adds a shortcut to this program in windows startup");
-            this.AddToAutoStart.UseVisualStyleBackColor = true;
-            this.AddToAutoStart.Click += new System.EventHandler(this.AddToAutoStart_Click);
-            // 
-            // label12
-            // 
-            this.label12.Location = new System.Drawing.Point(5, 196);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(331, 47);
-            this.label12.TabIndex = 39;
-            this.label12.Text = "Protip: Even when Edit Image is switched off, you can bring up the image-editor b" +
-    "y pressing right-click when selecting what region to cpature.\r\n";
-            this.label12.Click += new System.EventHandler(this.label12_Click);
+            this.imageContainer.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.imageContainer.Image = global::imageDeCap.Properties.Resources.Untitled_2_256x256;
+            this.imageContainer.Location = new System.Drawing.Point(378, 11);
+            this.imageContainer.Name = "imageContainer";
+            this.imageContainer.Size = new System.Drawing.Size(64, 64);
+            this.imageContainer.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.imageContainer.TabIndex = 1;
+            this.imageContainer.TabStop = false;
+            this.imageContainer.Click += new System.EventHandler(this.imageContainer_Click);
             // 
             // SettingsWindow
             // 
@@ -637,7 +649,6 @@
             this.Controls.Add(this.label10);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.tabControl1);
-            this.Controls.Add(this.AddToAutoStart);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.imageContainer);
             this.Controls.Add(this.button3);
@@ -651,7 +662,6 @@
             this.Text = "Image DeCap Settings";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SettingsWindow_FormClosing);
             this.Load += new System.EventHandler(this.SettingsWindow_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.imageContainer)).EndInit();
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
@@ -667,7 +677,9 @@
             this.groupBox4.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.tabPage4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.eventLog1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.imageContainer)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -721,7 +733,8 @@
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.NumericUpDown gifFPS;
-        private System.Windows.Forms.Button AddToAutoStart;
         private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.TabPage tabPage4;
+        private System.Windows.Forms.GroupBox groupBox5;
     }
 }

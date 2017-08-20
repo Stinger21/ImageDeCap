@@ -29,32 +29,26 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.PictureBox = new System.Windows.Forms.PictureBox();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GifEditor));
             this.frameTimer = new System.Windows.Forms.Timer(this.components);
             this.startTrack = new System.Windows.Forms.TrackBar();
             this.endTrack = new System.Windows.Forms.TrackBar();
             this.toolsBox = new System.Windows.Forms.GroupBox();
-            this.label9 = new System.Windows.Forms.Label();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.sizeText = new System.Windows.Forms.Label();
             this.calcSizeButton = new System.Windows.Forms.Button();
             this.uploadButton = new System.Windows.Forms.Button();
             this.BackgroundTrack = new System.Windows.Forms.TrackBar();
-            ((System.ComponentModel.ISupportInitialize)(this.PictureBox)).BeginInit();
+            this.label9 = new System.Windows.Forms.Label();
+            this.ScaleThing = new System.Windows.Forms.NumericUpDown();
+            this.label1 = new System.Windows.Forms.Label();
+            this.PictureBox = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.startTrack)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.endTrack)).BeginInit();
             this.toolsBox.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.BackgroundTrack)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ScaleThing)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PictureBox)).BeginInit();
             this.SuspendLayout();
-            // 
-            // PictureBox
-            // 
-            this.PictureBox.Location = new System.Drawing.Point(12, 12);
-            this.PictureBox.Name = "PictureBox";
-            this.PictureBox.Size = new System.Drawing.Size(100, 50);
-            this.PictureBox.TabIndex = 0;
-            this.PictureBox.TabStop = false;
             // 
             // frameTimer
             // 
@@ -92,8 +86,9 @@
             // 
             // toolsBox
             // 
+            this.toolsBox.Controls.Add(this.label1);
             this.toolsBox.Controls.Add(this.label9);
-            this.toolsBox.Controls.Add(this.numericUpDown1);
+            this.toolsBox.Controls.Add(this.ScaleThing);
             this.toolsBox.Controls.Add(this.sizeText);
             this.toolsBox.Controls.Add(this.calcSizeButton);
             this.toolsBox.Controls.Add(this.uploadButton);
@@ -108,26 +103,10 @@
             this.toolsBox.TabStop = false;
             this.toolsBox.Text = "Tools";
             // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(502, 13);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(129, 13);
-            this.label9.TabIndex = 37;
-            this.label9.Text = "GIF Recording frame-rate:";
-            // 
-            // numericUpDown1
-            // 
-            this.numericUpDown1.Location = new System.Drawing.Point(505, 28);
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(120, 20);
-            this.numericUpDown1.TabIndex = 36;
-            // 
             // sizeText
             // 
             this.sizeText.AutoSize = true;
-            this.sizeText.Location = new System.Drawing.Point(215, 28);
+            this.sizeText.Location = new System.Drawing.Point(213, 34);
             this.sizeText.Name = "sizeText";
             this.sizeText.Size = new System.Drawing.Size(52, 13);
             this.sizeText.TabIndex = 7;
@@ -168,6 +147,56 @@
             this.BackgroundTrack.Size = new System.Drawing.Size(658, 29);
             this.BackgroundTrack.TabIndex = 4;
             // 
+            // label9
+            // 
+            this.label9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(547, 13);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(48, 13);
+            this.label9.TabIndex = 37;
+            this.label9.Text = "Scale %:";
+            // 
+            // ScaleThing
+            // 
+            this.ScaleThing.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.ScaleThing.Increment = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.ScaleThing.Location = new System.Drawing.Point(550, 28);
+            this.ScaleThing.Minimum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.ScaleThing.Name = "ScaleThing";
+            this.ScaleThing.Size = new System.Drawing.Size(120, 20);
+            this.ScaleThing.TabIndex = 36;
+            this.ScaleThing.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(212, 20);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(182, 13);
+            this.label1.TabIndex = 38;
+            this.label1.Text = "The max size imgur will take is 10 MB";
+            // 
+            // PictureBox
+            // 
+            this.PictureBox.Location = new System.Drawing.Point(12, 12);
+            this.PictureBox.Name = "PictureBox";
+            this.PictureBox.Size = new System.Drawing.Size(100, 50);
+            this.PictureBox.TabIndex = 0;
+            this.PictureBox.TabStop = false;
+            // 
             // GifEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -175,6 +204,7 @@
             this.ClientSize = new System.Drawing.Size(682, 307);
             this.Controls.Add(this.toolsBox);
             this.Controls.Add(this.PictureBox);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.Name = "GifEditor";
             this.Text = "GifEditor";
@@ -182,13 +212,13 @@
             this.Load += new System.EventHandler(this.GifEditor_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.GifEditor_KeyDown);
             this.Resize += new System.EventHandler(this.GifEditor_Resize);
-            ((System.ComponentModel.ISupportInitialize)(this.PictureBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.startTrack)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.endTrack)).EndInit();
             this.toolsBox.ResumeLayout(false);
             this.toolsBox.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.BackgroundTrack)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ScaleThing)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PictureBox)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -205,6 +235,7 @@
         private System.Windows.Forms.Button calcSizeButton;
         private System.Windows.Forms.Label sizeText;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.NumericUpDown ScaleThing;
+        private System.Windows.Forms.Label label1;
     }
 }

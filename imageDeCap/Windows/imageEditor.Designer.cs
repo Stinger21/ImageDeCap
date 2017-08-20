@@ -72,6 +72,8 @@
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.checkBox2 = new System.Windows.Forms.CheckBox();
+            this.InfoText = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.imageContainer)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.compressionSlider)).BeginInit();
@@ -96,9 +98,10 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.checkBox1);
+            this.groupBox1.Controls.Add(this.checkBox2);
             this.groupBox1.Controls.Add(this.fileSizeLabel);
             this.groupBox1.Controls.Add(this.label4);
-            this.groupBox1.Controls.Add(this.checkBox1);
             this.groupBox1.Controls.Add(this.button3);
             this.groupBox1.Controls.Add(this.currentColor);
             this.groupBox1.Controls.Add(this.label1);
@@ -163,9 +166,9 @@
             this.checkBox1.AutoSize = true;
             this.checkBox1.Location = new System.Drawing.Point(254, 55);
             this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(174, 17);
+            this.checkBox1.Size = new System.Drawing.Size(177, 17);
             this.checkBox1.TabIndex = 34;
-            this.checkBox1.Text = "Compress (Makes Editing Slow)";
+            this.checkBox1.Text = "Compress. (Makes Editing Slow)";
             this.checkBox1.UseVisualStyleBackColor = true;
             this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
@@ -184,7 +187,7 @@
             // 
             this.currentColor.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(57)))), ((int)(((byte)(43)))));
             this.currentColor.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.currentColor.Location = new System.Drawing.Point(106, 14);
+            this.currentColor.Location = new System.Drawing.Point(107, 14);
             this.currentColor.Name = "currentColor";
             this.currentColor.Size = new System.Drawing.Size(29, 29);
             this.currentColor.TabIndex = 30;
@@ -255,11 +258,11 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.trackBar2.AutoSize = false;
             this.trackBar2.LargeChange = 1000;
-            this.trackBar2.Location = new System.Drawing.Point(435, 10);
-            this.trackBar2.Maximum = 10000;
+            this.trackBar2.Location = new System.Drawing.Point(332, 10);
+            this.trackBar2.Maximum = 20000;
             this.trackBar2.Minimum = 100;
             this.trackBar2.Name = "trackBar2";
-            this.trackBar2.Size = new System.Drawing.Size(189, 22);
+            this.trackBar2.Size = new System.Drawing.Size(292, 22);
             this.trackBar2.SmallChange = 100;
             this.trackBar2.TabIndex = 28;
             this.trackBar2.TickFrequency = 1000;
@@ -281,9 +284,9 @@
             // 
             // addTextButton
             // 
-            this.addTextButton.Location = new System.Drawing.Point(392, 14);
+            this.addTextButton.Location = new System.Drawing.Point(280, 10);
             this.addTextButton.Name = "addTextButton";
-            this.addTextButton.Size = new System.Drawing.Size(37, 37);
+            this.addTextButton.Size = new System.Drawing.Size(46, 45);
             this.addTextButton.TabIndex = 27;
             this.addTextButton.Text = "Add Text";
             this.toolTip1.SetToolTip(this.addTextButton, "Hotkey: Ctrl + T");
@@ -292,18 +295,20 @@
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(275, 14);
+            this.textBox1.Location = new System.Drawing.Point(674, 70);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(117, 37);
             this.textBox1.TabIndex = 23;
             this.textBox1.Text = "Sample Text";
+            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            this.textBox1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox1_KeyDown);
             // 
             // c_white
             // 
             this.c_white.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(189)))), ((int)(((byte)(195)))), ((int)(((byte)(199)))));
             this.c_white.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.c_white.Location = new System.Drawing.Point(259, 29);
+            this.c_white.Location = new System.Drawing.Point(260, 29);
             this.c_white.Name = "c_white";
             this.c_white.Size = new System.Drawing.Size(14, 14);
             this.c_white.TabIndex = 22;
@@ -316,7 +321,7 @@
             // 
             this.c_grey.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
             this.c_grey.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.c_grey.Location = new System.Drawing.Point(214, 29);
+            this.c_grey.Location = new System.Drawing.Point(215, 29);
             this.c_grey.Name = "c_grey";
             this.c_grey.Size = new System.Drawing.Size(14, 14);
             this.c_grey.TabIndex = 21;
@@ -329,7 +334,7 @@
             // 
             this.c_black.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(152)))), ((int)(((byte)(219)))));
             this.c_black.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.c_black.Location = new System.Drawing.Point(214, 14);
+            this.c_black.Location = new System.Drawing.Point(215, 14);
             this.c_black.Name = "c_black";
             this.c_black.Size = new System.Drawing.Size(14, 14);
             this.c_black.TabIndex = 20;
@@ -342,7 +347,7 @@
             // 
             this.c_purple_3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(236)))), ((int)(((byte)(240)))), ((int)(((byte)(241)))));
             this.c_purple_3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.c_purple_3.Location = new System.Drawing.Point(259, 14);
+            this.c_purple_3.Location = new System.Drawing.Point(260, 14);
             this.c_purple_3.Name = "c_purple_3";
             this.c_purple_3.Size = new System.Drawing.Size(14, 14);
             this.c_purple_3.TabIndex = 19;
@@ -355,7 +360,7 @@
             // 
             this.c_purple_2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(174)))), ((int)(((byte)(56)))));
             this.c_purple_2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.c_purple_2.Location = new System.Drawing.Point(199, 29);
+            this.c_purple_2.Location = new System.Drawing.Point(200, 29);
             this.c_purple_2.Name = "c_purple_2";
             this.c_purple_2.Size = new System.Drawing.Size(14, 14);
             this.c_purple_2.TabIndex = 18;
@@ -368,7 +373,7 @@
             // 
             this.c_purple_1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(215)))), ((int)(((byte)(96)))));
             this.c_purple_1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.c_purple_1.Location = new System.Drawing.Point(199, 14);
+            this.c_purple_1.Location = new System.Drawing.Point(200, 14);
             this.c_purple_1.Name = "c_purple_1";
             this.c_purple_1.Size = new System.Drawing.Size(14, 14);
             this.c_purple_1.TabIndex = 17;
@@ -381,7 +386,7 @@
             // 
             this.c_blue_3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(44)))), ((int)(((byte)(58)))));
             this.c_blue_3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.c_blue_3.Location = new System.Drawing.Point(244, 29);
+            this.c_blue_3.Location = new System.Drawing.Point(245, 29);
             this.c_blue_3.Name = "c_blue_3";
             this.c_blue_3.Size = new System.Drawing.Size(14, 14);
             this.c_blue_3.TabIndex = 16;
@@ -394,7 +399,7 @@
             // 
             this.c_blue_2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(146)))), ((int)(((byte)(174)))), ((int)(((byte)(39)))));
             this.c_blue_2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.c_blue_2.Location = new System.Drawing.Point(184, 29);
+            this.c_blue_2.Location = new System.Drawing.Point(185, 29);
             this.c_blue_2.Name = "c_blue_2";
             this.c_blue_2.Size = new System.Drawing.Size(14, 14);
             this.c_blue_2.TabIndex = 15;
@@ -407,7 +412,7 @@
             // 
             this.c_blue_1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(171)))), ((int)(((byte)(204)))), ((int)(((byte)(46)))));
             this.c_blue_1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.c_blue_1.Location = new System.Drawing.Point(184, 14);
+            this.c_blue_1.Location = new System.Drawing.Point(185, 14);
             this.c_blue_1.Name = "c_blue_1";
             this.c_blue_1.Size = new System.Drawing.Size(14, 14);
             this.c_blue_1.TabIndex = 14;
@@ -420,7 +425,7 @@
             // 
             this.c_green_3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
             this.c_green_3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.c_green_3.Location = new System.Drawing.Point(244, 14);
+            this.c_green_3.Location = new System.Drawing.Point(245, 14);
             this.c_green_3.Name = "c_green_3";
             this.c_green_3.Size = new System.Drawing.Size(14, 14);
             this.c_green_3.TabIndex = 13;
@@ -433,7 +438,7 @@
             // 
             this.c_green_2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(156)))), ((int)(((byte)(18)))));
             this.c_green_2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.c_green_2.Location = new System.Drawing.Point(169, 29);
+            this.c_green_2.Location = new System.Drawing.Point(170, 29);
             this.c_green_2.Name = "c_green_2";
             this.c_green_2.Size = new System.Drawing.Size(14, 14);
             this.c_green_2.TabIndex = 12;
@@ -446,7 +451,7 @@
             // 
             this.c_green_1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(241)))), ((int)(((byte)(196)))), ((int)(((byte)(15)))));
             this.c_green_1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.c_green_1.Location = new System.Drawing.Point(169, 14);
+            this.c_green_1.Location = new System.Drawing.Point(170, 14);
             this.c_green_1.Name = "c_green_1";
             this.c_green_1.Size = new System.Drawing.Size(14, 14);
             this.c_green_1.TabIndex = 11;
@@ -459,7 +464,7 @@
             // 
             this.c_yellow_3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(107)))), ((int)(((byte)(49)))), ((int)(((byte)(131)))));
             this.c_yellow_3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.c_yellow_3.Location = new System.Drawing.Point(229, 29);
+            this.c_yellow_3.Location = new System.Drawing.Point(230, 29);
             this.c_yellow_3.Name = "c_yellow_3";
             this.c_yellow_3.Size = new System.Drawing.Size(14, 14);
             this.c_yellow_3.TabIndex = 10;
@@ -472,7 +477,7 @@
             // 
             this.c_yellow_2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(211)))), ((int)(((byte)(84)))), ((int)(((byte)(0)))));
             this.c_yellow_2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.c_yellow_2.Location = new System.Drawing.Point(154, 29);
+            this.c_yellow_2.Location = new System.Drawing.Point(155, 29);
             this.c_yellow_2.Name = "c_yellow_2";
             this.c_yellow_2.Size = new System.Drawing.Size(14, 14);
             this.c_yellow_2.TabIndex = 9;
@@ -485,7 +490,7 @@
             // 
             this.c_yellow_1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(126)))), ((int)(((byte)(34)))));
             this.c_yellow_1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.c_yellow_1.Location = new System.Drawing.Point(154, 14);
+            this.c_yellow_1.Location = new System.Drawing.Point(155, 14);
             this.c_yellow_1.Name = "c_yellow_1";
             this.c_yellow_1.Size = new System.Drawing.Size(14, 14);
             this.c_yellow_1.TabIndex = 8;
@@ -498,7 +503,7 @@
             // 
             this.c_red_3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(89)))), ((int)(((byte)(182)))));
             this.c_red_3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.c_red_3.Location = new System.Drawing.Point(229, 14);
+            this.c_red_3.Location = new System.Drawing.Point(230, 14);
             this.c_red_3.Name = "c_red_3";
             this.c_red_3.Size = new System.Drawing.Size(14, 14);
             this.c_red_3.TabIndex = 7;
@@ -511,7 +516,7 @@
             // 
             this.c_red_2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(57)))), ((int)(((byte)(43)))));
             this.c_red_2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.c_red_2.Location = new System.Drawing.Point(139, 29);
+            this.c_red_2.Location = new System.Drawing.Point(140, 29);
             this.c_red_2.Name = "c_red_2";
             this.c_red_2.Size = new System.Drawing.Size(14, 14);
             this.c_red_2.TabIndex = 6;
@@ -524,7 +529,7 @@
             // 
             this.c_red_1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(76)))), ((int)(((byte)(60)))));
             this.c_red_1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.c_red_1.Location = new System.Drawing.Point(139, 14);
+            this.c_red_1.Location = new System.Drawing.Point(140, 14);
             this.c_red_1.Name = "c_red_1";
             this.c_red_1.Size = new System.Drawing.Size(14, 14);
             this.c_red_1.TabIndex = 4;
@@ -539,11 +544,11 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.trackBar1.AutoSize = false;
             this.trackBar1.LargeChange = 1000;
-            this.trackBar1.Location = new System.Drawing.Point(435, 33);
+            this.trackBar1.Location = new System.Drawing.Point(332, 33);
             this.trackBar1.Maximum = 80000;
             this.trackBar1.Minimum = 100;
             this.trackBar1.Name = "trackBar1";
-            this.trackBar1.Size = new System.Drawing.Size(189, 22);
+            this.trackBar1.Size = new System.Drawing.Size(292, 22);
             this.trackBar1.SmallChange = 100;
             this.trackBar1.TabIndex = 2;
             this.trackBar1.TickFrequency = 8000;
@@ -566,6 +571,7 @@
             // panel1
             // 
             this.panel1.AutoScroll = true;
+            this.panel1.Controls.Add(this.InfoText);
             this.panel1.Controls.Add(this.jpegBox);
             this.panel1.Controls.Add(this.imageContainer);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -601,6 +607,27 @@
             this.imageList1.ImageSize = new System.Drawing.Size(16, 16);
             this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
             // 
+            // checkBox2
+            // 
+            this.checkBox2.AutoSize = true;
+            this.checkBox2.Location = new System.Drawing.Point(174, 55);
+            this.checkBox2.Name = "checkBox2";
+            this.checkBox2.Size = new System.Drawing.Size(79, 17);
+            this.checkBox2.TabIndex = 37;
+            this.checkBox2.Text = "Show help.";
+            this.checkBox2.UseVisualStyleBackColor = true;
+            this.checkBox2.CheckedChanged += new System.EventHandler(this.checkBox2_CheckedChanged);
+            // 
+            // InfoText
+            // 
+            this.InfoText.AutoSize = true;
+            this.InfoText.Location = new System.Drawing.Point(11, 11);
+            this.InfoText.Name = "InfoText";
+            this.InfoText.Size = new System.Drawing.Size(329, 104);
+            this.InfoText.TabIndex = 35;
+            this.InfoText.Text = resources.GetString("InfoText.Text");
+            this.InfoText.Visible = false;
+            // 
             // imageEditor
             // 
             this.AcceptButton = this.button1;
@@ -611,6 +638,7 @@
             this.Controls.Add(this.groupBox1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
+            this.MinimumSize = new System.Drawing.Size(700, 350);
             this.Name = "imageEditor";
             this.Text = "imageDeCap Edit Screenshot";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.imageEditor_FormClosing);
@@ -676,5 +704,7 @@
         public System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.Label fileSizeLabel;
         private System.Windows.Forms.ToolTip toolTip1;
+        public System.Windows.Forms.CheckBox checkBox2;
+        private System.Windows.Forms.Label InfoText;
     }
 }

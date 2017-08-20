@@ -143,7 +143,7 @@ namespace imageDeCap
             public int Bottom;
         }
 
-        public Bitmap Capture(enmScreenCaptureMode screenCaptureMode = enmScreenCaptureMode.Window, int X = 0, int Y = 0, int Width = 0, int Height = 0)
+        public Bitmap Capture(enmScreenCaptureMode screenCaptureMode = enmScreenCaptureMode.Window, int X = 0, int Y = 0, int Width = 0, int Height = 0, bool CaptureMouse = false)
         {
             Rectangle bounds;
 
@@ -172,13 +172,16 @@ namespace imageDeCap
             {
                 g.Clear(Color.Black);
                 g.CopyFromScreen(new Point(bounds.Left, bounds.Top), Point.Empty, bounds.Size, CopyPixelOperation.SourceCopy);
-                int cursorX = 0;
-                int cursorY = 0;
-                Bitmap cursorBMP = CaptureCursor(ref cursorX, ref cursorY);
-                if (cursorBMP != null)
+                if (CaptureMouse)
                 {
-                    g.DrawImage(cursorBMP, new Rectangle(cursorX - Program.ImageDeCap.X, cursorY - Program.ImageDeCap.Y, cursorBMP.Width, cursorBMP.Height));
-                    g.Flush();
+                    int cursorX = 0;
+                    int cursorY = 0;
+                    Bitmap cursorBMP = CaptureCursor(ref cursorX, ref cursorY);
+                    if (cursorBMP != null)
+                    {
+                        g.DrawImage(cursorBMP, new Rectangle(cursorX - Program.ImageDeCap.X, cursorY - Program.ImageDeCap.Y, cursorBMP.Width, cursorBMP.Height));
+                        g.Flush();
+                    }
                 }
             }
             return result;

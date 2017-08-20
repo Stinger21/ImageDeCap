@@ -69,15 +69,18 @@ namespace imageDeCap
         Bitmap bmp;
         private void timer1_Tick(object sender, EventArgs e)
         {
+
             bmp = new Bitmap(32, 32);
             g = this.CreateGraphics();
             g = Graphics.FromImage(bmp);
             g.CopyFromScreen(MousePosition.X - 16, MousePosition.Y - 16, 0, 0, new Size(32, 32));
             pictureBoxWithInterpolationMode1.Image = bmp;
-            foreach(PictureBox FUCK in Boxes)
+            foreach(PictureBox picture in Boxes)
             {
-                FUCK.BringToFront();
+                picture.BringToFront();
             }
+            label1.Text = Program.ImageDeCap.tempWidth + "x" + Program.ImageDeCap.tempHeight;
+            label1.BringToFront();//lol
         }
 
         private void pictureBox1_Click(object sender, EventArgs e)
@@ -99,6 +102,11 @@ namespace imageDeCap
         {
 
             this.Activate();
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
