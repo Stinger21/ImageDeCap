@@ -76,6 +76,28 @@ namespace imageDeCap
             snipSoundBox.Text = Preferences.SnipSoundPath;
             uploadSoundBox.Text = Preferences.UploadSoundPath;
             uploadFailedSoundBox.Text = Preferences.ErrorSoundPath;
+
+            watermarkCheckbox.Checked = Preferences.AddWatermark;
+            watermarkTextbox.Text = Preferences.WatermarkFilePath;
+            for (int i = 0; i < 4; i++)
+            {
+                if(i==0)
+                    watermarkLocation0.Checked = true;
+                else if(i==1)
+                    watermarkLocation1.Checked = true;
+                else if (i==2)
+                    watermarkLocation2.Checked = true;
+                else if(i==3)
+                    watermarkLocation3.Checked = true;
+            }
+            
+            watermarkLocation0.Enabled = Preferences.AddWatermark;
+            watermarkLocation1.Enabled = Preferences.AddWatermark;
+            watermarkLocation2.Enabled = Preferences.AddWatermark;
+            watermarkLocation3.Enabled = Preferences.AddWatermark;
+            watermarkBrowseButton.Enabled = Preferences.AddWatermark;
+            watermarkTextbox.Enabled = Preferences.AddWatermark;
+
         }
 
 
@@ -479,6 +501,17 @@ namespace imageDeCap
         {
             Preferences.ErrorSoundPath = uploadFailedSoundBox.Text;
             Preferences.Save();
+        }
+
+        private void watermarkCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            Preferences.AddWatermark = watermarkCheckbox.Checked;
+            watermarkLocation0.Enabled = Preferences.AddWatermark;
+            watermarkLocation1.Enabled = Preferences.AddWatermark;
+            watermarkLocation2.Enabled = Preferences.AddWatermark;
+            watermarkLocation3.Enabled = Preferences.AddWatermark;
+            watermarkBrowseButton.Enabled = Preferences.AddWatermark;
+            watermarkTextbox.Enabled = Preferences.AddWatermark;
         }
     }
 }

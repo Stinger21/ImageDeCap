@@ -92,6 +92,15 @@
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.imageContainer = new System.Windows.Forms.PictureBox();
             this.wavFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.watermarkLocation0 = new System.Windows.Forms.RadioButton();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.watermarkLocation1 = new System.Windows.Forms.RadioButton();
+            this.watermarkLocation3 = new System.Windows.Forms.RadioButton();
+            this.watermarkLocation2 = new System.Windows.Forms.RadioButton();
+            this.watermarkBrowseButton = new System.Windows.Forms.Button();
+            this.watermarkTextbox = new System.Windows.Forms.TextBox();
+            this.watermarkCheckbox = new System.Windows.Forms.CheckBox();
+            this.ImageFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gifFPS)).BeginInit();
@@ -105,6 +114,7 @@
             this.groupBox5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.eventLog1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageContainer)).BeginInit();
+            this.groupBox6.SuspendLayout();
             this.SuspendLayout();
             // 
             // HotkeyTextBox4
@@ -589,6 +599,7 @@
             // tabPage4
             // 
             this.tabPage4.Controls.Add(this.checkBox8);
+            this.tabPage4.Controls.Add(this.groupBox6);
             this.tabPage4.Controls.Add(this.groupBox5);
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
@@ -600,7 +611,7 @@
             // checkBox8
             // 
             this.checkBox8.AutoSize = true;
-            this.checkBox8.Location = new System.Drawing.Point(5, 183);
+            this.checkBox8.Location = new System.Drawing.Point(5, 209);
             this.checkBox8.Name = "checkBox8";
             this.checkBox8.Size = new System.Drawing.Size(192, 17);
             this.checkBox8.TabIndex = 1;
@@ -622,7 +633,7 @@
             this.groupBox5.Controls.Add(this.snipSoundBox);
             this.groupBox5.Location = new System.Drawing.Point(5, 3);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(325, 160);
+            this.groupBox5.Size = new System.Drawing.Size(325, 142);
             this.groupBox5.TabIndex = 0;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Sounds";
@@ -631,7 +642,7 @@
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(6, 140);
+            this.label15.Location = new System.Drawing.Point(5, 123);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(176, 13);
             this.label15.TabIndex = 41;
@@ -640,7 +651,7 @@
             // 
             // button6
             // 
-            this.button6.Location = new System.Drawing.Point(243, 115);
+            this.button6.Location = new System.Drawing.Point(243, 99);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(75, 23);
             this.button6.TabIndex = 40;
@@ -650,7 +661,7 @@
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(243, 73);
+            this.button5.Location = new System.Drawing.Point(243, 61);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(75, 23);
             this.button5.TabIndex = 39;
@@ -660,7 +671,7 @@
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(243, 30);
+            this.button4.Location = new System.Drawing.Point(243, 23);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(75, 23);
             this.button4.TabIndex = 3;
@@ -670,7 +681,7 @@
             // 
             // uploadFailedSoundBox
             // 
-            this.uploadFailedSoundBox.Location = new System.Drawing.Point(6, 117);
+            this.uploadFailedSoundBox.Location = new System.Drawing.Point(6, 101);
             this.uploadFailedSoundBox.Name = "uploadFailedSoundBox";
             this.uploadFailedSoundBox.Size = new System.Drawing.Size(231, 20);
             this.uploadFailedSoundBox.TabIndex = 1;
@@ -679,7 +690,7 @@
             // 
             // uploadSoundBox
             // 
-            this.uploadSoundBox.Location = new System.Drawing.Point(6, 75);
+            this.uploadSoundBox.Location = new System.Drawing.Point(6, 63);
             this.uploadSoundBox.Name = "uploadSoundBox";
             this.uploadSoundBox.Size = new System.Drawing.Size(231, 20);
             this.uploadSoundBox.TabIndex = 0;
@@ -689,7 +700,7 @@
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(3, 102);
+            this.label13.Location = new System.Drawing.Point(3, 86);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(64, 13);
             this.label13.TabIndex = 37;
@@ -698,7 +709,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(3, 60);
+            this.label11.Location = new System.Drawing.Point(3, 48);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(76, 13);
             this.label11.TabIndex = 36;
@@ -707,7 +718,7 @@
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(3, 17);
+            this.label14.Location = new System.Drawing.Point(3, 10);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(63, 13);
             this.label14.TabIndex = 38;
@@ -715,7 +726,7 @@
             // 
             // snipSoundBox
             // 
-            this.snipSoundBox.Location = new System.Drawing.Point(6, 32);
+            this.snipSoundBox.Location = new System.Drawing.Point(6, 25);
             this.snipSoundBox.Name = "snipSoundBox";
             this.snipSoundBox.Size = new System.Drawing.Size(231, 20);
             this.snipSoundBox.TabIndex = 2;
@@ -777,6 +788,98 @@
             this.wavFileDialog.Filter = "Sound Files (*.wav)|*.wav";
             this.wavFileDialog.Title = "Select Sound Files";
             // 
+            // watermarkLocation0
+            // 
+            this.watermarkLocation0.AutoSize = true;
+            this.watermarkLocation0.Location = new System.Drawing.Point(166, 13);
+            this.watermarkLocation0.Name = "watermarkLocation0";
+            this.watermarkLocation0.Size = new System.Drawing.Size(65, 17);
+            this.watermarkLocation0.TabIndex = 45;
+            this.watermarkLocation0.Text = "Top Left";
+            this.watermarkLocation0.UseVisualStyleBackColor = true;
+            // 
+            // groupBox6
+            // 
+            this.groupBox6.Controls.Add(this.watermarkCheckbox);
+            this.groupBox6.Controls.Add(this.watermarkBrowseButton);
+            this.groupBox6.Controls.Add(this.watermarkLocation3);
+            this.groupBox6.Controls.Add(this.watermarkTextbox);
+            this.groupBox6.Controls.Add(this.watermarkLocation2);
+            this.groupBox6.Controls.Add(this.watermarkLocation1);
+            this.groupBox6.Controls.Add(this.watermarkLocation0);
+            this.groupBox6.Location = new System.Drawing.Point(5, 147);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(325, 56);
+            this.groupBox6.TabIndex = 1;
+            this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "Watermark";
+            // 
+            // watermarkLocation1
+            // 
+            this.watermarkLocation1.AutoSize = true;
+            this.watermarkLocation1.Location = new System.Drawing.Point(242, 13);
+            this.watermarkLocation1.Name = "watermarkLocation1";
+            this.watermarkLocation1.Size = new System.Drawing.Size(72, 17);
+            this.watermarkLocation1.TabIndex = 46;
+            this.watermarkLocation1.Text = "Top Right";
+            this.watermarkLocation1.UseVisualStyleBackColor = true;
+            // 
+            // watermarkLocation3
+            // 
+            this.watermarkLocation3.AutoSize = true;
+            this.watermarkLocation3.Checked = true;
+            this.watermarkLocation3.Location = new System.Drawing.Point(242, 31);
+            this.watermarkLocation3.Name = "watermarkLocation3";
+            this.watermarkLocation3.Size = new System.Drawing.Size(86, 17);
+            this.watermarkLocation3.TabIndex = 48;
+            this.watermarkLocation3.TabStop = true;
+            this.watermarkLocation3.Text = "Bottom Right";
+            this.watermarkLocation3.UseVisualStyleBackColor = true;
+            // 
+            // watermarkLocation2
+            // 
+            this.watermarkLocation2.AutoSize = true;
+            this.watermarkLocation2.Location = new System.Drawing.Point(166, 31);
+            this.watermarkLocation2.Name = "watermarkLocation2";
+            this.watermarkLocation2.Size = new System.Drawing.Size(79, 17);
+            this.watermarkLocation2.TabIndex = 47;
+            this.watermarkLocation2.Text = "Bottom Left";
+            this.watermarkLocation2.UseVisualStyleBackColor = true;
+            // 
+            // watermarkBrowseButton
+            // 
+            this.watermarkBrowseButton.Location = new System.Drawing.Point(106, 29);
+            this.watermarkBrowseButton.Name = "watermarkBrowseButton";
+            this.watermarkBrowseButton.Size = new System.Drawing.Size(55, 23);
+            this.watermarkBrowseButton.TabIndex = 43;
+            this.watermarkBrowseButton.Text = "Browse";
+            this.watermarkBrowseButton.UseVisualStyleBackColor = true;
+            // 
+            // watermarkTextbox
+            // 
+            this.watermarkTextbox.Location = new System.Drawing.Point(4, 31);
+            this.watermarkTextbox.Name = "watermarkTextbox";
+            this.watermarkTextbox.Size = new System.Drawing.Size(96, 20);
+            this.watermarkTextbox.TabIndex = 42;
+            this.watermarkTextbox.Text = "C:\\";
+            // 
+            // watermarkCheckbox
+            // 
+            this.watermarkCheckbox.AutoSize = true;
+            this.watermarkCheckbox.Location = new System.Drawing.Point(4, 13);
+            this.watermarkCheckbox.Name = "watermarkCheckbox";
+            this.watermarkCheckbox.Size = new System.Drawing.Size(145, 17);
+            this.watermarkCheckbox.TabIndex = 2;
+            this.watermarkCheckbox.Text = "Add watermark to images";
+            this.watermarkCheckbox.UseVisualStyleBackColor = true;
+            this.watermarkCheckbox.CheckedChanged += new System.EventHandler(this.watermarkCheckbox_CheckedChanged);
+            // 
+            // ImageFileDialog
+            // 
+            this.ImageFileDialog.DefaultExt = "png";
+            this.ImageFileDialog.Filter = "png (*.png)|*.png|jpg (*.jpg)|*.jpg|bmp (*.bmp)|*.bmp";
+            this.ImageFileDialog.Title = "Select image file";
+            // 
             // SettingsWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -819,6 +922,8 @@
             this.groupBox5.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.eventLog1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageContainer)).EndInit();
+            this.groupBox6.ResumeLayout(false);
+            this.groupBox6.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -887,5 +992,14 @@
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.OpenFileDialog wavFileDialog;
+        private System.Windows.Forms.GroupBox groupBox6;
+        private System.Windows.Forms.Button watermarkBrowseButton;
+        private System.Windows.Forms.RadioButton watermarkLocation3;
+        private System.Windows.Forms.TextBox watermarkTextbox;
+        private System.Windows.Forms.RadioButton watermarkLocation2;
+        private System.Windows.Forms.RadioButton watermarkLocation1;
+        private System.Windows.Forms.RadioButton watermarkLocation0;
+        private System.Windows.Forms.CheckBox watermarkCheckbox;
+        private System.Windows.Forms.OpenFileDialog ImageFileDialog;
     }
 }

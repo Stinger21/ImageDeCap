@@ -58,8 +58,7 @@ namespace imageDeCap
             {
                 uploadButton.Text = "Upload";
             }
-            this.AcceptButton = uploadButton;
-
+            this.AcceptButton = calcSizeButton;
             //CalculateFileSizeAndSaveOutputImage();
             frameTimer.Interval = (int)(1000.0f / Preferences.GIFRecordingFramerate);
         }
@@ -171,6 +170,8 @@ namespace imageDeCap
                 return;
             }
 
+            float scalePct = (float)ScaleThing.Value / 100.0f;
+
             SavedImageStart = (int)startTrack.Value;
             SavedImageEnd = (int)endTrack.Value;
             SavedImageScale = (int)ScaleThing.Value;
@@ -179,14 +180,16 @@ namespace imageDeCap
             EditedImage = new MagickImageCollection();
             foreach (IMagickImage i in subImageList)
             {
-                i.Resize((int)(i.Width * ((float)ScaleThing.Value / 100.0f)),
-                         (int)(i.Height * ((float)ScaleThing.Value / 100.0f)));
+                i.Resize((int)(i.Width * scalePct),
+                         (int)(i.Height * scalePct));
                 i.AnimationDelay = (int)(100.0f / Preferences.GIFRecordingFramerate);
                 EditedImage.Add(i);
             }
             
             MemoryStream ms = new MemoryStream();
             EditedImage.Write(ms);
+
+            PictureBox.Size = new Size((int)(CurrentImage.Width * scalePct), (int)(CurrentImage.Height * scalePct));
 
             sizeText.Text = "File-Size: " + (Math.Round(ms.Length / 10000.0f)/100.0f).ToString() + " MB";
         }

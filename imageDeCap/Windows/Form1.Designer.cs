@@ -225,7 +225,7 @@
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
-            this.aboutToolStripMenuItem.Text = "About Image DeCap";
+            this.aboutToolStripMenuItem.Text = "About ImageDeCap";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
             // GifCaptureTimer

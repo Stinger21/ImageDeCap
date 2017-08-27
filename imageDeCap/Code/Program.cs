@@ -39,7 +39,6 @@ namespace imageDeCap
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-
             
             ImageDeCap = new MainWindow();
 

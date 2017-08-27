@@ -49,6 +49,12 @@ namespace imageDeCap
         public static string ErrorSoundPath = "";
         public static bool UseRuleOfThirds = true;
 
+        public static bool AddWatermark = false;
+        public static string WatermarkFilePath = "";
+        public static int WatermarkLocation = 3;
+
+        public static string HelloMyMan = "Default Value Here";
+
 
         // Metaprogramming shenanigans to make the data above avilable as an ini file.
         static List<object> Defaults = new List<object>();
