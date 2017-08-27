@@ -32,6 +32,7 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.pictureBoxWithInterpolationMode1 = new imageDeCap.PictureBoxWithInterpolationMode();
             this.label1 = new System.Windows.Forms.Label();
+            this.CaptureType = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxWithInterpolationMode1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -57,18 +58,29 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 5);
+            this.label1.Location = new System.Drawing.Point(5, 4);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(24, 13);
             this.label1.TabIndex = 3;
             this.label1.Text = "0x0";
             this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
+            // CaptureType
+            // 
+            this.CaptureType.AutoSize = true;
+            this.CaptureType.Location = new System.Drawing.Point(5, 19);
+            this.CaptureType.Name = "CaptureType";
+            this.CaptureType.Size = new System.Drawing.Size(36, 13);
+            this.CaptureType.TabIndex = 4;
+            this.CaptureType.Text = "Image";
+            this.CaptureType.Click += new System.EventHandler(this.CaptureType_Click);
+            // 
             // Magnificator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(124, 124);
+            this.Controls.Add(this.CaptureType);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.pictureBoxWithInterpolationMode1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -86,5 +98,6 @@
         private System.Windows.Forms.Timer timer1;
         private PictureBoxWithInterpolationMode pictureBoxWithInterpolationMode1;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label CaptureType;
     }
 }

@@ -134,13 +134,13 @@ namespace imageDeCap
                 if(System.Windows.Input.Keyboard.IsKeyDown(System.Windows.Input.Key.LeftAlt))
                 {
                     c = ((Bitmap)mainImage).GetPixel(mousePos.X, mousePos.Y);
-                    currentColor.BackColor = c;
+                    setColor(c);
                 }
 
                 if (pickColor)
                 {
                     c = ((Bitmap)mainImage).GetPixel(mousePos.X, mousePos.Y);
-                    currentColor.BackColor = c;
+                    setColor(c);
                     imageContainer.Cursor = Cursors.Default;
                     pickColor = false;
                 }
@@ -351,33 +351,44 @@ namespace imageDeCap
             
         }
 
-        void setPalette(Button button)
+        void setColor(Color newcolor)
         {
-            c = button.BackColor;
-            currentColor.BackColor = c;
+            if (toggled)
+                currentColor.BackColor = newcolor;
+            else
+                currentColor2.BackColor = newcolor;
+            c = newcolor;
+
+        }
+        void setPalette(EventArgs e, Button button)
+        {
+            MouseEventArgs ee = (MouseEventArgs)e;
+
+            setColor(button.BackColor);
+
             colorName = button.Text;
             Point mousePos = imageContainer.PointToClient(Cursor.Position);
             label1.Text = mousePos.X.ToString() + ", " + mousePos.Y.ToString() + " - " + colorName;
         }
 
-        private void button2_Click(object sender, EventArgs e){setPalette(c_red_1);}
-        private void c_red_2_Click(object sender, EventArgs e){setPalette(c_red_2);}
-        private void c_red_3_Click(object sender, EventArgs e){setPalette(c_red_3);}
-        private void c_yellow_1_Click(object sender, EventArgs e){setPalette(c_yellow_1);}
-        private void c_yellow_2_Click(object sender, EventArgs e){setPalette(c_yellow_2);}
-        private void c_yellow_3_Click(object sender, EventArgs e){setPalette(c_yellow_3);}
-        private void c_green_1_Click(object sender, EventArgs e){setPalette(c_green_1);}
-        private void c_green_2_Click(object sender, EventArgs e){setPalette(c_green_2);}
-        private void c_green_3_Click(object sender, EventArgs e){setPalette(c_green_3);}
-        private void c_blue_1_Click(object sender, EventArgs e){setPalette(c_blue_1);}
-        private void c_blue_2_Click(object sender, EventArgs e){setPalette(c_blue_2);}
-        private void c_blue_3_Click(object sender, EventArgs e){setPalette(c_blue_3);}
-        private void c_purple_1_Click(object sender, EventArgs e){setPalette(c_purple_1);}
-        private void c_purple_2_Click(object sender, EventArgs e){setPalette(c_purple_2);}
-        private void c_purple_3_Click(object sender, EventArgs e){setPalette(c_purple_3);}
-        private void c_black_Click(object sender, EventArgs e){setPalette(c_black);}
-        private void c_grey_Click(object sender, EventArgs e){setPalette(c_grey);}
-        private void c_white_Click(object sender, EventArgs e){setPalette(c_white);}
+        private void button2_Click(object sender, EventArgs e)      {setPalette(e, c_red_1);}
+        private void c_red_2_Click(object sender, EventArgs e)      {setPalette(e, c_red_2);}
+        private void c_red_3_Click(object sender, EventArgs e)      {setPalette(e, c_red_3);}
+        private void c_yellow_1_Click(object sender, EventArgs e)   {setPalette(e, c_yellow_1);}
+        private void c_yellow_2_Click(object sender, EventArgs e)   {setPalette(e, c_yellow_2);}
+        private void c_yellow_3_Click(object sender, EventArgs e)   {setPalette(e, c_yellow_3);}
+        private void c_green_1_Click(object sender, EventArgs e)    {setPalette(e, c_green_1);}
+        private void c_green_2_Click(object sender, EventArgs e)    {setPalette(e, c_green_2);}
+        private void c_green_3_Click(object sender, EventArgs e)    {setPalette(e, c_green_3);}
+        private void c_blue_1_Click(object sender, EventArgs e)     {setPalette(e, c_blue_1);}
+        private void c_blue_2_Click(object sender, EventArgs e)     {setPalette(e, c_blue_2);}
+        private void c_blue_3_Click(object sender, EventArgs e)     {setPalette(e, c_blue_3);}
+        private void c_purple_1_Click(object sender, EventArgs e)   {setPalette(e, c_purple_1);}
+        private void c_purple_2_Click(object sender, EventArgs e)   {setPalette(e, c_purple_2);}
+        private void c_purple_3_Click(object sender, EventArgs e)   {setPalette(e, c_purple_3);}
+        private void c_black_Click(object sender, EventArgs e)      {setPalette(e, c_black);}
+        private void c_grey_Click(object sender, EventArgs e)       {setPalette(e, c_grey);}
+        private void c_white_Click(object sender, EventArgs e)      {setPalette(e, c_white);}
 
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
         {
@@ -409,12 +420,27 @@ namespace imageDeCap
             }
             ApplyCompression();
         }
-        
+
+        bool toggled = false;
         private void imageEditor_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode.ToString() == "Escape")
             {
                 this.Close();
+            }
+            else if(e.KeyCode.ToString() == "X")
+            {
+                toggled = !toggled;
+                if (toggled)
+                {
+                    currentColor.BringToFront();
+                    c = currentColor.BackColor;
+                }
+                else
+                {
+                    currentColor2.BringToFront();
+                    c = currentColor2.BackColor;
+                }
             }
             if(e.Control)
             {

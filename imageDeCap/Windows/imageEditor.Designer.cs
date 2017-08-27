@@ -32,11 +32,11 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(imageEditor));
             this.imageContainer = new System.Windows.Forms.PictureBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.fileSizeLabel = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.button3 = new System.Windows.Forms.Button();
-            this.currentColor = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
             this.compressionSlider = new System.Windows.Forms.TrackBar();
@@ -67,13 +67,14 @@
             this.trackBar1 = new System.Windows.Forms.TrackBar();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.InfoText = new System.Windows.Forms.Label();
             this.jpegBox = new System.Windows.Forms.PictureBox();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.checkBox2 = new System.Windows.Forms.CheckBox();
-            this.InfoText = new System.Windows.Forms.Label();
+            this.currentColor = new System.Windows.Forms.Button();
+            this.currentColor2 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.imageContainer)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.compressionSlider)).BeginInit();
@@ -98,12 +99,13 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.currentColor);
+            this.groupBox1.Controls.Add(this.currentColor2);
             this.groupBox1.Controls.Add(this.checkBox1);
             this.groupBox1.Controls.Add(this.checkBox2);
             this.groupBox1.Controls.Add(this.fileSizeLabel);
             this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.button3);
-            this.groupBox1.Controls.Add(this.currentColor);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.button2);
             this.groupBox1.Controls.Add(this.compressionSlider);
@@ -140,6 +142,28 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Tools";
             // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(254, 55);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(177, 17);
+            this.checkBox1.TabIndex = 34;
+            this.checkBox1.Text = "Compress. (Makes Editing Slow)";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            // 
+            // checkBox2
+            // 
+            this.checkBox2.AutoSize = true;
+            this.checkBox2.Location = new System.Drawing.Point(174, 57);
+            this.checkBox2.Name = "checkBox2";
+            this.checkBox2.Size = new System.Drawing.Size(79, 17);
+            this.checkBox2.TabIndex = 37;
+            this.checkBox2.Text = "Show help.";
+            this.checkBox2.UseVisualStyleBackColor = true;
+            this.checkBox2.CheckedChanged += new System.EventHandler(this.checkBox2_CheckedChanged);
+            // 
             // fileSizeLabel
             // 
             this.fileSizeLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -161,17 +185,6 @@
             this.label4.Text = "Compression: 100";
             this.label4.Click += new System.EventHandler(this.label4_Click);
             // 
-            // checkBox1
-            // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(254, 55);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(177, 17);
-            this.checkBox1.TabIndex = 34;
-            this.checkBox1.Text = "Compress. (Makes Editing Slow)";
-            this.checkBox1.UseVisualStyleBackColor = true;
-            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
-            // 
             // button3
             // 
             this.button3.Location = new System.Drawing.Point(6, 39);
@@ -182,17 +195,6 @@
             this.toolTip1.SetToolTip(this.button3, "Hotkey: Hold Alt & Left-Click the image.");
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click_1);
-            // 
-            // currentColor
-            // 
-            this.currentColor.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(57)))), ((int)(((byte)(43)))));
-            this.currentColor.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.currentColor.Location = new System.Drawing.Point(107, 14);
-            this.currentColor.Name = "currentColor";
-            this.currentColor.Size = new System.Drawing.Size(29, 29);
-            this.currentColor.TabIndex = 30;
-            this.currentColor.UseVisualStyleBackColor = false;
-            this.currentColor.Click += new System.EventHandler(this.currentColor_Click);
             // 
             // label1
             // 
@@ -583,6 +585,16 @@
             this.panel1.Leave += new System.EventHandler(this.panel1_Leave);
             this.panel1.MouseLeave += new System.EventHandler(this.panel1_MouseLeave);
             // 
+            // InfoText
+            // 
+            this.InfoText.AutoSize = true;
+            this.InfoText.Location = new System.Drawing.Point(11, 11);
+            this.InfoText.Name = "InfoText";
+            this.InfoText.Size = new System.Drawing.Size(329, 104);
+            this.InfoText.TabIndex = 35;
+            this.InfoText.Text = resources.GetString("InfoText.Text");
+            this.InfoText.Visible = false;
+            // 
             // jpegBox
             // 
             this.jpegBox.Location = new System.Drawing.Point(3, 3);
@@ -607,26 +619,27 @@
             this.imageList1.ImageSize = new System.Drawing.Size(16, 16);
             this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
             // 
-            // checkBox2
+            // currentColor
             // 
-            this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(174, 55);
-            this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(79, 17);
-            this.checkBox2.TabIndex = 37;
-            this.checkBox2.Text = "Show help.";
-            this.checkBox2.UseVisualStyleBackColor = true;
-            this.checkBox2.CheckedChanged += new System.EventHandler(this.checkBox2_CheckedChanged);
+            this.currentColor.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(57)))), ((int)(((byte)(43)))));
+            this.currentColor.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.currentColor.Location = new System.Drawing.Point(107, 14);
+            this.currentColor.Name = "currentColor";
+            this.currentColor.Size = new System.Drawing.Size(22, 22);
+            this.currentColor.TabIndex = 30;
+            this.currentColor.UseVisualStyleBackColor = false;
+            this.currentColor.Click += new System.EventHandler(this.currentColor_Click);
             // 
-            // InfoText
+            // currentColor2
             // 
-            this.InfoText.AutoSize = true;
-            this.InfoText.Location = new System.Drawing.Point(11, 11);
-            this.InfoText.Name = "InfoText";
-            this.InfoText.Size = new System.Drawing.Size(329, 104);
-            this.InfoText.TabIndex = 35;
-            this.InfoText.Text = resources.GetString("InfoText.Text");
-            this.InfoText.Visible = false;
+            this.currentColor2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(57)))), ((int)(((byte)(43)))));
+            this.currentColor2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.currentColor2.Location = new System.Drawing.Point(115, 22);
+            this.currentColor2.Name = "currentColor2";
+            this.currentColor2.Size = new System.Drawing.Size(22, 22);
+            this.currentColor2.TabIndex = 38;
+            this.currentColor2.UseVisualStyleBackColor = false;
+            this.currentColor2.Click += new System.EventHandler(this.currentColor_Click);
             // 
             // imageEditor
             // 
@@ -696,7 +709,6 @@
         private System.Windows.Forms.TrackBar trackBar2;
         private System.Windows.Forms.ImageList imageList1;
         private System.Windows.Forms.ColorDialog colorDialog1;
-        private System.Windows.Forms.Button currentColor;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.TrackBar compressionSlider;
         private System.Windows.Forms.PictureBox jpegBox;
@@ -706,5 +718,7 @@
         private System.Windows.Forms.ToolTip toolTip1;
         public System.Windows.Forms.CheckBox checkBox2;
         private System.Windows.Forms.Label InfoText;
+        private System.Windows.Forms.Button currentColor;
+        private System.Windows.Forms.Button currentColor2;
     }
 }

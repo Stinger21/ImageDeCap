@@ -122,7 +122,6 @@ namespace imageDeCap
         MagickImageCollection gEnc;
         public void StartRecordingGif(bool ForceEdit)
         {
-
             gEnc = new MagickImageCollection();
             GifCaptureTimer.Interval = (int)(1000.0f / Preferences.GIFRecordingFramerate);
             counter = 0;
@@ -231,10 +230,20 @@ namespace imageDeCap
                 PreferencesPath = exeDir + @"\ImageDeCap.ini";
             }
 
-            this.Hide();
-            this.ShowInTaskbar = false;
 
             Preferences.Load();
+            if(Preferences.FirstStartup)
+            {
+                Preferences.FirstStartup = false;
+                Preferences.Save();
+                OpenWindow();
+            }
+            else
+            {
+                this.Hide();
+                this.ShowInTaskbar = false;
+            }
+
 
             props = new SettingsWindow(this);
             if (File.Exists(LinksFilePath))
@@ -348,7 +357,7 @@ namespace imageDeCap
                 isTakingSnapshot = true;
                 Program.hotkeysEnabled = false;
                 //back cover used for pulling cursor position into updateSelectedArea()
-                magn = new Magnificator();
+                magn = new Magnificator(isGif);
                 CurrentBackCover = new completeCover(isGif);
                 CurrentBackCover.Show();
                 CurrentBackCover.SetBounds(SystemInformation.VirtualScreen.X, SystemInformation.VirtualScreen.Y, SystemInformation.VirtualScreen.Width, SystemInformation.VirtualScreen.Height);
@@ -607,6 +616,7 @@ namespace imageDeCap
         private void setBox(boxOfWhy box)
         {
             box.Show();
+            box.ShowInTaskbar = false;
             box.BackColor = Color.Red;
             box.Opacity = 0.5;
             box.SetBounds(0, 0, 0, 0);
@@ -721,11 +731,18 @@ namespace imageDeCap
             this.Close();
         }
 
+        aboutWindow about;
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            aboutWindow about;
-            about = new aboutWindow();
-            about.Show();
+            if(about?.Visible == true)
+            {
+
+            }
+            else
+            {
+                about = new aboutWindow();
+                about.Show();
+            }
         }
 
         private void clearLinksToolStripMenuItem_Click(object sender, EventArgs e)

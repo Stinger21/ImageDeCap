@@ -15,6 +15,8 @@ namespace imageDeCap
         public aboutWindow()
         {
             InitializeComponent();
+            this.StartPosition = FormStartPosition.Manual;
+            this.Location = new Point(Program.ImageDeCap.Location.X - 100, Program.ImageDeCap.Location.Y - 100);
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -57,6 +59,11 @@ namespace imageDeCap
         {
 
             System.Diagnostics.Process.Start("http://www.mattwestphal.com/imagedecap/");
+        }
+
+        private void aboutWindow_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

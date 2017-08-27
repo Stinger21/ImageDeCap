@@ -17,7 +17,7 @@ DefaultDirName={pf}\ImageDeCap
 DefaultGroupName=Image DeCap
 AllowNoIcons=yes
 OutputBaseFilename=imageDeCap_v1_24 Installer
-SetupIconFile=C:\Users\Stinger\Documents\GitHub\imageDeCap\imageDeCap\Images\Untitled-2.ico
+SetupIconFile={#SourcePath}\imageDeCap\Images\Untitled-2.ico
 Compression=lzma
 SolidCompression=yes
 
@@ -28,7 +28,7 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "C:\Users\Stinger\Documents\GitHub\imageDeCap\imageDeCap\bin\Debug\imageDeCap.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#SourcePath}\imageDeCap\bin\Debug\imageDeCap.exe"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]

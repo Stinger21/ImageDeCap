@@ -26,7 +26,7 @@ namespace imageDeCap
     {
         List<PictureBox> Boxes = new List<PictureBox>();
 
-        public Magnificator()
+        public Magnificator(bool isGif)
         {
             InitializeComponent();
             //SetStyle(ControlStyles.SupportsTransparentBackColor, true);
@@ -54,6 +54,15 @@ namespace imageDeCap
             MakeBox(59 - 1, 65, 1, 32, Color.White);
 
             this.ShowInTaskbar = false;
+
+            if(isGif)
+            {
+                CaptureType.Text = "Gif";
+            }
+            else
+            {
+                CaptureType.Text = "Image";
+            }
         }
 
         private void MakeBox(int x, int y, int with, int height, Color color)
@@ -105,6 +114,11 @@ namespace imageDeCap
         }
 
         private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void CaptureType_Click(object sender, EventArgs e)
         {
 
         }

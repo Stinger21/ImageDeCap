@@ -157,10 +157,24 @@ namespace imageDeCap
         }
 
 
-
+        int SavedImageStart = 0;
+        int SavedImageEnd = 0;
+        int SavedImageScale = 0;
 
         private void CalculateFileSizeAndSaveOutputImage()
         {
+            //If this is true, that means the user changed nothing and we don't need to re-compute the image.
+            if((SavedImageStart == (int)startTrack.Value) &&
+              (SavedImageEnd == (int)endTrack.Value) &&
+              (SavedImageScale == (int)ScaleThing.Value))
+            {
+                return;
+            }
+
+            SavedImageStart = (int)startTrack.Value;
+            SavedImageEnd = (int)endTrack.Value;
+            SavedImageScale = (int)ScaleThing.Value;
+
             List<IMagickImage> subImageList = theImage.ToList().GetRange(startTrack.Value, endTrack.Value - startTrack.Value);
             EditedImage = new MagickImageCollection();
             foreach (IMagickImage i in subImageList)

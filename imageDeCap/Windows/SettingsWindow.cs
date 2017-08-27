@@ -208,6 +208,8 @@ namespace imageDeCap
 
         private void SettingsWindow_Load(object sender, EventArgs e)
         {
+            this.StartPosition = FormStartPosition.Manual;
+            this.Location = new Point(Program.ImageDeCap.Location.X - 100, Program.ImageDeCap.Location.Y - 100);
         }
 
         private void SettingsWindow_FormClosing(object sender, FormClosingEventArgs e)

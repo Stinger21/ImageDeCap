@@ -41,7 +41,11 @@ namespace imageDeCap
         public static string FTPpassword = "password";
         public static bool AlsoFTPTextFiles = false;
 
-        
+        // Misc
+        public static string c_Misc;
+        public static bool FirstStartup = true;
+
+
         // Metaprogramming shenanigans to make the data above avilable as an ini file.
         static List<object> Defaults = new List<object>();
         public static void Reset()
@@ -56,6 +60,7 @@ namespace imageDeCap
         
         public static void Load()
         {
+
             // Get Defaults and save them so we can reset at any point
             FieldInfo[] fields = typeof(Preferences).GetFields();
             foreach (FieldInfo f in fields)
