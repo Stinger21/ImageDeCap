@@ -38,7 +38,6 @@
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.label3 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
@@ -124,7 +123,6 @@
             // groupBox2
             // 
             this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
-            this.groupBox2.Controls.Add(this.label3);
             this.groupBox2.Controls.Add(this.label1);
             this.groupBox2.Controls.Add(this.label2);
             this.groupBox2.Controls.Add(this.listBox1);
@@ -134,17 +132,6 @@
             this.groupBox2.TabIndex = 16;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Links";
-            // 
-            // label3
-            // 
-            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
-            this.label3.Location = new System.Drawing.Point(5, 282);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(207, 22);
-            this.label3.TabIndex = 19;
-            this.label3.Text = "(WORK IN PROGRESS)";
             // 
             // label1
             // 
@@ -298,7 +285,6 @@
         public System.Windows.Forms.Label label2;
         public System.Windows.Forms.Timer GifCaptureTimer;
         public System.Windows.Forms.Label label1;
-        public System.Windows.Forms.Label label3;
     }
 }
 
