@@ -23,11 +23,31 @@ namespace imageDeCap
         {
             if (!imageDeCap.Preferences.DisableSoundEffects)
             {
-                Assembly assembly = Assembly.GetExecutingAssembly();
-                string soundPath = "imageDeCap.Sounds." + soundName;
-                Stream soundResource = assembly.GetManifestResourceStream(soundPath);
-                SoundPlayer sp = new SoundPlayer(soundResource);
-                sp.Play();
+                SoundPlayer sp = null;
+                if (soundName.Contains("snip") && File.Exists(Preferences.SnipSoundPath))
+                {
+                    sp = new SoundPlayer(Preferences.SnipSoundPath);
+                }
+                else if(soundName.Contains("upload") && File.Exists(Preferences.UploadSoundPath))
+                {
+                    sp = new SoundPlayer(Preferences.UploadSoundPath);
+                }
+                else if (soundName.Contains("error") && File.Exists(Preferences.ErrorSoundPath))
+                {
+                    sp = new SoundPlayer(Preferences.ErrorSoundPath);
+                }
+                else
+                {
+                    string soundPath = "imageDeCap.Sounds." + soundName;
+                    Assembly assembly = Assembly.GetExecutingAssembly();
+                    Stream soundResource = assembly.GetManifestResourceStream(soundPath);
+                    sp = new SoundPlayer(soundResource);
+                }
+
+                if(sp != null)
+                {
+                    sp.Play();
+                }
             }
         }
 

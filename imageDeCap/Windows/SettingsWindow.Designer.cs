@@ -73,13 +73,25 @@
             this.neverUpload = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.checkBox8 = new System.Windows.Forms.CheckBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.button6 = new System.Windows.Forms.Button();
+            this.button5 = new System.Windows.Forms.Button();
+            this.button4 = new System.Windows.Forms.Button();
+            this.uploadFailedSoundBox = new System.Windows.Forms.TextBox();
+            this.uploadSoundBox = new System.Windows.Forms.TextBox();
+            this.label13 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label14 = new System.Windows.Forms.Label();
+            this.snipSoundBox = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.eventLog1 = new System.Diagnostics.EventLog();
             this.label10 = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.imageContainer = new System.Windows.Forms.PictureBox();
+            this.wavFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gifFPS)).BeginInit();
@@ -90,6 +102,7 @@
             this.groupBox4.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tabPage4.SuspendLayout();
+            this.groupBox5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.eventLog1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageContainer)).BeginInit();
             this.SuspendLayout();
@@ -201,7 +214,7 @@
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(228, 20);
             this.textBox2.TabIndex = 22;
-            this.textBox2.Text = "Image DeCap Upload!";
+            this.textBox2.Text = "ImageDeCap Upload!";
             this.textBox2.TextChanged += new System.EventHandler(this.textBox2_TextChanged_1);
             // 
             // checkBox2
@@ -575,6 +588,7 @@
             // 
             // tabPage4
             // 
+            this.tabPage4.Controls.Add(this.checkBox8);
             this.tabPage4.Controls.Add(this.groupBox5);
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
@@ -583,23 +597,139 @@
             this.tabPage4.Text = "Misc";
             this.tabPage4.UseVisualStyleBackColor = true;
             // 
+            // checkBox8
+            // 
+            this.checkBox8.AutoSize = true;
+            this.checkBox8.Location = new System.Drawing.Point(5, 183);
+            this.checkBox8.Name = "checkBox8";
+            this.checkBox8.Size = new System.Drawing.Size(192, 17);
+            this.checkBox8.TabIndex = 1;
+            this.checkBox8.Text = "Show rule of thirds when capturing.";
+            this.checkBox8.UseVisualStyleBackColor = true;
+            this.checkBox8.CheckedChanged += new System.EventHandler(this.checkBox8_CheckedChanged);
+            // 
             // groupBox5
             // 
+            this.groupBox5.Controls.Add(this.label15);
+            this.groupBox5.Controls.Add(this.button6);
+            this.groupBox5.Controls.Add(this.button5);
+            this.groupBox5.Controls.Add(this.button4);
+            this.groupBox5.Controls.Add(this.uploadFailedSoundBox);
+            this.groupBox5.Controls.Add(this.uploadSoundBox);
+            this.groupBox5.Controls.Add(this.label13);
+            this.groupBox5.Controls.Add(this.label11);
+            this.groupBox5.Controls.Add(this.label14);
+            this.groupBox5.Controls.Add(this.snipSoundBox);
             this.groupBox5.Location = new System.Drawing.Point(5, 3);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(325, 100);
+            this.groupBox5.Size = new System.Drawing.Size(325, 160);
             this.groupBox5.TabIndex = 0;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Sounds";
+            this.groupBox5.Enter += new System.EventHandler(this.groupBox5_Enter);
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(6, 140);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(176, 13);
+            this.label15.TabIndex = 41;
+            this.label15.Text = "Sound files need to be .wav (sorry?)";
+            this.toolTip1.SetToolTip(this.label15, "Whenever a setting is changed, it is saved immedietly.");
+            // 
+            // button6
+            // 
+            this.button6.Location = new System.Drawing.Point(243, 115);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(75, 23);
+            this.button6.TabIndex = 40;
+            this.button6.Text = "Browse";
+            this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
+            // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(243, 73);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(75, 23);
+            this.button5.TabIndex = 39;
+            this.button5.Text = "Browse";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click_1);
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(243, 30);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(75, 23);
+            this.button4.TabIndex = 3;
+            this.button4.Text = "Browse";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
+            // uploadFailedSoundBox
+            // 
+            this.uploadFailedSoundBox.Location = new System.Drawing.Point(6, 117);
+            this.uploadFailedSoundBox.Name = "uploadFailedSoundBox";
+            this.uploadFailedSoundBox.Size = new System.Drawing.Size(231, 20);
+            this.uploadFailedSoundBox.TabIndex = 1;
+            this.uploadFailedSoundBox.Text = "C:\\";
+            this.uploadFailedSoundBox.TextChanged += new System.EventHandler(this.uploadFailedSoundBox_TextChanged);
+            // 
+            // uploadSoundBox
+            // 
+            this.uploadSoundBox.Location = new System.Drawing.Point(6, 75);
+            this.uploadSoundBox.Name = "uploadSoundBox";
+            this.uploadSoundBox.Size = new System.Drawing.Size(231, 20);
+            this.uploadSoundBox.TabIndex = 0;
+            this.uploadSoundBox.Text = "C:\\";
+            this.uploadSoundBox.TextChanged += new System.EventHandler(this.uploadSoundBox_TextChanged);
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(3, 102);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(64, 13);
+            this.label13.TabIndex = 37;
+            this.label13.Text = "Error sound.";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(3, 60);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(76, 13);
+            this.label11.TabIndex = 36;
+            this.label11.Text = "Upload sound.";
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(3, 17);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(63, 13);
+            this.label14.TabIndex = 38;
+            this.label14.Text = "Snip sound.";
+            // 
+            // snipSoundBox
+            // 
+            this.snipSoundBox.Location = new System.Drawing.Point(6, 32);
+            this.snipSoundBox.Name = "snipSoundBox";
+            this.snipSoundBox.Size = new System.Drawing.Size(231, 20);
+            this.snipSoundBox.TabIndex = 2;
+            this.snipSoundBox.Text = "C:\\";
+            this.snipSoundBox.TextChanged += new System.EventHandler(this.snipSoundBox_TextChanged);
             // 
             // label3
             // 
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(375, 75);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(72, 13);
+            this.label3.Size = new System.Drawing.Size(69, 13);
             this.label3.TabIndex = 27;
-            this.label3.Text = "Image DeCap";
+            this.label3.Text = "ImageDeCap";
             this.label3.Click += new System.EventHandler(this.label3_Click_1);
             // 
             // label2
@@ -641,6 +771,12 @@
             this.imageContainer.TabStop = false;
             this.imageContainer.Click += new System.EventHandler(this.imageContainer_Click);
             // 
+            // wavFileDialog
+            // 
+            this.wavFileDialog.DefaultExt = "wav";
+            this.wavFileDialog.Filter = "Sound Files (*.wav)|*.wav";
+            this.wavFileDialog.Title = "Select Sound Files";
+            // 
             // SettingsWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -659,7 +795,7 @@
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(488, 335);
             this.Name = "SettingsWindow";
-            this.Text = "Image DeCap Settings";
+            this.Text = "ImageDeCap Settings";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SettingsWindow_FormClosing);
             this.Load += new System.EventHandler(this.SettingsWindow_Load);
             this.tabControl1.ResumeLayout(false);
@@ -678,6 +814,9 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.tabPage4.ResumeLayout(false);
+            this.tabPage4.PerformLayout();
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox5.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.eventLog1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageContainer)).EndInit();
             this.ResumeLayout(false);
@@ -736,5 +875,17 @@
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.TabPage tabPage4;
         private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.CheckBox checkBox8;
+        private System.Windows.Forms.TextBox uploadFailedSoundBox;
+        private System.Windows.Forms.TextBox uploadSoundBox;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.TextBox snipSoundBox;
+        private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.OpenFileDialog wavFileDialog;
     }
 }

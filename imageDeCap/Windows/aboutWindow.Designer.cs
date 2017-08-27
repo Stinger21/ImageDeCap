@@ -35,8 +35,6 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.imageContainer)).BeginInit();
             this.SuspendLayout();
             // 
@@ -57,9 +55,10 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(83, 13);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(72, 13);
+            this.label2.Size = new System.Drawing.Size(99, 13);
             this.label2.TabIndex = 4;
-            this.label2.Text = "Image DeCap";
+            this.label2.Text = "ImageDeCap v1.24";
+            this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // label3
             // 
@@ -68,7 +67,7 @@
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(116, 13);
             this.label3.TabIndex = 5;
-            this.label3.Text = "Mattias Westphal 2016";
+            this.label3.Text = "Mattias Westphal 2017";
             // 
             // label5
             // 
@@ -106,35 +105,11 @@
             this.label1.Text = "Contributors: Alastair";
             this.label1.Click += new System.EventHandler(this.label1_Click_2);
             // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.ForeColor = System.Drawing.Color.RoyalBlue;
-            this.label7.Location = new System.Drawing.Point(83, 64);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(138, 13);
-            this.label7.TabIndex = 12;
-            this.label7.Text = "Send me money on paypal?";
-            this.label7.Click += new System.EventHandler(this.label7_Click);
-            // 
-            // label4
-            // 
-            this.label4.Location = new System.Drawing.Point(251, 56);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(123, 30);
-            this.label4.TabIndex = 13;
-            this.label4.Text = "Special thanks to Marco for feedback && Ideas";
-            this.label4.Click += new System.EventHandler(this.label4_Click);
-            // 
             // aboutWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(375, 83);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.label7);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
@@ -147,7 +122,7 @@
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(391, 122);
             this.Name = "aboutWindow";
-            this.Text = "About Image DeCap";
+            this.Text = "About ImageDeCap";
             this.Load += new System.EventHandler(this.aboutWindow_Load);
             ((System.ComponentModel.ISupportInitialize)(this.imageContainer)).EndInit();
             this.ResumeLayout(false);
@@ -163,7 +138,5 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label label4;
     }
 }

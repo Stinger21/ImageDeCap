@@ -13,7 +13,7 @@ namespace imageDeCap
 {
     static class Program
     {
-        public static Form1 ImageDeCap;
+        public static MainWindow ImageDeCap;
         public static bool hotkeysEnabled = true;
         [STAThread]
         static void Main(string[] args)
@@ -41,7 +41,7 @@ namespace imageDeCap
             Application.SetCompatibleTextRenderingDefault(false);
 
             
-            ImageDeCap = new Form1();
+            ImageDeCap = new MainWindow();
 
             Quit = false;
             while (!Quit)

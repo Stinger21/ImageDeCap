@@ -25,9 +25,10 @@ namespace imageDeCap
     public partial class boxOfWhy : Form
     {
 
-        public boxOfWhy()
+        public boxOfWhy(bool grey = false)
         {
             InitializeComponent();
+
             
         }
 

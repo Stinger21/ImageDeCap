@@ -25,7 +25,7 @@ using System.Text.RegularExpressions;
 
 namespace imageDeCap
 {
-    public partial class Form1 : Form
+    public partial class MainWindow : Form
     {
 
         List<string> Links = new List<string>();
@@ -133,15 +133,26 @@ namespace imageDeCap
             this.leftBox.BackColor = Color.Green;
             this.rightBox.BackColor = Color.Green;
 
+            ruleOfThirdsBox1.Hide();
+            ruleOfThirdsBox2.Hide();
+            ruleOfThirdsBox3.Hide();
+            ruleOfThirdsBox4.Hide();
+
         }
         public void StopRecordingGif(completeCover cover, bool abort)
         {
             if(GifCaptureTimer.Enabled)
             {
-                Program.ImageDeCap.topBox.Hide();
-                Program.ImageDeCap.bottomBox.Hide();
-                Program.ImageDeCap.leftBox.Hide();
-                Program.ImageDeCap.rightBox.Hide();
+                topBox.Hide();
+                bottomBox.Hide();
+                leftBox.Hide();
+                rightBox.Hide();
+
+                ruleOfThirdsBox1.Hide();
+                ruleOfThirdsBox2.Hide();
+                ruleOfThirdsBox3.Hide();
+                ruleOfThirdsBox4.Hide();
+
                 cover.Close();
                 if (!abort)
                 {
@@ -202,7 +213,7 @@ namespace imageDeCap
         public static string LinksFilePath = "ERROR";
         public static string PreferencesPath = "ERROR";
 
-        public Form1()
+        public MainWindow()
         {
             InitializeComponent();
             string exeDir = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
@@ -366,10 +377,15 @@ namespace imageDeCap
                 magn.Show();
                 magn.TopMost = true;
 
-                setBox(topBox);
-                setBox(leftBox);
-                setBox(bottomBox);
-                setBox(rightBox);
+                setBox(topBox, true);
+                setBox(leftBox, true);
+                setBox(bottomBox, true);
+                setBox(rightBox, true);
+                
+                setBox(ruleOfThirdsBox1, false);
+                setBox(ruleOfThirdsBox2, false);
+                setBox(ruleOfThirdsBox3, false);
+                setBox(ruleOfThirdsBox4, false);
             }
         }
 
@@ -613,11 +629,15 @@ namespace imageDeCap
             }
         }
 
-        private void setBox(boxOfWhy box)
+        private void setBox(boxOfWhy box, bool grey)
         {
             box.Show();
             box.ShowInTaskbar = false;
-            box.BackColor = Color.Red;
+            //box.BackColor = Color.Red;
+            if(grey)
+                box.BackColor = Color.Red;
+            else
+                box.BackColor = Color.Gray;
             box.Opacity = 0.5;
             box.SetBounds(0, 0, 0, 0);
             box.TopMost = true;
@@ -629,6 +649,11 @@ namespace imageDeCap
         public boxOfWhy bottomBox = new boxOfWhy();
         public boxOfWhy leftBox = new boxOfWhy();
         public boxOfWhy rightBox = new boxOfWhy();
+
+        public boxOfWhy ruleOfThirdsBox1 = new boxOfWhy(true);
+        public boxOfWhy ruleOfThirdsBox2 = new boxOfWhy(true);
+        public boxOfWhy ruleOfThirdsBox3 = new boxOfWhy(true);
+        public boxOfWhy ruleOfThirdsBox4 = new boxOfWhy(true);
 
         public int X = 0;
         public int Y = 0;
@@ -667,7 +692,14 @@ namespace imageDeCap
                 bottomBox.SetBounds(X - 3, tempHeight + Y, tempWidth + 5, 0);
                 rightBox.SetBounds(tempWidth + X, Y - 3, 0, tempHeight + 3);
 
-                
+                if(Preferences.UseRuleOfThirds)
+                {
+                    ruleOfThirdsBox1.SetBounds(X + (tempWidth / 3), Y, 0, tempHeight);
+                    ruleOfThirdsBox2.SetBounds(X + (tempWidth / 3) * 2, Y, 0, tempHeight);
+                    ruleOfThirdsBox3.SetBounds(X, Y + (tempHeight / 3), tempWidth, 0);
+                    ruleOfThirdsBox4.SetBounds(X, Y + (tempHeight / 3) * 2, tempWidth, 0);
+                }
+
                 tempWidth = Math.Abs(Cursor.Position.X - tempX);
                 tempHeight = Math.Abs(Cursor.Position.Y - tempY);
 
@@ -697,6 +729,12 @@ namespace imageDeCap
                 bottomBox.Hide();
                 leftBox.Hide();
                 rightBox.Hide();
+
+                ruleOfThirdsBox1.Hide();
+                ruleOfThirdsBox2.Hide();
+                ruleOfThirdsBox3.Hide();
+                ruleOfThirdsBox4.Hide();
+
                 isTakingSnapshot = false;
                 Program.hotkeysEnabled = true;
             }
@@ -764,6 +802,11 @@ namespace imageDeCap
 
         private void Form1_Load(object sender, EventArgs e)
         {
+        }
+
+        private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
         }
     }
 }

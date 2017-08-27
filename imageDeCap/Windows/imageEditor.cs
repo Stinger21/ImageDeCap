@@ -80,6 +80,7 @@ namespace imageDeCap
             if (Preferences.NeverUpload)
             {
                 button1.Text = "Done";
+                button4.Visible = false;
             }
             else
             {
@@ -103,7 +104,18 @@ namespace imageDeCap
             Aborted = false;
             Close();
         }
-        
+        private void button4_Click(object sender, EventArgs e)
+        {
+            if (tempImage)
+            {
+                undoImageEdit();
+                tempImage = false;
+            }
+
+            Aborted = true;
+            Close();
+        }
+
         Point leftMouseLastPos;
         Point rightMouseLastPos;
         Point rightMouseDownPos;
@@ -421,7 +433,7 @@ namespace imageDeCap
             ApplyCompression();
         }
 
-        bool toggled = false;
+        bool toggled = true;
         private void imageEditor_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode.ToString() == "Escape")
@@ -642,5 +654,6 @@ namespace imageDeCap
         {
             InfoText.Visible = checkBox2.Checked;
         }
+
     }
 }

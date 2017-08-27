@@ -141,6 +141,11 @@ namespace imageDeCap
                 Program.ImageDeCap.leftBox.Hide();
                 Program.ImageDeCap.rightBox.Hide();
 
+                Program.ImageDeCap.ruleOfThirdsBox1.Hide();
+                Program.ImageDeCap.ruleOfThirdsBox2.Hide();
+                Program.ImageDeCap.ruleOfThirdsBox3.Hide();
+                Program.ImageDeCap.ruleOfThirdsBox4.Hide();
+
 
                 if (Program.ImageDeCap.tempWidth > 0 && Program.ImageDeCap.tempHeight > 0) // Make sure we actually selected a region to take a screenshot of.
                 {
@@ -155,7 +160,7 @@ namespace imageDeCap
                     if (UseBackCover)
                         this.Close();
 
-                    Program.ImageDeCap.UploadImageData(GetBytes(result, ImageFormat.Png), Form1.filetype.png, false, ForceEdit);
+                    Program.ImageDeCap.UploadImageData(GetBytes(result, ImageFormat.Png), MainWindow.filetype.png, false, ForceEdit);
                 }
 
                 if (UseBackCover)

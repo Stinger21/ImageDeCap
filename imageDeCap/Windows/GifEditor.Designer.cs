@@ -34,19 +34,19 @@
             this.startTrack = new System.Windows.Forms.TrackBar();
             this.endTrack = new System.Windows.Forms.TrackBar();
             this.toolsBox = new System.Windows.Forms.GroupBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.ScaleThing = new System.Windows.Forms.NumericUpDown();
             this.sizeText = new System.Windows.Forms.Label();
             this.calcSizeButton = new System.Windows.Forms.Button();
             this.uploadButton = new System.Windows.Forms.Button();
             this.BackgroundTrack = new System.Windows.Forms.TrackBar();
-            this.label9 = new System.Windows.Forms.Label();
-            this.ScaleThing = new System.Windows.Forms.NumericUpDown();
-            this.label1 = new System.Windows.Forms.Label();
             this.PictureBox = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.startTrack)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.endTrack)).BeginInit();
             this.toolsBox.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.BackgroundTrack)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ScaleThing)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.BackgroundTrack)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBox)).BeginInit();
             this.SuspendLayout();
             // 
@@ -103,6 +103,48 @@
             this.toolsBox.TabStop = false;
             this.toolsBox.Text = "Tools";
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(212, 20);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(182, 13);
+            this.label1.TabIndex = 38;
+            this.label1.Text = "The max size imgur will take is 10 MB";
+            // 
+            // label9
+            // 
+            this.label9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(547, 13);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(48, 13);
+            this.label9.TabIndex = 37;
+            this.label9.Text = "Scale %:";
+            // 
+            // ScaleThing
+            // 
+            this.ScaleThing.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.ScaleThing.Increment = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.ScaleThing.Location = new System.Drawing.Point(550, 28);
+            this.ScaleThing.Minimum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.ScaleThing.Name = "ScaleThing";
+            this.ScaleThing.Size = new System.Drawing.Size(120, 20);
+            this.ScaleThing.TabIndex = 36;
+            this.ScaleThing.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            // 
             // sizeText
             // 
             this.sizeText.AutoSize = true;
@@ -147,48 +189,6 @@
             this.BackgroundTrack.Size = new System.Drawing.Size(658, 29);
             this.BackgroundTrack.TabIndex = 4;
             // 
-            // label9
-            // 
-            this.label9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(547, 13);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(48, 13);
-            this.label9.TabIndex = 37;
-            this.label9.Text = "Scale %:";
-            // 
-            // ScaleThing
-            // 
-            this.ScaleThing.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.ScaleThing.Increment = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.ScaleThing.Location = new System.Drawing.Point(550, 28);
-            this.ScaleThing.Minimum = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.ScaleThing.Name = "ScaleThing";
-            this.ScaleThing.Size = new System.Drawing.Size(120, 20);
-            this.ScaleThing.TabIndex = 36;
-            this.ScaleThing.Value = new decimal(new int[] {
-            100,
-            0,
-            0,
-            0});
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(212, 20);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(182, 13);
-            this.label1.TabIndex = 38;
-            this.label1.Text = "The max size imgur will take is 10 MB";
-            // 
             // PictureBox
             // 
             this.PictureBox.Location = new System.Drawing.Point(12, 12);
@@ -207,7 +207,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.Name = "GifEditor";
-            this.Text = "GifEditor";
+            this.Text = "ImageDeCap Gif Editor";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.GifEditor_FormClosing);
             this.Load += new System.EventHandler(this.GifEditor_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.GifEditor_KeyDown);
@@ -216,8 +216,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.endTrack)).EndInit();
             this.toolsBox.ResumeLayout(false);
             this.toolsBox.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.BackgroundTrack)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ScaleThing)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.BackgroundTrack)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBox)).EndInit();
             this.ResumeLayout(false);
 

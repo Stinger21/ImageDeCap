@@ -15,8 +15,8 @@ namespace imageDeCap
 {
     public partial class SettingsWindow : Form
     {
-        Form1 parentForm;
-        public SettingsWindow(Form1 parentForm)
+        MainWindow parentForm;
+        public SettingsWindow(MainWindow parentForm)
         {
             InitializeComponent();
             this.parentForm = parentForm;
@@ -69,112 +69,14 @@ namespace imageDeCap
 
             gifFPS.Value = Preferences.GIFRecordingFramerate;
 
-            //Uninstallbutton.Enabled = !Preferences.Portable;
-            //AddToAutoStart.Enabled = !Preferences.Portable;
-            //button4.Enabled = !Preferences.Portable;
-
             CopyImageToClipboard.Checked = Preferences.CopyImageToClipboard;
+
+            checkBox8.Checked = Preferences.UseRuleOfThirds;
+
+            snipSoundBox.Text = Preferences.SnipSoundPath;
+            uploadSoundBox.Text = Preferences.UploadSoundPath;
+            uploadFailedSoundBox.Text = Preferences.ErrorSoundPath;
         }
-
-        //static void CreateShortcut(string targetProgram, string shortcutPath)
-        //{
-        //    object shDesktop = (object)"Desktop";
-        //    IWshRuntimeLibrary.WshShell shell = new IWshRuntimeLibrary.WshShell();
-        //    string shortcutAddress = shortcutPath;
-        //    IWshRuntimeLibrary.IWshShortcut shortcut = (IWshRuntimeLibrary.IWshShortcut)shell.CreateShortcut(shortcutAddress);
-        //    shortcut.Description = "imageDeCap auto-start";
-        //
-        //    shortcut.TargetPath = targetProgram;
-        //    shortcut.Save();
-        //}
-
-
-        //string exeName = Path.GetFileName(System.Reflection.Assembly.GetEntryAssembly().Location);
-
-        //public static string PortablePath;
-        //public static string InstallPath;
-        //public static string PortableSettingsPath;
-        //public static string InstallSettingsPath;
-        //public static string PortableExePath;
-        //public static string InstallExePath;
-        //public static string PortableLinksPath;
-        //public static string InstallLinksPath; 
-        //public static void LoadInstall()
-        //{
-        //    Preferences.Load(InstallSettingsPath);
-        //    Preferences.SettingsFilePath = InstallPath;
-        //}
-        //public static void LoadPortable()
-        //{
-        //    Preferences.Load(PortableSettingsPath);
-        //    Preferences.SettingsFilePath = PortablePath;
-        //}
-        //public static void PortableToInstall()
-        //{
-        //    if (System.IO.File.Exists(InstallExePath))
-        //        System.IO.File.Delete(InstallExePath);
-        //    if (!Directory.Exists(InstallPath))
-        //        Directory.CreateDirectory(InstallPath);
-        //
-        //    SettingsWindow.TryMoveFile(PortableSettingsPath, InstallSettingsPath);
-        //    SettingsWindow.TryMoveFile(PortableLinksPath, InstallLinksPath);
-        //    System.IO.File.Copy(PortableExePath, InstallExePath);
-        //}
-        //public static void InstallToPortable()
-        //{
-        //    SettingsWindow.TryMoveFile(InstallSettingsPath, PortableSettingsPath);
-        //    SettingsWindow.TryMoveFile(InstallLinksPath, PortableLinksPath);
-        //}
-
-        //public static void TryMoveFile(string from, string to)
-        //{
-        //    if (System.IO.File.Exists(to))
-        //    {
-        //        try { System.IO.File.Delete(to); } catch { }
-        //    }
-        //    if (System.IO.File.Exists(from))
-        //    {
-        //        System.IO.File.Copy(from, to);
-        //        try { System.IO.File.Delete(from); } catch { }
-        //    }
-        //}
-        //public static void TryCopyFile(string from, string to)
-        //{
-        //    if (System.IO.File.Exists(from))
-        //    {
-        //        System.IO.File.Copy(from, to);
-        //        try { System.IO.File.Delete(from); } catch { }
-        //    }
-        //}
-        //public static void TryDelete(string file)
-        //{
-        //    if(File.Exists(file))
-        //    {
-        //        File.Delete(file);
-        //    }
-        //}
-        //
-        //public static void AddToStartup()
-        //{
-        //    string startMenuShortcutPath = Environment.GetFolderPath(Environment.SpecialFolder.StartMenu) + @"\imageDeCap.lnk";
-        //    string shortcutPath = Environment.GetFolderPath(Environment.SpecialFolder.Startup) + @"\imageDeCap.lnk";
-        //
-        //    if (System.IO.File.Exists(shortcutPath))
-        //        System.IO.File.Delete(shortcutPath);
-        //    if (System.IO.File.Exists(startMenuShortcutPath))
-        //        System.IO.File.Delete(startMenuShortcutPath);
-        //
-        //    CreateShortcut(InstallExePath, shortcutPath);
-        //    CreateShortcut(InstallExePath, startMenuShortcutPath);
-        //}
-        //public void RemoveFromStartup()
-        //{
-        //    string startMenuShortcutPath = Environment.GetFolderPath(Environment.SpecialFolder.StartMenu) + @"\imageDeCap.lnk";
-        //    string shortcutPath = Environment.GetFolderPath(Environment.SpecialFolder.Startup) + @"\imageDeCap.lnk";
-        //
-        //    System.IO.File.Delete(startMenuShortcutPath);
-        //    System.IO.File.Delete(shortcutPath);
-        //}
 
 
         private void button5_Click(object sender, EventArgs e)//Apply
@@ -189,9 +91,7 @@ namespace imageDeCap
         {
             DialogResult result = folderBrowserDialog1.ShowDialog();
             if (result == DialogResult.OK)
-            {
                 textBox1.Text = folderBrowserDialog1.SelectedPath;
-            }
         }
 
 
@@ -503,29 +403,7 @@ namespace imageDeCap
         {
 
         }
-
-
-
-
-
         
-
-
-        //private void AddToStartMenu_Click(object sender, EventArgs e)
-        //{
-        //    //Install();
-        //}
-        //
-        //private void AddToAutoStart_Click(object sender, EventArgs e)
-        //{
-        //    AddToStartup();
-        //}
-        //
-        //private void button4_Click(object sender, EventArgs e)
-        //{
-        //    //UnInstall();
-        //}
-
         private void label1_Click(object sender, EventArgs e)
         {
 
@@ -556,22 +434,51 @@ namespace imageDeCap
             Preferences.GIFRecordingFramerate = (int)gifFPS.Value;
         }
 
-        //private void Uninstallbutton_Click(object sender, EventArgs e)
-        //{
-        //    var d = MessageBox.Show("Uninstall and Exit?", "Uninstall", MessageBoxButtons.OKCancel);
-        //    if(d == DialogResult.OK)
-        //    {
-        //        TryDelete(InstallExePath);
-        //        TryDelete(InstallLinksPath);
-        //        TryDelete(InstallSettingsPath);
-        //        RemoveFromStartup();
-        //        Program.ImageDeCap.actuallyCloseTheProgram();
-        //    }
-        //}
+        private void groupBox5_Enter(object sender, EventArgs e)
+        {
 
-        //private void button4_Click_1(object sender, EventArgs e)
-        //{
-        //    RemoveFromStartup();
-        //}
+        }
+
+        private void checkBox8_CheckedChanged(object sender, EventArgs e)
+        {
+            Preferences.UseRuleOfThirds = checkBox8.Checked;
+            Preferences.Save();
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            if (wavFileDialog.ShowDialog() == DialogResult.OK)
+                snipSoundBox.Text = wavFileDialog.FileName;
+        }
+
+        private void button5_Click_1(object sender, EventArgs e)
+        {
+            if (wavFileDialog.ShowDialog() == DialogResult.OK)
+                uploadSoundBox.Text = wavFileDialog.FileName;
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            if (wavFileDialog.ShowDialog() == DialogResult.OK)
+                uploadFailedSoundBox.Text = wavFileDialog.FileName;
+        }
+
+        private void snipSoundBox_TextChanged(object sender, EventArgs e)
+        {
+            Preferences.SnipSoundPath = snipSoundBox.Text;
+            Preferences.Save();
+        }
+
+        private void uploadSoundBox_TextChanged(object sender, EventArgs e)
+        {
+            Preferences.UploadSoundPath = uploadSoundBox.Text;
+            Preferences.Save();
+        }
+
+        private void uploadFailedSoundBox_TextChanged(object sender, EventArgs e)
+        {
+            Preferences.ErrorSoundPath = uploadFailedSoundBox.Text;
+            Preferences.Save();
+        }
     }
 }

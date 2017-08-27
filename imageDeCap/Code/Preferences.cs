@@ -44,6 +44,10 @@ namespace imageDeCap
         // Misc
         public static string c_Misc;
         public static bool FirstStartup = true;
+        public static string SnipSoundPath = "";
+        public static string UploadSoundPath = "";
+        public static string ErrorSoundPath = "";
+        public static bool UseRuleOfThirds = true;
 
 
         // Metaprogramming shenanigans to make the data above avilable as an ini file.
@@ -68,11 +72,11 @@ namespace imageDeCap
                 Defaults.Add(f.GetValue(typeof(Preferences)));
             }
             
-            if (!File.Exists(Form1.PreferencesPath)) // If the file does not exist, we need to save it.
+            if (!File.Exists(MainWindow.PreferencesPath)) // If the file does not exist, we need to save it.
             {
                 Save();
             }
-            string FileData = File.ReadAllText(Form1.PreferencesPath);
+            string FileData = File.ReadAllText(MainWindow.PreferencesPath);
             foreach(string s in FileData.Split('\n'))
             {
                 if(!s.Contains("="))
@@ -122,7 +126,7 @@ namespace imageDeCap
                     FileData += f.Name + "=" + f.GetValue(typeof(Preferences)).ToString() + "\n";
                 }
             }
-            File.WriteAllText(Form1.PreferencesPath, FileData);
+            File.WriteAllText(MainWindow.PreferencesPath, FileData);
         }
     }
 }

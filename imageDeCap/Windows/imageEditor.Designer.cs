@@ -75,6 +75,7 @@
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.currentColor = new System.Windows.Forms.Button();
             this.currentColor2 = new System.Windows.Forms.Button();
+            this.button4 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.imageContainer)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.compressionSlider)).BeginInit();
@@ -99,6 +100,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.button4);
             this.groupBox1.Controls.Add(this.currentColor);
             this.groupBox1.Controls.Add(this.currentColor2);
             this.groupBox1.Controls.Add(this.checkBox1);
@@ -135,9 +137,9 @@
             this.groupBox1.Controls.Add(this.c_red_1);
             this.groupBox1.Controls.Add(this.trackBar1);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.groupBox1.Location = new System.Drawing.Point(0, 237);
+            this.groupBox1.Location = new System.Drawing.Point(0, 235);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(684, 74);
+            this.groupBox1.Size = new System.Drawing.Size(684, 76);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Tools";
@@ -145,7 +147,7 @@
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(254, 55);
+            this.checkBox1.Location = new System.Drawing.Point(254, 57);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(177, 17);
             this.checkBox1.TabIndex = 34;
@@ -156,7 +158,7 @@
             // checkBox2
             // 
             this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(174, 57);
+            this.checkBox2.Location = new System.Drawing.Point(174, 59);
             this.checkBox2.Name = "checkBox2";
             this.checkBox2.Size = new System.Drawing.Size(79, 17);
             this.checkBox2.TabIndex = 37;
@@ -166,7 +168,6 @@
             // 
             // fileSizeLabel
             // 
-            this.fileSizeLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.fileSizeLabel.AutoSize = true;
             this.fileSizeLabel.Location = new System.Drawing.Point(108, 58);
             this.fileSizeLabel.Name = "fileSizeLabel";
@@ -187,9 +188,9 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(6, 39);
+            this.button3.Location = new System.Drawing.Point(280, 35);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(96, 23);
+            this.button3.Size = new System.Drawing.Size(73, 23);
             this.button3.TabIndex = 31;
             this.button3.Text = "Pick Color";
             this.toolTip1.SetToolTip(this.button3, "Hotkey: Hold Alt & Left-Click the image.");
@@ -198,7 +199,6 @@
             // 
             // label1
             // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(108, 44);
             this.label1.Name = "label1";
@@ -209,9 +209,9 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(57, 14);
+            this.button2.Location = new System.Drawing.Point(5, 38);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(45, 23);
+            this.button2.Size = new System.Drawing.Size(100, 23);
             this.button2.TabIndex = 26;
             this.button2.Text = "Undo";
             this.toolTip1.SetToolTip(this.button2, "Hotkey: Ctrl + Z");
@@ -224,7 +224,7 @@
             this.compressionSlider.AutoSize = false;
             this.compressionSlider.Enabled = false;
             this.compressionSlider.LargeChange = 1000;
-            this.compressionSlider.Location = new System.Drawing.Point(435, 57);
+            this.compressionSlider.Location = new System.Drawing.Point(435, 58);
             this.compressionSlider.Maximum = 100;
             this.compressionSlider.Name = "compressionSlider";
             this.compressionSlider.Size = new System.Drawing.Size(159, 22);
@@ -235,7 +235,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(6, 14);
+            this.button1.Location = new System.Drawing.Point(5, 13);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(49, 23);
             this.button1.TabIndex = 0;
@@ -260,11 +260,11 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.trackBar2.AutoSize = false;
             this.trackBar2.LargeChange = 1000;
-            this.trackBar2.Location = new System.Drawing.Point(332, 10);
+            this.trackBar2.Location = new System.Drawing.Point(359, 10);
             this.trackBar2.Maximum = 20000;
             this.trackBar2.Minimum = 100;
             this.trackBar2.Name = "trackBar2";
-            this.trackBar2.Size = new System.Drawing.Size(292, 22);
+            this.trackBar2.Size = new System.Drawing.Size(265, 22);
             this.trackBar2.SmallChange = 100;
             this.trackBar2.TabIndex = 28;
             this.trackBar2.TickFrequency = 1000;
@@ -288,7 +288,7 @@
             // 
             this.addTextButton.Location = new System.Drawing.Point(280, 10);
             this.addTextButton.Name = "addTextButton";
-            this.addTextButton.Size = new System.Drawing.Size(46, 45);
+            this.addTextButton.Size = new System.Drawing.Size(73, 23);
             this.addTextButton.TabIndex = 27;
             this.addTextButton.Text = "Add Text";
             this.toolTip1.SetToolTip(this.addTextButton, "Hotkey: Ctrl + T");
@@ -546,11 +546,11 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.trackBar1.AutoSize = false;
             this.trackBar1.LargeChange = 1000;
-            this.trackBar1.Location = new System.Drawing.Point(332, 33);
+            this.trackBar1.Location = new System.Drawing.Point(359, 33);
             this.trackBar1.Maximum = 80000;
             this.trackBar1.Minimum = 100;
             this.trackBar1.Name = "trackBar1";
-            this.trackBar1.Size = new System.Drawing.Size(292, 22);
+            this.trackBar1.Size = new System.Drawing.Size(265, 22);
             this.trackBar1.SmallChange = 100;
             this.trackBar1.TabIndex = 2;
             this.trackBar1.TickFrequency = 8000;
@@ -564,7 +564,7 @@
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox2.Location = new System.Drawing.Point(0, 0);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(684, 237);
+            this.groupBox2.Size = new System.Drawing.Size(684, 235);
             this.groupBox2.TabIndex = 2;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Screenshot";
@@ -579,7 +579,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(3, 16);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(678, 218);
+            this.panel1.Size = new System.Drawing.Size(678, 216);
             this.panel1.TabIndex = 1;
             this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             this.panel1.Leave += new System.EventHandler(this.panel1_Leave);
@@ -641,6 +641,17 @@
             this.currentColor2.UseVisualStyleBackColor = false;
             this.currentColor2.Click += new System.EventHandler(this.currentColor_Click);
             // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(56, 13);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(49, 23);
+            this.button4.TabIndex = 39;
+            this.button4.Text = "Done";
+            this.toolTip1.SetToolTip(this.button4, "Hotkey: Enter");
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
             // imageEditor
             // 
             this.AcceptButton = this.button1;
@@ -653,7 +664,7 @@
             this.KeyPreview = true;
             this.MinimumSize = new System.Drawing.Size(700, 350);
             this.Name = "imageEditor";
-            this.Text = "imageDeCap Edit Screenshot";
+            this.Text = "ImageDeCap Screenshot Editor";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.imageEditor_FormClosing);
             this.Load += new System.EventHandler(this.imageEditor_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.imageEditor_KeyDown);
@@ -720,5 +731,6 @@
         private System.Windows.Forms.Label InfoText;
         private System.Windows.Forms.Button currentColor;
         private System.Windows.Forms.Button currentColor2;
+        private System.Windows.Forms.Button button4;
     }
 }
