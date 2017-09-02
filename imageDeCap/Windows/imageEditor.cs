@@ -18,20 +18,84 @@ namespace imageDeCap
         public (bool Aborted, byte[] Data) FinalFunction()
         {
             byte[] outputData;
-            if(checkBox1.Checked)
+            
+            if(SkipEdits)
             {
-                outputData = completeCover.GetBytes(jpgImage, ImageFormat.Jpeg);
+                // Get image.
+                Bitmap[] arr = undoHistory.ToArray();
+                Image LastImage = mainImage;
+                if(arr.Length > 0)
+                    LastImage = arr[arr.Length - 1];
+
+                // get bytes
+                if (checkBox1.Checked)
+                {
+                    Image cmpImage = CompressToJpg(LastImage, (int)Math.Abs(100 - compressionSlider.Value)).result;
+                    DrawWatermark(ref cmpImage);
+                    outputData = completeCover.GetBytes(cmpImage, ImageFormat.Jpeg);
+                }
+                else
+                {
+                    DrawWatermark(ref LastImage);
+                    outputData = completeCover.GetBytes(LastImage, ImageFormat.Png);
+                }
             }
             else
             {
-                outputData = completeCover.GetBytes(mainImage, ImageFormat.Png);
+                if (checkBox1.Checked)
+                {
+                    DrawWatermark(ref jpgImage);
+                    outputData = completeCover.GetBytes(jpgImage, ImageFormat.Jpeg);
+                }
+                else
+                {
+                    DrawWatermark(ref mainImage);
+                    outputData = completeCover.GetBytes(mainImage, ImageFormat.Png);
+                }
             }
             return (Aborted, outputData);
+        }
+        static void DrawWatermark(ref Image input)
+        {
+            if(!Preferences.AddWatermark)
+            {
+                return;
+            }
+
+            if(!File.Exists(Preferences.WatermarkFilePath))
+            {
+                return;
+            }
+
+            Image watermarkImage = Image.FromFile(Preferences.WatermarkFilePath);
+
+            using (Graphics g = Graphics.FromImage(input))
+            {
+                Point location = new Point(0, 0);
+                switch (Preferences.WatermarkLocation)
+                {
+                    case 0:
+                            location = new Point(0, 0);
+                        break;
+                    case 1:
+                            location = new Point(input.Width - watermarkImage.Width, 0);
+                        break;
+                    case 2:
+                            location = new Point(0, input.Height - watermarkImage.Height);
+                        break;
+                    case 3:
+                            location = new Point(input.Width - watermarkImage.Width, input.Height - watermarkImage.Height);
+                        break;
+
+                }
+                g.DrawImage(watermarkImage, location);
+            }
         }
 
         Stack<Bitmap> undoHistory = new Stack<Bitmap>();
 
         bool Aborted = true;
+        bool SkipEdits = true;
 
         Image mainImage;
         Image jpgImage;
@@ -100,8 +164,9 @@ namespace imageDeCap
                 undoImageEdit();
                 tempImage = false;
             }
-            
+
             Aborted = false;
+            SkipEdits = false;
             Close();
         }
         private void button4_Click(object sender, EventArgs e)
@@ -113,6 +178,7 @@ namespace imageDeCap
             }
 
             Aborted = true;
+            SkipEdits = false;
             Close();
         }
 
@@ -164,8 +230,8 @@ namespace imageDeCap
                         Pen MyPen = new Pen(c);
                         MyPen.Width = textSize;
                         g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
-                        Size tsize = TextRenderer.MeasureText(textBox1.Text, new Font("Arial Black", textSize));
-                        g.DrawString(textBox1.Text, new Font("Arial Black", textSize), new SolidBrush(c), new Point(mousePos.X - tsize.Width / 2, mousePos.Y - tsize.Height / 2));
+                        Size tsize = TextRenderer.MeasureText(textBox1.Text, new Font(Preferences.ImageEditorFont, textSize, (FontStyle)Preferences.FontStyleType));
+                        g.DrawString(textBox1.Text, new Font(Preferences.ImageEditorFont, textSize, (FontStyle)Preferences.FontStyleType), new SolidBrush(c), new Point(mousePos.X - tsize.Width / 2, mousePos.Y - tsize.Height / 2));
                     }
                     imageContainer.Refresh();
                 }
@@ -292,8 +358,8 @@ namespace imageDeCap
                     Pen MyPen = new Pen(c);
                     MyPen.Width = textSize;
                     g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
-                    Size tsize = TextRenderer.MeasureText(textBox1.Text, new Font("Arial Black", textSize));
-                    g.DrawString(textBox1.Text, new Font("Arial Black", textSize), new SolidBrush(c), new Point(mousePos.X - tsize.Width / 2, mousePos.Y - tsize.Height / 2));
+                    Size tsize = TextRenderer.MeasureText(textBox1.Text, new Font(Preferences.ImageEditorFont, textSize, (FontStyle)Preferences.FontStyleType));
+                    g.DrawString(textBox1.Text, new Font(Preferences.ImageEditorFont, textSize, (FontStyle)Preferences.FontStyleType), new SolidBrush(c), new Point(mousePos.X - tsize.Width / 2, mousePos.Y - tsize.Height / 2));
                 }
                 ApplyCompression();
                 imageContainer.Refresh();
@@ -343,8 +409,8 @@ namespace imageDeCap
                 Pen MyPen = new Pen(c);
                 MyPen.Width = textSize;
                 g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
-                Size tsize = TextRenderer.MeasureText(textBox1.Text, new Font("Arial Black", textSize));
-                g.DrawString(textBox1.Text, new Font("Arial Black", textSize), new SolidBrush(Color.FromArgb(128, 255, 0, 0)), new Point(mousePos.X - tsize.Width / 2, mousePos.Y - tsize.Height / 2));
+                Size tsize = TextRenderer.MeasureText(textBox1.Text, new Font(Preferences.ImageEditorFont, textSize, (FontStyle)Preferences.FontStyleType));
+                g.DrawString(textBox1.Text, new Font(Preferences.ImageEditorFont, textSize, (FontStyle)Preferences.FontStyleType), new SolidBrush(Color.FromArgb(128, 255, 0, 0)), new Point(mousePos.X - tsize.Width / 2, mousePos.Y - tsize.Height / 2));
             }
             ApplyCompression();
             imageContainer.Refresh();
@@ -454,18 +520,22 @@ namespace imageDeCap
                     c = currentColor2.BackColor;
                 }
             }
-            if(e.Control)
+            if (e.Control)
             {
-                if(e.KeyCode.ToString() == "Z")
+                if (e.KeyCode.ToString() == "Z")
                 {
                     undoImageEdit();
                 }
-                if (e.KeyCode.ToString() == "T")
+                else if (e.KeyCode.ToString() == "T")
                 {
                     if (brush)
                     {
                         addTextButton_Click(null, null);
                     }
+                }
+                else if (e.KeyCode.ToString() == "C")
+                {
+                    Clipboard.SetImage(mainImage);
                 }
             }
         }
@@ -551,6 +621,14 @@ namespace imageDeCap
             }
         }
 
+        private (Image result, int sizeinbytes) CompressToJpg(Image image, int compressionPercentage)
+        {
+            EncoderParameters myEncoderParameters = new EncoderParameters(1);
+            myEncoderParameters.Param[0] = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, compressionPercentage);
+            var ms = new MemoryStream();
+            image.Save(ms, GetEncoder(ImageFormat.Jpeg), myEncoderParameters);
+            return (Image.FromStream(ms), (int)ms.Length);
+        }
         
         void ApplyCompression()
         {
@@ -560,22 +638,20 @@ namespace imageDeCap
             }catch { }
             
             int compressionNumber = (int)Math.Abs(100 - compressionSlider.Value);
-            
-            EncoderParameters myEncoderParameters = new EncoderParameters(1);
-            myEncoderParameters.Param[0] = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, compressionNumber);
 
-            var ms = new MemoryStream();
-            mainImage.Save(ms, GetEncoder(ImageFormat.Jpeg), myEncoderParameters);
-            jpgImage = Image.FromStream(ms);
+            int size = 0;
+
+            (jpgImage, size) = CompressToJpg(mainImage, compressionNumber);
+            
             
             jpegBox.Image = jpgImage;
             if(compressionNumber < 10)
             {
-                fileSizeLabel.Text = (ms.Length / 1000) + "KB [Do I look like I know what a jpeg is?]";
+                fileSizeLabel.Text = Math.Round(size / 1_000_000.0f, 2) + "MB [Do I look like I know what a jpeg is?]";
             }
             else
             {
-                fileSizeLabel.Text = (ms.Length / 1000) + "KB";
+                fileSizeLabel.Text = Math.Round(size / 1_000_000.0f, 2) + "MB";
             }
             label4.Text = "Compression: " + compressionNumber.ToString();
         }

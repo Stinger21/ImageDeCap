@@ -5,7 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Drawing;
 namespace imageDeCap
 {
     public static class Preferences
@@ -53,8 +53,8 @@ namespace imageDeCap
         public static string WatermarkFilePath = "";
         public static int WatermarkLocation = 3;
 
-        public static string HelloMyMan = "Default Value Here";
-
+        public static string ImageEditorFont = "Arial Black";
+        public static int FontStyleType = (int)FontStyle.Bold;
 
         // Metaprogramming shenanigans to make the data above avilable as an ini file.
         static List<object> Defaults = new List<object>();

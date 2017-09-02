@@ -171,9 +171,9 @@
             this.fileSizeLabel.AutoSize = true;
             this.fileSizeLabel.Location = new System.Drawing.Point(108, 58);
             this.fileSizeLabel.Name = "fileSizeLabel";
-            this.fileSizeLabel.Size = new System.Drawing.Size(25, 13);
+            this.fileSizeLabel.Size = new System.Drawing.Size(27, 13);
             this.fileSizeLabel.TabIndex = 36;
-            this.fileSizeLabel.Text = "0, 0";
+            this.fileSizeLabel.Text = "2KB";
             // 
             // label4
             // 
@@ -202,9 +202,9 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(108, 44);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(25, 13);
+            this.label1.Size = new System.Drawing.Size(101, 13);
             this.label1.TabIndex = 1;
-            this.label1.Text = "0, 0";
+            this.label1.Text = "431, 576 - DarkRed";
             this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // button2
@@ -590,7 +590,7 @@
             this.InfoText.AutoSize = true;
             this.InfoText.Location = new System.Drawing.Point(11, 11);
             this.InfoText.Name = "InfoText";
-            this.InfoText.Size = new System.Drawing.Size(329, 104);
+            this.InfoText.Size = new System.Drawing.Size(329, 117);
             this.InfoText.TabIndex = 35;
             this.InfoText.Text = resources.GetString("InfoText.Text");
             this.InfoText.Visible = false;

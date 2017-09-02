@@ -69,9 +69,9 @@ namespace imageDeCap
         }
 
         int CurrentFrame = 0;
+        int ActualFrameNumber = 0;
         private void frameTimer_Tick(object sender, EventArgs e)
         {
-            int ActualFrameNumber = 0;
             if (Scrolling == false)
             {
                 CurrentFrame++;
@@ -86,6 +86,15 @@ namespace imageDeCap
             CurrentImage = theImage[ActualFrameNumber];
             PictureBox.Image = CurrentImage.ToBitmap();
             BackgroundTrack.Value = Math.Min(Math.Max(ActualFrameNumber, BackgroundTrack.Minimum), BackgroundTrack.Maximum);
+
+            Graphics g = Graphics.FromImage(PictureBox.Image);
+            foreach(TextData t in Texts)
+            {
+                if(ActualFrameNumber < t.TimeEnd && ActualFrameNumber >= t.TimeStart)
+                {
+                    g.DrawString(t.text, new Font(Preferences.ImageEditorFont, t.size, (FontStyle)Preferences.FontStyleType), new SolidBrush(Color.FromArgb(255, 255, 0, 0)), new Point(t.X, t.Y));
+                }
+            }
         }
 
         
@@ -178,12 +187,26 @@ namespace imageDeCap
 
             List<IMagickImage> subImageList = theImage.ToList().GetRange(startTrack.Value, endTrack.Value - startTrack.Value);
             EditedImage = new MagickImageCollection();
-            foreach (IMagickImage i in subImageList)
+            int j = 0;
+            foreach (MagickImage i in subImageList)
             {
+                i.AnimationDelay = (int)(100.0f / Preferences.GIFRecordingFramerate);
+                foreach (TextData t in Texts)
+                {
+                    if (j < t.TimeEnd && j >= t.TimeStart)
+                    {
+                        i.Settings.FontPointsize = t.size;
+                        i.Settings.FillColor = new MagickColor(Color.Red);
+                        i.Settings.Font = "Arial-Black";
+                        i.Settings.FontFamily = "Arial";
+                        i.Annotate(t.text, new MagickGeometry(t.X, t.Y, 20, 20), Gravity.Northwest);
+                    }
+                }
                 i.Resize((int)(i.Width * scalePct),
                          (int)(i.Height * scalePct));
-                i.AnimationDelay = (int)(100.0f / Preferences.GIFRecordingFramerate);
+                
                 EditedImage.Add(i);
+                j += 1;
             }
             
             MemoryStream ms = new MemoryStream();
@@ -215,6 +238,195 @@ namespace imageDeCap
 
         private void GifEditor_FormClosing(object sender, FormClosingEventArgs e)
         {
+        }
+        
+        private void addTextButton_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+        }
+
+        private void checkBox1_CheckedChanged_1(object sender, EventArgs e)
+        {
+            panel1.Visible = checkBox1.Checked;
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            TextData data = new TextData();
+            data.text = "Sample Text";
+            data.size = 16;
+            data.TimeEnd = frames;
+            sizeNr.Value = data.size;
+            timeEnd.Value = (int)frames;
+            Texts.Add(data);
+            listBox1.DataSource = null;
+            listBox1.DataSource = Texts;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (listBox1.SelectedIndex == -1)
+            {
+                return;
+            }
+            Texts.RemoveAt(listBox1.SelectedIndex);
+            listBox1.DataSource = null;
+            listBox1.DataSource = Texts;
+        }
+        private void label5_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        List<TextData> Texts = new List<TextData>();
+        TextData currentText;
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Console.WriteLine(listBox1.SelectedIndex);
+            bool SelectionIsValid = listBox1.SelectedIndex != -1;
+
+            button1.Enabled = SelectionIsValid;
+            textValue.Enabled = SelectionIsValid;
+            sizeNr.Enabled = SelectionIsValid;
+            locationX.Enabled = SelectionIsValid;
+            locationY.Enabled = SelectionIsValid;
+            timeStart.Enabled = SelectionIsValid;
+            timeEnd.Enabled = SelectionIsValid;
+
+            if (SelectionIsValid == false)
+            {
+                return;
+            }
+            currentText = Texts[listBox1.SelectedIndex];
+            if (currentText == null)
+            {
+                return;
+            }
+            textValue.Text = currentText.text;
+            locationX.Value = currentText.X;
+            locationY.Value = currentText.Y;
+            timeStart.Value = currentText.TimeStart;
+            timeEnd.Value = currentText.TimeEnd;
+            sizeNr.Value = currentText.size;
+            
+        }
+
+        private void textValue_TextChanged(object sender, EventArgs e)
+        {
+            if (currentText != null)
+            {
+                currentText.text = textValue.Text;
+            }
+
+            int len = textValue.SelectionLength;
+            int strt = textValue.SelectionStart;
+
+            listBox1.DataSource = null;
+            listBox1.DataSource = Texts;
+
+            textValue.Focus();
+            textValue.Select(strt, len);
+        }
+
+
+        private void timeStart_ValueChanged(object sender, EventArgs e)
+        {
+            if (currentText != null)
+            {
+                currentText.TimeStart = (int)timeStart.Value;
+            }
+        }
+        private void timeEnd_ValueChanged(object sender, EventArgs e)
+        {
+            if (currentText != null)
+            {
+                currentText.TimeEnd = (int)timeEnd.Value;
+            }
+        }
+
+        private void locationX_ValueChanged(object sender, EventArgs e)
+        {
+            if (currentText != null)
+            {
+                currentText.X = (int)locationX.Value;
+            }
+        }
+
+        private void locationY_ValueChanged(object sender, EventArgs e)
+        {
+            if (currentText != null)
+            {
+                currentText.Y = (int)locationY.Value;
+            }
+        }
+
+        private void sizeNr_ValueChanged(object sender, EventArgs e)
+        {
+            if (currentText != null)
+            {
+                currentText.size = (int)sizeNr.Value;
+            }
+        }
+
+        int LastMouseX = 0;
+        int LastMouseY = 0;
+        bool MouseDown = false;
+        private void PictureBox_MouseDown(object sender, MouseEventArgs e)
+        {
+            MouseDown = true;
+            LastMouseX = e.X;
+            LastMouseY = e.Y;
+        }
+
+        private void PictureBox_MouseMove(object sender, MouseEventArgs e)
+        {
+            float scaleValue = (100.0f / (float)ScaleThing.Value);
+            int DeltaX = (int)(((float)e.X - (float)LastMouseX) * scaleValue);
+            int DeltaY = (int)(((float)e.Y - (float)LastMouseY) * scaleValue);
+            
+            if(MouseDown)
+            {
+                if (listBox1.SelectedIndex != -1)
+                {
+                    if (Texts[listBox1.SelectedIndex] != null)
+                    {
+                        Texts[listBox1.SelectedIndex].X += DeltaX;
+                        Texts[listBox1.SelectedIndex].Y += DeltaY;
+                        locationX.Value = Math.Max(Texts[listBox1.SelectedIndex].X, 0);
+                        locationY.Value = Math.Max(Texts[listBox1.SelectedIndex].Y, 0);
+                    }
+                }
+                
+            }
+
+            LastMouseX = e.X;
+            LastMouseY = e.Y;
+        }
+
+        private void PictureBox_MouseUp(object sender, MouseEventArgs e)
+        {
+            MouseDown = false;
+        }
+
+        private void label6_Click(object sender, EventArgs e)
+        {
+
+        }
+    }
+    class TextData
+    {
+        public int size;
+        public string text;
+        public int X;
+        public int Y;
+        public int TimeStart;
+        public int TimeEnd;
+        public override string ToString()
+        {
+            return text;
         }
     }
 }

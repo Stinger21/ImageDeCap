@@ -79,16 +79,24 @@ namespace imageDeCap
 
             watermarkCheckbox.Checked = Preferences.AddWatermark;
             watermarkTextbox.Text = Preferences.WatermarkFilePath;
-            for (int i = 0; i < 4; i++)
+            watermarkLocation0.Checked = false;
+            watermarkLocation1.Checked = false;
+            watermarkLocation2.Checked = false;
+            watermarkLocation3.Checked = false;
+            switch (Preferences.WatermarkLocation)
             {
-                if(i==0)
+                case 0:
                     watermarkLocation0.Checked = true;
-                else if(i==1)
+                    break;
+                case 1:
                     watermarkLocation1.Checked = true;
-                else if (i==2)
+                    break;
+                case 2:
                     watermarkLocation2.Checked = true;
-                else if(i==3)
+                    break;
+                case 3:
                     watermarkLocation3.Checked = true;
+                    break;
             }
             
             watermarkLocation0.Enabled = Preferences.AddWatermark;
@@ -512,6 +520,61 @@ namespace imageDeCap
             watermarkLocation3.Enabled = Preferences.AddWatermark;
             watermarkBrowseButton.Enabled = Preferences.AddWatermark;
             watermarkTextbox.Enabled = Preferences.AddWatermark;
+            Preferences.Save();
+        }
+
+        private void watermarkBrowseButton_Click(object sender, EventArgs e)
+        {
+            if (ImageFileDialog.ShowDialog() == DialogResult.OK)
+                watermarkTextbox.Text = ImageFileDialog.FileName;
+        }
+
+        private void watermarkTextbox_TextChanged(object sender, EventArgs e)
+        {
+            Preferences.WatermarkFilePath = watermarkTextbox.Text;
+            Preferences.Save();
+        }
+
+        private void watermarkLocation0_CheckedChanged(object sender, EventArgs e)
+        {
+            Preferences.WatermarkLocation = 0;
+            Preferences.Save();
+        }
+        private void watermarkLocation1_CheckedChanged(object sender, EventArgs e)
+        {
+            Preferences.WatermarkLocation = 1;
+            Preferences.Save();
+        }
+        private void watermarkLocation2_CheckedChanged(object sender, EventArgs e)
+        {
+            Preferences.WatermarkLocation = 2;
+            Preferences.Save();
+        }
+        private void watermarkLocation3_CheckedChanged(object sender, EventArgs e)
+        {
+            Preferences.WatermarkLocation = 3;
+            Preferences.Save();
+        }
+
+
+        private void groupBox6_Enter(object sender, EventArgs e){}
+
+        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e){}
+
+        private void fontDialog_Apply(object sender, EventArgs e)
+        {
+
+        }
+
+        private void fontbutton_Click(object sender, EventArgs e)
+        {
+            if (fontDialog.ShowDialog() == DialogResult.OK)
+            {
+                Preferences.ImageEditorFont = fontDialog.Font.Name;
+                Preferences.FontStyleType = (int)fontDialog.Font.Style;
+            }
+            Preferences.Save();
+
         }
     }
 }

@@ -143,6 +143,7 @@ namespace imageDeCap
         {
             if(GifCaptureTimer.Enabled)
             {
+                GifCaptureTimer.Enabled = false;
                 topBox.Hide();
                 bottomBox.Hide();
                 leftBox.Hide();
@@ -165,7 +166,6 @@ namespace imageDeCap
 
                 Program.ImageDeCap.isTakingSnapshot = false;
                 Program.hotkeysEnabled = true;
-                GifCaptureTimer.Enabled = false;
             }
         }
 
@@ -357,6 +357,7 @@ namespace imageDeCap
                 uploadPastebin(Clipboard.GetText());
             }
         }
+
         completeCover CurrentBackCover;
         public Magnificator magn;
         public bool isTakingSnapshot = false;
@@ -368,12 +369,11 @@ namespace imageDeCap
                 isTakingSnapshot = true;
                 Program.hotkeysEnabled = false;
                 //back cover used for pulling cursor position into updateSelectedArea()
-                magn = new Magnificator(isGif);
                 CurrentBackCover = new completeCover(isGif);
                 CurrentBackCover.Show();
-                CurrentBackCover.SetBounds(SystemInformation.VirtualScreen.X, SystemInformation.VirtualScreen.Y, SystemInformation.VirtualScreen.Width, SystemInformation.VirtualScreen.Height);
-                CurrentBackCover.TopMost = false;
+                CurrentBackCover.AfterShow();
 
+                magn = new Magnificator(isGif);
                 magn.Show();
                 magn.TopMost = true;
 

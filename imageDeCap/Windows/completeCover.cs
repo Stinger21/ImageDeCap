@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -18,6 +19,7 @@ namespace imageDeCap
         {
             this.Gif = Gif;
             InitializeComponent();
+            this.Opacity = 0.005f;
 
             UseBackCover = false;
             if (imageDeCap.Preferences.FreezeScreenOnRegionShot)
@@ -27,19 +29,6 @@ namespace imageDeCap
             if (Gif)
             {
                 UseBackCover = false;
-            }
-            if (UseBackCover)
-            {
-                ScreenCapturer cap = new ScreenCapturer();
-                Bitmap fullSnapshot = cap.Capture(enmScreenCaptureMode.Screen);
-                pictureBox1.Image = fullSnapshot;
-                pictureBox1.SetBounds(0, 0, SystemInformation.VirtualScreen.Width, SystemInformation.VirtualScreen.Height);
-                //this.Opacity = 1;
-                this.Opacity = 0.005;
-            }
-            else
-            {
-                this.Opacity = 0.005;
             }
             this.ShowInTaskbar = false;
         }
@@ -57,6 +46,25 @@ namespace imageDeCap
 
         bool AltKeyDown = false;
 
+        bool Activated = false;
+        public void AfterShow()
+        {
+            if (UseBackCover)
+            {
+                ScreenCapturer cap = new ScreenCapturer();
+                this.TopMost = false;
+                pictureBox1.Image = cap.Capture(enmScreenCaptureMode.Screen);
+                pictureBox1.SetBounds(0, 0, SystemInformation.VirtualScreen.Width, SystemInformation.VirtualScreen.Height);
+                this.SetBounds(SystemInformation.VirtualScreen.X, SystemInformation.VirtualScreen.Y, SystemInformation.VirtualScreen.Width, SystemInformation.VirtualScreen.Height);
+                Application.DoEvents();
+                this.Opacity = 1;
+            }
+            else
+            {
+                this.SetBounds(SystemInformation.VirtualScreen.X, SystemInformation.VirtualScreen.Y, SystemInformation.VirtualScreen.Width, SystemInformation.VirtualScreen.Height);
+            }
+            Activated = true;
+        }
         private void completeCover_Load(object sender, EventArgs e)
         {
         }
@@ -73,6 +81,10 @@ namespace imageDeCap
         // Called by mainloop in now heuheuhe
         public void Updatee()
         {
+            if(!Activated)
+            {
+                return;
+            }
             Cursor.Current = Cursors.Cross;
 
             if (Program.ImageDeCap.GifCaptureTimer.Enabled) // Don't update if we are capturing a gif
@@ -180,7 +192,6 @@ namespace imageDeCap
                     this.Location = new Point(Program.ImageDeCap.X, Program.ImageDeCap.Y + Program.ImageDeCap.tempHeight);
                     this.Width = Math.Max(Program.ImageDeCap.tempWidth, 300);
                     this.Height = 50;
-                    this.Opacity = 1.0;
                     
                     this.ResumeLayout(false);
                     this.TopMost = true;
@@ -193,6 +204,7 @@ namespace imageDeCap
                     formGraphics.FillRectangle(myBrush, new Rectangle(0, 0, this.Width, this.Height));
                     myBrush.Dispose();
                     formGraphics.Dispose();
+                    this.Opacity = 1;
 
                 }
             }

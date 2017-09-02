@@ -74,6 +74,14 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.checkBox8 = new System.Windows.Forms.CheckBox();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.watermarkCheckbox = new System.Windows.Forms.CheckBox();
+            this.watermarkBrowseButton = new System.Windows.Forms.Button();
+            this.watermarkLocation3 = new System.Windows.Forms.RadioButton();
+            this.watermarkTextbox = new System.Windows.Forms.TextBox();
+            this.watermarkLocation2 = new System.Windows.Forms.RadioButton();
+            this.watermarkLocation1 = new System.Windows.Forms.RadioButton();
+            this.watermarkLocation0 = new System.Windows.Forms.RadioButton();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.label15 = new System.Windows.Forms.Label();
             this.button6 = new System.Windows.Forms.Button();
@@ -92,15 +100,8 @@
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.imageContainer = new System.Windows.Forms.PictureBox();
             this.wavFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.watermarkLocation0 = new System.Windows.Forms.RadioButton();
-            this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.watermarkLocation1 = new System.Windows.Forms.RadioButton();
-            this.watermarkLocation3 = new System.Windows.Forms.RadioButton();
-            this.watermarkLocation2 = new System.Windows.Forms.RadioButton();
-            this.watermarkBrowseButton = new System.Windows.Forms.Button();
-            this.watermarkTextbox = new System.Windows.Forms.TextBox();
-            this.watermarkCheckbox = new System.Windows.Forms.CheckBox();
             this.ImageFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.fontDialog = new System.Windows.Forms.FontDialog();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gifFPS)).BeginInit();
@@ -111,10 +112,10 @@
             this.groupBox4.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tabPage4.SuspendLayout();
+            this.groupBox6.SuspendLayout();
             this.groupBox5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.eventLog1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageContainer)).BeginInit();
-            this.groupBox6.SuspendLayout();
             this.SuspendLayout();
             // 
             // HotkeyTextBox4
@@ -619,6 +620,92 @@
             this.checkBox8.UseVisualStyleBackColor = true;
             this.checkBox8.CheckedChanged += new System.EventHandler(this.checkBox8_CheckedChanged);
             // 
+            // groupBox6
+            // 
+            this.groupBox6.Controls.Add(this.watermarkCheckbox);
+            this.groupBox6.Controls.Add(this.watermarkBrowseButton);
+            this.groupBox6.Controls.Add(this.watermarkLocation3);
+            this.groupBox6.Controls.Add(this.watermarkTextbox);
+            this.groupBox6.Controls.Add(this.watermarkLocation2);
+            this.groupBox6.Controls.Add(this.watermarkLocation1);
+            this.groupBox6.Controls.Add(this.watermarkLocation0);
+            this.groupBox6.Location = new System.Drawing.Point(5, 147);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(325, 56);
+            this.groupBox6.TabIndex = 1;
+            this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "Watermark";
+            // 
+            // watermarkCheckbox
+            // 
+            this.watermarkCheckbox.AutoSize = true;
+            this.watermarkCheckbox.Location = new System.Drawing.Point(4, 13);
+            this.watermarkCheckbox.Name = "watermarkCheckbox";
+            this.watermarkCheckbox.Size = new System.Drawing.Size(145, 17);
+            this.watermarkCheckbox.TabIndex = 2;
+            this.watermarkCheckbox.Text = "Add watermark to images";
+            this.watermarkCheckbox.UseVisualStyleBackColor = true;
+            this.watermarkCheckbox.CheckedChanged += new System.EventHandler(this.watermarkCheckbox_CheckedChanged);
+            // 
+            // watermarkBrowseButton
+            // 
+            this.watermarkBrowseButton.Location = new System.Drawing.Point(106, 29);
+            this.watermarkBrowseButton.Name = "watermarkBrowseButton";
+            this.watermarkBrowseButton.Size = new System.Drawing.Size(55, 23);
+            this.watermarkBrowseButton.TabIndex = 43;
+            this.watermarkBrowseButton.Text = "Browse";
+            this.watermarkBrowseButton.UseVisualStyleBackColor = true;
+            // 
+            // watermarkLocation3
+            // 
+            this.watermarkLocation3.AutoSize = true;
+            this.watermarkLocation3.Checked = true;
+            this.watermarkLocation3.Location = new System.Drawing.Point(242, 31);
+            this.watermarkLocation3.Name = "watermarkLocation3";
+            this.watermarkLocation3.Size = new System.Drawing.Size(86, 17);
+            this.watermarkLocation3.TabIndex = 48;
+            this.watermarkLocation3.TabStop = true;
+            this.watermarkLocation3.Text = "Bottom Right";
+            this.watermarkLocation3.UseVisualStyleBackColor = true;
+            // 
+            // watermarkTextbox
+            // 
+            this.watermarkTextbox.Location = new System.Drawing.Point(4, 31);
+            this.watermarkTextbox.Name = "watermarkTextbox";
+            this.watermarkTextbox.Size = new System.Drawing.Size(96, 20);
+            this.watermarkTextbox.TabIndex = 42;
+            this.watermarkTextbox.Text = "C:\\";
+            // 
+            // watermarkLocation2
+            // 
+            this.watermarkLocation2.AutoSize = true;
+            this.watermarkLocation2.Location = new System.Drawing.Point(166, 31);
+            this.watermarkLocation2.Name = "watermarkLocation2";
+            this.watermarkLocation2.Size = new System.Drawing.Size(79, 17);
+            this.watermarkLocation2.TabIndex = 47;
+            this.watermarkLocation2.Text = "Bottom Left";
+            this.watermarkLocation2.UseVisualStyleBackColor = true;
+            // 
+            // watermarkLocation1
+            // 
+            this.watermarkLocation1.AutoSize = true;
+            this.watermarkLocation1.Location = new System.Drawing.Point(242, 13);
+            this.watermarkLocation1.Name = "watermarkLocation1";
+            this.watermarkLocation1.Size = new System.Drawing.Size(72, 17);
+            this.watermarkLocation1.TabIndex = 46;
+            this.watermarkLocation1.Text = "Top Right";
+            this.watermarkLocation1.UseVisualStyleBackColor = true;
+            // 
+            // watermarkLocation0
+            // 
+            this.watermarkLocation0.AutoSize = true;
+            this.watermarkLocation0.Location = new System.Drawing.Point(166, 13);
+            this.watermarkLocation0.Name = "watermarkLocation0";
+            this.watermarkLocation0.Size = new System.Drawing.Size(65, 17);
+            this.watermarkLocation0.TabIndex = 45;
+            this.watermarkLocation0.Text = "Top Left";
+            this.watermarkLocation0.UseVisualStyleBackColor = true;
+            // 
             // groupBox5
             // 
             this.groupBox5.Controls.Add(this.label15);
@@ -788,92 +875,6 @@
             this.wavFileDialog.Filter = "Sound Files (*.wav)|*.wav";
             this.wavFileDialog.Title = "Select Sound Files";
             // 
-            // watermarkLocation0
-            // 
-            this.watermarkLocation0.AutoSize = true;
-            this.watermarkLocation0.Location = new System.Drawing.Point(166, 13);
-            this.watermarkLocation0.Name = "watermarkLocation0";
-            this.watermarkLocation0.Size = new System.Drawing.Size(65, 17);
-            this.watermarkLocation0.TabIndex = 45;
-            this.watermarkLocation0.Text = "Top Left";
-            this.watermarkLocation0.UseVisualStyleBackColor = true;
-            // 
-            // groupBox6
-            // 
-            this.groupBox6.Controls.Add(this.watermarkCheckbox);
-            this.groupBox6.Controls.Add(this.watermarkBrowseButton);
-            this.groupBox6.Controls.Add(this.watermarkLocation3);
-            this.groupBox6.Controls.Add(this.watermarkTextbox);
-            this.groupBox6.Controls.Add(this.watermarkLocation2);
-            this.groupBox6.Controls.Add(this.watermarkLocation1);
-            this.groupBox6.Controls.Add(this.watermarkLocation0);
-            this.groupBox6.Location = new System.Drawing.Point(5, 147);
-            this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(325, 56);
-            this.groupBox6.TabIndex = 1;
-            this.groupBox6.TabStop = false;
-            this.groupBox6.Text = "Watermark";
-            // 
-            // watermarkLocation1
-            // 
-            this.watermarkLocation1.AutoSize = true;
-            this.watermarkLocation1.Location = new System.Drawing.Point(242, 13);
-            this.watermarkLocation1.Name = "watermarkLocation1";
-            this.watermarkLocation1.Size = new System.Drawing.Size(72, 17);
-            this.watermarkLocation1.TabIndex = 46;
-            this.watermarkLocation1.Text = "Top Right";
-            this.watermarkLocation1.UseVisualStyleBackColor = true;
-            // 
-            // watermarkLocation3
-            // 
-            this.watermarkLocation3.AutoSize = true;
-            this.watermarkLocation3.Checked = true;
-            this.watermarkLocation3.Location = new System.Drawing.Point(242, 31);
-            this.watermarkLocation3.Name = "watermarkLocation3";
-            this.watermarkLocation3.Size = new System.Drawing.Size(86, 17);
-            this.watermarkLocation3.TabIndex = 48;
-            this.watermarkLocation3.TabStop = true;
-            this.watermarkLocation3.Text = "Bottom Right";
-            this.watermarkLocation3.UseVisualStyleBackColor = true;
-            // 
-            // watermarkLocation2
-            // 
-            this.watermarkLocation2.AutoSize = true;
-            this.watermarkLocation2.Location = new System.Drawing.Point(166, 31);
-            this.watermarkLocation2.Name = "watermarkLocation2";
-            this.watermarkLocation2.Size = new System.Drawing.Size(79, 17);
-            this.watermarkLocation2.TabIndex = 47;
-            this.watermarkLocation2.Text = "Bottom Left";
-            this.watermarkLocation2.UseVisualStyleBackColor = true;
-            // 
-            // watermarkBrowseButton
-            // 
-            this.watermarkBrowseButton.Location = new System.Drawing.Point(106, 29);
-            this.watermarkBrowseButton.Name = "watermarkBrowseButton";
-            this.watermarkBrowseButton.Size = new System.Drawing.Size(55, 23);
-            this.watermarkBrowseButton.TabIndex = 43;
-            this.watermarkBrowseButton.Text = "Browse";
-            this.watermarkBrowseButton.UseVisualStyleBackColor = true;
-            // 
-            // watermarkTextbox
-            // 
-            this.watermarkTextbox.Location = new System.Drawing.Point(4, 31);
-            this.watermarkTextbox.Name = "watermarkTextbox";
-            this.watermarkTextbox.Size = new System.Drawing.Size(96, 20);
-            this.watermarkTextbox.TabIndex = 42;
-            this.watermarkTextbox.Text = "C:\\";
-            // 
-            // watermarkCheckbox
-            // 
-            this.watermarkCheckbox.AutoSize = true;
-            this.watermarkCheckbox.Location = new System.Drawing.Point(4, 13);
-            this.watermarkCheckbox.Name = "watermarkCheckbox";
-            this.watermarkCheckbox.Size = new System.Drawing.Size(145, 17);
-            this.watermarkCheckbox.TabIndex = 2;
-            this.watermarkCheckbox.Text = "Add watermark to images";
-            this.watermarkCheckbox.UseVisualStyleBackColor = true;
-            this.watermarkCheckbox.CheckedChanged += new System.EventHandler(this.watermarkCheckbox_CheckedChanged);
-            // 
             // ImageFileDialog
             // 
             this.ImageFileDialog.DefaultExt = "png";
@@ -918,12 +919,12 @@
             this.groupBox1.PerformLayout();
             this.tabPage4.ResumeLayout(false);
             this.tabPage4.PerformLayout();
+            this.groupBox6.ResumeLayout(false);
+            this.groupBox6.PerformLayout();
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.eventLog1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageContainer)).EndInit();
-            this.groupBox6.ResumeLayout(false);
-            this.groupBox6.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1001,5 +1002,6 @@
         private System.Windows.Forms.RadioButton watermarkLocation0;
         private System.Windows.Forms.CheckBox watermarkCheckbox;
         private System.Windows.Forms.OpenFileDialog ImageFileDialog;
+        private System.Windows.Forms.FontDialog fontDialog;
     }
 }

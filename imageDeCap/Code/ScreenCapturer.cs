@@ -205,6 +205,10 @@ namespace imageDeCap
                         x = ci.ptScreenPos.x - ((int)icInfo.xHotspot);
                         y = ci.ptScreenPos.y - ((int)icInfo.yHotspot);
                         Icon ic = Icon.FromHandle(hicon);
+                        if(ic.Size.Height == 0 || ic.Size.Width == 0)
+                        {
+                            return null;
+                        }
                         bmp = ic.ToBitmap();
 
                         return bmp;
