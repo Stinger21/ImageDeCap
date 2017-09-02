@@ -6,36 +6,56 @@
 ; Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AppId={{9BE609C6-1558-49CC-AC59-11E5999DDD2E}
-AppName=Image DeCap
+AppName=ImageDeCap
 AppVersion=1.24
-;AppVerName=Image DeCap 1.24
-AppPublisher=Mattias Westphal
+;AppVerName=ImageDeCap 1.24
+AppPublisher=Mattias Westphal, www.mattwestphal.com
 AppPublisherURL=http://mattwestphal.com/
 AppSupportURL=http://mattwestphal.com/
 AppUpdatesURL=http://mattwestphal.com/
 DefaultDirName={pf}\ImageDeCap
-DefaultGroupName=Image DeCap
+DefaultGroupName=ImageDeCap
 AllowNoIcons=yes
 OutputBaseFilename=imageDeCap_v1_24 Installer
 SetupIconFile={#SourcePath}\imageDeCap\Images\Untitled-2.ico
 Compression=lzma
 SolidCompression=yes
+UninstallDisplayIcon={#SourcePath}\imageDeCap\Images\Untitled-2.ico
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
+Name: startup; Description: "Add ImageDeCap to startup."; GroupDescription: "{cm:AdditionalIcons}"
+
 
 [Files]
 Source: "{#SourcePath}\imageDeCap\bin\Debug\imageDeCap.exe"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
-Name: "{group}\Image DeCap"; Filename: "{app}\imageDeCap.exe"
-Name: "{group}\{cm:UninstallProgram,Image DeCap}"; Filename: "{uninstallexe}"
-Name: "{commondesktop}\Image DeCap"; Filename: "{app}\imageDeCap.exe"; Tasks: desktopicon
+Name: "{group}\ImageDeCap"; Filename: "{app}\imageDeCap.exe"
+Name: "{group}\{cm:UninstallProgram,ImageDeCap}"; Filename: "{uninstallexe}"
+Name: "{commondesktop}\ImageDeCap"; Filename: "{app}\imageDeCap.exe"; Tasks: desktopicon
+Name: "{commondesktop}\ImageDeCap"; Filename: "{app}\imageDeCap.exe"; Tasks: startup
+
+; Optionally delete settings
+[Code]
+ procedure CurUninstallStepChanged (CurUninstallStep: TUninstallStep);
+ var
+     mres : integer;
+ begin
+    case CurUninstallStep of                   
+      usPostUninstall:
+        begin
+          mres := MsgBox('Do you want to Remove settings?', mbConfirmation, MB_YESNO or MB_DEFBUTTON2)
+          if mres = IDYES then
+            DelTree(ExpandConstant('{userappdata}\imageDeCap'), True, True, True);
+       end;
+   end;
+end;
 
 [Run]
-Filename: "{app}\imageDeCap.exe"; Description: "{cm:LaunchProgram,Image DeCap}"; Flags: nowait postinstall skipifsilent
+Filename: "{app}\imageDeCap.exe"; Description: "{cm:LaunchProgram,ImageDeCap}"; Flags: nowait postinstall skipifsilent
 

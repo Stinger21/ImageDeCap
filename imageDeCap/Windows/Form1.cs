@@ -158,8 +158,7 @@ namespace imageDeCap
                 if (!abort)
                 {
                     Utilities.playSound("snip.wav");
-
-                    //byte[] gifData = gEnc.ToByteArray(MagickFormat.Gif);
+                    
                     // Feed in through the tag weather the user right-clicked to force editor even when it's disabled.
                     UploadImageData(new byte[] { }, filetype.gif, false, (bool)GifCaptureTimer.Tag, gEnc);
                 }
@@ -168,8 +167,7 @@ namespace imageDeCap
                 Program.hotkeysEnabled = true;
             }
         }
-
-        //public float GifRecorderFPS = 16.0f;
+        
         int counter = 0;
         private void GifCaptureTimer_Tick(object sender, EventArgs e)
         {
@@ -216,6 +214,29 @@ namespace imageDeCap
         public MainWindow()
         {
             InitializeComponent();
+
+            // Try deleting any old shortcut memes from 1.23 and earlier
+            string startupPath = Environment.GetFolderPath(Environment.SpecialFolder.Startup) + @"\imageDeCap.lnk";
+            string startMenuPath = Environment.GetFolderPath(Environment.SpecialFolder.StartMenu) + @"\imageDeCap.lnk";
+            string appdataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\imageDeCap\imageDeCap.exe";
+
+            if (File.Exists(startupPath))
+                File.Delete(startupPath);
+
+            if (File.Exists(startMenuPath))
+                File.Delete(startMenuPath);
+
+            try
+            {
+                if (File.Exists(appdataPath))
+                    File.Delete(appdataPath);
+            }
+            catch
+            {
+                MessageBox.Show("An old version of ImageDeCap is currently running. Please close it before starting the new one.", "Error");
+                Environment.Exit(0);
+            }
+
             string exeDir = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
             string appdataDir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\imageDeCap";
             if (exeDir.Contains("Program Files"))
