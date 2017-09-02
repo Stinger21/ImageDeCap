@@ -126,7 +126,6 @@
             this.HotkeyTextBox4.Size = new System.Drawing.Size(209, 17);
             this.HotkeyTextBox4.TabIndex = 33;
             this.HotkeyTextBox4.Text = "ctrl shift 4";
-            this.HotkeyTextBox4.TextChanged += new System.EventHandler(this.HotkeyTextBox4_TextChanged);
             this.HotkeyTextBox4.GotFocus += new System.EventHandler(this.HotkeyTextBox4_GotFocus);
             this.HotkeyTextBox4.KeyDown += new System.Windows.Forms.KeyEventHandler(this.HotkeyTextBox4_KeyDown);
             this.HotkeyTextBox4.LostFocus += new System.EventHandler(this.HotkeyTextBox4_LostFocus);
@@ -139,7 +138,6 @@
             this.HotkeyTextBox3.Size = new System.Drawing.Size(209, 17);
             this.HotkeyTextBox3.TabIndex = 32;
             this.HotkeyTextBox3.Text = "ctrl shift 4";
-            this.HotkeyTextBox3.TextChanged += new System.EventHandler(this.HotkeyTextBox3_TextChanged);
             this.HotkeyTextBox3.GotFocus += new System.EventHandler(this.HotkeyTextBox3_GotFocus);
             this.HotkeyTextBox3.KeyDown += new System.Windows.Forms.KeyEventHandler(this.HotkeyTextBox3_KeyDown);
             this.HotkeyTextBox3.LostFocus += new System.EventHandler(this.HotkeyTextBox3_LostFocus);
@@ -152,7 +150,6 @@
             this.HotkeyTextBox2.Size = new System.Drawing.Size(209, 17);
             this.HotkeyTextBox2.TabIndex = 31;
             this.HotkeyTextBox2.Text = "ctrl shift 3";
-            this.HotkeyTextBox2.TextChanged += new System.EventHandler(this.HotkeyTextBox2_TextChanged);
             this.HotkeyTextBox2.GotFocus += new System.EventHandler(this.HotkeyTextBox2_GotFocus);
             this.HotkeyTextBox2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.HotkeyTextBox2_KeyDown);
             this.HotkeyTextBox2.LostFocus += new System.EventHandler(this.HotkeyTextBox2_LostFocus);
@@ -165,7 +162,6 @@
             this.HotkeyTextBox1.Size = new System.Drawing.Size(209, 17);
             this.HotkeyTextBox1.TabIndex = 30;
             this.HotkeyTextBox1.Text = "ctrl shift 2";
-            this.HotkeyTextBox1.TextChanged += new System.EventHandler(this.HotkeyTextBox1_TextChanged);
             this.HotkeyTextBox1.GotFocus += new System.EventHandler(this.HotkeyTextBox1_GotFocus);
             this.HotkeyTextBox1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.HotkeyTextBox1_KeyDown);
             this.HotkeyTextBox1.LostFocus += new System.EventHandler(this.HotkeyTextBox1_LostFocus);
@@ -217,7 +213,6 @@
             this.label1.Size = new System.Drawing.Size(69, 13);
             this.label1.TabIndex = 23;
             this.label1.Text = "Subject Line:";
-            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // textBox2
             // 
@@ -319,7 +314,6 @@
             // 
             // folderBrowserDialog1
             // 
-            this.folderBrowserDialog1.HelpRequest += new System.EventHandler(this.folderBrowserDialog1_HelpRequest);
             // 
             // checkBox5
             // 
@@ -404,7 +398,6 @@
             this.label12.TabIndex = 39;
             this.label12.Text = "Protip: When edit Image is switched off you can bring up the image editor by pres" +
     "sing right-click when selecting what region to capture.";
-            this.label12.Click += new System.EventHandler(this.label12_Click);
             // 
             // label9
             // 
@@ -492,7 +485,6 @@
             this.label8.Size = new System.Drawing.Size(334, 63);
             this.label8.TabIndex = 38;
             this.label8.Text = resources.GetString("label8.Text");
-            this.label8.Click += new System.EventHandler(this.label8_Click);
             // 
             // groupBox3
             // 
@@ -724,7 +716,6 @@
             this.groupBox5.TabIndex = 0;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Sounds";
-            this.groupBox5.Enter += new System.EventHandler(this.groupBox5_Enter);
             // 
             // label15
             // 
@@ -828,7 +819,6 @@
             this.label3.Size = new System.Drawing.Size(69, 13);
             this.label3.TabIndex = 27;
             this.label3.Text = "ImageDeCap";
-            this.label3.Click += new System.EventHandler(this.label3_Click_1);
             // 
             // label2
             // 

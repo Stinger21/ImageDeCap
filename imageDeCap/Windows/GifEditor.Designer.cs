@@ -45,18 +45,18 @@
             this.PictureBox = new System.Windows.Forms.PictureBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.label6 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
             this.sizeNr = new System.Windows.Forms.NumericUpDown();
             this.label5 = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
-            this.label2 = new System.Windows.Forms.Label();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.textValue = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.timeEnd = new System.Windows.Forms.NumericUpDown();
-            this.locationX = new System.Windows.Forms.NumericUpDown();
             this.timeStart = new System.Windows.Forms.NumericUpDown();
+            this.timeEnd = new System.Windows.Forms.NumericUpDown();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.locationX = new System.Windows.Forms.NumericUpDown();
             this.locationY = new System.Windows.Forms.NumericUpDown();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             ((System.ComponentModel.ISupportInitialize)(this.startTrack)).BeginInit();
@@ -67,9 +67,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.PictureBox)).BeginInit();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.sizeNr)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.timeStart)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.timeEnd)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.locationX)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.timeStart)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.locationY)).BeginInit();
             this.SuspendLayout();
             // 
@@ -263,17 +263,6 @@
             this.label6.Size = new System.Drawing.Size(30, 13);
             this.label6.TabIndex = 9;
             this.label6.Text = "Size:";
-            this.label6.Click += new System.EventHandler(this.label6_Click);
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(292, 155);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(17, 13);
-            this.label3.TabIndex = 6;
-            this.label3.Text = "Y:";
-            this.label3.Visible = false;
             // 
             // sizeNr
             // 
@@ -297,7 +286,6 @@
             this.label5.Size = new System.Drawing.Size(55, 13);
             this.label5.TabIndex = 7;
             this.label5.Text = "Time End:";
-            this.label5.Click += new System.EventHandler(this.label5_Click);
             // 
             // button2
             // 
@@ -319,16 +307,6 @@
             this.button1.Text = "Delete";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(292, 114);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(17, 13);
-            this.label2.TabIndex = 5;
-            this.label2.Text = "X:";
-            this.label2.Visible = false;
             // 
             // listBox1
             // 
@@ -358,6 +336,20 @@
             this.label4.TabIndex = 6;
             this.label4.Text = "Time Start:";
             // 
+            // timeStart
+            // 
+            this.timeStart.Enabled = false;
+            this.timeStart.Location = new System.Drawing.Point(7, 133);
+            this.timeStart.Maximum = new decimal(new int[] {
+            1000000,
+            0,
+            0,
+            0});
+            this.timeStart.Name = "timeStart";
+            this.timeStart.Size = new System.Drawing.Size(64, 20);
+            this.timeStart.TabIndex = 3;
+            this.timeStart.ValueChanged += new System.EventHandler(this.timeStart_ValueChanged);
+            // 
             // timeEnd
             // 
             this.timeEnd.Enabled = false;
@@ -371,6 +363,26 @@
             this.timeEnd.Size = new System.Drawing.Size(64, 20);
             this.timeEnd.TabIndex = 4;
             this.timeEnd.ValueChanged += new System.EventHandler(this.timeEnd_ValueChanged);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(292, 155);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(17, 13);
+            this.label3.TabIndex = 6;
+            this.label3.Text = "Y:";
+            this.label3.Visible = false;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(292, 114);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(17, 13);
+            this.label2.TabIndex = 5;
+            this.label2.Text = "X:";
+            this.label2.Visible = false;
             // 
             // locationX
             // 
@@ -391,20 +403,6 @@
             this.locationX.TabIndex = 1;
             this.locationX.Visible = false;
             this.locationX.ValueChanged += new System.EventHandler(this.locationX_ValueChanged);
-            // 
-            // timeStart
-            // 
-            this.timeStart.Enabled = false;
-            this.timeStart.Location = new System.Drawing.Point(7, 133);
-            this.timeStart.Maximum = new decimal(new int[] {
-            1000000,
-            0,
-            0,
-            0});
-            this.timeStart.Name = "timeStart";
-            this.timeStart.Size = new System.Drawing.Size(64, 20);
-            this.timeStart.TabIndex = 3;
-            this.timeStart.ValueChanged += new System.EventHandler(this.timeStart_ValueChanged);
             // 
             // locationY
             // 
@@ -442,7 +440,6 @@
             this.KeyPreview = true;
             this.Name = "GifEditor";
             this.Text = "ImageDeCap Gif Editor";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.GifEditor_FormClosing);
             this.Load += new System.EventHandler(this.GifEditor_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.GifEditor_KeyDown);
             this.Resize += new System.EventHandler(this.GifEditor_Resize);
@@ -456,9 +453,9 @@
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.sizeNr)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.timeStart)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.timeEnd)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.locationX)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.timeStart)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.locationY)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

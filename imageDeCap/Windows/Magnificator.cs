@@ -91,36 +91,10 @@ namespace imageDeCap
             label1.Text = Program.ImageDeCap.tempWidth + "x" + Program.ImageDeCap.tempHeight;
             label1.BringToFront();//lol
         }
-
-        private void pictureBox1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void pictureBox1_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void pictureBoxWithInterpolationMode1_Click(object sender, EventArgs e)
-        {
-
-        }
-
+        
         private void Magnificator_Load(object sender, EventArgs e)
         {
-
             this.Activate();
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void CaptureType_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }

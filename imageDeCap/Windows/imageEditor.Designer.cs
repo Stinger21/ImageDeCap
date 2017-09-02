@@ -32,6 +32,9 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(imageEditor));
             this.imageContainer = new System.Windows.Forms.PictureBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.button4 = new System.Windows.Forms.Button();
+            this.currentColor = new System.Windows.Forms.Button();
+            this.currentColor2 = new System.Windows.Forms.Button();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.fileSizeLabel = new System.Windows.Forms.Label();
@@ -73,9 +76,6 @@
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.currentColor = new System.Windows.Forms.Button();
-            this.currentColor2 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.imageContainer)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.compressionSlider)).BeginInit();
@@ -144,6 +144,39 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Tools";
             // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(56, 13);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(49, 23);
+            this.button4.TabIndex = 39;
+            this.button4.Text = "Done";
+            this.toolTip1.SetToolTip(this.button4, "Hotkey: Enter");
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
+            // currentColor
+            // 
+            this.currentColor.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(57)))), ((int)(((byte)(43)))));
+            this.currentColor.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.currentColor.Location = new System.Drawing.Point(107, 14);
+            this.currentColor.Name = "currentColor";
+            this.currentColor.Size = new System.Drawing.Size(22, 22);
+            this.currentColor.TabIndex = 30;
+            this.currentColor.UseVisualStyleBackColor = false;
+            this.currentColor.Click += new System.EventHandler(this.currentColor_Click);
+            // 
+            // currentColor2
+            // 
+            this.currentColor2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(57)))), ((int)(((byte)(43)))));
+            this.currentColor2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.currentColor2.Location = new System.Drawing.Point(115, 22);
+            this.currentColor2.Name = "currentColor2";
+            this.currentColor2.Size = new System.Drawing.Size(22, 22);
+            this.currentColor2.TabIndex = 38;
+            this.currentColor2.UseVisualStyleBackColor = false;
+            this.currentColor2.Click += new System.EventHandler(this.currentColor_Click);
+            // 
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
@@ -184,7 +217,6 @@
             this.label4.Size = new System.Drawing.Size(91, 13);
             this.label4.TabIndex = 35;
             this.label4.Text = "Compression: 100";
-            this.label4.Click += new System.EventHandler(this.label4_Click);
             // 
             // button3
             // 
@@ -205,7 +237,6 @@
             this.label1.Size = new System.Drawing.Size(101, 13);
             this.label1.TabIndex = 1;
             this.label1.Text = "431, 576 - DarkRed";
-            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // button2
             // 
@@ -270,8 +301,6 @@
             this.trackBar2.TickFrequency = 1000;
             this.trackBar2.Value = 100;
             this.trackBar2.Scroll += new System.EventHandler(this.trackBar2_Scroll);
-            this.trackBar2.DragEnter += new System.Windows.Forms.DragEventHandler(this.trackBar2_DragEnter);
-            this.trackBar2.DragLeave += new System.EventHandler(this.trackBar2_DragLeave);
             // 
             // label2
             // 
@@ -282,7 +311,6 @@
             this.label2.Size = new System.Drawing.Size(55, 13);
             this.label2.TabIndex = 3;
             this.label2.Text = "Brush: 5.0";
-            this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // addTextButton
             // 
@@ -568,7 +596,6 @@
             this.groupBox2.TabIndex = 2;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Screenshot";
-            this.groupBox2.Enter += new System.EventHandler(this.groupBox2_Enter);
             // 
             // panel1
             // 
@@ -581,9 +608,6 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(678, 216);
             this.panel1.TabIndex = 1;
-            this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
-            this.panel1.Leave += new System.EventHandler(this.panel1_Leave);
-            this.panel1.MouseLeave += new System.EventHandler(this.panel1_MouseLeave);
             // 
             // InfoText
             // 
@@ -619,39 +643,6 @@
             this.imageList1.ImageSize = new System.Drawing.Size(16, 16);
             this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
             // 
-            // currentColor
-            // 
-            this.currentColor.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(57)))), ((int)(((byte)(43)))));
-            this.currentColor.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.currentColor.Location = new System.Drawing.Point(107, 14);
-            this.currentColor.Name = "currentColor";
-            this.currentColor.Size = new System.Drawing.Size(22, 22);
-            this.currentColor.TabIndex = 30;
-            this.currentColor.UseVisualStyleBackColor = false;
-            this.currentColor.Click += new System.EventHandler(this.currentColor_Click);
-            // 
-            // currentColor2
-            // 
-            this.currentColor2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(57)))), ((int)(((byte)(43)))));
-            this.currentColor2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.currentColor2.Location = new System.Drawing.Point(115, 22);
-            this.currentColor2.Name = "currentColor2";
-            this.currentColor2.Size = new System.Drawing.Size(22, 22);
-            this.currentColor2.TabIndex = 38;
-            this.currentColor2.UseVisualStyleBackColor = false;
-            this.currentColor2.Click += new System.EventHandler(this.currentColor_Click);
-            // 
-            // button4
-            // 
-            this.button4.Location = new System.Drawing.Point(56, 13);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(49, 23);
-            this.button4.TabIndex = 39;
-            this.button4.Text = "Done";
-            this.toolTip1.SetToolTip(this.button4, "Hotkey: Enter");
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
-            // 
             // imageEditor
             // 
             this.AcceptButton = this.button1;
@@ -665,11 +656,8 @@
             this.MinimumSize = new System.Drawing.Size(700, 350);
             this.Name = "imageEditor";
             this.Text = "ImageDeCap Screenshot Editor";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.imageEditor_FormClosing);
             this.Load += new System.EventHandler(this.imageEditor_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.imageEditor_KeyDown);
-            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.imageEditor_KeyPress);
-            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.imageEditor_KeyUp);
             ((System.ComponentModel.ISupportInitialize)(this.imageContainer)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

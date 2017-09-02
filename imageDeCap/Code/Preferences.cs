@@ -31,7 +31,7 @@ namespace imageDeCap
 
         // Uploading
         public static string c_Uploading;
-        public static string PastebinSubjectLine = "Image DeCap Upload!";
+        public static string PastebinSubjectLine = "ImageDeCap Upload!";
         public static bool NeverUpload = false;
         public static bool CopyLinksToClipboard = true;
         public static bool OpenInBrowser = false;
@@ -70,7 +70,6 @@ namespace imageDeCap
         
         public static void Load()
         {
-
             // Get Defaults and save them so we can reset at any point
             FieldInfo[] fields = typeof(Preferences).GetFields();
             foreach (FieldInfo f in fields)

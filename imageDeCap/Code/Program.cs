@@ -21,7 +21,7 @@ namespace imageDeCap
             // Commands:
             // -ForceStartup:
             //      Forces the program to start even if there are other instances of the program already running.
-            // -CaptureImage
+            // 
 
             bool ForceStartup = false;
             if(args.Length > 0)

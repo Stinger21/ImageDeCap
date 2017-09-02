@@ -129,7 +129,6 @@ namespace imageDeCap
             this.TransparencyKey = System.Drawing.Color.Red;
             this.Load += new System.EventHandler(this.completeCover_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.completeCover_KeyDown);
-            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.completeCover_KeyPress);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.completeCover_KeyUp);
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.completeCover_MouseMove);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();

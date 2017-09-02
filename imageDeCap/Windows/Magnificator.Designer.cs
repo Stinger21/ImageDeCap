@@ -53,7 +53,6 @@
             this.pictureBoxWithInterpolationMode1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBoxWithInterpolationMode1.TabIndex = 2;
             this.pictureBoxWithInterpolationMode1.TabStop = false;
-            this.pictureBoxWithInterpolationMode1.Click += new System.EventHandler(this.pictureBoxWithInterpolationMode1_Click);
             // 
             // label1
             // 
@@ -63,7 +62,6 @@
             this.label1.Size = new System.Drawing.Size(24, 13);
             this.label1.TabIndex = 3;
             this.label1.Text = "0x0";
-            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // CaptureType
             // 
@@ -73,7 +71,6 @@
             this.CaptureType.Size = new System.Drawing.Size(36, 13);
             this.CaptureType.TabIndex = 4;
             this.CaptureType.Text = "Image";
-            this.CaptureType.Click += new System.EventHandler(this.CaptureType_Click);
             // 
             // Magnificator
             // 

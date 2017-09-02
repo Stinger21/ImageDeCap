@@ -58,7 +58,6 @@
             this.label2.Size = new System.Drawing.Size(99, 13);
             this.label2.TabIndex = 4;
             this.label2.Text = "ImageDeCap v1.24";
-            this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // label3
             // 
@@ -103,7 +102,6 @@
             this.label1.Size = new System.Drawing.Size(103, 13);
             this.label1.TabIndex = 11;
             this.label1.Text = "Contributors: Alastair";
-            this.label1.Click += new System.EventHandler(this.label1_Click_2);
             // 
             // aboutWindow
             // 
@@ -123,7 +121,6 @@
             this.MinimumSize = new System.Drawing.Size(391, 122);
             this.Name = "aboutWindow";
             this.Text = "About ImageDeCap";
-            this.Load += new System.EventHandler(this.aboutWindow_Load);
             ((System.ComponentModel.ISupportInitialize)(this.imageContainer)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

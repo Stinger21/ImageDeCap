@@ -151,12 +151,7 @@ namespace imageDeCap
                 button1.Text = "Upload";
             }
         }
-
-        private void groupBox2_Enter(object sender, EventArgs e)
-        {
-
-        }
-
+        
         private void button1_Click(object sender, EventArgs e)
         {
             if (tempImage)
@@ -270,8 +265,6 @@ namespace imageDeCap
             }
         }
         
-
-
         private void imageContainer_MouseMove(object sender, MouseEventArgs e)
         {
             Point mousePos = imageContainer.PointToClient(Cursor.Position);
@@ -366,13 +359,8 @@ namespace imageDeCap
                 moveBrushIsOnScreen = true;
             }
         }
-
-
+        
         bool moveBrushIsOnScreen = false;
-        private void label2_Click(object sender, EventArgs e)
-        {
-
-        }
 
         private void trackBar1_Scroll(object sender, EventArgs e)
         {
@@ -416,19 +404,7 @@ namespace imageDeCap
             imageContainer.Refresh();
             tempImage = true;
         }
-        private void trackBar2_DragLeave(object sender, EventArgs e)
-        {
-        }
-
-        private void trackBar2_DragEnter(object sender, DragEventArgs e)
-        {
-        }
-
-        private void radioButton1_CheckedChanged_1(object sender, EventArgs e)
-        {
-            
-        }
-
+        
         void setColor(Color newcolor)
         {
             if (toggled)
@@ -438,6 +414,7 @@ namespace imageDeCap
             c = newcolor;
 
         }
+
         void setPalette(EventArgs e, Button button)
         {
             MouseEventArgs ee = (MouseEventArgs)e;
@@ -468,24 +445,12 @@ namespace imageDeCap
         private void c_grey_Click(object sender, EventArgs e)       {setPalette(e, c_grey);}
         private void c_white_Click(object sender, EventArgs e)      {setPalette(e, c_white);}
 
-        private void radioButton1_CheckedChanged(object sender, EventArgs e)
-        {
 
-        }
-
-        private void groupBox3_Enter(object sender, EventArgs e)
-        {
-
-        }
-
-        private void imageEditor_FormClosing(object sender, FormClosingEventArgs e)
-        {
-        }
-        
         private void button2_Click_1(object sender, EventArgs e)
         {
             undoImageEdit();
         }
+
         public void undoImageEdit()
         {
             if (undoHistory.Count > 0)
@@ -540,20 +505,6 @@ namespace imageDeCap
             }
         }
 
-        private void imageEditor_KeyPress(object sender, KeyPressEventArgs e)
-        {
-        }
-
-        private void imageEditor_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void imageEditor_KeyUp(object sender, KeyEventArgs e)
-        {
-
-        }
-
         private void addTextButton_Click(object sender, EventArgs e)
         {
             brush = false;
@@ -566,29 +517,13 @@ namespace imageDeCap
             textBox1.Focus();
             textBox1.SelectAll();
         }
-
-        private void panel1_MouseLeave(object sender, EventArgs e)
-        {
-        }
-
-        private void panel1_Leave(object sender, EventArgs e)
-        {
-
-        }
-
+        
         private void currentColor_Click(object sender, EventArgs e)
         {
             colorDialog1.ShowDialog();
             c = colorDialog1.Color;
             currentColor.BackColor = c;
         }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-
 
         private ImageCodecInfo GetEncoder(ImageFormat format)
         {
@@ -684,21 +619,6 @@ namespace imageDeCap
             imageContainer.Cursor = Cursors.Cross;
         }
 
-        private void panel1_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void label4_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void HighlightCheckbox_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
             //textBox1.Select(textBox1.Text.Length, 0);
@@ -731,5 +651,9 @@ namespace imageDeCap
             InfoText.Visible = checkBox2.Checked;
         }
 
+        private void imageEditor_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

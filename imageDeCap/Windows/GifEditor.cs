@@ -20,8 +20,7 @@ namespace imageDeCap
         {
             return (Aborted, EditedImage.ToByteArray(MagickFormat.Gif));
         }
-
-
+        
         bool Aborted = true;
         MagickImageCollection theImage = new MagickImageCollection();
         public MagickImageCollection EditedImage = new MagickImageCollection();
@@ -59,13 +58,7 @@ namespace imageDeCap
                 uploadButton.Text = "Upload";
             }
             this.AcceptButton = calcSizeButton;
-            //CalculateFileSizeAndSaveOutputImage();
             frameTimer.Interval = (int)(1000.0f / Preferences.GIFRecordingFramerate);
-        }
-
-        private void GifEditor_Load(object sender, EventArgs e)
-        {
-            
         }
 
         int CurrentFrame = 0;
@@ -96,9 +89,6 @@ namespace imageDeCap
                 }
             }
         }
-
-        
-
         
         private void startTrack_ValueChanged(object sender, EventArgs e)
         {
@@ -236,18 +226,6 @@ namespace imageDeCap
             }
         }
 
-        private void GifEditor_FormClosing(object sender, FormClosingEventArgs e)
-        {
-        }
-        
-        private void addTextButton_Click(object sender, EventArgs e)
-        {
-        }
-
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
-        {
-        }
-
         private void checkBox1_CheckedChanged_1(object sender, EventArgs e)
         {
             panel1.Visible = checkBox1.Checked;
@@ -275,10 +253,6 @@ namespace imageDeCap
             Texts.RemoveAt(listBox1.SelectedIndex);
             listBox1.DataSource = null;
             listBox1.DataSource = Texts;
-        }
-        private void label5_Click(object sender, EventArgs e)
-        {
-
         }
 
         List<TextData> Texts = new List<TextData>();
@@ -401,7 +375,6 @@ namespace imageDeCap
                 }
                 
             }
-
             LastMouseX = e.X;
             LastMouseY = e.Y;
         }
@@ -411,7 +384,7 @@ namespace imageDeCap
             MouseDown = false;
         }
 
-        private void label6_Click(object sender, EventArgs e)
+        private void GifEditor_Load(object sender, EventArgs e)
         {
 
         }

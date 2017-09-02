@@ -225,14 +225,6 @@ namespace imageDeCap
             EscapePressed = true;
             Program.ImageDeCap.StopRecordingGif(this, true);
         }
-
-        private void completeCover_KeyPress(object sender, KeyPressEventArgs e)
-        {
-        }
-
-        private void label3_Click(object sender, EventArgs e)
-        {
-
-        }
+        
     }
 }

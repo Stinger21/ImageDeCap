@@ -105,11 +105,10 @@ namespace imageDeCap
             watermarkLocation3.Enabled = Preferences.AddWatermark;
             watermarkBrowseButton.Enabled = Preferences.AddWatermark;
             watermarkTextbox.Enabled = Preferences.AddWatermark;
-
         }
 
 
-        private void button5_Click(object sender, EventArgs e)//Apply
+        private void button5_Click(object sender, EventArgs e) // Apply
         {
             Preferences.saveImageAtAll = checkBox1.Checked;
             Preferences.SaveImagesHere = textBox1.Text;
@@ -123,14 +122,7 @@ namespace imageDeCap
             if (result == DialogResult.OK)
                 textBox1.Text = folderBrowserDialog1.SelectedPath;
         }
-
-
-        private void textBox2_KeyUp(object sender, KeyEventArgs e)
-        {
-        }
-        private void writeHotkey(KeyEventArgs e, TextBox box)
-        {
-        }
+        
         private void button1_Click(object sender, EventArgs e)
         {
             this.Close();
@@ -148,16 +140,6 @@ namespace imageDeCap
             Hide();
         }
 
-        private void textBox2_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox3_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
             textBox1.Enabled = checkBox1.Checked;
@@ -165,12 +147,6 @@ namespace imageDeCap
             alsoSaveTextFilesBox.Enabled = checkBox1.Checked;
             Preferences.saveImageAtAll = checkBox1.Checked;
             Preferences.Save();
-        }
-
-
-        private void folderBrowserDialog1_HelpRequest(object sender, EventArgs e)
-        {
-
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
@@ -236,7 +212,6 @@ namespace imageDeCap
         private void button3_Click(object sender, EventArgs e)
         {
             Preferences.Reset();
-            //Preferences.Save();
             initSettings();
         }
 
@@ -256,7 +231,6 @@ namespace imageDeCap
 
         private void checkBoxUploadToFTP_CheckedChanged(object sender, EventArgs e)
         {
-            //checkBoxUploadToFTP.Enabled = checkBoxUploadToFTP.Checked;
             Preferences.uploadToFTP = checkBoxUploadToFTP.Checked;
             Preferences.Save();
 
@@ -310,7 +284,6 @@ namespace imageDeCap
                     if (isDown)
                     {
                         textToPutInBox += ((System.Windows.Input.Key)i).ToString() + "+";
-                        //textToPutInBox += i.ToString() + "+";
                     }
                 }
             }
@@ -382,63 +355,13 @@ namespace imageDeCap
         {
             Program.hotkeysEnabled = true;
         }
-
-        private void HotkeyTextBox1_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label4_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label3_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label7_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void HotkeyTextBox2_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void HotkeyTextBox3_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void HotkeyTextBox4_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void installedLabel_Click(object sender, EventArgs e)
-        {
-
-        }
-
+        
         private void CopyImageToClipboard_CheckedChanged(object sender, EventArgs e)
         {
             Preferences.CopyImageToClipboard = CopyImageToClipboard.Checked;
             Preferences.Save();
         }
-
-        private void label3_Click_1(object sender, EventArgs e)
-        {
-
-        }
         
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void label10_Click(object sender, EventArgs e)
         {
             System.Diagnostics.Process.Start("http://www.mattwestphal.com/");
@@ -448,27 +371,12 @@ namespace imageDeCap
         {
             System.Diagnostics.Process.Start("http://www.mattwestphal.com/");
         }
-
-        private void label8_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label12_Click(object sender, EventArgs e)
-        {
-
-        }
-
+        
         private void gifFPS_ValueChanged(object sender, EventArgs e)
         {
             Preferences.GIFRecordingFramerate = (int)gifFPS.Value;
         }
-
-        private void groupBox5_Enter(object sender, EventArgs e)
-        {
-
-        }
-
+        
         private void checkBox8_CheckedChanged(object sender, EventArgs e)
         {
             Preferences.UseRuleOfThirds = checkBox8.Checked;
@@ -555,17 +463,7 @@ namespace imageDeCap
             Preferences.WatermarkLocation = 3;
             Preferences.Save();
         }
-
-
-        private void groupBox6_Enter(object sender, EventArgs e){}
-
-        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e){}
-
-        private void fontDialog_Apply(object sender, EventArgs e)
-        {
-
-        }
-
+        
         private void fontbutton_Click(object sender, EventArgs e)
         {
             if (fontDialog.ShowDialog() == DialogResult.OK)
@@ -574,7 +472,6 @@ namespace imageDeCap
                 Preferences.FontStyleType = (int)fontDialog.Font.Style;
             }
             Preferences.Save();
-
         }
     }
 }
