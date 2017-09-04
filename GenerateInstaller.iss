@@ -38,7 +38,7 @@ Source: "{#SourcePath}\imageDeCap\bin\Debug\imageDeCap.exe"; DestDir: "{app}"; F
 Name: "{group}\ImageDeCap"; Filename: "{app}\imageDeCap.exe"
 Name: "{group}\{cm:UninstallProgram,ImageDeCap}"; Filename: "{uninstallexe}"
 Name: "{commondesktop}\ImageDeCap"; Filename: "{app}\imageDeCap.exe"; Tasks: desktopicon
-Name: "{commondesktop}\ImageDeCap"; Filename: "{app}\imageDeCap.exe"; Tasks: startup
+Name: "{commonstartup}\ImageDeCap"; Filename: "{app}\imageDeCap.exe"; Tasks: startup
 
 ; Optionally delete settings
 [Code]
