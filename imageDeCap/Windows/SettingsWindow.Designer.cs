@@ -29,8 +29,6 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingsWindow));
-            this.HotkeyTextBox4 = new System.Windows.Forms.TextBox();
             this.HotkeyTextBox3 = new System.Windows.Forms.TextBox();
             this.HotkeyTextBox2 = new System.Windows.Forms.TextBox();
             this.HotkeyTextBox1 = new System.Windows.Forms.TextBox();
@@ -50,7 +48,6 @@
             this.button1 = new System.Windows.Forms.Button();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.checkBox5 = new System.Windows.Forms.CheckBox();
-            this.alsoSaveTextFilesBox = new System.Windows.Forms.CheckBox();
             this.AlsoFTPTextFilesBox = new System.Windows.Forms.CheckBox();
             this.checkBoxUploadToFTP = new System.Windows.Forms.CheckBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
@@ -64,7 +61,6 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.label8 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
@@ -82,26 +78,16 @@
             this.watermarkLocation2 = new System.Windows.Forms.RadioButton();
             this.watermarkLocation1 = new System.Windows.Forms.RadioButton();
             this.watermarkLocation0 = new System.Windows.Forms.RadioButton();
-            this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.label15 = new System.Windows.Forms.Label();
-            this.button6 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.uploadFailedSoundBox = new System.Windows.Forms.TextBox();
-            this.uploadSoundBox = new System.Windows.Forms.TextBox();
-            this.label13 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
-            this.label14 = new System.Windows.Forms.Label();
-            this.snipSoundBox = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.eventLog1 = new System.Diagnostics.EventLog();
             this.label10 = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.imageContainer = new System.Windows.Forms.PictureBox();
             this.wavFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.ImageFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.fontDialog = new System.Windows.Forms.FontDialog();
+            this.imageContainer = new System.Windows.Forms.PictureBox();
+            this.PrintScreenTimer = new System.Windows.Forms.Timer(this.components);
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gifFPS)).BeginInit();
@@ -113,38 +99,29 @@
             this.groupBox1.SuspendLayout();
             this.tabPage4.SuspendLayout();
             this.groupBox6.SuspendLayout();
-            this.groupBox5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.eventLog1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageContainer)).BeginInit();
             this.SuspendLayout();
             // 
-            // HotkeyTextBox4
-            // 
-            this.HotkeyTextBox4.Location = new System.Drawing.Point(6, 142);
-            this.HotkeyTextBox4.Multiline = true;
-            this.HotkeyTextBox4.Name = "HotkeyTextBox4";
-            this.HotkeyTextBox4.Size = new System.Drawing.Size(209, 17);
-            this.HotkeyTextBox4.TabIndex = 33;
-            this.HotkeyTextBox4.Text = "ctrl shift 4";
-            this.HotkeyTextBox4.GotFocus += new System.EventHandler(this.HotkeyTextBox4_GotFocus);
-            this.HotkeyTextBox4.KeyDown += new System.Windows.Forms.KeyEventHandler(this.HotkeyTextBox4_KeyDown);
-            this.HotkeyTextBox4.LostFocus += new System.EventHandler(this.HotkeyTextBox4_LostFocus);
-            // 
             // HotkeyTextBox3
             // 
-            this.HotkeyTextBox3.Location = new System.Drawing.Point(6, 106);
+            this.HotkeyTextBox3.Location = new System.Drawing.Point(6, 34);
             this.HotkeyTextBox3.Multiline = true;
             this.HotkeyTextBox3.Name = "HotkeyTextBox3";
             this.HotkeyTextBox3.Size = new System.Drawing.Size(209, 17);
             this.HotkeyTextBox3.TabIndex = 32;
             this.HotkeyTextBox3.Text = "ctrl shift 4";
+            this.HotkeyTextBox3.TextChanged += new System.EventHandler(this.HotkeyTextBox3_TextChanged);
+            this.HotkeyTextBox3.Enter += new System.EventHandler(this.HotkeyTextBox3_Enter);
             this.HotkeyTextBox3.GotFocus += new System.EventHandler(this.HotkeyTextBox3_GotFocus);
             this.HotkeyTextBox3.KeyDown += new System.Windows.Forms.KeyEventHandler(this.HotkeyTextBox3_KeyDown);
+            this.HotkeyTextBox3.KeyUp += new System.Windows.Forms.KeyEventHandler(this.HotkeyTextBox3_KeyUp);
+            this.HotkeyTextBox3.Leave += new System.EventHandler(this.HotkeyTextBox3_Leave);
             this.HotkeyTextBox3.LostFocus += new System.EventHandler(this.HotkeyTextBox3_LostFocus);
             // 
             // HotkeyTextBox2
             // 
-            this.HotkeyTextBox2.Location = new System.Drawing.Point(6, 70);
+            this.HotkeyTextBox2.Location = new System.Drawing.Point(7, 70);
             this.HotkeyTextBox2.Multiline = true;
             this.HotkeyTextBox2.Name = "HotkeyTextBox2";
             this.HotkeyTextBox2.Size = new System.Drawing.Size(209, 17);
@@ -152,11 +129,12 @@
             this.HotkeyTextBox2.Text = "ctrl shift 3";
             this.HotkeyTextBox2.GotFocus += new System.EventHandler(this.HotkeyTextBox2_GotFocus);
             this.HotkeyTextBox2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.HotkeyTextBox2_KeyDown);
+            this.HotkeyTextBox2.KeyUp += new System.Windows.Forms.KeyEventHandler(this.HotkeyTextBox2_KeyUp);
             this.HotkeyTextBox2.LostFocus += new System.EventHandler(this.HotkeyTextBox2_LostFocus);
             // 
             // HotkeyTextBox1
             // 
-            this.HotkeyTextBox1.Location = new System.Drawing.Point(6, 34);
+            this.HotkeyTextBox1.Location = new System.Drawing.Point(6, 106);
             this.HotkeyTextBox1.Multiline = true;
             this.HotkeyTextBox1.Name = "HotkeyTextBox1";
             this.HotkeyTextBox1.Size = new System.Drawing.Size(209, 17);
@@ -164,6 +142,7 @@
             this.HotkeyTextBox1.Text = "ctrl shift 2";
             this.HotkeyTextBox1.GotFocus += new System.EventHandler(this.HotkeyTextBox1_GotFocus);
             this.HotkeyTextBox1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.HotkeyTextBox1_KeyDown);
+            this.HotkeyTextBox1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.HotkeyTextBox1_KeyUp);
             this.HotkeyTextBox1.LostFocus += new System.EventHandler(this.HotkeyTextBox1_LostFocus);
             // 
             // FTPpassword
@@ -228,9 +207,9 @@
             this.checkBox2.AutoSize = true;
             this.checkBox2.Location = new System.Drawing.Point(9, 115);
             this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(192, 17);
+            this.checkBox2.Size = new System.Drawing.Size(207, 17);
             this.checkBox2.TabIndex = 21;
-            this.checkBox2.Text = "Open uploaded file in web browser.";
+            this.checkBox2.Text = "Open uploaded image in web browser.";
             this.checkBox2.UseVisualStyleBackColor = true;
             this.checkBox2.CheckedChanged += new System.EventHandler(this.checkBox2_CheckedChanged);
             // 
@@ -273,7 +252,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(251, 36);
+            this.button2.Location = new System.Drawing.Point(251, 35);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 2;
@@ -296,9 +275,9 @@
             this.checkBox1.AutoSize = true;
             this.checkBox1.Location = new System.Drawing.Point(6, 18);
             this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(174, 17);
+            this.checkBox1.Size = new System.Drawing.Size(200, 17);
             this.checkBox1.TabIndex = 0;
-            this.checkBox1.Text = "Save screenshots to this folder.";
+            this.checkBox1.Text = "Always save everything to this folder.";
             this.checkBox1.UseVisualStyleBackColor = true;
             this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
@@ -312,9 +291,6 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // folderBrowserDialog1
-            // 
-            // 
             // checkBox5
             // 
             this.checkBox5.AutoSize = true;
@@ -325,17 +301,6 @@
             this.checkBox5.Text = "Disable bubble notifications. (side-bar things on windows 10)";
             this.checkBox5.UseVisualStyleBackColor = true;
             this.checkBox5.CheckedChanged += new System.EventHandler(this.checkBox5_CheckedChanged);
-            // 
-            // alsoSaveTextFilesBox
-            // 
-            this.alsoSaveTextFilesBox.AutoSize = true;
-            this.alsoSaveTextFilesBox.Location = new System.Drawing.Point(204, 18);
-            this.alsoSaveTextFilesBox.Name = "alsoSaveTextFilesBox";
-            this.alsoSaveTextFilesBox.Size = new System.Drawing.Size(116, 17);
-            this.alsoSaveTextFilesBox.TabIndex = 6;
-            this.alsoSaveTextFilesBox.Text = "Also save text files.";
-            this.alsoSaveTextFilesBox.UseVisualStyleBackColor = true;
-            this.alsoSaveTextFilesBox.CheckedChanged += new System.EventHandler(this.alsoSaveTextFilesBox_CheckedChanged);
             // 
             // AlsoFTPTextFilesBox
             // 
@@ -396,23 +361,23 @@
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(338, 30);
             this.label12.TabIndex = 39;
-            this.label12.Text = "Protip: When edit Image is switched off you can bring up the image editor by pres" +
-    "sing right-click when selecting what region to capture.";
+            this.label12.Text = "Protip: When \"Edit Image\" is Disabled you can bring up the Editor by pressing rig" +
+    "ht-click when selecting what region to capture.";
             // 
             // label9
             // 
             this.label9.AutoSize = true;
             this.label9.Location = new System.Drawing.Point(200, 178);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(129, 13);
+            this.label9.Size = new System.Drawing.Size(97, 13);
             this.label9.TabIndex = 35;
-            this.label9.Text = "GIF Recording frame-rate:";
+            this.label9.Text = "Max GIF framerate:";
             // 
             // gifFPS
             // 
             this.gifFPS.Location = new System.Drawing.Point(203, 193);
             this.gifFPS.Maximum = new decimal(new int[] {
-            15,
+            60,
             0,
             0,
             0});
@@ -424,8 +389,9 @@
             this.gifFPS.Name = "gifFPS";
             this.gifFPS.Size = new System.Drawing.Size(120, 20);
             this.gifFPS.TabIndex = 31;
+            this.toolTip1.SetToolTip(this.gifFPS, "The framerate will decrease if performance is low.");
             this.gifFPS.Value = new decimal(new int[] {
-            1,
+            24,
             0,
             0,
             0});
@@ -435,7 +401,6 @@
             // 
             this.groupBox2.Controls.Add(this.textBox1);
             this.groupBox2.Controls.Add(this.checkBox1);
-            this.groupBox2.Controls.Add(this.alsoSaveTextFilesBox);
             this.groupBox2.Controls.Add(this.button2);
             this.groupBox2.Location = new System.Drawing.Point(3, 3);
             this.groupBox2.Name = "groupBox2";
@@ -480,42 +445,32 @@
             // 
             // label8
             // 
-            this.label8.Location = new System.Drawing.Point(3, 180);
+            this.label8.Location = new System.Drawing.Point(3, 211);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(334, 63);
+            this.label8.Size = new System.Drawing.Size(334, 32);
             this.label8.TabIndex = 38;
-            this.label8.Text = resources.GetString("label8.Text");
+            this.label8.Text = "Region screenshots behaving wierd? Turn off windows scaling.\r\nHotkeys not working" +
+    "? Run ImageDeCap as Administrator\r\n";
             // 
             // groupBox3
             // 
             this.groupBox3.Controls.Add(this.HotkeyTextBox1);
             this.groupBox3.Controls.Add(this.HotkeyTextBox3);
-            this.groupBox3.Controls.Add(this.label6);
             this.groupBox3.Controls.Add(this.HotkeyTextBox2);
-            this.groupBox3.Controls.Add(this.HotkeyTextBox4);
             this.groupBox3.Controls.Add(this.label7);
             this.groupBox3.Controls.Add(this.label4);
             this.groupBox3.Controls.Add(this.label5);
             this.groupBox3.Location = new System.Drawing.Point(3, 3);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(337, 174);
+            this.groupBox3.Size = new System.Drawing.Size(337, 205);
             this.groupBox3.TabIndex = 31;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Hotkeys";
             // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(3, 126);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(155, 13);
-            this.label6.TabIndex = 37;
-            this.label6.Text = "Upload active window to imgur.";
-            // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(3, 90);
+            this.label7.Location = new System.Drawing.Point(3, 18);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(159, 13);
             this.label7.TabIndex = 36;
@@ -524,7 +479,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(3, 19);
+            this.label4.Location = new System.Drawing.Point(3, 91);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(176, 13);
             this.label4.TabIndex = 34;
@@ -533,7 +488,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(3, 54);
+            this.label5.Location = new System.Drawing.Point(4, 54);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(160, 13);
             this.label5.TabIndex = 35;
@@ -593,7 +548,6 @@
             // 
             this.tabPage4.Controls.Add(this.checkBox8);
             this.tabPage4.Controls.Add(this.groupBox6);
-            this.tabPage4.Controls.Add(this.groupBox5);
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Size = new System.Drawing.Size(343, 246);
@@ -604,7 +558,7 @@
             // checkBox8
             // 
             this.checkBox8.AutoSize = true;
-            this.checkBox8.Location = new System.Drawing.Point(5, 209);
+            this.checkBox8.Location = new System.Drawing.Point(9, 80);
             this.checkBox8.Name = "checkBox8";
             this.checkBox8.Size = new System.Drawing.Size(192, 17);
             this.checkBox8.TabIndex = 1;
@@ -621,9 +575,9 @@
             this.groupBox6.Controls.Add(this.watermarkLocation2);
             this.groupBox6.Controls.Add(this.watermarkLocation1);
             this.groupBox6.Controls.Add(this.watermarkLocation0);
-            this.groupBox6.Location = new System.Drawing.Point(5, 147);
+            this.groupBox6.Location = new System.Drawing.Point(5, 4);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(325, 56);
+            this.groupBox6.Size = new System.Drawing.Size(325, 70);
             this.groupBox6.TabIndex = 1;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Watermark";
@@ -641,7 +595,7 @@
             // 
             // watermarkBrowseButton
             // 
-            this.watermarkBrowseButton.Location = new System.Drawing.Point(106, 29);
+            this.watermarkBrowseButton.Location = new System.Drawing.Point(106, 33);
             this.watermarkBrowseButton.Name = "watermarkBrowseButton";
             this.watermarkBrowseButton.Size = new System.Drawing.Size(55, 23);
             this.watermarkBrowseButton.TabIndex = 43;
@@ -652,7 +606,7 @@
             // 
             this.watermarkLocation3.AutoSize = true;
             this.watermarkLocation3.Checked = true;
-            this.watermarkLocation3.Location = new System.Drawing.Point(242, 31);
+            this.watermarkLocation3.Location = new System.Drawing.Point(242, 35);
             this.watermarkLocation3.Name = "watermarkLocation3";
             this.watermarkLocation3.Size = new System.Drawing.Size(86, 17);
             this.watermarkLocation3.TabIndex = 48;
@@ -662,7 +616,7 @@
             // 
             // watermarkTextbox
             // 
-            this.watermarkTextbox.Location = new System.Drawing.Point(4, 31);
+            this.watermarkTextbox.Location = new System.Drawing.Point(4, 35);
             this.watermarkTextbox.Name = "watermarkTextbox";
             this.watermarkTextbox.Size = new System.Drawing.Size(96, 20);
             this.watermarkTextbox.TabIndex = 42;
@@ -671,7 +625,7 @@
             // watermarkLocation2
             // 
             this.watermarkLocation2.AutoSize = true;
-            this.watermarkLocation2.Location = new System.Drawing.Point(166, 31);
+            this.watermarkLocation2.Location = new System.Drawing.Point(166, 35);
             this.watermarkLocation2.Name = "watermarkLocation2";
             this.watermarkLocation2.Size = new System.Drawing.Size(79, 17);
             this.watermarkLocation2.TabIndex = 47;
@@ -697,119 +651,6 @@
             this.watermarkLocation0.TabIndex = 45;
             this.watermarkLocation0.Text = "Top Left";
             this.watermarkLocation0.UseVisualStyleBackColor = true;
-            // 
-            // groupBox5
-            // 
-            this.groupBox5.Controls.Add(this.label15);
-            this.groupBox5.Controls.Add(this.button6);
-            this.groupBox5.Controls.Add(this.button5);
-            this.groupBox5.Controls.Add(this.button4);
-            this.groupBox5.Controls.Add(this.uploadFailedSoundBox);
-            this.groupBox5.Controls.Add(this.uploadSoundBox);
-            this.groupBox5.Controls.Add(this.label13);
-            this.groupBox5.Controls.Add(this.label11);
-            this.groupBox5.Controls.Add(this.label14);
-            this.groupBox5.Controls.Add(this.snipSoundBox);
-            this.groupBox5.Location = new System.Drawing.Point(5, 3);
-            this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(325, 142);
-            this.groupBox5.TabIndex = 0;
-            this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "Sounds";
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(5, 123);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(176, 13);
-            this.label15.TabIndex = 41;
-            this.label15.Text = "Sound files need to be .wav (sorry?)";
-            this.toolTip1.SetToolTip(this.label15, "Whenever a setting is changed, it is saved immedietly.");
-            // 
-            // button6
-            // 
-            this.button6.Location = new System.Drawing.Point(243, 99);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(75, 23);
-            this.button6.TabIndex = 40;
-            this.button6.Text = "Browse";
-            this.button6.UseVisualStyleBackColor = true;
-            this.button6.Click += new System.EventHandler(this.button6_Click);
-            // 
-            // button5
-            // 
-            this.button5.Location = new System.Drawing.Point(243, 61);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(75, 23);
-            this.button5.TabIndex = 39;
-            this.button5.Text = "Browse";
-            this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.button5_Click_1);
-            // 
-            // button4
-            // 
-            this.button4.Location = new System.Drawing.Point(243, 23);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(75, 23);
-            this.button4.TabIndex = 3;
-            this.button4.Text = "Browse";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
-            // 
-            // uploadFailedSoundBox
-            // 
-            this.uploadFailedSoundBox.Location = new System.Drawing.Point(6, 101);
-            this.uploadFailedSoundBox.Name = "uploadFailedSoundBox";
-            this.uploadFailedSoundBox.Size = new System.Drawing.Size(231, 20);
-            this.uploadFailedSoundBox.TabIndex = 1;
-            this.uploadFailedSoundBox.Text = "C:\\";
-            this.uploadFailedSoundBox.TextChanged += new System.EventHandler(this.uploadFailedSoundBox_TextChanged);
-            // 
-            // uploadSoundBox
-            // 
-            this.uploadSoundBox.Location = new System.Drawing.Point(6, 63);
-            this.uploadSoundBox.Name = "uploadSoundBox";
-            this.uploadSoundBox.Size = new System.Drawing.Size(231, 20);
-            this.uploadSoundBox.TabIndex = 0;
-            this.uploadSoundBox.Text = "C:\\";
-            this.uploadSoundBox.TextChanged += new System.EventHandler(this.uploadSoundBox_TextChanged);
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(3, 86);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(64, 13);
-            this.label13.TabIndex = 37;
-            this.label13.Text = "Error sound.";
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(3, 48);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(76, 13);
-            this.label11.TabIndex = 36;
-            this.label11.Text = "Upload sound.";
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(3, 10);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(63, 13);
-            this.label14.TabIndex = 38;
-            this.label14.Text = "Snip sound.";
-            // 
-            // snipSoundBox
-            // 
-            this.snipSoundBox.Location = new System.Drawing.Point(6, 25);
-            this.snipSoundBox.Name = "snipSoundBox";
-            this.snipSoundBox.Size = new System.Drawing.Size(231, 20);
-            this.snipSoundBox.TabIndex = 2;
-            this.snipSoundBox.Text = "C:\\";
-            this.snipSoundBox.TextChanged += new System.EventHandler(this.snipSoundBox_TextChanged);
             // 
             // label3
             // 
@@ -847,6 +688,18 @@
             this.label10.Text = "Check mattwestphal.com for updates! ";
             this.label10.Click += new System.EventHandler(this.label10_Click);
             // 
+            // wavFileDialog
+            // 
+            this.wavFileDialog.DefaultExt = "wav";
+            this.wavFileDialog.Filter = "Sound Files (*.wav)|*.wav";
+            this.wavFileDialog.Title = "Select Sound Files";
+            // 
+            // ImageFileDialog
+            // 
+            this.ImageFileDialog.DefaultExt = "png";
+            this.ImageFileDialog.Filter = "png (*.png)|*.png|jpg (*.jpg)|*.jpg|bmp (*.bmp)|*.bmp";
+            this.ImageFileDialog.Title = "Select image file";
+            // 
             // imageContainer
             // 
             this.imageContainer.Cursor = System.Windows.Forms.Cursors.Hand;
@@ -859,17 +712,11 @@
             this.imageContainer.TabStop = false;
             this.imageContainer.Click += new System.EventHandler(this.imageContainer_Click);
             // 
-            // wavFileDialog
+            // PrintScreenTimer
             // 
-            this.wavFileDialog.DefaultExt = "wav";
-            this.wavFileDialog.Filter = "Sound Files (*.wav)|*.wav";
-            this.wavFileDialog.Title = "Select Sound Files";
-            // 
-            // ImageFileDialog
-            // 
-            this.ImageFileDialog.DefaultExt = "png";
-            this.ImageFileDialog.Filter = "png (*.png)|*.png|jpg (*.jpg)|*.jpg|bmp (*.bmp)|*.bmp";
-            this.ImageFileDialog.Title = "Select image file";
+            this.PrintScreenTimer.Enabled = true;
+            this.PrintScreenTimer.Interval = 1000;
+            this.PrintScreenTimer.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // SettingsWindow
             // 
@@ -911,8 +758,6 @@
             this.tabPage4.PerformLayout();
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
-            this.groupBox5.ResumeLayout(false);
-            this.groupBox5.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.eventLog1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageContainer)).EndInit();
             this.ResumeLayout(false);
@@ -935,12 +780,10 @@
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.CheckBox checkBox5;
-        private System.Windows.Forms.CheckBox alsoSaveTextFilesBox;
         private System.Windows.Forms.CheckBox AlsoFTPTextFilesBox;
         private System.Windows.Forms.TextBox FTPpassword;
         private System.Windows.Forms.TextBox FTPUsername;
         private System.Windows.Forms.TextBox FTPURL;
-        private System.Windows.Forms.TextBox HotkeyTextBox4;
         private System.Windows.Forms.TextBox HotkeyTextBox3;
         private System.Windows.Forms.TextBox HotkeyTextBox2;
         private System.Windows.Forms.TextBox HotkeyTextBox1;
@@ -950,7 +793,6 @@
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.CheckBox CopyImageToClipboard;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
@@ -970,18 +812,7 @@
         private System.Windows.Forms.NumericUpDown gifFPS;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.TabPage tabPage4;
-        private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.CheckBox checkBox8;
-        private System.Windows.Forms.TextBox uploadFailedSoundBox;
-        private System.Windows.Forms.TextBox uploadSoundBox;
-        private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.TextBox snipSoundBox;
-        private System.Windows.Forms.Button button6;
-        private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Label label15;
         private System.Windows.Forms.OpenFileDialog wavFileDialog;
         private System.Windows.Forms.GroupBox groupBox6;
         private System.Windows.Forms.Button watermarkBrowseButton;
@@ -993,5 +824,6 @@
         private System.Windows.Forms.CheckBox watermarkCheckbox;
         private System.Windows.Forms.OpenFileDialog ImageFileDialog;
         private System.Windows.Forms.FontDialog fontDialog;
+        private System.Windows.Forms.Timer PrintScreenTimer;
     }
 }

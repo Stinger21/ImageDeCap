@@ -47,7 +47,6 @@ namespace imageDeCap
             {
                 Application.DoEvents();
                 ImageDeCap.mainLoop();
-                System.Threading.Thread.Sleep(10);
             } 
         }
         public static bool Quit;

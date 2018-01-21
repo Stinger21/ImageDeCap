@@ -21,6 +21,9 @@ using Imgur.API.Endpoints.Impl;
 using Imgur.API;
 using Imgur.API.Models;
 
+using System.Net.Http;
+using Newtonsoft.Json.Linq;
+
 namespace imageDeCap
 {
     public enum enmScreenCaptureMode
@@ -32,16 +35,13 @@ namespace imageDeCap
 
     public class ScreenCapturer
     {
-
-        string ClientId = "da05117bbfa9bda";
-
         public void UploadImage(object sender, DoWorkEventArgs e)
         {
             byte[] FileData = (byte[])e.Argument;
         
             try
             {
-                var client = new ImgurClient(ClientId);
+                var client = new ImgurClient("da05117bbfa9bda");
                 var endpoint = new ImageEndpoint(client);
                 IImage image = endpoint.UploadImageBinaryAsync(FileData).GetAwaiter().GetResult();
                 e.Result = (image.Link, FileData);
@@ -52,6 +52,76 @@ namespace imageDeCap
             }
         }
 
+        struct GfycatStatusResponse
+        {
+            public string Task { get; set; }
+            public string GfyName { get; set; }
+            public double Progress { get; set; }
+        }
+        public void UploadGif(object sender, DoWorkEventArgs e)
+        {
+            byte[] FileData = (byte[])e.Argument;
+
+
+            /*
+            curl -i -X POST \
+            -H "Content-Type:multipart/form-data" \
+            -F "file=@\"./some_file.webm\";type=video/webm;filename=\"some_file.webm\"" \
+            -F "expiration=1" \
+            -F "public=0" \
+            -F "title=Some title goes here ;)" \
+            -F "autoplay=1" \
+            -F "loop=1" \
+            -F "muted=1" \
+            'https://webmshare.com/api/upload'
+            */
+
+
+            HttpClient client = new HttpClient();
+            MultipartFormDataContent form = new MultipartFormDataContent();
+
+            form.Add(new StringContent("0"), "expiration");
+            form.Add(new StringContent("0"), "public");
+            form.Add(new StringContent("1"), "autoplay");
+            form.Add(new StringContent("1"), "loop");
+            form.Add(new StringContent("1"), "muted");
+            form.Add(new ByteArrayContent(FileData), "file", "something.webm");
+
+            var response = client.PostAsync("http://webmshare.com/api/upload", form).GetAwaiter().GetResult();
+
+            var responseString = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            
+            var objects = JObject.Parse(responseString);
+
+            bool Success = false;
+            string result = "";
+            try
+            {
+                result = objects.GetValue("id").ToString();
+                Success = true;
+            }
+            catch
+            {
+                result = responseString;
+                Success = false;
+            }
+            
+            if (Success) // means it succeeded
+            {
+                e.Result = ("https://webmshare.com/play/" + result, FileData);
+            }
+            else
+            {
+                e.Result = ("failed, " + result, FileData);
+            }
+            
+            
+        }
+
+        struct WebmShareRequest
+        {
+            public int expiration { get; set; }
+        }
 
         public void uploadToFTP(object sender, DoWorkEventArgs e)
         {
@@ -126,8 +196,7 @@ namespace imageDeCap
         }
 
 
-
-
+        
         [DllImport("user32.dll")]
         private static extern IntPtr GetForegroundWindow();
 
@@ -218,8 +287,6 @@ namespace imageDeCap
             return null;
         }
         
-
-
         public Point CursorPosition
         {
             get;
@@ -227,8 +294,6 @@ namespace imageDeCap
         }
     }
     
-
-
     class Win32Stuff
     {
 
@@ -297,4 +362,91 @@ namespace imageDeCap
 
         #endregion
     }
-}
+    //---------------------------------------------------------------------------------------------------------------------
+    //Keeping all this GFYCAT stuff here for when webmshare goes down LOL
+    // DON'T DELETE THIS
+    //---------------------------------------------------------------------------------------------------------------------
+    /*
+    public static class Gfycat
+    {
+        public static (bool UploadSuccessfull, string Message) Upload(byte[] FileData)
+        {
+            var createResponse = Create(new GfycatCreateRequest() { noMd5 = true }).GetAwaiter().GetResult();
+
+            Upload(createResponse.GfyName, FileData).GetAwaiter().GetResult();
+            int notfounds = 0;
+            while (true)
+            {
+                var statusResponse = Status(createResponse.GfyName).GetAwaiter().GetResult();
+                Console.WriteLine("Gfycat " + FileData.Length + ", " + statusResponse.Task + ", " + statusResponse.Progress);
+
+                if (statusResponse.Task == "NotFoundo")
+                {
+                    if (notfounds > 10)
+                        return (false, statusResponse.Task);
+                    notfounds++;
+                }
+                else if (statusResponse.Task == "encoding") { }
+                else if (statusResponse.Task == "complete")
+                    return (true, "https://gfycat.com/" + statusResponse.GfyName);
+                else
+                    return (false, statusResponse.Task);
+
+                System.Threading.Thread.Sleep(1000);
+            }
+        }
+
+        static async Task<GfycatCreateResponse> Create(GfycatCreateRequest request)
+        {
+            HttpClient client = new HttpClient();
+            var response = await client.PostAsJsonAsync("https://api.gfycat.com/v1/gfycats", request);
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadAsAsync<GfycatCreateResponse>();
+        }
+
+        static async Task Upload(string gfyname, byte[] fileData)
+        {
+            HttpClient client = new HttpClient();
+            using (var formData = new MultipartFormDataContent())
+            {
+                formData.Add(new StringContent(gfyname), "key", "key");
+                formData.Add(new ByteArrayContent(fileData), "file", gfyname);
+
+                var response = await client.PostAsync("https://filedrop.gfycat.com/", formData);
+
+                response.EnsureSuccessStatusCode();
+            }
+        }
+
+        static async Task<GfycatStatusResponse> Status(string gfyname)
+        {
+            HttpClient client = new HttpClient();
+            var response = await client.GetAsync($"https://api.gfycat.com/v1/gfycats/fetch/status/{gfyname}");
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadAsAsync<GfycatStatusResponse>();
+        }
+
+        struct GfycatCreateRequest
+        {
+            public bool noMd5 { get; set; }
+        }
+
+        struct GfycatCreateResponse
+        {
+            public bool IsOk { get; set; }
+            public string GfyName { get; set; }
+            public string Secret { get; set; }
+            public string UploadType { get; set; }
+        }
+
+        struct GfycatStatusResponse
+        {
+            public string Task { get; set; }
+            public string GfyName { get; set; }
+            public double Progress { get; set; }
+        }
+    }
+    */
+        }

@@ -38,11 +38,11 @@
             this.ClientSize = new System.Drawing.Size(10, 10);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.HelpButton = true;
-            this.Name = "boxOfWhy";
+            this.Name = "BoundingBox";
             this.Opacity = 0.1D;
             this.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.ShowInTaskbar = false;
-            this.Text = "boxOfWhy";
+            this.Text = "BoundingBox";
             this.TopMost = true;
             this.Load += new System.EventHandler(this.boxOfWhy_Load);
             this.ResumeLayout(false);

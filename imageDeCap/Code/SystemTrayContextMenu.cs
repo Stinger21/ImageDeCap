@@ -44,7 +44,7 @@ namespace imageDeCap
         }
         private static void ContactButton_Click(object Sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start("http://www.mattwestphal.com/imagedecap/");
+            System.Diagnostics.Process.Start("http://www.mattwestphal.com/imagedecap");
         }
         private static void Preferences_Click(object Sender, EventArgs e)
         {

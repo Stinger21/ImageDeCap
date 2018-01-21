@@ -1,4 +1,5 @@
-﻿using ImageMagick;
+﻿using MediaToolkit;
+using MediaToolkit.Model;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -16,23 +17,50 @@ namespace imageDeCap
 
     public partial class GifEditor : Form
     {
-        public (bool Aborted, byte[] Data) FinalFunction()
+        public static byte[] VideoFromFrames(Bitmap[] frames, int framerate = 15)
         {
-            return (Aborted, EditedImage.ToByteArray(MagickFormat.Gif));
+            VideoWriter.Write(new RecorderParams("out.avi", framerate, SharpAvi.KnownFourCCs.Codecs.MotionJpeg, 100, 0, 0, frames[0].Width, frames[0].Height), frames);
+
+            var inputFile = new MediaFile { Filename = @"out.avi" };
+            var outputFile = new MediaFile { Filename = @"out.webm" };
+            using (var engine = new Engine())
+            {
+                engine.Convert(inputFile, outputFile);
+            }
+
+            byte[] data = File.ReadAllBytes("out.webm");
+            //File.Delete("out.avi");
+            //File.Delete("out.webm");
+            return data;
         }
-        
-        bool Aborted = true;
-        MagickImageCollection theImage = new MagickImageCollection();
-        public MagickImageCollection EditedImage = new MagickImageCollection();
-        IMagickImage CurrentImage;
+
+        // Trun the image into a byte array
+        public (NewImageEditor.EditorResult output, byte[] Data) FinalFunction()
+        {
+            if(result == NewImageEditor.EditorResult.Quit)
+            {
+                return (result, new byte[] { });
+            }
+
+            // cleanup
+            return (result, VideoFromFrames(EditedImage, FrameRate));
+        }
+
+        NewImageEditor.EditorResult result = NewImageEditor.EditorResult.Quit;
+
+        Bitmap[] TheImage;
+        Bitmap[] EditedImage;
+        Bitmap CurrentImage;
+
         int frames = 0;
-        public GifEditor(MagickImageCollection ImageData, int X, int Y)
+        int FrameRate = 15;
+        public GifEditor(Bitmap[] ImageData, int X, int Y, int FrameRate)
         {
             InitializeComponent();
-            theImage = ImageData;
-
-            CurrentImage = theImage[0];
-            PictureBox.Image = CurrentImage.ToBitmap();
+            TheImage = ImageData;
+            this.FrameRate = FrameRate;
+            CurrentImage = TheImage[0];
+            PictureBox.Image = CurrentImage;//.ToBitmap();
 
             PictureBox.Size = new Size(CurrentImage.Width, CurrentImage.Height);
 
@@ -40,7 +68,7 @@ namespace imageDeCap
             int height = Math.Max(CurrentImage.Height + 63 + 93, 350);
 
             this.Size = new Size(width, height);
-            this.frames = theImage.Count;
+            this.frames = TheImage.Length;
             this.StartPosition = FormStartPosition.Manual;
             this.Location = new Point(X - 7, Y - 20);
 
@@ -51,15 +79,36 @@ namespace imageDeCap
 
             if (Preferences.NeverUpload)
             {
-                uploadButton.Text = "Done";
+                this.AcceptButton = SaveButton;
+                UploadButton.Enabled = false;
             }
             else
             {
-                uploadButton.Text = "Upload";
+                this.AcceptButton = UploadButton;
             }
-            this.AcceptButton = calcSizeButton;
-            frameTimer.Interval = (int)(1000.0f / Preferences.GIFRecordingFramerate);
+
+            frameTimer.Interval = 1000 / FrameRate;
+
+            FPSLabel.Text = "Average recorded framerate: " + FrameRate.ToString();
         }
+
+
+        private void Uploadbutton_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            CalculateFileSizeAndSaveOutputImage();
+            result = NewImageEditor.EditorResult.Upload;
+            this.Close();
+        }
+
+        private void SaveButton_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            CalculateFileSizeAndSaveOutputImage();
+            result = NewImageEditor.EditorResult.Save;
+            this.Close();
+        }
+
 
         int CurrentFrame = 0;
         int ActualFrameNumber = 0;
@@ -72,22 +121,14 @@ namespace imageDeCap
             }
             else
             {
-                ActualFrameNumber = (CurrentFrame % theImage.Count);
+                ActualFrameNumber = (CurrentFrame % TheImage.Length);
             }
 
             Console.WriteLine(ActualFrameNumber);
-            CurrentImage = theImage[ActualFrameNumber];
-            PictureBox.Image = CurrentImage.ToBitmap();
+            CurrentImage = TheImage[ActualFrameNumber];
+            PictureBox.Image = CurrentImage;
             BackgroundTrack.Value = Math.Min(Math.Max(ActualFrameNumber, BackgroundTrack.Minimum), BackgroundTrack.Maximum);
 
-            Graphics g = Graphics.FromImage(PictureBox.Image);
-            foreach(TextData t in Texts)
-            {
-                if(ActualFrameNumber < t.TimeEnd && ActualFrameNumber >= t.TimeStart)
-                {
-                    g.DrawString(t.text, new Font(Preferences.ImageEditorFont, t.size, (FontStyle)Preferences.FontStyleType), new SolidBrush(Color.FromArgb(255, 255, 0, 0)), new Point(t.X, t.Y));
-                }
-            }
         }
         
         private void startTrack_ValueChanged(object sender, EventArgs e)
@@ -154,6 +195,12 @@ namespace imageDeCap
             Scrolling = false;
         }
 
+        public static T[] SubArray<T>(T[] data, int index, int length)
+        {
+            T[] result = new T[length];
+            Array.Copy(data, index, result, 0, length);
+            return result;
+        }
 
         int SavedImageStart = 0;
         int SavedImageEnd = 0;
@@ -169,42 +216,14 @@ namespace imageDeCap
                 return;
             }
 
+                
             float scalePct = (float)ScaleThing.Value / 100.0f;
 
             SavedImageStart = (int)startTrack.Value;
             SavedImageEnd = (int)endTrack.Value;
             SavedImageScale = (int)ScaleThing.Value;
 
-            List<IMagickImage> subImageList = theImage.ToList().GetRange(startTrack.Value, endTrack.Value - startTrack.Value);
-            EditedImage = new MagickImageCollection();
-            int j = 0;
-            foreach (MagickImage i in subImageList)
-            {
-                i.AnimationDelay = (int)(100.0f / Preferences.GIFRecordingFramerate);
-                foreach (TextData t in Texts)
-                {
-                    if (j < t.TimeEnd && j >= t.TimeStart)
-                    {
-                        i.Settings.FontPointsize = t.size;
-                        i.Settings.FillColor = new MagickColor(Color.Red);
-                        i.Settings.Font = "Arial-Black";
-                        i.Settings.FontFamily = "Arial";
-                        i.Annotate(t.text, new MagickGeometry(t.X, t.Y, 20, 20), Gravity.Northwest);
-                    }
-                }
-                i.Resize((int)(i.Width * scalePct),
-                         (int)(i.Height * scalePct));
-                
-                EditedImage.Add(i);
-                j += 1;
-            }
-            
-            MemoryStream ms = new MemoryStream();
-            EditedImage.Write(ms);
-
-            PictureBox.Size = new Size((int)(CurrentImage.Width * scalePct), (int)(CurrentImage.Height * scalePct));
-
-            sizeText.Text = "File-Size: " + (Math.Round(ms.Length / 10000.0f)/100.0f).ToString() + " MB";
+            EditedImage = SubArray(TheImage, SavedImageStart, SavedImageEnd - SavedImageStart);
         }
         private void calcSizeButton_Click(object sender, EventArgs e)
         {
@@ -213,9 +232,6 @@ namespace imageDeCap
 
         private void uploadButton_Click(object sender, EventArgs e)
         {
-            CalculateFileSizeAndSaveOutputImage();
-            Aborted = false;
-            this.Close();
         }
 
         private void GifEditor_KeyDown(object sender, KeyEventArgs e)
@@ -225,168 +241,22 @@ namespace imageDeCap
                 this.Close();
             }
         }
-
-        private void checkBox1_CheckedChanged_1(object sender, EventArgs e)
-        {
-            panel1.Visible = checkBox1.Checked;
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            TextData data = new TextData();
-            data.text = "Sample Text";
-            data.size = 16;
-            data.TimeEnd = frames;
-            sizeNr.Value = data.size;
-            timeEnd.Value = (int)frames;
-            Texts.Add(data);
-            listBox1.DataSource = null;
-            listBox1.DataSource = Texts;
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            if (listBox1.SelectedIndex == -1)
-            {
-                return;
-            }
-            Texts.RemoveAt(listBox1.SelectedIndex);
-            listBox1.DataSource = null;
-            listBox1.DataSource = Texts;
-        }
-
-        List<TextData> Texts = new List<TextData>();
-        TextData currentText;
-        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            Console.WriteLine(listBox1.SelectedIndex);
-            bool SelectionIsValid = listBox1.SelectedIndex != -1;
-
-            button1.Enabled = SelectionIsValid;
-            textValue.Enabled = SelectionIsValid;
-            sizeNr.Enabled = SelectionIsValid;
-            locationX.Enabled = SelectionIsValid;
-            locationY.Enabled = SelectionIsValid;
-            timeStart.Enabled = SelectionIsValid;
-            timeEnd.Enabled = SelectionIsValid;
-
-            if (SelectionIsValid == false)
-            {
-                return;
-            }
-            currentText = Texts[listBox1.SelectedIndex];
-            if (currentText == null)
-            {
-                return;
-            }
-            textValue.Text = currentText.text;
-            locationX.Value = currentText.X;
-            locationY.Value = currentText.Y;
-            timeStart.Value = currentText.TimeStart;
-            timeEnd.Value = currentText.TimeEnd;
-            sizeNr.Value = currentText.size;
-            
-        }
-
-        private void textValue_TextChanged(object sender, EventArgs e)
-        {
-            if (currentText != null)
-            {
-                currentText.text = textValue.Text;
-            }
-
-            int len = textValue.SelectionLength;
-            int strt = textValue.SelectionStart;
-
-            listBox1.DataSource = null;
-            listBox1.DataSource = Texts;
-
-            textValue.Focus();
-            textValue.Select(strt, len);
-        }
-
-
-        private void timeStart_ValueChanged(object sender, EventArgs e)
-        {
-            if (currentText != null)
-            {
-                currentText.TimeStart = (int)timeStart.Value;
-            }
-        }
-        private void timeEnd_ValueChanged(object sender, EventArgs e)
-        {
-            if (currentText != null)
-            {
-                currentText.TimeEnd = (int)timeEnd.Value;
-            }
-        }
-
-        private void locationX_ValueChanged(object sender, EventArgs e)
-        {
-            if (currentText != null)
-            {
-                currentText.X = (int)locationX.Value;
-            }
-        }
-
-        private void locationY_ValueChanged(object sender, EventArgs e)
-        {
-            if (currentText != null)
-            {
-                currentText.Y = (int)locationY.Value;
-            }
-        }
-
-        private void sizeNr_ValueChanged(object sender, EventArgs e)
-        {
-            if (currentText != null)
-            {
-                currentText.size = (int)sizeNr.Value;
-            }
-        }
-
-        int LastMouseX = 0;
-        int LastMouseY = 0;
-        bool MouseDown = false;
-        private void PictureBox_MouseDown(object sender, MouseEventArgs e)
-        {
-            MouseDown = true;
-            LastMouseX = e.X;
-            LastMouseY = e.Y;
-        }
-
-        private void PictureBox_MouseMove(object sender, MouseEventArgs e)
-        {
-            float scaleValue = (100.0f / (float)ScaleThing.Value);
-            int DeltaX = (int)(((float)e.X - (float)LastMouseX) * scaleValue);
-            int DeltaY = (int)(((float)e.Y - (float)LastMouseY) * scaleValue);
-            
-            if(MouseDown)
-            {
-                if (listBox1.SelectedIndex != -1)
-                {
-                    if (Texts[listBox1.SelectedIndex] != null)
-                    {
-                        Texts[listBox1.SelectedIndex].X += DeltaX;
-                        Texts[listBox1.SelectedIndex].Y += DeltaY;
-                        locationX.Value = Math.Max(Texts[listBox1.SelectedIndex].X, 0);
-                        locationY.Value = Math.Max(Texts[listBox1.SelectedIndex].Y, 0);
-                    }
-                }
-                
-            }
-            LastMouseX = e.X;
-            LastMouseY = e.Y;
-        }
-
-        private void PictureBox_MouseUp(object sender, MouseEventArgs e)
-        {
-            MouseDown = false;
-        }
-
+        
+        
         private void GifEditor_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void PictureBox_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ScaleThing_ValueChanged(object sender, EventArgs e)
+        {
+            float scalePct = (float)ScaleThing.Value / 100.0f;
+            PictureBox.Size = new Size((int)(CurrentImage.Width * scalePct), (int)(CurrentImage.Height * scalePct));
         }
     }
     class TextData

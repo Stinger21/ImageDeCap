@@ -1,22 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.14
+VisualStudioVersion = 15.0.27004.2009
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "imageDeCap", "imageDeCap\imageDeCap.csproj", "{ADD5179A-F93E-4947-BB09-0841EC81ADAD}"
-EndProject
-Project("{911E67C6-3D85-4FCE-B560-20A9C3E3FF48}") = "asdf", "..\..\..\..\..\Program Files (x86)\ImageDeCap\asdf.exe", "{4BFD22D4-2856-4BE7-9B7C-3CF2D1399C11}"
-	ProjectSection(DebuggerProjectSystem) = preProject
-		PortSupplier = 00000000-0000-0000-0000-000000000000
-		Executable = C:\Program Files (x86)\ImageDeCap\asdf.exe
-		RemoteMachine = DESKTOP-TM81NJK
-		StartingDirectory = C:\Program Files (x86)\ImageDeCap
-		Environment = Default
-		LaunchingEngine = 00000000-0000-0000-0000-000000000000
-		UseLegacyDebugEngines = No
-		LaunchSQLEngine = No
-		AttachLaunchAction = No
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -62,23 +49,11 @@ Global
 		{ADD5179A-F93E-4947-BB09-0841EC81ADAD}.SingleImage|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{ADD5179A-F93E-4947-BB09-0841EC81ADAD}.SingleImage|Mixed Platforms.Build.0 = Release|Any CPU
 		{ADD5179A-F93E-4947-BB09-0841EC81ADAD}.SingleImage|x86.ActiveCfg = Release|Any CPU
-		{4BFD22D4-2856-4BE7-9B7C-3CF2D1399C11}.CD_ROM|Any CPU.ActiveCfg = Release
-		{4BFD22D4-2856-4BE7-9B7C-3CF2D1399C11}.CD_ROM|Mixed Platforms.ActiveCfg = Release
-		{4BFD22D4-2856-4BE7-9B7C-3CF2D1399C11}.CD_ROM|x86.ActiveCfg = Release
-		{4BFD22D4-2856-4BE7-9B7C-3CF2D1399C11}.Debug|Any CPU.ActiveCfg = Release
-		{4BFD22D4-2856-4BE7-9B7C-3CF2D1399C11}.Debug|Mixed Platforms.ActiveCfg = Release
-		{4BFD22D4-2856-4BE7-9B7C-3CF2D1399C11}.Debug|x86.ActiveCfg = Release
-		{4BFD22D4-2856-4BE7-9B7C-3CF2D1399C11}.DVD-5|Any CPU.ActiveCfg = Release
-		{4BFD22D4-2856-4BE7-9B7C-3CF2D1399C11}.DVD-5|Mixed Platforms.ActiveCfg = Release
-		{4BFD22D4-2856-4BE7-9B7C-3CF2D1399C11}.DVD-5|x86.ActiveCfg = Release
-		{4BFD22D4-2856-4BE7-9B7C-3CF2D1399C11}.Release|Any CPU.ActiveCfg = Release
-		{4BFD22D4-2856-4BE7-9B7C-3CF2D1399C11}.Release|Mixed Platforms.ActiveCfg = Release
-		{4BFD22D4-2856-4BE7-9B7C-3CF2D1399C11}.Release|x86.ActiveCfg = Release
-		{4BFD22D4-2856-4BE7-9B7C-3CF2D1399C11}.SingleImage|Any CPU.ActiveCfg = Release
-		{4BFD22D4-2856-4BE7-9B7C-3CF2D1399C11}.SingleImage|Mixed Platforms.ActiveCfg = Release
-		{4BFD22D4-2856-4BE7-9B7C-3CF2D1399C11}.SingleImage|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2B95B5E0-E538-48C0-A1E9-602D364F0664}
 	EndGlobalSection
 EndGlobal

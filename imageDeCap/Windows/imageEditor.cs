@@ -476,6 +476,7 @@ namespace imageDeCap
                 toggled = !toggled;
                 if (toggled)
                 {
+                    
                     currentColor.BringToFront();
                     c = currentColor.BackColor;
                 }

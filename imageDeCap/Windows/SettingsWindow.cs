@@ -27,8 +27,6 @@ namespace imageDeCap
         {
             checkBox1.Checked = Preferences.saveImageAtAll;
             button2.Enabled = Preferences.saveImageAtAll;
-            alsoSaveTextFilesBox.Enabled = Preferences.saveImageAtAll;
-            alsoSaveTextFilesBox.Checked = Preferences.AlsoSaveTextFiles;
 
             textBox1.Text = Preferences.SaveImagesHere;
             textBox1.Enabled = checkBox1.Checked;
@@ -61,7 +59,6 @@ namespace imageDeCap
             HotkeyTextBox1.Text = Preferences.Hotkey1;
             HotkeyTextBox2.Text = Preferences.Hotkey2;
             HotkeyTextBox3.Text = Preferences.Hotkey3;
-            HotkeyTextBox4.Text = Preferences.Hotkey4;
 
             FTPpassword.Text = Preferences.FTPpassword;
             FTPURL.Text = Preferences.FTPurl;
@@ -72,10 +69,6 @@ namespace imageDeCap
             CopyImageToClipboard.Checked = Preferences.CopyImageToClipboard;
 
             checkBox8.Checked = Preferences.UseRuleOfThirds;
-
-            snipSoundBox.Text = Preferences.SnipSoundPath;
-            uploadSoundBox.Text = Preferences.UploadSoundPath;
-            uploadFailedSoundBox.Text = Preferences.ErrorSoundPath;
 
             watermarkCheckbox.Checked = Preferences.AddWatermark;
             watermarkTextbox.Text = Preferences.WatermarkFilePath;
@@ -138,13 +131,13 @@ namespace imageDeCap
         {
             e.Cancel = true;
             Hide();
+            HotkeyTextBox3_Leave(null, null);
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
             textBox1.Enabled = checkBox1.Checked;
             button2.Enabled = checkBox1.Checked;
-            alsoSaveTextFilesBox.Enabled = checkBox1.Checked;
             Preferences.saveImageAtAll = checkBox1.Checked;
             Preferences.Save();
         }
@@ -213,6 +206,7 @@ namespace imageDeCap
         {
             Preferences.Reset();
             initSettings();
+            Preferences.Save();
         }
 
         private void checkBox5_CheckedChanged(object sender, EventArgs e)
@@ -257,13 +251,7 @@ namespace imageDeCap
             Preferences.FTPpassword = FTPpassword.Text;
             Preferences.Save();
         }
-
-        private void alsoSaveTextFilesBox_CheckedChanged(object sender, EventArgs e)
-        {
-            Preferences.AlsoSaveTextFiles = alsoSaveTextFilesBox.Checked;
-            Preferences.Save();
-        }
-
+        
         private void AlsoFTPTectFilesBox_CheckedChanged(object sender, EventArgs e)
         {
             Preferences.AlsoFTPTextFiles = AlsoFTPTextFilesBox.Checked;
@@ -272,7 +260,6 @@ namespace imageDeCap
 
         public static string getCurrentHotkey()
         {
-
             string textToPutInBox = "";
             int length = Enum.GetValues(typeof(System.Windows.Input.Key)).Length;
 
@@ -287,14 +274,31 @@ namespace imageDeCap
                     }
                 }
             }
-            if(textToPutInBox == "")
+            if(textToPutInBox == null)
+            {
+                return "";
+            }
+            else if(textToPutInBox == "")
             {
                 return "";
             }
             else
             {
-                return textToPutInBox.Remove(textToPutInBox.Length - 1);
+                textToPutInBox = textToPutInBox.Replace("LeftAlt", "Alt");
+                textToPutInBox = textToPutInBox.Replace("RightAlt", "Alt");
+
+                textToPutInBox = textToPutInBox.Replace("LeftCtrl", "Ctrl");
+                textToPutInBox = textToPutInBox.Replace("RightCtrl", "Ctrl");
+
+                textToPutInBox = textToPutInBox.Replace("LeftShift", "Shift");
+                textToPutInBox = textToPutInBox.Replace("RightShift", "Shift");
+
+                textToPutInBox = textToPutInBox.Remove(textToPutInBox.Length - 1);
+                textToPutInBox = textToPutInBox.Replace("Scroll", "ScrollLock");
+                Console.WriteLine(textToPutInBox);
+                return textToPutInBox;
             }
+
         }
 
         private void HotkeyTextBox1_KeyDown(object sender, KeyEventArgs e)
@@ -303,20 +307,64 @@ namespace imageDeCap
             Preferences.Hotkey1 = HotkeyTextBox1.Text;
             Preferences.Save();
         }
-        private void HotkeyTextBox1_GotFocus(object sender, EventArgs e)
+        private void HotkeyTextBox_PrintScreen(int number)
         {
-            Program.hotkeysEnabled = false;
+            switch (number)
+            {
+                case 1:
+                    HotkeyTextBox1_KeyDown(null, null);
+                    if(HotkeyTextBox1.Text == "")
+                        HotkeyTextBox1.Text += "Snapshot";
+                    else
+                        HotkeyTextBox1.Text += "+Snapshot";
+                    Preferences.Hotkey1 = HotkeyTextBox1.Text;
+                    break;
+                case 2:
+                    HotkeyTextBox2_KeyDown(null, null);
+                    if (HotkeyTextBox2.Text == "")
+                        HotkeyTextBox2.Text += "Snapshot";
+                    else
+                        HotkeyTextBox2.Text += "+Snapshot";
+                    Preferences.Hotkey2 = HotkeyTextBox2.Text;
+                    break;
+                case 3:
+                    HotkeyTextBox3_KeyDown(null, null);
+                    if (HotkeyTextBox3.Text == "")
+                        HotkeyTextBox3.Text += "Snapshot";
+                    else
+                        HotkeyTextBox3.Text += "+Snapshot";
+                    Preferences.Hotkey3 = HotkeyTextBox3.Text;
+                    break;
+                default:
+                    break;
+            }
+            Preferences.Save();
         }
-        private void HotkeyTextBox1_LostFocus(object sender, EventArgs e)
-        {
-            Program.hotkeysEnabled = true;
-        }
-
         private void HotkeyTextBox2_KeyDown(object sender, KeyEventArgs e)
         {
             HotkeyTextBox2.Text = getCurrentHotkey();
             Preferences.Hotkey2 = HotkeyTextBox2.Text;
             Preferences.Save();
+        }
+        private void HotkeyTextBox3_KeyDown(object sender, KeyEventArgs e)
+        {
+            HotkeyTextBox3.Text = getCurrentHotkey();
+            Preferences.Hotkey3 = HotkeyTextBox3.Text;
+            Preferences.Save();
+        }
+        private void HotkeyTextBox3_KeyUp(object sender, KeyEventArgs e)
+        {
+
+        }
+
+        private void HotkeyTextBox2_KeyUp(object sender, KeyEventArgs e)
+        {
+
+        }
+
+        private void HotkeyTextBox1_KeyUp(object sender, KeyEventArgs e)
+        {
+
         }
         private void HotkeyTextBox2_GotFocus(object sender, EventArgs e)
         {
@@ -326,11 +374,13 @@ namespace imageDeCap
         {
             Program.hotkeysEnabled = true;
         }
-        private void HotkeyTextBox3_KeyDown(object sender, KeyEventArgs e)
+        private void HotkeyTextBox1_GotFocus(object sender, EventArgs e)
         {
-            HotkeyTextBox3.Text = getCurrentHotkey();
-            Preferences.Hotkey3 = HotkeyTextBox3.Text;
-            Preferences.Save();
+            Program.hotkeysEnabled = false;
+        }
+        private void HotkeyTextBox1_LostFocus(object sender, EventArgs e)
+        {
+            Program.hotkeysEnabled = true;
         }
         private void HotkeyTextBox3_GotFocus(object sender, EventArgs e)
         {
@@ -340,22 +390,16 @@ namespace imageDeCap
         {
             Program.hotkeysEnabled = true;
         }
+        //private void HotkeyTextBox4_GotFocus(object sender, EventArgs e)
+        //{
+        //    Program.hotkeysEnabled = false;
+        //}
+        //private void HotkeyTextBox4_LostFocus(object sender, EventArgs e)
+        //{
+        //    Program.hotkeysEnabled = true;
+        //}
 
-        private void HotkeyTextBox4_KeyDown(object sender, KeyEventArgs e)
-        {
-            HotkeyTextBox4.Text = getCurrentHotkey();
-            Preferences.Hotkey4 = HotkeyTextBox4.Text;
-            Preferences.Save();
-        }
-        private void HotkeyTextBox4_GotFocus(object sender, EventArgs e)
-        {
-            Program.hotkeysEnabled = false;
-        }
-        private void HotkeyTextBox4_LostFocus(object sender, EventArgs e)
-        {
-            Program.hotkeysEnabled = true;
-        }
-        
+
         private void CopyImageToClipboard_CheckedChanged(object sender, EventArgs e)
         {
             Preferences.CopyImageToClipboard = CopyImageToClipboard.Checked;
@@ -382,43 +426,7 @@ namespace imageDeCap
             Preferences.UseRuleOfThirds = checkBox8.Checked;
             Preferences.Save();
         }
-
-        private void button4_Click(object sender, EventArgs e)
-        {
-            if (wavFileDialog.ShowDialog() == DialogResult.OK)
-                snipSoundBox.Text = wavFileDialog.FileName;
-        }
-
-        private void button5_Click_1(object sender, EventArgs e)
-        {
-            if (wavFileDialog.ShowDialog() == DialogResult.OK)
-                uploadSoundBox.Text = wavFileDialog.FileName;
-        }
-
-        private void button6_Click(object sender, EventArgs e)
-        {
-            if (wavFileDialog.ShowDialog() == DialogResult.OK)
-                uploadFailedSoundBox.Text = wavFileDialog.FileName;
-        }
-
-        private void snipSoundBox_TextChanged(object sender, EventArgs e)
-        {
-            Preferences.SnipSoundPath = snipSoundBox.Text;
-            Preferences.Save();
-        }
-
-        private void uploadSoundBox_TextChanged(object sender, EventArgs e)
-        {
-            Preferences.UploadSoundPath = uploadSoundBox.Text;
-            Preferences.Save();
-        }
-
-        private void uploadFailedSoundBox_TextChanged(object sender, EventArgs e)
-        {
-            Preferences.ErrorSoundPath = uploadFailedSoundBox.Text;
-            Preferences.Save();
-        }
-
+        
         private void watermarkCheckbox_CheckedChanged(object sender, EventArgs e)
         {
             Preferences.AddWatermark = watermarkCheckbox.Checked;
@@ -472,6 +480,104 @@ namespace imageDeCap
                 Preferences.FontStyleType = (int)fontDialog.Font.Style;
             }
             Preferences.Save();
+        }
+        private void HotkeyTextBox3_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+
+
+        /* PRINT SCREEN AAAA*/
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        private static extern bool RegisterHotKey(IntPtr hWnd, int id, int fsModifiers, int vk);
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
+
+        enum KeyModifier
+        {
+            None = 0,
+            Alt = 1,
+            Control = 2,
+            Shift = 4,
+            WinKey = 8
+        }
+
+        bool PrintScreenLocked = true;
+        public void SetPrintScreenLocked(bool Locked)
+        {
+            PrintScreenLocked = Locked;
+            if (Locked == false)
+            {
+                UnregisterHotKey(this.Handle, 0); // If locked is false, stop locking and unregister the hotkey
+            }
+        }
+
+        protected override void WndProc(ref Message m)
+        {
+            base.WndProc(ref m);
+            
+            if (m.Msg == 0x0312)
+            {
+                /* Note that the three lines below are not needed if you only want to register one hotkey.
+                 * The below lines are useful in case you want to register multiple keys, which you can use a switch with the id as argument, or if you want to know which key/modifier was pressed for some particular reason. */
+
+                Keys key = (Keys)(((int)m.LParam >> 16) & 0xFFFF);                  // The key of the hotkey that was pressed.
+                KeyModifier modifier = (KeyModifier)((int)m.LParam & 0xFFFF);       // The modifier of the hotkey that was pressed.
+                int id = m.WParam.ToInt32();                                        // The id of the hotkey that was pressed.
+
+                // Console.WriteLine("pront scroon");
+                
+                if (HotkeyTextBox1.ContainsFocus)
+                {
+                    HotkeyTextBox_PrintScreen(1);
+                }
+                if (HotkeyTextBox2.ContainsFocus)
+                {
+                    HotkeyTextBox_PrintScreen(2);
+                }
+                if (HotkeyTextBox3.ContainsFocus)
+                {
+                    HotkeyTextBox_PrintScreen(3);
+                }
+                //MessageBox.Show("Hotkey has been pressed!");
+                // do something
+            }
+        }
+
+        /*PRINT SCREEN AAA*/
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            // this is the real cancer of windows. Putting this bind to happen once per second because windows looooooves to unbind it.
+            if (PrintScreenLocked)
+            {
+                // If printscreen is locked, lock it once per second because fuck you
+            }
+        }
+
+        private void BindUpPrintScreen()
+        {
+            RegisterHotKey(this.Handle, 0, 0, Keys.PrintScreen.GetHashCode());
+            RegisterHotKey(this.Handle, 1, (int)KeyModifier.Alt, Keys.PrintScreen.GetHashCode());
+            RegisterHotKey(this.Handle, 2, (int)KeyModifier.Control, Keys.PrintScreen.GetHashCode());
+            RegisterHotKey(this.Handle, 2, (int)KeyModifier.Shift, Keys.PrintScreen.GetHashCode());
+            RegisterHotKey(this.Handle, 3, (int)KeyModifier.Alt | (int)KeyModifier.Control, Keys.PrintScreen.GetHashCode());
+            RegisterHotKey(this.Handle, 4, (int)KeyModifier.Control | (int)KeyModifier.Shift, Keys.PrintScreen.GetHashCode());
+            RegisterHotKey(this.Handle, 5, (int)KeyModifier.Alt | (int)KeyModifier.Shift, Keys.PrintScreen.GetHashCode());
+            RegisterHotKey(this.Handle, 6, (int)KeyModifier.Alt | (int)KeyModifier.Control | (int)KeyModifier.Shift, Keys.PrintScreen.GetHashCode());
+        }
+
+        private void HotkeyTextBox3_Enter(object sender, EventArgs e)
+        {
+            Console.WriteLine("ENTER");
+            BindUpPrintScreen();
+        }
+
+        private void HotkeyTextBox3_Leave(object sender, EventArgs e)
+        {
+            Console.WriteLine("LEAVE");
+            UnregisterHotKey(this.Handle, 0);
         }
     }
 }

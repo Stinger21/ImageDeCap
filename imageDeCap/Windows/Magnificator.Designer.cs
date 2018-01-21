@@ -53,6 +53,7 @@
             this.pictureBoxWithInterpolationMode1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBoxWithInterpolationMode1.TabIndex = 2;
             this.pictureBoxWithInterpolationMode1.TabStop = false;
+            this.pictureBoxWithInterpolationMode1.Click += new System.EventHandler(this.pictureBoxWithInterpolationMode1_Click);
             // 
             // label1
             // 

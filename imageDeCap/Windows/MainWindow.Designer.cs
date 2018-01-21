@@ -50,6 +50,7 @@
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.GifCaptureTimer = new System.Windows.Forms.Timer(this.components);
+            this.BindPrintscreenTimer = new System.Windows.Forms.Timer(this.components);
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -67,21 +68,21 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(6, 19);
+            this.button2.Location = new System.Drawing.Point(6, 76);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(203, 23);
             this.button2.TabIndex = 9;
-            this.button2.Text = "Clipboard Text -> Pastebin";
+            this.button2.Text = "Upload Text";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.UploadToPasteBin);
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(6, 75);
+            this.button3.Location = new System.Drawing.Point(6, 19);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(203, 23);
             this.button3.TabIndex = 10;
-            this.button3.Text = "Image -> Imgur";
+            this.button3.Text = "Capture Image";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click_1);
             // 
@@ -91,7 +92,7 @@
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(203, 23);
             this.button4.TabIndex = 11;
-            this.button4.Text = "Gif -> Imgur";
+            this.button4.Text = "Record Gif";
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
@@ -141,7 +142,7 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(34, 13);
             this.label1.TabIndex = 17;
-            this.label1.Text = "v1.24";
+            this.label1.Text = "v1.25";
             // 
             // label2
             // 
@@ -149,9 +150,9 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(1, 303);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(97, 13);
+            this.label2.Size = new System.Drawing.Size(118, 13);
             this.label2.TabIndex = 16;
-            this.label2.Text = "RIP Hyperdesktop.";
+            this.label2.Text = "WORK IN PROGRESS";
             // 
             // menuStrip1
             // 
@@ -223,7 +224,7 @@
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
             this.aboutToolStripMenuItem.Text = "About ImageDeCap";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
@@ -231,6 +232,12 @@
             // 
             this.GifCaptureTimer.Interval = 16;
             this.GifCaptureTimer.Tick += new System.EventHandler(this.GifCaptureTimer_Tick);
+            // 
+            // BindPrintscreenTimer
+            // 
+            this.BindPrintscreenTimer.Enabled = true;
+            this.BindPrintscreenTimer.Interval = 1000;
+            this.BindPrintscreenTimer.Tick += new System.EventHandler(this.BindPrintscreenTimer_Tick);
             // 
             // MainWindow
             // 
@@ -285,6 +292,7 @@
         public System.Windows.Forms.Label label2;
         public System.Windows.Forms.Timer GifCaptureTimer;
         public System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Timer BindPrintscreenTimer;
     }
 }
 

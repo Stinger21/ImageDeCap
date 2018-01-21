@@ -31,12 +31,12 @@ namespace imageDeCap
         
         private void label7_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start("http://www.mattwestphal.com/imagedecap/");
+            System.Diagnostics.Process.Start("http://www.mattwestphal.com/imagedecap");
         }
         
         private void imageContainer_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start("http://www.mattwestphal.com/imagedecap/");
+            System.Diagnostics.Process.Start("http://www.mattwestphal.com/imagedecap");
         }
     }
 }

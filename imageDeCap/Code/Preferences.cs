@@ -20,14 +20,13 @@ namespace imageDeCap
         public static bool CopyImageToClipboard = true;
         public static bool DisableNotifications = false;
         public static bool DisableSoundEffects = false;
-        public static int GIFRecordingFramerate = 15; // unimplemented
+        public static int GIFRecordingFramerate = 24;
 
         // Hotkeys
         public static string c_Hotkeys;
-        public static string Hotkey1 = "LeftCtrl+LeftShift+D2";
-        public static string Hotkey2 = "LeftCtrl+LeftShift+D3";
-        public static string Hotkey3 = "LeftCtrl+LeftShift+D4";
-        public static string Hotkey4 = "LeftCtrl+LeftShift+D5";
+        public static string Hotkey1 = "ScrollLock";
+        public static string Hotkey2 = "Shift+Snapshot";
+        public static string Hotkey3 = "Snapshot";
 
         // Uploading
         public static string c_Uploading;
@@ -44,14 +43,13 @@ namespace imageDeCap
         // Misc
         public static string c_Misc;
         public static bool FirstStartup = true;
-        public static string SnipSoundPath = "";
-        public static string UploadSoundPath = "";
-        public static string ErrorSoundPath = "";
-        public static bool UseRuleOfThirds = true;
+        public static bool UseRuleOfThirds = false;
 
         public static bool AddWatermark = false;
         public static string WatermarkFilePath = "";
         public static int WatermarkLocation = 3;
+
+        public static int BrushSmoothingDistance = 5;
 
         public static string ImageEditorFont = "Arial Black";
         public static int FontStyleType = (int)FontStyle.Bold;

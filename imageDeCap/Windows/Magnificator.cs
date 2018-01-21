@@ -78,7 +78,6 @@ namespace imageDeCap
         Bitmap bmp;
         private void timer1_Tick(object sender, EventArgs e)
         {
-
             bmp = new Bitmap(32, 32);
             g = this.CreateGraphics();
             g = Graphics.FromImage(bmp);
@@ -89,12 +88,17 @@ namespace imageDeCap
                 picture.BringToFront();
             }
             label1.Text = Program.ImageDeCap.tempWidth + "x" + Program.ImageDeCap.tempHeight;
-            label1.BringToFront();//lol
+            label1.BringToFront(); // lol
         }
         
         private void Magnificator_Load(object sender, EventArgs e)
         {
             this.Activate();
+        }
+
+        private void pictureBoxWithInterpolationMode1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

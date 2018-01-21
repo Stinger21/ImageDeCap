@@ -46,14 +46,14 @@ namespace imageDeCap
 
         bool AltKeyDown = false;
 
-        bool Activated = false;
-        public void AfterShow()
+        bool _Activated = false;
+        public void AfterShow(Bitmap background)
         {
             if (UseBackCover)
             {
                 ScreenCapturer cap = new ScreenCapturer();
                 this.TopMost = false;
-                pictureBox1.Image = cap.Capture(enmScreenCaptureMode.Screen);
+                pictureBox1.Image = background;
                 pictureBox1.SetBounds(0, 0, SystemInformation.VirtualScreen.Width, SystemInformation.VirtualScreen.Height);
                 this.SetBounds(SystemInformation.VirtualScreen.X, SystemInformation.VirtualScreen.Y, SystemInformation.VirtualScreen.Width, SystemInformation.VirtualScreen.Height);
                 Application.DoEvents();
@@ -63,7 +63,7 @@ namespace imageDeCap
             {
                 this.SetBounds(SystemInformation.VirtualScreen.X, SystemInformation.VirtualScreen.Y, SystemInformation.VirtualScreen.Width, SystemInformation.VirtualScreen.Height);
             }
-            Activated = true;
+            _Activated = true;
         }
         private void completeCover_Load(object sender, EventArgs e)
         {
@@ -81,7 +81,7 @@ namespace imageDeCap
         // Called by mainloop in now heuheuhe
         public void Updatee()
         {
-            if(!Activated)
+            if(!_Activated)
             {
                 return;
             }

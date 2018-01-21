@@ -33,7 +33,6 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.imageContainer)).BeginInit();
             this.SuspendLayout();
@@ -57,7 +56,7 @@
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(99, 13);
             this.label2.TabIndex = 4;
-            this.label2.Text = "ImageDeCap v1.24";
+            this.label2.Text = "ImageDeCap v1.25";
             // 
             // label3
             // 
@@ -66,7 +65,7 @@
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(116, 13);
             this.label3.TabIndex = 5;
-            this.label3.Text = "Mattias Westphal 2017";
+            this.label3.Text = "Mattias Westphal 2018";
             // 
             // label5
             // 
@@ -80,19 +79,6 @@
             this.label5.TabIndex = 7;
             this.label5.Text = "mattwestphal.com";
             this.label5.Click += new System.EventHandler(this.label5_Click);
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.ForeColor = System.Drawing.Color.RoyalBlue;
-            this.label6.Location = new System.Drawing.Point(309, 26);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(54, 13);
-            this.label6.TabIndex = 10;
-            this.label6.Text = "alastair.se";
-            this.label6.Click += new System.EventHandler(this.label6_Click);
             // 
             // label1
             // 
@@ -109,7 +95,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(375, 83);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
@@ -133,7 +118,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label1;
     }
 }

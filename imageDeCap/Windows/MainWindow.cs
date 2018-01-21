@@ -20,11 +20,15 @@ using System.Threading;
 using System.Xml.Linq;
 using Microsoft.Win32;
 using System.Windows.Media.Imaging;
-using ImageMagick;
+
 using System.Text.RegularExpressions;
+
 
 namespace imageDeCap
 {
+
+    // The code in this whole program reads like a fucking joke. DW tho, it only crashes sometimes.
+
     public partial class MainWindow : Form
     {
 
@@ -63,7 +67,7 @@ namespace imageDeCap
                     Process.Start(Links[listBox1.SelectedIndex]);
         }
 
-
+        
         SettingsWindow props;
         bool hKey1Pressed = false;
         bool hKey2Pressed = false;
@@ -76,6 +80,25 @@ namespace imageDeCap
             if (Program.hotkeysEnabled)
             {
                 string hotkey = SettingsWindow.getCurrentHotkey();
+                //if(hotkey == null)
+                //{
+                //    return;
+                //}
+                //bool PrintScreenWasPressed = (hotkey.Contains("Snapshot"));
+                //hotkey = hotkey.Replace("+Snapshot", "");
+                //hotkey = hotkey.Replace("Snapshot", "");
+                //bool PrintScreenBoundToSomething = Preferences.Hotkey1_PrintScreen || Preferences.Hotkey2_PrintScreen || Preferences.Hotkey3_PrintScreen;
+                //if (PrintScreenWasPressed && PrintScreenBoundToSomething)
+                //{
+                //    try
+                //    {
+                //        Clipboard.Clear();
+                //    }
+                //    catch
+                //    {
+                //
+                //    }
+                //}
                 if (Preferences.Hotkey1 == hotkey)
                 {
                     if (!hKey1Pressed)
@@ -100,14 +123,6 @@ namespace imageDeCap
                     }
                     hKey3Pressed = true;
                 }
-                else if (Preferences.Hotkey4 == hotkey)
-                {
-                    if (!hKey4Pressed)
-                    {
-                        UploadImgurWindow();
-                    }
-                    hKey4Pressed = true;
-                }
                 else
                 {
                     // no recognized hotkey
@@ -118,15 +133,17 @@ namespace imageDeCap
                 }
             }
         }
-        
-        MagickImageCollection gEnc;
+
+        List<Bitmap> gEnc = new List<Bitmap>();
         public void StartRecordingGif(bool ForceEdit)
         {
-            gEnc = new MagickImageCollection();
+            gEnc.Clear();
             GifCaptureTimer.Interval = (int)(1000.0f / Preferences.GIFRecordingFramerate);
+            FrameTime = 0;
             counter = 0;
             GifCaptureTimer.Enabled = true;
             GifCaptureTimer.Tag = ForceEdit;
+            LastTime = DateTime.Now;
 
             this.topBox.BackColor = Color.Green;
             this.bottomBox.BackColor = Color.Green;
@@ -143,6 +160,8 @@ namespace imageDeCap
         {
             if(GifCaptureTimer.Enabled)
             {
+
+                FrameTime /= counter;
                 GifCaptureTimer.Enabled = false;
                 topBox.Hide();
                 bottomBox.Hide();
@@ -160,30 +179,44 @@ namespace imageDeCap
                     Utilities.playSound("snip.wav");
                     
                     // Feed in through the tag weather the user right-clicked to force editor even when it's disabled.
-                    UploadImageData(new byte[] { }, filetype.gif, false, (bool)GifCaptureTimer.Tag, gEnc);
+                    UploadImageData(new byte[] { }, filetype.gif, false, (bool)GifCaptureTimer.Tag, gEnc.ToArray());
                 }
 
                 Program.ImageDeCap.isTakingSnapshot = false;
                 Program.hotkeysEnabled = true;
             }
         }
-        
+
+        int RunningAverageOfFrameTime = 0;
+        int FrameTime = 0;
+        DateTime LastTime;
         int counter = 0;
         private void GifCaptureTimer_Tick(object sender, EventArgs e)
         {
+
+            TimeSpan DeltaTime = DateTime.Now - LastTime;
+            int DeltaTimeInMS = DeltaTime.Seconds * 100 + DeltaTime.Milliseconds;
+            FrameTime += DeltaTimeInMS;
+            RunningAverageOfFrameTime = FrameTime / (counter+1);
+            Console.WriteLine(1000 / RunningAverageOfFrameTime);
+
+            LastTime = DateTime.Now;
+
+            int width = Program.ImageDeCap.tempWidth + 1;
+            int height = Program.ImageDeCap.tempHeight + 1;
+            if (width % 2 == 1)
+                width = width - 1;
+            if (height % 2 == 1)
+                height = height - 1;
             // Capture Bitma
             Bitmap b = Program.ImageDeCap.cap.Capture(
                 enmScreenCaptureMode.Bounds,
                 Program.ImageDeCap.X - 1,
                 Program.ImageDeCap.Y - 1,
-                Program.ImageDeCap.tempWidth + 1,
-                Program.ImageDeCap.tempHeight + 1, true);
+                width,
+                height, true);
 
-            MagickImage newImage = new MagickImage();
-            newImage.Format = MagickFormat.Gif;
-            newImage.Read(b);
-            gEnc.Add(newImage);
-            gEnc[counter].AnimationDelay = (int)(100.0f / Preferences.GIFRecordingFramerate);
+            gEnc.Add(b);
 
             int minutes = counter / 600;
             int seconds = (counter/10) % 600;
@@ -284,6 +317,8 @@ namespace imageDeCap
                 links = Regex.Replace(links, @"^\s+$[\r\n]*", "", RegexOptions.Multiline);
                 foreach (string s in links.Split('\n'))
                 {
+                    if (s == "")
+                        continue;
                     addToLinks(s, false);
                 }
             }
@@ -299,6 +334,8 @@ namespace imageDeCap
             listBox1.AllowDrop = true;
             listBox1.DragEnter += new DragEventHandler(Form1_DragEnter);
             listBox1.DragDrop += new DragEventHandler(Form1_DragDrop);
+
+
         }
 
         void Form1_DragEnter(object sender, DragEventArgs e)
@@ -368,6 +405,7 @@ namespace imageDeCap
             this.Close();
             Application.Exit();
             Program.Quit = true;
+            Environment.Exit(0);
         }
 
 
@@ -375,7 +413,10 @@ namespace imageDeCap
         {
             if (!isTakingSnapshot)
             {
-                uploadPastebin(Clipboard.GetText());
+                SendKeys.SendWait("^c");
+                System.Threading.Thread.Sleep(500);
+                string clipboard = Clipboard.GetText();
+                uploadPastebin(clipboard);
             }
         }
 
@@ -384,6 +425,7 @@ namespace imageDeCap
         public bool isTakingSnapshot = false;
         private void UploadToImgurBounds(bool isGif = false)
         {
+            Bitmap background = cap.Capture(enmScreenCaptureMode.Screen);
             // prevent blackening
             if (!isTakingSnapshot)
             {
@@ -392,7 +434,7 @@ namespace imageDeCap
                 //back cover used for pulling cursor position into updateSelectedArea()
                 CurrentBackCover = new completeCover(isGif);
                 CurrentBackCover.Show();
-                CurrentBackCover.AfterShow();
+                CurrentBackCover.AfterShow(background);
 
                 magn = new Magnificator(isGif);
                 magn.Show();
@@ -455,7 +497,7 @@ namespace imageDeCap
             {
                 return filetype.bmp;
             }
-            else if (filepath.EndsWith(".gif"))
+            else if (filepath.EndsWith(".gif") || filepath.EndsWith(".mp4") || filepath.EndsWith(".webm"))
             {
                 return filetype.gif;
             }
@@ -470,73 +512,145 @@ namespace imageDeCap
             UploadImageData(File.ReadAllBytes(filepath), getImageType(filepath), true);
         }
 
-        public void UploadImageData(byte[] FileData, filetype imageType, bool ForceNoEdit = false, bool ForceEdit = false, MagickImageCollection GifImage = null)
+        private void FileDialog(string extension, byte[] data)
         {
-            if(imageType == filetype.error)
+
+            SaveFileDialog saveFileDialog1 = new SaveFileDialog();
+
+            saveFileDialog1.Filter = extension+" files (*"+ extension + ")|*"+ extension;
+            saveFileDialog1.FilterIndex = 2;
+            saveFileDialog1.RestoreDirectory = true;
+            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                File.WriteAllBytes(saveFileDialog1.FileName, data);
+            }
+        }
+
+        public void UploadImageData(byte[] FileData, filetype imageType, bool ForceNoEdit = false, bool RMBClickForceEdit = false, Bitmap[] GifImage = null)
+        {
+            if (imageType == filetype.error)
             {
                 return;
             }
-            
+            Program.hotkeysEnabled = true; // Enable hotkeys here again so you can kill the editor by starting a new capture.
 
-            bool CanceledUpload = false;
-            // Edit the image if we are going to
-            if (Preferences.EditScreenshotAfterCapture || ForceEdit)
+
+            if ((Preferences.EditScreenshotAfterCapture || RMBClickForceEdit) && ForceNoEdit == false)
             {
-                if (ForceNoEdit == false)
+                if (imageType == filetype.gif)
                 {
-                    if(imageType == filetype.gif)
-                    {
-                        GifEditor editor = new GifEditor(GifImage, topBox.Location.X, topBox.Location.Y);
-                        editor.ShowDialog();
-                        (CanceledUpload, FileData) = editor.FinalFunction();
-                    }
-                    else
-                    {
-                        imageEditor editor = new imageEditor(FileData, topBox.Location.X, topBox.Location.Y);
-                        editor.ShowDialog();
-                        (CanceledUpload, FileData) = editor.FinalFunction();
-                    }
+                    GifEditor editor = new GifEditor(GifImage, topBox.Location.X, topBox.Location.Y, 1000 / FrameTime);
+                    editor.Show();
+                    editor.FormClosed += EditorDone;
+                }
+                else
+                {
+                    NewImageEditor editor = new NewImageEditor(FileData, topBox.Location.X, topBox.Location.Y);
+                    editor.Show();
+                    editor.FormClosed += EditorDone;
                 }
             }
             else
             {
-                if(imageType == filetype.gif)
+                if (imageType == filetype.gif)
                 {
-                    FileData = gEnc.ToByteArray(MagickFormat.Gif);
+                    FileData = GifEditor.VideoFromFrames(GifImage, 1000 / FrameTime);
+                    UploadImageData_AfterEdit(NewImageEditor.EditorResult.Upload, FileData, imageType);
+                }
+                else
+                {
+                    UploadImageData_AfterEdit(NewImageEditor.EditorResult.Upload, FileData, imageType);
                 }
             }
 
-            // save the capture
-            if (Preferences.saveImageAtAll && Directory.Exists(Preferences.SaveImagesHere))
+        }
+        public void EditorDone(object sender, EventArgs e)
+        {
+            filetype f;
+            NewImageEditor.EditorResult EditorResult = NewImageEditor.EditorResult.Quit;
+            byte[] FileData;
+            if (sender is NewImageEditor)
+            {
+                NewImageEditor editor = (NewImageEditor)sender;
+                (EditorResult, FileData) = editor.FinalFunction();
+                editor.Dispose();
+                f = filetype.png;
+            }
+            else
+            {
+                GifEditor editor = (GifEditor)sender;
+                (EditorResult, FileData) = editor.FinalFunction();
+                editor.Dispose();
+                f = filetype.gif;
+            }
+            if (EditorResult != NewImageEditor.EditorResult.Quit)
+                UploadImageData_AfterEdit(EditorResult, FileData, f);
+        }
+
+        public void UploadImageData_AfterEdit(NewImageEditor.EditorResult EditorResult, byte[] FileData, filetype imageType)
+        {
+
+            if(EditorResult == NewImageEditor.EditorResult.Quit)
+            {
+                return;
+            }
+
+            bool SaveEnabledInSettings = Preferences.saveImageAtAll && Directory.Exists(Preferences.SaveImagesHere);
+
+            if (SaveEnabledInSettings)
             {
                 string SaveFileName = DateTime.UtcNow.ToString("yyyyMMddHHmmssfff");
                 string whereToSave = Preferences.SaveImagesHere + @"\" + SaveFileName + "." + imageType.ToString();
                 File.WriteAllBytes(whereToSave, FileData);
             }
-
-            // Copy image to clipboard if it's not a gif
-            if (imageType != filetype.gif)
+            else if (EditorResult == NewImageEditor.EditorResult.Save) // If gif, ask to save only if 
             {
-                if (Preferences.CopyImageToClipboard)
+                if (imageType == filetype.gif) // If it's a gif
                 {
-                    Image bitmapImage = Image.FromStream(new MemoryStream(FileData));
-                    Clipboard.SetImage(bitmapImage);
-                    bitmapImage.Dispose();
+                    FileDialog(".webm", FileData);
                 }
             }
-            
+            if (imageType != filetype.gif) // If it's an image, ask to save no matter what
+            {
+                if (EditorResult == NewImageEditor.EditorResult.Save)
+                {
+                    FileDialog(".png", FileData);
+                }
+            }
+             // Copy image to clipboard if it's not a gif
+            if (imageType != filetype.gif)
+            {
+                if (EditorResult == NewImageEditor.EditorResult.Clipboard)
+                {
+                    if (Preferences.CopyImageToClipboard)
+                    {
+                        Image bitmapImage = Image.FromStream(new MemoryStream(FileData));
+                        Clipboard.SetImage(bitmapImage);
+                        bitmapImage.Dispose();
+                    }
+                }
+            }
+
             // Upload the image
-            if(!CanceledUpload)
+            if (EditorResult == NewImageEditor.EditorResult.Upload)
             {
                 if (!Preferences.NeverUpload)
                 {
                     BackgroundWorker bw = new BackgroundWorker();
-                    bw.DoWork += cap.UploadImage;
+                    if (imageType == filetype.gif)
+                    {
+                        bw.DoWork += cap.UploadGif;
+                    }
+                    else
+                    {
+                        bw.DoWork += cap.UploadImage;
+                    }
                     bw.RunWorkerCompleted += uploadImageFileCompleted;
                     bw.RunWorkerAsync(FileData);
                 }
             }
         }
+
 
         private void uploadImageFileCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
@@ -609,15 +723,13 @@ namespace imageDeCap
                                                     name + ".txt" });
 
             }
-            if (Preferences.AlsoSaveTextFiles)
+            if (Preferences.saveImageAtAll && Directory.Exists(Preferences.SaveImagesHere))
             {
-                if (Preferences.saveImageAtAll && Directory.Exists(Preferences.SaveImagesHere))
-                {
-                    string name = DateTime.UtcNow.ToString("yyyyMMddHHmmssfff");
-                    string whereToSave = Preferences.SaveImagesHere + @"\" + name + ".txt";
-                    File.WriteAllText(whereToSave, text);
-                }
+                string name = DateTime.UtcNow.ToString("yyyyMMddHHmmssfff");
+                string whereToSave = Preferences.SaveImagesHere + @"\" + name + ".txt";
+                File.WriteAllText(whereToSave, text);
             }
+            
 
         }
         private void uploadPastebinCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -819,11 +931,21 @@ namespace imageDeCap
             {
                 Clipboard.SetText(Links[listBox1.SelectedIndex]);
             }
+            else if (System.Windows.Input.Keyboard.IsKeyDown(System.Windows.Input.Key.Delete))
+            {
+                Links.RemoveAt(listBox1.SelectedIndex);
+                listBox1.DataSource = null;
+                listBox1.DataSource = Links;
+            }
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void BindPrintscreenTimer_Tick(object sender, EventArgs e)
+        {
         }
     }
 }
