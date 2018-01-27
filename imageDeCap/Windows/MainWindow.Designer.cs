@@ -150,9 +150,9 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(1, 303);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(118, 13);
+            this.label2.Size = new System.Drawing.Size(10, 13);
             this.label2.TabIndex = 16;
-            this.label2.Text = "WORK IN PROGRESS";
+            this.label2.Text = "-";
             // 
             // menuStrip1
             // 

@@ -39,18 +39,16 @@ namespace imageDeCap
         public static string FTPusername = "anonymous";
         public static string FTPpassword = "password";
         public static bool AlsoFTPTextFiles = false;
+        public static string GifTarget = "webmshare";
 
         // Misc
         public static string c_Misc;
         public static bool FirstStartup = true;
         public static bool UseRuleOfThirds = false;
-
         public static bool AddWatermark = false;
         public static string WatermarkFilePath = "";
         public static int WatermarkLocation = 3;
-
         public static int BrushSmoothingDistance = 5;
-
         public static string ImageEditorFont = "Arial Black";
         public static int FontStyleType = (int)FontStyle.Bold;
 

@@ -35,7 +35,7 @@ namespace imageDeCap
 
     public class ScreenCapturer
     {
-        public void UploadImage(object sender, DoWorkEventArgs e)
+        public void UploadImage_Imgur(object sender, DoWorkEventArgs e)
         {
             byte[] FileData = (byte[])e.Argument;
         
@@ -51,76 +51,79 @@ namespace imageDeCap
                 e.Result = ("failed, " + imgurEx.Message, FileData);
             }
         }
+        //public void UploadImage_Imgur(object sender, DoWorkEventArgs e)
+        //{
+        //    byte[] FileData = (byte[])e.Argument;
+        //    /*
+        //    curl --request POST \
+        //    --url https://api.imgur.com/3/image \
+        //    --header 'Authorization: Client-ID {{clientId}}' \
+        //    --header 'content-type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW' \
+        //    --form image=R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7
+        //    */
+        //    string url = nameof(FileData);
+        //
+        //
+        //    var content = new MultipartFormDataContent($"{DateTime.UtcNow.Ticks}")
+        //    {
+        //        {new StringContent("file"), "type"},
+        //        {new ByteArrayContent(FileData), nameof(FileData)}
+        //    };
+        //
+        //    var request = new HttpRequestMessage(HttpMethod.Post, url)
+        //    {
+        //        Content = content
+        //    };
+        //    HttpClient client = new HttpClient();
+        //    //client.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", apiClient.OAuth2Token != null : $"Client-ID {apiClient.ClientId}");
+        //    client.DefaultRequestHeaders.AddWithoutValidation("Authorization", "Client-ID da05117bbfa9bda");
+        //    HttpResponseMessage message = client.SendAsync(request).GetAwaiter().GetResult();
+        //
+        //
+        //
+        //}
 
-        struct GfycatStatusResponse
-        {
-            public string Task { get; set; }
-            public string GfyName { get; set; }
-            public double Progress { get; set; }
-        }
-        public void UploadGif(object sender, DoWorkEventArgs e)
+        public void UploadGif_Webmshare(object sender, DoWorkEventArgs e)
         {
             byte[] FileData = (byte[])e.Argument;
-
-
-            /*
-            curl -i -X POST \
-            -H "Content-Type:multipart/form-data" \
-            -F "file=@\"./some_file.webm\";type=video/webm;filename=\"some_file.webm\"" \
-            -F "expiration=1" \
-            -F "public=0" \
-            -F "title=Some title goes here ;)" \
-            -F "autoplay=1" \
-            -F "loop=1" \
-            -F "muted=1" \
-            'https://webmshare.com/api/upload'
-            */
-
-
-            HttpClient client = new HttpClient();
-            MultipartFormDataContent form = new MultipartFormDataContent();
-
-            form.Add(new StringContent("0"), "expiration");
-            form.Add(new StringContent("0"), "public");
-            form.Add(new StringContent("1"), "autoplay");
-            form.Add(new StringContent("1"), "loop");
-            form.Add(new StringContent("1"), "muted");
-            form.Add(new ByteArrayContent(FileData), "file", "something.webm");
-
-            var response = client.PostAsync("http://webmshare.com/api/upload", form).GetAwaiter().GetResult();
-
-            var responseString = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-            
-            var objects = JObject.Parse(responseString);
-
-            bool Success = false;
-            string result = "";
-            try
+            var result = Webmshare.Upload(FileData);
+            if (result.UploadSuccessfull)
             {
-                result = objects.GetValue("id").ToString();
-                Success = true;
-            }
-            catch
-            {
-                result = responseString;
-                Success = false;
-            }
-            
-            if (Success) // means it succeeded
-            {
-                e.Result = ("https://webmshare.com/play/" + result, FileData);
+                e.Result = (result.Message, FileData);
             }
             else
             {
-                e.Result = ("failed, " + result, FileData);
+                e.Result = ("failed, " + result.Message, FileData);
             }
-            
-            
         }
 
-        struct WebmShareRequest
+        public void UploadGif_Gfycat(object sender, DoWorkEventArgs e)
         {
-            public int expiration { get; set; }
+            byte[] FileData = (byte[])e.Argument;
+            var result = Gfycat.Upload(FileData);
+            if (result.UploadSuccessfull)
+            {
+                e.Result = (result.Message, FileData);
+            }
+            else
+            {
+                e.Result = ("failed, " + result.Message, FileData);
+            }
+        }
+
+        public void UploadGif_Imgur(object sender, DoWorkEventArgs e)
+        {
+            //byte[] FileData = (byte[])e.Argument;
+            //
+            //
+            //var client = new ImgurClient("da05117bbfa9bda");
+            //var endpoint = new ImageEndpoint(client);
+            //
+            //endpoint.UploadImageUrlAsync();
+            //var endpoint = new ImageEndpoint(client);
+            //IImage image = endpoint.UploadImageBinaryAsync(FileData).GetAwaiter().GetResult();
+            //e.Result = (image.Link, FileData);
+
         }
 
         public void uploadToFTP(object sender, DoWorkEventArgs e)
@@ -155,13 +158,13 @@ namespace imageDeCap
             response.Close();
         }
 
-        //private string ILoginURL = "http://pastebin.com/api/api_login.php";
-        private string IPostURL = "http://pastebin.com/api/api_post.php";
-        private string IDevKey = "4d1c2c0bb6fa2e5c1403cedccc50bfd5";
-        private string IUserKey = null;
-
-        public void Send(object sender, DoWorkEventArgs e)
+        public void UploadPastebin(object sender, DoWorkEventArgs e)
         {
+            //private string ILoginURL = "http://pastebin.com/api/api_login.php";
+            string IPostURL = "http://pastebin.com/api/api_post.php";
+            string IDevKey = "4d1c2c0bb6fa2e5c1403cedccc50bfd5";
+            string IUserKey = null;
+
             string IBody = (string)e.Argument;
             string ISubj = Preferences.PastebinSubjectLine;
 
@@ -170,14 +173,14 @@ namespace imageDeCap
 
             NameValueCollection IQuery = new NameValueCollection();
 
-            IQuery.Add("api_dev_key",           IDevKey);
-            IQuery.Add("api_option",            "paste");
-            IQuery.Add("api_paste_code",        IBody);
-            IQuery.Add("api_paste_private",     "0");
-            IQuery.Add("api_paste_name",        ISubj);
+            IQuery.Add("api_dev_key", IDevKey);
+            IQuery.Add("api_option", "paste");
+            IQuery.Add("api_paste_code", IBody);
+            IQuery.Add("api_paste_private", "0");
+            IQuery.Add("api_paste_name", ISubj);
             IQuery.Add("api_paste_expire_date", "N");
-            IQuery.Add("api_paste_format",      "text");
-            IQuery.Add("api_user_key",          IUserKey);
+            IQuery.Add("api_paste_format", "text");
+            IQuery.Add("api_user_key", IUserKey);
 
             string IResponse = "";
 
@@ -187,29 +190,12 @@ namespace imageDeCap
                 {
                     IResponse = Encoding.UTF8.GetString(IClient.UploadValues(IPostURL, IQuery));
                 }
-                catch(Exception ee)
+                catch (Exception ee)
                 {
                     IResponse = "failed, " + ee.Message;
                 }
             }
             e.Result = IResponse;
-        }
-
-
-        
-        [DllImport("user32.dll")]
-        private static extern IntPtr GetForegroundWindow();
-
-        [DllImport("user32.dll")]
-        private static extern IntPtr GetWindowRect(IntPtr hWnd, ref Rect rect);
-
-        [StructLayout(LayoutKind.Sequential)]
-        private struct Rect
-        {
-            public int Left;
-            public int Top;
-            public int Right;
-            public int Bottom;
         }
 
         public Bitmap Capture(enmScreenCaptureMode screenCaptureMode = enmScreenCaptureMode.Window, int X = 0, int Y = 0, int Width = 0, int Height = 0, bool CaptureMouse = false)
@@ -224,9 +210,9 @@ namespace imageDeCap
             }
             else if (screenCaptureMode == enmScreenCaptureMode.Window)
             {
-                var foregroundWindowsHandle = GetForegroundWindow();
-                var rect = new Rect();
-                GetWindowRect(foregroundWindowsHandle, ref rect);
+                var foregroundWindowsHandle = Win32Stuff.GetForegroundWindow();
+                var rect = new Win32Stuff.Rect();
+                Win32Stuff.GetWindowRect(foregroundWindowsHandle, ref rect);
                 bounds = new Rectangle(rect.Left, rect.Top, rect.Right - rect.Left, rect.Bottom - rect.Top);
                 CursorPosition = new Point(Cursor.Position.X - rect.Left, Cursor.Position.Y - rect.Top);
             }
@@ -256,7 +242,6 @@ namespace imageDeCap
             return result;
         }
 
-
         static Bitmap CaptureCursor(ref int x, ref int y)
         {
             Bitmap bmp;
@@ -274,7 +259,7 @@ namespace imageDeCap
                         x = ci.ptScreenPos.x - ((int)icInfo.xHotspot);
                         y = ci.ptScreenPos.y - ((int)icInfo.yHotspot);
                         Icon ic = Icon.FromHandle(hicon);
-                        if(ic.Size.Height == 0 || ic.Size.Width == 0)
+                        if (ic.Size.Height == 0 || ic.Size.Width == 0)
                         {
                             return null;
                         }
@@ -286,22 +271,20 @@ namespace imageDeCap
             }
             return null;
         }
-        
+
         public Point CursorPosition
         {
             get;
             protected set;
         }
     }
-    
+
     class Win32Stuff
     {
-
         #region Class Variables
 
         public const int SM_CXSCREEN = 0;
         public const int SM_CYSCREEN = 1;
-
         public const Int32 CURSOR_SHOWING = 0x00000001;
 
         [StructLayout(LayoutKind.Sequential)]
@@ -329,11 +312,26 @@ namespace imageDeCap
             public POINT ptScreenPos;       // A POINT structure that receives the screen coordinates of the cursor.
         }
 
+        [StructLayout(LayoutKind.Sequential)]
+        public struct Rect
+        {
+            public int Left;
+            public int Top;
+            public int Right;
+            public int Bottom;
+        }
+
         #endregion
 
 
         #region Class Functions
 
+        [DllImport("user32.dll")]
+        public static extern IntPtr GetForegroundWindow();
+
+        [DllImport("user32.dll")]
+        public static extern IntPtr GetWindowRect(IntPtr hWnd, ref Rect rect);
+        
         [DllImport("user32.dll", EntryPoint = "GetDesktopWindow")]
         public static extern IntPtr GetDesktopWindow();
 
@@ -348,8 +346,7 @@ namespace imageDeCap
 
         [DllImport("user32.dll", EntryPoint = "ReleaseDC")]
         public static extern IntPtr ReleaseDC(IntPtr hWnd, IntPtr hDc);
-
-
+        
         [DllImport("user32.dll", EntryPoint = "GetCursorInfo")]
         public static extern bool GetCursorInfo(out CURSORINFO pci);
 
@@ -358,15 +355,58 @@ namespace imageDeCap
 
         [DllImport("user32.dll", EntryPoint = "GetIconInfo")]
         public static extern bool GetIconInfo(IntPtr hIcon, out ICONINFO piconinfo);
-
-
+        
         #endregion
     }
-    //---------------------------------------------------------------------------------------------------------------------
-    //Keeping all this GFYCAT stuff here for when webmshare goes down LOL
-    // DON'T DELETE THIS
-    //---------------------------------------------------------------------------------------------------------------------
-    /*
+
+    public static class Webmshare
+    {
+        public static (bool UploadSuccessfull, string Message) Upload(byte[] FileData)
+        {
+            /*
+            curl -i -X POST \
+            -H "Content-Type:multipart/form-data" \
+            -F "file=@\"./some_file.webm\";type=video/webm;filename=\"some_file.webm\"" \
+            -F "expiration=1" \
+            -F "public=0" \
+            -F "title=Some title goes here ;)" \
+            -F "autoplay=1" \
+            -F "loop=1" \
+            -F "muted=1" \
+            'https://webmshare.com/api/upload'
+            */
+
+
+            HttpClient client = new HttpClient();
+            MultipartFormDataContent form = new MultipartFormDataContent();
+
+            form.Add(new StringContent("0"), "expiration");
+            form.Add(new StringContent("0"), "public");
+            form.Add(new StringContent("1"), "autoplay");
+            form.Add(new StringContent("1"), "loop");
+            form.Add(new StringContent("1"), "muted");
+            form.Add(new ByteArrayContent(FileData), "file", "something.webm");
+
+            var response = client.PostAsync("http://webmshare.com/api/upload", form).GetAwaiter().GetResult();
+
+            var responseString = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+
+            var objects = JObject.Parse(responseString);
+            
+            string result = "";
+            try
+            {
+                result = objects.GetValue("id").ToString();
+                return (true, "https://webmshare.com/play/" + result);
+            }
+            catch
+            {
+                result = responseString;
+                return (false, "failed, " + result);
+            }
+        }
+    }
+
     public static class Gfycat
     {
         public static (bool UploadSuccessfull, string Message) Upload(byte[] FileData)
@@ -448,5 +488,4 @@ namespace imageDeCap
             public double Progress { get; set; }
         }
     }
-    */
-        }
+}

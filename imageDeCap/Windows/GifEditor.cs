@@ -19,18 +19,21 @@ namespace imageDeCap
     {
         public static byte[] VideoFromFrames(Bitmap[] frames, int framerate = 15)
         {
-            VideoWriter.Write(new RecorderParams("out.avi", framerate, SharpAvi.KnownFourCCs.Codecs.MotionJpeg, 100, 0, 0, frames[0].Width, frames[0].Height), frames);
+            string outpath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\imageDeCap\out.avi";
+            string outcompressedpath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\imageDeCap\out" + MainWindow.videoFormat;
 
-            var inputFile = new MediaFile { Filename = @"out.avi" };
-            var outputFile = new MediaFile { Filename = @"out.webm" };
+            VideoWriter.Write(new RecorderParams(outpath, framerate, SharpAvi.KnownFourCCs.Codecs.MotionJpeg, 100, 0, 0, frames[0].Width, frames[0].Height), frames);
+
+            var inputFile = new MediaFile { Filename = outpath };
+            var outputFile = new MediaFile { Filename = outcompressedpath };
             using (var engine = new Engine())
             {
                 engine.Convert(inputFile, outputFile);
             }
 
-            byte[] data = File.ReadAllBytes("out.webm");
-            //File.Delete("out.avi");
-            //File.Delete("out.webm");
+            byte[] data = File.ReadAllBytes(outcompressedpath);
+            File.Delete(outpath);
+            File.Delete(outcompressedpath);
             return data;
         }
 

@@ -7,8 +7,8 @@
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AppId={{9BE609C6-1558-49CC-AC59-11E5999DDD2E}
 AppName=ImageDeCap
-AppVersion=1.24
-;AppVerName=ImageDeCap 1.24
+AppVersion=1.25
+;AppVerName=ImageDeCap 1.25
 AppPublisher=Mattias Westphal, www.mattwestphal.com
 AppPublisherURL=http://mattwestphal.com/
 AppSupportURL=http://mattwestphal.com/
@@ -16,7 +16,7 @@ AppUpdatesURL=http://mattwestphal.com/
 DefaultDirName={pf}\ImageDeCap
 DefaultGroupName=ImageDeCap
 AllowNoIcons=yes
-OutputBaseFilename=imageDeCap_v1_24 Installer
+OutputBaseFilename=imageDeCap_v1_25 Installer
 SetupIconFile={#SourcePath}\imageDeCap\Images\Untitled-2.ico
 Compression=lzma
 SolidCompression=yes

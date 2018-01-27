@@ -51,7 +51,6 @@ namespace imageDeCap
 
             AlsoFTPTextFilesBox.Checked = Preferences.uploadToFTP;
             AlsoFTPTextFilesBox.Enabled = Preferences.uploadToFTP;
-            AlsoFTPTextFilesBox.Checked = Preferences.AlsoFTPTextFiles;
             FTPURL.Enabled = Preferences.uploadToFTP;
             FTPUsername.Enabled = Preferences.uploadToFTP;
             FTPpassword.Enabled = Preferences.uploadToFTP;
@@ -98,6 +97,16 @@ namespace imageDeCap
             watermarkLocation3.Enabled = Preferences.AddWatermark;
             watermarkBrowseButton.Enabled = Preferences.AddWatermark;
             watermarkTextbox.Enabled = Preferences.AddWatermark;
+
+            if (Preferences.GifTarget == "gfycat")
+            {
+                gfycatButton.Checked = true;
+            }
+            else
+            {
+                webmshareButton.Checked = true;
+            }
+
         }
 
 
@@ -252,12 +261,6 @@ namespace imageDeCap
             Preferences.Save();
         }
         
-        private void AlsoFTPTectFilesBox_CheckedChanged(object sender, EventArgs e)
-        {
-            Preferences.AlsoFTPTextFiles = AlsoFTPTextFilesBox.Checked;
-            Preferences.Save();
-        }
-
         public static string getCurrentHotkey()
         {
             string textToPutInBox = "";
@@ -578,6 +581,42 @@ namespace imageDeCap
         {
             Console.WriteLine("LEAVE");
             UnregisterHotKey(this.Handle, 0);
+        }
+
+        private void groupBox3_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void radioButton1_CheckedChanged(object sender, EventArgs e)
+        {
+            Preferences.GifTarget = "gfycat";
+            Preferences.Save();
+        }
+
+        private void radioButton2_CheckedChanged(object sender, EventArgs e)
+        {
+            Preferences.GifTarget = "webmshare";
+            Preferences.Save();
+        }
+
+        private void imgurButton_CheckedChanged(object sender, EventArgs e)
+        {
+            Preferences.GifTarget = "imgur";
+            Preferences.Save();
+        }
+
+        private void label13_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        // Add the program to startup
+        private void button4_Click(object sender, EventArgs e)
+        {
+            string startupPath = Environment.GetFolderPath(Environment.SpecialFolder.Startup) + @"\imageDeCap.lnk";
+            string exeDir = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
+            MainWindow.CreateShortcut(startupPath, exeDir);
         }
     }
 }

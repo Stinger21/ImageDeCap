@@ -61,10 +61,15 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.label8 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.webmshareButton = new System.Windows.Forms.RadioButton();
+            this.gfycatButton = new System.Windows.Forms.RadioButton();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.neverUpload = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -88,6 +93,8 @@
             this.fontDialog = new System.Windows.Forms.FontDialog();
             this.imageContainer = new System.Windows.Forms.PictureBox();
             this.PrintScreenTimer = new System.Windows.Forms.Timer(this.components);
+            this.label13 = new System.Windows.Forms.Label();
+            this.button4 = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gifFPS)).BeginInit();
@@ -95,6 +102,7 @@
             this.tabPage2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.tabPage3.SuspendLayout();
+            this.groupBox5.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tabPage4.SuspendLayout();
@@ -195,9 +203,9 @@
             // 
             // textBox2
             // 
-            this.textBox2.Location = new System.Drawing.Point(4, 31);
+            this.textBox2.Location = new System.Drawing.Point(78, 12);
             this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(228, 20);
+            this.textBox2.Size = new System.Drawing.Size(253, 20);
             this.textBox2.TabIndex = 22;
             this.textBox2.Text = "ImageDeCap Upload!";
             this.textBox2.TextChanged += new System.EventHandler(this.textBox2_TextChanged_1);
@@ -205,7 +213,7 @@
             // checkBox2
             // 
             this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(9, 115);
+            this.checkBox2.Location = new System.Drawing.Point(9, 76);
             this.checkBox2.Name = "checkBox2";
             this.checkBox2.Size = new System.Drawing.Size(207, 17);
             this.checkBox2.TabIndex = 21;
@@ -242,7 +250,7 @@
             this.checkBox3.AutoSize = true;
             this.checkBox3.Checked = true;
             this.checkBox3.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox3.Location = new System.Drawing.Point(9, 92);
+            this.checkBox3.Location = new System.Drawing.Point(175, 53);
             this.checkBox3.Name = "checkBox3";
             this.checkBox3.Size = new System.Drawing.Size(135, 17);
             this.checkBox3.TabIndex = 4;
@@ -311,7 +319,6 @@
             this.AlsoFTPTextFilesBox.TabIndex = 8;
             this.AlsoFTPTextFilesBox.Text = "Also upload text to FTP";
             this.AlsoFTPTextFilesBox.UseVisualStyleBackColor = true;
-            this.AlsoFTPTextFilesBox.CheckedChanged += new System.EventHandler(this.AlsoFTPTectFilesBox_CheckedChanged);
             // 
             // checkBoxUploadToFTP
             // 
@@ -450,10 +457,12 @@
             this.label8.Size = new System.Drawing.Size(334, 32);
             this.label8.TabIndex = 38;
             this.label8.Text = "Region screenshots behaving wierd? Turn off windows scaling.\r\nHotkeys not working" +
-    "? Run ImageDeCap as Administrator\r\n";
+    "? Run ImageDeCap as administrator\r\n";
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.label11);
+            this.groupBox3.Controls.Add(this.label6);
             this.groupBox3.Controls.Add(this.HotkeyTextBox1);
             this.groupBox3.Controls.Add(this.HotkeyTextBox3);
             this.groupBox3.Controls.Add(this.HotkeyTextBox2);
@@ -466,6 +475,25 @@
             this.groupBox3.TabIndex = 31;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Hotkeys";
+            this.groupBox3.Enter += new System.EventHandler(this.groupBox3_Enter);
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(6, 153);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(0, 13);
+            this.label11.TabIndex = 38;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(6, 130);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(232, 78);
+            this.label6.TabIndex = 37;
+            this.label6.Text = "Image Editor Hotkeys:\r\nYou can hold down RMB to resize brush or text.\r\nPressing T" +
+    " adds text,\r\nPressing B adds a box,\r\nPressing A adds an arrow\r\n,";
             // 
             // label7
             // 
@@ -496,6 +524,7 @@
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.groupBox5);
             this.tabPage3.Controls.Add(this.groupBox4);
             this.tabPage3.Controls.Add(this.neverUpload);
             this.tabPage3.Controls.Add(this.checkBox2);
@@ -508,13 +537,49 @@
             this.tabPage3.Text = "Uploading";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
+            // groupBox5
+            // 
+            this.groupBox5.Controls.Add(this.label13);
+            this.groupBox5.Controls.Add(this.webmshareButton);
+            this.groupBox5.Controls.Add(this.gfycatButton);
+            this.groupBox5.Location = new System.Drawing.Point(3, 99);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(331, 48);
+            this.groupBox5.TabIndex = 32;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "Gif Target";
+            // 
+            // webmshareButton
+            // 
+            this.webmshareButton.AutoSize = true;
+            this.webmshareButton.Checked = true;
+            this.webmshareButton.Location = new System.Drawing.Point(69, 20);
+            this.webmshareButton.Name = "webmshareButton";
+            this.webmshareButton.Size = new System.Drawing.Size(82, 17);
+            this.webmshareButton.TabIndex = 1;
+            this.webmshareButton.TabStop = true;
+            this.webmshareButton.Text = "Wembshare";
+            this.webmshareButton.UseVisualStyleBackColor = true;
+            this.webmshareButton.CheckedChanged += new System.EventHandler(this.radioButton2_CheckedChanged);
+            // 
+            // gfycatButton
+            // 
+            this.gfycatButton.AutoSize = true;
+            this.gfycatButton.Location = new System.Drawing.Point(7, 20);
+            this.gfycatButton.Name = "gfycatButton";
+            this.gfycatButton.Size = new System.Drawing.Size(56, 17);
+            this.gfycatButton.TabIndex = 0;
+            this.gfycatButton.Text = "Gfycat";
+            this.gfycatButton.UseVisualStyleBackColor = true;
+            this.gfycatButton.CheckedChanged += new System.EventHandler(this.radioButton1_CheckedChanged);
+            // 
             // groupBox4
             // 
             this.groupBox4.Controls.Add(this.textBox2);
             this.groupBox4.Controls.Add(this.label1);
             this.groupBox4.Location = new System.Drawing.Point(3, 3);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(337, 60);
+            this.groupBox4.Size = new System.Drawing.Size(337, 44);
             this.groupBox4.TabIndex = 31;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Pastebin";
@@ -522,7 +587,7 @@
             // neverUpload
             // 
             this.neverUpload.AutoSize = true;
-            this.neverUpload.Location = new System.Drawing.Point(9, 69);
+            this.neverUpload.Location = new System.Drawing.Point(9, 53);
             this.neverUpload.Name = "neverUpload";
             this.neverUpload.Size = new System.Drawing.Size(160, 17);
             this.neverUpload.TabIndex = 7;
@@ -537,9 +602,9 @@
             this.groupBox1.Controls.Add(this.FTPpassword);
             this.groupBox1.Controls.Add(this.AlsoFTPTextFilesBox);
             this.groupBox1.Controls.Add(this.FTPUsername);
-            this.groupBox1.Location = new System.Drawing.Point(3, 138);
+            this.groupBox1.Location = new System.Drawing.Point(3, 153);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(337, 106);
+            this.groupBox1.Size = new System.Drawing.Size(337, 91);
             this.groupBox1.TabIndex = 30;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "FTP Settings";
@@ -718,11 +783,33 @@
             this.PrintScreenTimer.Interval = 1000;
             this.PrintScreenTimer.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(158, 15);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(156, 26);
+            this.label13.TabIndex = 2;
+            this.label13.Text = "Webmshare is faster but gfycat \r\nhas better chat intergration.";
+            this.label13.Click += new System.EventHandler(this.label13_Click);
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(356, 126);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(110, 26);
+            this.button4.TabIndex = 32;
+            this.button4.Text = "Add to startup";
+            this.toolTip1.SetToolTip(this.button4, "Re-Sets All Preferences and settings, Including First-Time Startup.");
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
             // SettingsWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(472, 296);
+            this.Controls.Add(this.button4);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.tabControl1);
@@ -750,6 +837,8 @@
             this.groupBox3.PerformLayout();
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox5.PerformLayout();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
             this.groupBox1.ResumeLayout(false);
@@ -825,5 +914,12 @@
         private System.Windows.Forms.OpenFileDialog ImageFileDialog;
         private System.Windows.Forms.FontDialog fontDialog;
         private System.Windows.Forms.Timer PrintScreenTimer;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.RadioButton webmshareButton;
+        private System.Windows.Forms.RadioButton gfycatButton;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Button button4;
     }
 }

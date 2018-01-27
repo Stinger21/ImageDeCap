@@ -63,6 +63,7 @@ namespace imageDeCap
             {
                 CaptureType.Text = "Image";
             }
+            label1.Text = "0x0";
         }
 
         private void MakeBox(int x, int y, int with, int height, Color color)
@@ -72,6 +73,7 @@ namespace imageDeCap
             wa.BackColor = color;
             Boxes.Add(wa);
             this.Controls.Add(wa);
+            label1.Text = "0x0";
         }
 
         Graphics g;

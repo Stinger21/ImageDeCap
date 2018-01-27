@@ -31,7 +31,7 @@ namespace imageDeCap
 
     public partial class MainWindow : Form
     {
-
+        public static string videoFormat = ".webm";
         List<string> Links = new List<string>();
         private void addToLinks(string link, bool addToXML = true)
         {
@@ -240,7 +240,16 @@ namespace imageDeCap
                 return false;
             }
         }
+        public static void CreateShortcut(string shortcutLocation, string targetFileLocation)
+        {
+            IWshRuntimeLibrary.WshShell shell = new IWshRuntimeLibrary.WshShell();
+            IWshRuntimeLibrary.IWshShortcut shortcut = (IWshRuntimeLibrary.IWshShortcut)shell.CreateShortcut(shortcutLocation);
 
+            shortcut.Description = "My shortcut description";   // The description of the shortcut
+            shortcut.IconLocation = @"c:\myicon.ico";           // The icon of the shortcut
+            shortcut.TargetPath = targetFileLocation;                 // The path of the file that will launch when the shortcut is run
+            shortcut.Save();                                    // Save the shortcut
+        }
         public static string LinksFilePath = "ERROR";
         public static string PreferencesPath = "ERROR";
 
@@ -248,28 +257,7 @@ namespace imageDeCap
         {
             InitializeComponent();
 
-            // Try deleting any old shortcut memes from 1.23 and earlier
-            string startupPath = Environment.GetFolderPath(Environment.SpecialFolder.Startup) + @"\imageDeCap.lnk";
-            string startMenuPath = Environment.GetFolderPath(Environment.SpecialFolder.StartMenu) + @"\imageDeCap.lnk";
-            string appdataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\imageDeCap\imageDeCap.exe";
-
-            if (File.Exists(startupPath))
-                File.Delete(startupPath);
-
-            if (File.Exists(startMenuPath))
-                File.Delete(startMenuPath);
-
-            try
-            {
-                if (File.Exists(appdataPath))
-                    File.Delete(appdataPath);
-            }
-            catch
-            {
-                MessageBox.Show("An old version of ImageDeCap is currently running. Please close it before starting the new one.", "Error");
-                Environment.Exit(0);
-            }
-
+            bool Portable = false;
             string exeDir = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
             string appdataDir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\imageDeCap";
             if (exeDir.Contains("Program Files"))
@@ -279,6 +267,7 @@ namespace imageDeCap
                     Directory.CreateDirectory(appdataDir);
                 LinksFilePath = appdataDir + @"\imageDecapLinks.ini";
                 PreferencesPath = appdataDir + @"\ImageDeCap.ini";
+                Portable = false;
             }
             else
             {
@@ -293,6 +282,7 @@ namespace imageDeCap
                 }
                 LinksFilePath = exeDir + @"\imageDecapLinks.ini";
                 PreferencesPath = exeDir + @"\ImageDeCap.ini";
+                Portable = true;
             }
 
 
@@ -302,6 +292,31 @@ namespace imageDeCap
                 Preferences.FirstStartup = false;
                 Preferences.Save();
                 OpenWindow();
+
+                // Try deleting any old shortcut memes from 1.23 and earlier
+                string startupPath = Environment.GetFolderPath(Environment.SpecialFolder.Startup) + @"\imageDeCap.lnk";
+                string startMenuPath = Environment.GetFolderPath(Environment.SpecialFolder.StartMenu) + @"\imageDeCap.lnk";
+                string appdataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\imageDeCap\imageDeCap.exe";
+
+                if (File.Exists(startupPath))
+                    File.Delete(startupPath);
+
+                if (File.Exists(startMenuPath))
+                    File.Delete(startMenuPath);
+
+                try
+                {
+                    if (File.Exists(appdataPath))
+                        File.Delete(appdataPath);
+                }
+                catch
+                {
+                    MessageBox.Show("An old version of ImageDeCap is currently running. Please close it before starting the new one.", "Error");
+                    Environment.Exit(0);
+                }
+
+                notifyIcon1.ShowBalloonTip(500, "Welcome to ImageDeCap!", "Press PRINTSCREEN to start!", ToolTipIcon.Info);
+
             }
             else
             {
@@ -360,10 +375,8 @@ namespace imageDeCap
                 {
                     e.Cancel = true;
                 }
-
                 this.Hide();
                 this.ShowInTaskbar = false;
-                props.Close();
             }
         }
 
@@ -449,6 +462,9 @@ namespace imageDeCap
                 setBox(ruleOfThirdsBox2, false);
                 setBox(ruleOfThirdsBox3, false);
                 setBox(ruleOfThirdsBox4, false);
+
+                Program.ImageDeCap.tempWidth = 0;
+                Program.ImageDeCap.tempHeight = 0;
             }
         }
 
@@ -497,7 +513,7 @@ namespace imageDeCap
             {
                 return filetype.bmp;
             }
-            else if (filepath.EndsWith(".gif") || filepath.EndsWith(".mp4") || filepath.EndsWith(".webm"))
+            else if (filepath.EndsWith(".gif") || filepath.EndsWith(MainWindow.videoFormat))
             {
                 return filetype.gif;
             }
@@ -534,6 +550,15 @@ namespace imageDeCap
             }
             Program.hotkeysEnabled = true; // Enable hotkeys here again so you can kill the editor by starting a new capture.
 
+            //Clipboard.GetData()
+            //DataFormats.Format myFormat = DataFormats.GetFormat("myFormat");
+            if (imageType != filetype.gif)
+            {
+                if(Preferences.CopyImageToClipboard)
+                {
+                    Clipboard.SetImage(Image.FromStream(new MemoryStream(FileData)));
+                }
+            }
 
             if ((Preferences.EditScreenshotAfterCapture || RMBClickForceEdit) && ForceNoEdit == false)
             {
@@ -600,14 +625,19 @@ namespace imageDeCap
             if (SaveEnabledInSettings)
             {
                 string SaveFileName = DateTime.UtcNow.ToString("yyyyMMddHHmmssfff");
-                string whereToSave = Preferences.SaveImagesHere + @"\" + SaveFileName + "." + imageType.ToString();
+                string Extension = imageType.ToString();
+                if(Extension == "gif")
+                {
+                    Extension = videoFormat.Replace(".", "");
+                }
+                string whereToSave = Preferences.SaveImagesHere + @"\" + SaveFileName + "." + Extension;
                 File.WriteAllBytes(whereToSave, FileData);
             }
             else if (EditorResult == NewImageEditor.EditorResult.Save) // If gif, ask to save only if 
             {
                 if (imageType == filetype.gif) // If it's a gif
                 {
-                    FileDialog(".webm", FileData);
+                    FileDialog(MainWindow.videoFormat, FileData);
                 }
             }
             if (imageType != filetype.gif) // If it's an image, ask to save no matter what
@@ -639,11 +669,22 @@ namespace imageDeCap
                     BackgroundWorker bw = new BackgroundWorker();
                     if (imageType == filetype.gif)
                     {
-                        bw.DoWork += cap.UploadGif;
+                        if (Preferences.GifTarget == "gfycat")
+                        {
+                            bw.DoWork += cap.UploadGif_Gfycat;
+                        }
+                        if (Preferences.GifTarget == "imgur")
+                        {
+                            bw.DoWork += cap.UploadGif_Imgur;
+                        }
+                        else
+                        {
+                            bw.DoWork += cap.UploadGif_Webmshare;
+                        }
                     }
                     else
                     {
-                        bw.DoWork += cap.UploadImage;
+                        bw.DoWork += cap.UploadImage_Imgur;
                     }
                     bw.RunWorkerCompleted += uploadImageFileCompleted;
                     bw.RunWorkerAsync(FileData);
@@ -659,7 +700,7 @@ namespace imageDeCap
             if (url.Contains("failed"))
             {
                 ClipboardHandler.setClipboard(url);
-                notifyIcon1.ShowBalloonTip(500, "imageDeCap", "Upload to imgur failed! \n" + url + "\nAre you connected to the internet? \nis Imgur Down?", ToolTipIcon.Error);
+                notifyIcon1.ShowBalloonTip(500, "ImageDeCap", "Upload to imgur failed! \n" + url + "\nAre you connected to the internet? \nis Imgur Down?", ToolTipIcon.Error);
                 Utilities.playSound("error.wav");
             }
             else
@@ -671,12 +712,12 @@ namespace imageDeCap
                 if (!Preferences.CopyLinksToClipboard)
                 {
                     if (Preferences.DisableNotifications)
-                        notifyIcon1.ShowBalloonTip(500, "imageDeCap", "Imgur URL copied to clipboard!", ToolTipIcon.Info);
+                        notifyIcon1.ShowBalloonTip(500, "ImageDeCap", "Imgur URL copied to clipboard!", ToolTipIcon.Info);
                 }
                 else
                 {
                     if (!Preferences.DisableNotifications)
-                        notifyIcon1.ShowBalloonTip(500, "imageDeCap", "Upload complete!", ToolTipIcon.Info);
+                        notifyIcon1.ShowBalloonTip(500, "ImageDeCap", "Upload complete!", ToolTipIcon.Info);
                 }
                 
                 if (!Utilities.IsWindows10() || Preferences.DisableNotifications)
@@ -706,17 +747,14 @@ namespace imageDeCap
             {
                 Utilities.playSound("snip.wav");
                 BackgroundWorker bw = new BackgroundWorker();
-                bw.DoWork += cap.Send;
+                bw.DoWork += cap.UploadPastebin;
                 bw.RunWorkerCompleted += uploadPastebinCompleted;
                 bw.RunWorkerAsync(text);
-            }
 
-            if (Preferences.AlsoFTPTextFiles)
-            {
-                BackgroundWorker bw = new BackgroundWorker();
-                bw.DoWork += cap.uploadToFTP;
+                BackgroundWorker bw2 = new BackgroundWorker();
+                bw2.DoWork += cap.uploadToFTP;
                 string name = DateTime.UtcNow.ToString("yyyyMMddHHmmssfff");
-                bw.RunWorkerAsync(new object[] {    Preferences.FTPurl,
+                bw2.RunWorkerAsync(new object[] {    Preferences.FTPurl,
                                                     Preferences.FTPusername,
                                                     Preferences.FTPpassword,
                                                     Encoding.ASCII.GetBytes(text),
@@ -741,12 +779,12 @@ namespace imageDeCap
                 if (Preferences.CopyLinksToClipboard)
                 {
                     if (!Preferences.DisableNotifications)
-                        notifyIcon1.ShowBalloonTip(500, "imageDeCap", "Pastebin link placed in clipboard!", ToolTipIcon.Info);
+                        notifyIcon1.ShowBalloonTip(500, "ImageDeCap", "Pastebin link placed in clipboard!", ToolTipIcon.Info);
                 }
                 else
                 {
                     if (!Preferences.DisableNotifications)
-                        notifyIcon1.ShowBalloonTip(500, "imageDeCap", "Upload complete!", ToolTipIcon.Info);
+                        notifyIcon1.ShowBalloonTip(500, "ImageDeCap", "Upload complete!", ToolTipIcon.Info);
                 }
 
                 if (!Utilities.IsWindows10() || Preferences.DisableNotifications)
@@ -757,7 +795,7 @@ namespace imageDeCap
             }
             else
             {
-                notifyIcon1.ShowBalloonTip(500, "imageDeCap", "upload to pastebin failed!\n" + pasteBinResult + "\nAre you connected to the internet? \nIs pastebin Down?", ToolTipIcon.Error);
+                notifyIcon1.ShowBalloonTip(500, "ImageDeCap", "upload to pastebin failed!\n" + pasteBinResult + "\nAre you connected to the internet? \nIs pastebin Down?", ToolTipIcon.Error);
                 Utilities.playSound("error.wav");
             }
         }
@@ -918,10 +956,13 @@ namespace imageDeCap
 
         private void clearLinksToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Links.Clear();
-            listBox1.DataSource = null;
-            listBox1.DataSource = Links;
-            File.Delete(LinksFilePath);
+            if(MessageBox.Show("This will clear all links with no undo.", "Warning", MessageBoxButtons.OKCancel) == DialogResult.OK)
+            {
+                Links.Clear();
+                listBox1.DataSource = null;
+                listBox1.DataSource = Links;
+                File.Delete(LinksFilePath);
+            }
         }
 
         private void listBox1_KeyDown(object sender, KeyEventArgs e)

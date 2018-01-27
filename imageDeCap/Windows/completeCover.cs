@@ -49,19 +49,26 @@ namespace imageDeCap
         bool _Activated = false;
         public void AfterShow(Bitmap background)
         {
+            float scaler = 1.0f/1.0f;
+
+            int x = (int)(SystemInformation.VirtualScreen.X * scaler);
+            int y = (int)(SystemInformation.VirtualScreen.Y * scaler);
+            int width = (int)(SystemInformation.VirtualScreen.Width * scaler);
+            int height = (int)(SystemInformation.VirtualScreen.Height * scaler);
+
             if (UseBackCover)
             {
                 ScreenCapturer cap = new ScreenCapturer();
                 this.TopMost = false;
                 pictureBox1.Image = background;
-                pictureBox1.SetBounds(0, 0, SystemInformation.VirtualScreen.Width, SystemInformation.VirtualScreen.Height);
-                this.SetBounds(SystemInformation.VirtualScreen.X, SystemInformation.VirtualScreen.Y, SystemInformation.VirtualScreen.Width, SystemInformation.VirtualScreen.Height);
+                pictureBox1.SetBounds(0, 0, width, height);
+                this.SetBounds(x, y,        width, height);
                 Application.DoEvents();
                 this.Opacity = 1;
             }
             else
             {
-                this.SetBounds(SystemInformation.VirtualScreen.X, SystemInformation.VirtualScreen.Y, SystemInformation.VirtualScreen.Width, SystemInformation.VirtualScreen.Height);
+                this.SetBounds(x, y, width, height);
             }
             _Activated = true;
         }
@@ -158,7 +165,6 @@ namespace imageDeCap
                 Program.ImageDeCap.ruleOfThirdsBox3.Hide();
                 Program.ImageDeCap.ruleOfThirdsBox4.Hide();
 
-
                 if (Program.ImageDeCap.tempWidth > 0 && Program.ImageDeCap.tempHeight > 0) // Make sure we actually selected a region to take a screenshot of.
                 {
                     Utilities.playSound("snip.wav");
@@ -180,6 +186,8 @@ namespace imageDeCap
 
                 Program.ImageDeCap.isTakingSnapshot = false;
                 Program.hotkeysEnabled = true;
+
+
             }
             else
             {

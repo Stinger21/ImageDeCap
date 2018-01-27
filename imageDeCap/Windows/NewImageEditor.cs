@@ -35,7 +35,10 @@ namespace imageDeCap
             else
             {
                 outputData = completeCover.GetBytes(editor.EditedImage, ImageFormat.Png);
+                Clipboard.Clear();
             }
+
+
             return (result, outputData);
         }
         
@@ -69,11 +72,13 @@ namespace imageDeCap
             if (Preferences.NeverUpload)
             {
                 this.AcceptButton = ClipboardButton;
+                this.ActiveControl = ClipboardButton;
                 UploadButton.Enabled = false;
             }
             else
             {
                 this.AcceptButton = UploadButton;
+                this.ActiveControl = UploadButton;
             }
             CurrentButton = FrontSwatch;
         }
