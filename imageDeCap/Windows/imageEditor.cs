@@ -553,7 +553,7 @@ namespace imageDeCap
             }
             catch
             {
-                Console.WriteLine("Failed to save jpg");
+                //Console.WriteLine("Failed to save jpg");
             }
         }
 

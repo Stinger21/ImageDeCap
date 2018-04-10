@@ -31,7 +31,8 @@ namespace imageDeCap
 
     public partial class MainWindow : Form
     {
-        public static string videoFormat = ".webm";
+        public static string videoFormat = ".mp4";
+        public static string VersionNumber = "v1.26";
         List<string> Links = new List<string>();
         private void addToLinks(string link, bool addToXML = true)
         {
@@ -198,7 +199,7 @@ namespace imageDeCap
             int DeltaTimeInMS = DeltaTime.Seconds * 100 + DeltaTime.Milliseconds;
             FrameTime += DeltaTimeInMS;
             RunningAverageOfFrameTime = FrameTime / (counter+1);
-            Console.WriteLine(1000 / RunningAverageOfFrameTime);
+            //Console.WriteLine(1000 / RunningAverageOfFrameTime);
 
             LastTime = DateTime.Now;
 
@@ -250,23 +251,30 @@ namespace imageDeCap
             shortcut.TargetPath = targetFileLocation;                 // The path of the file that will launch when the shortcut is run
             shortcut.Save();                                    // Save the shortcut
         }
+        public static void AddToStartup()
+        {
+            string startupPath = Environment.GetFolderPath(Environment.SpecialFolder.Startup) + @"\imageDeCap.lnk";
+            MainWindow.CreateShortcut(startupPath, MainWindow.ExeDirectory);
+        }
         public static string LinksFilePath = "ERROR";
         public static string PreferencesPath = "ERROR";
-
+        public static string AppdataDirectory = "ERROR";
+        public static string ExeDirectory = "ERROR";
+        public static string BackupDirectory = "ERROR";
         public MainWindow()
         {
             InitializeComponent();
-
+            this.VersionLabel.Text = MainWindow.VersionNumber;
             bool Portable = false;
-            string exeDir = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
-            string appdataDir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\imageDeCap";
-            if (exeDir.Contains("Program Files"))
+            ExeDirectory = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
+            AppdataDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\imageDeCap";
+            if (ExeDirectory.Contains("Program Files"))
             {
                 // If it's in an install folder, put the settings files in appdata.
-                if (!Directory.Exists(appdataDir))
-                    Directory.CreateDirectory(appdataDir);
-                LinksFilePath = appdataDir + @"\imageDecapLinks.ini";
-                PreferencesPath = appdataDir + @"\ImageDeCap.ini";
+                if (!Directory.Exists(AppdataDirectory))
+                    Directory.CreateDirectory(AppdataDirectory);
+                LinksFilePath = AppdataDirectory + @"\imageDecapLinks.ini";
+                PreferencesPath = AppdataDirectory + @"\ImageDeCap.ini";
                 Portable = false;
             }
             else
@@ -274,22 +282,48 @@ namespace imageDeCap
                 // If it's not in Program Files that means the user is trying to use it portable and we should write settings next to the exe.
 
                 // If we can't write settings, tell the user they need to run the program as administrator to proceed.
-                if(!hasWriteAccessToFolder(exeDir))
+                if(!hasWriteAccessToFolder(ExeDirectory))
                 {
                     MessageBox.Show("Insufficient permissions to write settings, try starting the program from somewhere else or start it as as administrator.", "Could not write settings.", MessageBoxButtons.OK);
                     actuallyCloseTheProgram();
                     return;
                 }
-                LinksFilePath = exeDir + @"\imageDecapLinks.ini";
-                PreferencesPath = exeDir + @"\ImageDeCap.ini";
+                LinksFilePath = ExeDirectory + @"\imageDecapLinks.ini";
+                PreferencesPath = ExeDirectory + @"\ImageDeCap.ini";
                 Portable = true;
             }
 
+            if(Portable)
+            {
+                BackupDirectory = MainWindow.AppdataDirectory + @"\Backup";
+            }
+            else
+            {
+                BackupDirectory = MainWindow.AppdataDirectory + @"\Backup";
+            }
 
             Preferences.Load();
             if(Preferences.FirstStartup)
             {
                 Preferences.FirstStartup = false;
+                if(Portable)
+                {
+                    Preferences.BackupImages = false;
+                    Preferences.Save();
+                    //// If the program is running in install mode, set the save path to somewhere in my documents :)
+                    //string DefaultSaveFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\ImageDeCap Saved Captures";
+                    //if(!Directory.Exists(DefaultSaveFolder))
+                    //{
+                    //    Directory.CreateDirectory(DefaultSaveFolder);
+                    //}
+                    //Preferences.SaveImagesHere = DefaultSaveFolder;
+                    //Preferences.saveImageAtAll = true;
+                }
+                else
+                {
+                    Preferences.BackupImages = true;
+                    Preferences.Save();
+                }
                 Preferences.Save();
                 OpenWindow();
 
@@ -317,6 +351,7 @@ namespace imageDeCap
 
                 notifyIcon1.ShowBalloonTip(500, "Welcome to ImageDeCap!", "Press PRINTSCREEN to start!", ToolTipIcon.Info);
 
+                MainWindow.AddToStartup();
             }
             else
             {
@@ -608,32 +643,49 @@ namespace imageDeCap
                 editor.Dispose();
                 f = filetype.gif;
             }
-            if (EditorResult != NewImageEditor.EditorResult.Quit)
-                UploadImageData_AfterEdit(EditorResult, FileData, f);
+            UploadImageData_AfterEdit(EditorResult, FileData, f);
         }
 
         public void UploadImageData_AfterEdit(NewImageEditor.EditorResult EditorResult, byte[] FileData, filetype imageType)
         {
 
-            if(EditorResult == NewImageEditor.EditorResult.Quit)
+            string SaveFileName = DateTime.UtcNow.ToString("yyyyMMddHHmmssfff");
+            string Extension = imageType.ToString();
+            if (Extension == "gif")
+            {
+                Extension = videoFormat.Replace(".", "");
+            }
+            if (Preferences.saveImageAtAll && Directory.Exists(Preferences.SaveImagesHere))
+            {
+                File.WriteAllBytes(Preferences.SaveImagesHere + @"\" + SaveFileName + "." + Extension, FileData);
+            }
+
+            bool wat = Preferences.BackupImages;
+            if (Preferences.BackupImages)
+            {
+                if(!Directory.Exists(BackupDirectory))
+                {
+                    Directory.CreateDirectory(BackupDirectory);
+                }
+                File.WriteAllBytes(BackupDirectory + @"\" + SaveFileName + "." + Extension, FileData);
+                int i = 0;
+                foreach(string file in Directory.GetFiles(BackupDirectory).OrderBy(f => f).Reverse())
+                {
+                    i++;
+                    if(i > 100)
+                    {
+                        File.Delete(file);
+                    }
+                }
+            }
+
+            if (EditorResult == NewImageEditor.EditorResult.Quit)
             {
                 return;
             }
 
-            bool SaveEnabledInSettings = Preferences.saveImageAtAll && Directory.Exists(Preferences.SaveImagesHere);
 
-            if (SaveEnabledInSettings)
-            {
-                string SaveFileName = DateTime.UtcNow.ToString("yyyyMMddHHmmssfff");
-                string Extension = imageType.ToString();
-                if(Extension == "gif")
-                {
-                    Extension = videoFormat.Replace(".", "");
-                }
-                string whereToSave = Preferences.SaveImagesHere + @"\" + SaveFileName + "." + Extension;
-                File.WriteAllBytes(whereToSave, FileData);
-            }
-            else if (EditorResult == NewImageEditor.EditorResult.Save) // If gif, ask to save only if 
+            if (EditorResult == NewImageEditor.EditorResult.Save) // If gif, ask to save only if 
             {
                 if (imageType == filetype.gif) // If it's a gif
                 {
@@ -673,11 +725,11 @@ namespace imageDeCap
                         {
                             bw.DoWork += cap.UploadGif_Gfycat;
                         }
-                        if (Preferences.GifTarget == "imgur")
+                        else if (Preferences.GifTarget == "imgur")
                         {
                             bw.DoWork += cap.UploadGif_Imgur;
                         }
-                        else
+                        else if(Preferences.GifTarget == "webmshare")
                         {
                             bw.DoWork += cap.UploadGif_Webmshare;
                         }
@@ -982,7 +1034,7 @@ namespace imageDeCap
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
+            VersionLabel.Text = MainWindow.VersionNumber;
         }
 
         private void BindPrintscreenTimer_Tick(object sender, EventArgs e)

@@ -40,7 +40,7 @@
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.checkBox7 = new System.Windows.Forms.CheckBox();
-            this.checkBox4 = new System.Windows.Forms.CheckBox();
+            this.BackupImages = new System.Windows.Forms.CheckBox();
             this.checkBox3 = new System.Windows.Forms.CheckBox();
             this.button2 = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
@@ -88,13 +88,14 @@
             this.eventLog1 = new System.Diagnostics.EventLog();
             this.label10 = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.button4 = new System.Windows.Forms.Button();
             this.wavFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.ImageFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.fontDialog = new System.Windows.Forms.FontDialog();
             this.imageContainer = new System.Windows.Forms.PictureBox();
             this.PrintScreenTimer = new System.Windows.Forms.Timer(this.components);
-            this.label13 = new System.Windows.Forms.Label();
-            this.button4 = new System.Windows.Forms.Button();
+            this.ResetHotkeysbutton = new System.Windows.Forms.Button();
+            this.label14 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gifFPS)).BeginInit();
@@ -183,11 +184,11 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(356, 92);
+            this.button3.Location = new System.Drawing.Point(349, 92);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(110, 26);
+            this.button3.Size = new System.Drawing.Size(115, 26);
             this.button3.TabIndex = 26;
-            this.button3.Text = "Reset Preferences";
+            this.button3.Text = "Reset all preferences";
             this.toolTip1.SetToolTip(this.button3, "Re-Sets All Preferences and settings, Including First-Time Startup.");
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
@@ -205,7 +206,7 @@
             // 
             this.textBox2.Location = new System.Drawing.Point(78, 12);
             this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(253, 20);
+            this.textBox2.Size = new System.Drawing.Size(212, 20);
             this.textBox2.TabIndex = 22;
             this.textBox2.Text = "ImageDeCap Upload!";
             this.textBox2.TextChanged += new System.EventHandler(this.textBox2_TextChanged_1);
@@ -226,7 +227,7 @@
             this.checkBox7.AutoSize = true;
             this.checkBox7.Checked = true;
             this.checkBox7.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox7.Location = new System.Drawing.Point(6, 107);
+            this.checkBox7.Location = new System.Drawing.Point(5, 174);
             this.checkBox7.Name = "checkBox7";
             this.checkBox7.Size = new System.Drawing.Size(141, 17);
             this.checkBox7.TabIndex = 8;
@@ -234,23 +235,25 @@
             this.checkBox7.UseVisualStyleBackColor = true;
             this.checkBox7.CheckedChanged += new System.EventHandler(this.checkBox7_CheckedChanged);
             // 
-            // checkBox4
+            // BackupImages
             // 
-            this.checkBox4.AutoSize = true;
-            this.checkBox4.Location = new System.Drawing.Point(6, 176);
-            this.checkBox4.Name = "checkBox4";
-            this.checkBox4.Size = new System.Drawing.Size(131, 17);
-            this.checkBox4.TabIndex = 5;
-            this.checkBox4.Text = "Disable sound effects.";
-            this.checkBox4.UseVisualStyleBackColor = true;
-            this.checkBox4.CheckedChanged += new System.EventHandler(this.checkBox4_CheckedChanged);
+            this.BackupImages.AutoSize = true;
+            this.BackupImages.Checked = true;
+            this.BackupImages.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.BackupImages.Location = new System.Drawing.Point(6, 107);
+            this.BackupImages.Name = "BackupImages";
+            this.BackupImages.Size = new System.Drawing.Size(168, 17);
+            this.BackupImages.TabIndex = 5;
+            this.BackupImages.Text = "Back up the last 100 captures";
+            this.BackupImages.UseVisualStyleBackColor = true;
+            this.BackupImages.CheckedChanged += new System.EventHandler(this.BackupImages_CheckedChanged);
             // 
             // checkBox3
             // 
             this.checkBox3.AutoSize = true;
             this.checkBox3.Checked = true;
             this.checkBox3.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox3.Location = new System.Drawing.Point(175, 53);
+            this.checkBox3.Location = new System.Drawing.Point(9, 99);
             this.checkBox3.Name = "checkBox3";
             this.checkBox3.Size = new System.Drawing.Size(135, 17);
             this.checkBox3.TabIndex = 4;
@@ -260,7 +263,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(251, 35);
+            this.button2.Location = new System.Drawing.Point(237, 34);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 2;
@@ -273,7 +276,7 @@
             this.textBox1.Location = new System.Drawing.Point(6, 36);
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(239, 20);
+            this.textBox1.Size = new System.Drawing.Size(228, 20);
             this.textBox1.TabIndex = 1;
             this.textBox1.Text = "C:\\";
             this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
@@ -283,9 +286,9 @@
             this.checkBox1.AutoSize = true;
             this.checkBox1.Location = new System.Drawing.Point(6, 18);
             this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(200, 17);
+            this.checkBox1.Size = new System.Drawing.Size(271, 17);
             this.checkBox1.TabIndex = 0;
-            this.checkBox1.Text = "Always save everything to this folder.";
+            this.checkBox1.Text = "Save everything to this folder immedietly on capture.";
             this.checkBox1.UseVisualStyleBackColor = true;
             this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
@@ -340,24 +343,25 @@
             this.tabControl1.Location = new System.Drawing.Point(3, 6);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(351, 272);
+            this.tabControl1.Size = new System.Drawing.Size(340, 272);
             this.tabControl1.TabIndex = 27;
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.label14);
             this.tabPage1.Controls.Add(this.label12);
             this.tabPage1.Controls.Add(this.label9);
             this.tabPage1.Controls.Add(this.gifFPS);
             this.tabPage1.Controls.Add(this.groupBox2);
             this.tabPage1.Controls.Add(this.CopyImageToClipboard);
             this.tabPage1.Controls.Add(this.checkBox7);
-            this.tabPage1.Controls.Add(this.checkBox4);
+            this.tabPage1.Controls.Add(this.BackupImages);
             this.tabPage1.Controls.Add(this.checkBox6);
             this.tabPage1.Controls.Add(this.checkBox5);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(343, 246);
+            this.tabPage1.Size = new System.Drawing.Size(332, 246);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "General";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -366,7 +370,7 @@
             // 
             this.label12.Location = new System.Drawing.Point(3, 216);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(338, 30);
+            this.label12.Size = new System.Drawing.Size(326, 30);
             this.label12.TabIndex = 39;
             this.label12.Text = "Protip: When \"Edit Image\" is Disabled you can bring up the Editor by pressing rig" +
     "ht-click when selecting what region to capture.";
@@ -411,7 +415,7 @@
             this.groupBox2.Controls.Add(this.button2);
             this.groupBox2.Location = new System.Drawing.Point(3, 3);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(335, 72);
+            this.groupBox2.Size = new System.Drawing.Size(326, 72);
             this.groupBox2.TabIndex = 30;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "File Saving";
@@ -421,9 +425,9 @@
             this.CopyImageToClipboard.AutoSize = true;
             this.CopyImageToClipboard.Location = new System.Drawing.Point(6, 130);
             this.CopyImageToClipboard.Name = "CopyImageToClipboard";
-            this.CopyImageToClipboard.Size = new System.Drawing.Size(142, 17);
+            this.CopyImageToClipboard.Size = new System.Drawing.Size(247, 17);
             this.CopyImageToClipboard.TabIndex = 9;
-            this.CopyImageToClipboard.Text = "Copy image to clipboard.";
+            this.CopyImageToClipboard.Text = "Copy image to clipboard immedietly on capture.";
             this.CopyImageToClipboard.UseVisualStyleBackColor = true;
             this.CopyImageToClipboard.CheckedChanged += new System.EventHandler(this.CopyImageToClipboard_CheckedChanged);
             // 
@@ -445,7 +449,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(343, 246);
+            this.tabPage2.Size = new System.Drawing.Size(332, 246);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Hotkeys";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -461,6 +465,7 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.ResetHotkeysbutton);
             this.groupBox3.Controls.Add(this.label11);
             this.groupBox3.Controls.Add(this.label6);
             this.groupBox3.Controls.Add(this.HotkeyTextBox1);
@@ -471,7 +476,7 @@
             this.groupBox3.Controls.Add(this.label5);
             this.groupBox3.Location = new System.Drawing.Point(3, 3);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(337, 205);
+            this.groupBox3.Size = new System.Drawing.Size(323, 205);
             this.groupBox3.TabIndex = 31;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Hotkeys";
@@ -532,28 +537,28 @@
             this.tabPage3.Controls.Add(this.checkBox3);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(343, 246);
+            this.tabPage3.Size = new System.Drawing.Size(332, 246);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Uploading";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
             // groupBox5
             // 
-            this.groupBox5.Controls.Add(this.label13);
             this.groupBox5.Controls.Add(this.webmshareButton);
             this.groupBox5.Controls.Add(this.gfycatButton);
-            this.groupBox5.Location = new System.Drawing.Point(3, 99);
+            this.groupBox5.Location = new System.Drawing.Point(241, 53);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(331, 48);
+            this.groupBox5.Size = new System.Drawing.Size(93, 94);
             this.groupBox5.TabIndex = 32;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Gif Target";
+            this.groupBox5.Visible = false;
             // 
             // webmshareButton
             // 
             this.webmshareButton.AutoSize = true;
             this.webmshareButton.Checked = true;
-            this.webmshareButton.Location = new System.Drawing.Point(69, 20);
+            this.webmshareButton.Location = new System.Drawing.Point(6, 43);
             this.webmshareButton.Name = "webmshareButton";
             this.webmshareButton.Size = new System.Drawing.Size(82, 17);
             this.webmshareButton.TabIndex = 1;
@@ -579,7 +584,7 @@
             this.groupBox4.Controls.Add(this.label1);
             this.groupBox4.Location = new System.Drawing.Point(3, 3);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(337, 44);
+            this.groupBox4.Size = new System.Drawing.Size(326, 44);
             this.groupBox4.TabIndex = 31;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Pastebin";
@@ -604,7 +609,7 @@
             this.groupBox1.Controls.Add(this.FTPUsername);
             this.groupBox1.Location = new System.Drawing.Point(3, 153);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(337, 91);
+            this.groupBox1.Size = new System.Drawing.Size(326, 91);
             this.groupBox1.TabIndex = 30;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "FTP Settings";
@@ -615,7 +620,7 @@
             this.tabPage4.Controls.Add(this.groupBox6);
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(343, 246);
+            this.tabPage4.Size = new System.Drawing.Size(332, 246);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Misc";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -623,7 +628,7 @@
             // checkBox8
             // 
             this.checkBox8.AutoSize = true;
-            this.checkBox8.Location = new System.Drawing.Point(9, 80);
+            this.checkBox8.Location = new System.Drawing.Point(5, 80);
             this.checkBox8.Name = "checkBox8";
             this.checkBox8.Size = new System.Drawing.Size(192, 17);
             this.checkBox8.TabIndex = 1;
@@ -642,7 +647,7 @@
             this.groupBox6.Controls.Add(this.watermarkLocation0);
             this.groupBox6.Location = new System.Drawing.Point(5, 4);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(325, 70);
+            this.groupBox6.Size = new System.Drawing.Size(324, 70);
             this.groupBox6.TabIndex = 1;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Watermark";
@@ -677,6 +682,7 @@
             this.watermarkLocation3.TabIndex = 48;
             this.watermarkLocation3.TabStop = true;
             this.watermarkLocation3.Text = "Bottom Right";
+            this.watermarkLocation3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.watermarkLocation3.UseVisualStyleBackColor = true;
             // 
             // watermarkTextbox
@@ -705,6 +711,7 @@
             this.watermarkLocation1.Size = new System.Drawing.Size(72, 17);
             this.watermarkLocation1.TabIndex = 46;
             this.watermarkLocation1.Text = "Top Right";
+            this.watermarkLocation1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.watermarkLocation1.UseVisualStyleBackColor = true;
             // 
             // watermarkLocation0
@@ -753,6 +760,17 @@
             this.label10.Text = "Check mattwestphal.com for updates! ";
             this.label10.Click += new System.EventHandler(this.label10_Click);
             // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(349, 124);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(115, 26);
+            this.button4.TabIndex = 32;
+            this.button4.Text = "Add to startup";
+            this.toolTip1.SetToolTip(this.button4, "Re-Sets All Preferences and settings, Including First-Time Startup.");
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
             // wavFileDialog
             // 
             this.wavFileDialog.DefaultExt = "wav";
@@ -783,26 +801,29 @@
             this.PrintScreenTimer.Interval = 1000;
             this.PrintScreenTimer.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // label13
+            // ResetHotkeysbutton
             // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(158, 15);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(156, 26);
-            this.label13.TabIndex = 2;
-            this.label13.Text = "Webmshare is faster but gfycat \r\nhas better chat intergration.";
-            this.label13.Click += new System.EventHandler(this.label13_Click);
+            this.ResetHotkeysbutton.Location = new System.Drawing.Point(226, 11);
+            this.ResetHotkeysbutton.Name = "ResetHotkeysbutton";
+            this.ResetHotkeysbutton.Size = new System.Drawing.Size(91, 26);
+            this.ResetHotkeysbutton.TabIndex = 39;
+            this.ResetHotkeysbutton.Text = "Reset hotkeys";
+            this.toolTip1.SetToolTip(this.ResetHotkeysbutton, "Re-Sets All Preferences and settings, Including First-Time Startup.");
+            this.ResetHotkeysbutton.UseVisualStyleBackColor = true;
+            this.ResetHotkeysbutton.Click += new System.EventHandler(this.ResetHotkeysbutton_Click);
             // 
-            // button4
+            // label14
             // 
-            this.button4.Location = new System.Drawing.Point(356, 126);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(110, 26);
-            this.button4.TabIndex = 32;
-            this.button4.Text = "Add to startup";
-            this.toolTip1.SetToolTip(this.button4, "Re-Sets All Preferences and settings, Including First-Time Startup.");
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
+            this.label14.AutoSize = true;
+            this.label14.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label14.ForeColor = System.Drawing.Color.RoyalBlue;
+            this.label14.Location = new System.Drawing.Point(167, 108);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(31, 13);
+            this.label14.TabIndex = 41;
+            this.label14.Text = "here.";
+            this.label14.Click += new System.EventHandler(this.label14_Click);
             // 
             // SettingsWindow
             // 
@@ -859,7 +880,7 @@
         private System.Windows.Forms.PictureBox imageContainer;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.CheckBox checkBox7;
-        private System.Windows.Forms.CheckBox checkBox4;
+        private System.Windows.Forms.CheckBox BackupImages;
         private System.Windows.Forms.CheckBox checkBox3;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.TextBox textBox1;
@@ -919,7 +940,8 @@
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.RadioButton webmshareButton;
         private System.Windows.Forms.RadioButton gfycatButton;
-        private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button ResetHotkeysbutton;
+        private System.Windows.Forms.Label label14;
     }
 }

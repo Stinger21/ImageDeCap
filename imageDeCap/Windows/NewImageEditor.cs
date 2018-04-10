@@ -319,7 +319,7 @@ namespace imageDeCap
 
         public PictureEditor(Image InputImage, NewImageEditor owner)
         {
-            Console.WriteLine("Initialize Editor");
+            //Console.WriteLine("Initialize Editor");
             this.owner = owner;
             DrawImage(ref InputImage, ref UnEditedImage);
             DrawImage(ref InputImage, ref TempImage);
@@ -508,7 +508,9 @@ namespace imageDeCap
 
             if (System.Windows.Input.Keyboard.IsKeyDown(System.Windows.Input.Key.LeftAlt))
             {
-                owner.CurrentButton.BackColor = ((Bitmap)EditedImage).GetPixel((int)MousePosition.X, (int)MousePosition.Y);
+                var NewColor = ((Bitmap)EditedImage).GetPixel((int)MousePosition.X, (int)MousePosition.Y);
+                owner.CurrentButton.BackColor = NewColor;
+                Clipboard.SetText("#" + NewColor.R.ToString("X2") + NewColor.G.ToString("X2") + NewColor.B.ToString("X2"));
             }
             GammaCorrectedBrushSize = (BrushSize * BrushSize) * 0.01f;
             GammaCorrectedTextSize = (TextSize * TextSize) * 0.01f;
@@ -546,10 +548,10 @@ namespace imageDeCap
 
         private void DrawBox(Image TargetImage, Vector2 P1, Vector2 P2)
         {
-            DrawLine(TargetImage, P1, new Vector2(P1.X, P2.Y));
-            DrawLine(TargetImage, P1, new Vector2(P2.X, P1.Y));
-            DrawLine(TargetImage, P2, new Vector2(P1.X, P2.Y));
-            DrawLine(TargetImage, P2, new Vector2(P2.X, P1.Y));
+            DrawLine(TargetImage, P1, new Vector2(P1.X, P2.Y), owner.CurrentButton.BackColor, 3);
+            DrawLine(TargetImage, P1, new Vector2(P2.X, P1.Y), owner.CurrentButton.BackColor, 3);
+            DrawLine(TargetImage, P2, new Vector2(P1.X, P2.Y), owner.CurrentButton.BackColor, 3);
+            DrawLine(TargetImage, P2, new Vector2(P2.X, P1.Y), owner.CurrentButton.BackColor, 3);
         }
 
         private void DrawText(Image TargetImage, string text, Vector2 Location, float opacity = 1.0f)

@@ -34,19 +34,19 @@
             this.startTrack = new System.Windows.Forms.TrackBar();
             this.endTrack = new System.Windows.Forms.TrackBar();
             this.toolsBox = new System.Windows.Forms.GroupBox();
+            this.label9 = new System.Windows.Forms.Label();
             this.UploadButton = new System.Windows.Forms.Button();
+            this.ScaleThing = new System.Windows.Forms.NumericUpDown();
             this.SaveButton = new System.Windows.Forms.Button();
             this.BackgroundTrack = new System.Windows.Forms.TrackBar();
             this.FPSLabel = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.ScaleThing = new System.Windows.Forms.NumericUpDown();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.PictureBox = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.startTrack)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.endTrack)).BeginInit();
             this.toolsBox.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.BackgroundTrack)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ScaleThing)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.BackgroundTrack)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBox)).BeginInit();
             this.SuspendLayout();
             // 
@@ -86,7 +86,9 @@
             // 
             // toolsBox
             // 
+            this.toolsBox.Controls.Add(this.label9);
             this.toolsBox.Controls.Add(this.UploadButton);
+            this.toolsBox.Controls.Add(this.ScaleThing);
             this.toolsBox.Controls.Add(this.SaveButton);
             this.toolsBox.Controls.Add(this.endTrack);
             this.toolsBox.Controls.Add(this.startTrack);
@@ -99,6 +101,16 @@
             this.toolsBox.TabStop = false;
             this.toolsBox.Text = "Tools";
             // 
+            // label9
+            // 
+            this.label9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(547, 11);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(48, 13);
+            this.label9.TabIndex = 37;
+            this.label9.Text = "Scale %:";
+            // 
             // UploadButton
             // 
             this.UploadButton.BackgroundImage = global::imageDeCap.Properties.Resources.upload;
@@ -109,6 +121,33 @@
             this.UploadButton.TabIndex = 42;
             this.UploadButton.UseVisualStyleBackColor = true;
             this.UploadButton.Click += new System.EventHandler(this.Uploadbutton_Click);
+            // 
+            // ScaleThing
+            // 
+            this.ScaleThing.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.ScaleThing.Increment = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.ScaleThing.Location = new System.Drawing.Point(550, 26);
+            this.ScaleThing.Minimum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.ScaleThing.Name = "ScaleThing";
+            this.ScaleThing.Size = new System.Drawing.Size(120, 20);
+            this.ScaleThing.TabIndex = 36;
+            this.ScaleThing.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            this.ScaleThing.ValueChanged += new System.EventHandler(this.ScaleThing_ValueChanged);
+            this.ScaleThing.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ScaleThing_KeyDown);
+            this.ScaleThing.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.ScaleThing_KeyPress);
+            this.ScaleThing.KeyUp += new System.Windows.Forms.KeyEventHandler(this.ScaleThing_KeyUp);
             // 
             // SaveButton
             // 
@@ -144,42 +183,6 @@
             this.FPSLabel.Text = "Average recorded framerate: ";
             this.FPSLabel.Visible = false;
             // 
-            // label9
-            // 
-            this.label9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(537, 161);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(48, 13);
-            this.label9.TabIndex = 37;
-            this.label9.Text = "Scale %:";
-            this.label9.Visible = false;
-            // 
-            // ScaleThing
-            // 
-            this.ScaleThing.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.ScaleThing.Increment = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.ScaleThing.Location = new System.Drawing.Point(540, 176);
-            this.ScaleThing.Minimum = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.ScaleThing.Name = "ScaleThing";
-            this.ScaleThing.Size = new System.Drawing.Size(120, 20);
-            this.ScaleThing.TabIndex = 36;
-            this.ScaleThing.Value = new decimal(new int[] {
-            100,
-            0,
-            0,
-            0});
-            this.ScaleThing.Visible = false;
-            this.ScaleThing.ValueChanged += new System.EventHandler(this.ScaleThing_ValueChanged);
-            // 
             // PictureBox
             // 
             this.PictureBox.Location = new System.Drawing.Point(12, 12);
@@ -195,8 +198,6 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(682, 307);
-            this.Controls.Add(this.label9);
-            this.Controls.Add(this.ScaleThing);
             this.Controls.Add(this.toolsBox);
             this.Controls.Add(this.FPSLabel);
             this.Controls.Add(this.PictureBox);
@@ -210,8 +211,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.startTrack)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.endTrack)).EndInit();
             this.toolsBox.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.BackgroundTrack)).EndInit();
+            this.toolsBox.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ScaleThing)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.BackgroundTrack)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

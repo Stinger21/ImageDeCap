@@ -38,7 +38,7 @@ namespace imageDeCap
         public void UploadImage_Imgur(object sender, DoWorkEventArgs e)
         {
             byte[] FileData = (byte[])e.Argument;
-        
+            
             try
             {
                 var client = new ImgurClient("da05117bbfa9bda");
@@ -153,7 +153,7 @@ namespace imageDeCap
 
             FtpWebResponse response = (FtpWebResponse)request.GetResponse();
 
-            Console.WriteLine("Upload File Complete, status {0}", response.StatusDescription);
+            //Console.WriteLine("Upload File Complete, status {0}", response.StatusDescription);
 
             response.Close();
         }
@@ -359,6 +359,8 @@ namespace imageDeCap
         #endregion
     }
 
+    // Good fucking god, web things are my cryptonite. Why does this all have to be so needlessly complicated. 
+
     public static class Webmshare
     {
         public static (bool UploadSuccessfull, string Message) Upload(byte[] FileData)
@@ -418,7 +420,7 @@ namespace imageDeCap
             while (true)
             {
                 var statusResponse = Status(createResponse.GfyName).GetAwaiter().GetResult();
-                Console.WriteLine("Gfycat " + FileData.Length + ", " + statusResponse.Task + ", " + statusResponse.Progress);
+                //Console.WriteLine("Gfycat " + FileData.Length + ", " + statusResponse.Task + ", " + statusResponse.Progress);
 
                 if (statusResponse.Task == "NotFoundo")
                 {
@@ -488,4 +490,5 @@ namespace imageDeCap
             public double Progress { get; set; }
         }
     }
+    
 }

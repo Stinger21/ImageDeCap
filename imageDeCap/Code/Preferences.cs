@@ -14,13 +14,13 @@ namespace imageDeCap
         public static string c_General;
         public static string SaveImagesHere = "";
         public static bool saveImageAtAll = false;
-        public static bool AlsoSaveTextFiles = false;
         public static bool FreezeScreenOnRegionShot = true;
         public static bool EditScreenshotAfterCapture = true;
         public static bool CopyImageToClipboard = true;
         public static bool DisableNotifications = false;
         public static bool DisableSoundEffects = false;
         public static int GIFRecordingFramerate = 24;
+        public static bool BackupImages = true;
 
         // Hotkeys
         public static string c_Hotkeys;
@@ -38,8 +38,7 @@ namespace imageDeCap
         public static string FTPurl = "ftp://speedtest.tele2.net/upload/";
         public static string FTPusername = "anonymous";
         public static string FTPpassword = "password";
-        public static bool AlsoFTPTextFiles = false;
-        public static string GifTarget = "webmshare";
+        public static string GifTarget = "gfycat";
 
         // Misc
         public static string c_Misc;
@@ -54,7 +53,7 @@ namespace imageDeCap
 
         // Metaprogramming shenanigans to make the data above avilable as an ini file.
         static List<object> Defaults = new List<object>();
-        public static void Reset()
+        public static void ResetAllPreferences()
         {
             FieldInfo[] fields = typeof(Preferences).GetFields();
             int numFields = fields.Count();
@@ -63,7 +62,20 @@ namespace imageDeCap
                 fields[i].SetValue(typeof(Preferences), Defaults[i]);
             }
         }
-        
+
+        public static void ResetPreference(string PreferenceName)
+        {
+            FieldInfo[] fields = typeof(Preferences).GetFields();
+            int numFields = fields.Count();
+            for (int i = 0; i < numFields; i++)
+            {
+                if(PreferenceName == fields[i].Name)
+                {
+                    fields[i].SetValue(typeof(Preferences), Defaults[i]);
+                }
+            }
+        }
+
         public static void Load()
         {
             // Get Defaults and save them so we can reset at any point
@@ -110,6 +122,7 @@ namespace imageDeCap
                 }
             }
         }
+
         public static void Save()
         {
             FieldInfo[] fields = typeof(Preferences).GetFields();

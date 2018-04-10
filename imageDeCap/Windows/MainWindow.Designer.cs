@@ -38,7 +38,7 @@
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.label1 = new System.Windows.Forms.Label();
+            this.VersionLabel = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -124,7 +124,7 @@
             // groupBox2
             // 
             this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
-            this.groupBox2.Controls.Add(this.label1);
+            this.groupBox2.Controls.Add(this.VersionLabel);
             this.groupBox2.Controls.Add(this.label2);
             this.groupBox2.Controls.Add(this.listBox1);
             this.groupBox2.Location = new System.Drawing.Point(12, 138);
@@ -134,15 +134,15 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Links";
             // 
-            // label1
+            // VersionLabel
             // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(175, 303);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(34, 13);
-            this.label1.TabIndex = 17;
-            this.label1.Text = "v1.25";
+            this.VersionLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.VersionLabel.AutoSize = true;
+            this.VersionLabel.Location = new System.Drawing.Point(175, 303);
+            this.VersionLabel.Name = "VersionLabel";
+            this.VersionLabel.Size = new System.Drawing.Size(34, 13);
+            this.VersionLabel.TabIndex = 17;
+            this.VersionLabel.Text = "VERSION_NUMBER";
             // 
             // label2
             // 
@@ -291,7 +291,7 @@
         private System.Windows.Forms.ToolStripMenuItem clearLinksToolStripMenuItem;
         public System.Windows.Forms.Label label2;
         public System.Windows.Forms.Timer GifCaptureTimer;
-        public System.Windows.Forms.Label label1;
+        public System.Windows.Forms.Label VersionLabel;
         private System.Windows.Forms.Timer BindPrintscreenTimer;
     }
 }

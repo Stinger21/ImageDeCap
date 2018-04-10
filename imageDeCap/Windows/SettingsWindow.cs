@@ -33,7 +33,7 @@ namespace imageDeCap
 
             checkBox7.Checked = Preferences.EditScreenshotAfterCapture;
             checkBox3.Checked = Preferences.CopyLinksToClipboard;
-            checkBox4.Checked = Preferences.DisableSoundEffects;
+            BackupImages.Checked = Preferences.DisableSoundEffects;
 
             checkBox2.Checked = Preferences.OpenInBrowser;
             checkBox2.Enabled = !Preferences.NeverUpload;
@@ -98,14 +98,17 @@ namespace imageDeCap
             watermarkBrowseButton.Enabled = Preferences.AddWatermark;
             watermarkTextbox.Enabled = Preferences.AddWatermark;
 
-            if (Preferences.GifTarget == "gfycat")
-            {
-                gfycatButton.Checked = true;
-            }
-            else
-            {
-                webmshareButton.Checked = true;
-            }
+            //if (Preferences.GifTarget == "gfycat")
+            //{
+            //    gfycatButton.Checked = true;
+            //}
+            //else
+            //{
+            //    webmshareButton.Checked = true;
+            //}
+
+
+            BackupImages.Checked = Preferences.BackupImages;
 
         }
 
@@ -185,7 +188,7 @@ namespace imageDeCap
 
         private void checkBox4_CheckedChanged(object sender, EventArgs e)
         {
-            Preferences.DisableSoundEffects = checkBox4.Checked;
+            Preferences.DisableSoundEffects = BackupImages.Checked;
             Preferences.Save();
         }
 
@@ -213,7 +216,7 @@ namespace imageDeCap
 
         private void button3_Click(object sender, EventArgs e)
         {
-            Preferences.Reset();
+            Preferences.ResetAllPreferences();
             initSettings();
             Preferences.Save();
         }
@@ -298,7 +301,7 @@ namespace imageDeCap
 
                 textToPutInBox = textToPutInBox.Remove(textToPutInBox.Length - 1);
                 textToPutInBox = textToPutInBox.Replace("Scroll", "ScrollLock");
-                Console.WriteLine(textToPutInBox);
+                //Console.WriteLine(textToPutInBox);
                 return textToPutInBox;
             }
 
@@ -529,7 +532,7 @@ namespace imageDeCap
                 KeyModifier modifier = (KeyModifier)((int)m.LParam & 0xFFFF);       // The modifier of the hotkey that was pressed.
                 int id = m.WParam.ToInt32();                                        // The id of the hotkey that was pressed.
 
-                // Console.WriteLine("pront scroon");
+                // //Console.WriteLine("pront scroon");
                 
                 if (HotkeyTextBox1.ContainsFocus)
                 {
@@ -573,13 +576,13 @@ namespace imageDeCap
 
         private void HotkeyTextBox3_Enter(object sender, EventArgs e)
         {
-            Console.WriteLine("ENTER");
+            //Console.WriteLine("ENTER");
             BindUpPrintScreen();
         }
 
         private void HotkeyTextBox3_Leave(object sender, EventArgs e)
         {
-            Console.WriteLine("LEAVE");
+            //Console.WriteLine("LEAVE");
             UnregisterHotKey(this.Handle, 0);
         }
 
@@ -614,9 +617,32 @@ namespace imageDeCap
         // Add the program to startup
         private void button4_Click(object sender, EventArgs e)
         {
-            string startupPath = Environment.GetFolderPath(Environment.SpecialFolder.Startup) + @"\imageDeCap.lnk";
-            string exeDir = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
-            MainWindow.CreateShortcut(startupPath, exeDir);
+            MainWindow.AddToStartup();
+            MessageBox.Show("Added to startup", "ImageDeCap added to startup!");
+        }
+
+        private void ResetHotkeysbutton_Click(object sender, EventArgs e)
+        {
+            Preferences.ResetPreference(nameof(Preferences.Hotkey1));
+            Preferences.ResetPreference(nameof(Preferences.Hotkey2));
+            Preferences.ResetPreference(nameof(Preferences.Hotkey3));
+            Preferences.Save();
+            initSettings();
+        }
+
+        private void label14_Click(object sender, EventArgs e)
+        {
+            if (!Directory.Exists(MainWindow.BackupDirectory))
+            {
+                Directory.CreateDirectory(MainWindow.BackupDirectory);
+            }
+            System.Diagnostics.Process.Start(MainWindow.BackupDirectory);
+        }
+
+        private void BackupImages_CheckedChanged(object sender, EventArgs e)
+        {
+            Preferences.BackupImages = BackupImages.Checked;
+            Preferences.Save();
         }
     }
 }

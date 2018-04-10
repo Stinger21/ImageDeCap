@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -45,8 +46,29 @@ namespace imageDeCap
                 return (result, new byte[] { });
             }
 
+            Bitmap[] ScaledImages = null;
+            bool edited = scalePct != 1.0f;
+            if (edited)
+            {
+                ScaledImages = new Bitmap[EditedImage.Length];
+                for (int i = 0; i < EditedImage.Length; i++)
+                {
+                    int newWidth = (int)((float)EditedImage[i].Width * scalePct);
+                    int newHeight = (int)((float)EditedImage[i].Height * scalePct);
+                    ScaledImages[i] = new Bitmap(newWidth, newHeight);
+                    using (Graphics gr = Graphics.FromImage(ScaledImages[i]))
+                    {
+                        gr.SmoothingMode = SmoothingMode.HighQuality;
+                        gr.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                        gr.PixelOffsetMode = PixelOffsetMode.HighQuality;
+                        gr.CompositingQuality = CompositingQuality.HighQuality;
+                        gr.DrawImage(EditedImage[i], new Rectangle(0, 0, newWidth, newHeight));
+                    }
+                }
+            }
+
             // cleanup
-            return (result, VideoFromFrames(EditedImage, FrameRate));
+            return (result, VideoFromFrames(edited ? ScaledImages : EditedImage, FrameRate));
         }
 
         NewImageEditor.EditorResult result = NewImageEditor.EditorResult.Quit;
@@ -127,7 +149,7 @@ namespace imageDeCap
                 ActualFrameNumber = (CurrentFrame % TheImage.Length);
             }
 
-            Console.WriteLine(ActualFrameNumber);
+            //Console.WriteLine(ActualFrameNumber);
             CurrentImage = TheImage[ActualFrameNumber];
             PictureBox.Image = CurrentImage;
             BackgroundTrack.Value = Math.Min(Math.Max(ActualFrameNumber, BackgroundTrack.Minimum), BackgroundTrack.Maximum);
@@ -220,7 +242,7 @@ namespace imageDeCap
             }
 
                 
-            float scalePct = (float)ScaleThing.Value / 100.0f;
+            scalePct = (float)ScaleThing.Value / 100.0f;
 
             SavedImageStart = (int)startTrack.Value;
             SavedImageEnd = (int)endTrack.Value;
@@ -232,11 +254,6 @@ namespace imageDeCap
         {
             CalculateFileSizeAndSaveOutputImage();
         }
-
-        private void uploadButton_Click(object sender, EventArgs e)
-        {
-        }
-
         private void GifEditor_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode.ToString() == "Escape")
@@ -245,7 +262,19 @@ namespace imageDeCap
             }
         }
         
-        
+        float scalePct = 1.0f;
+        private void ScaleThing_ValueChanged(object sender, EventArgs e)
+        {
+            scalePct = (float)ScaleThing.Value / 100.0f;
+            PictureBox.Size = new Size((int)(CurrentImage.Width * scalePct), (int)(CurrentImage.Height * scalePct));
+        }
+
+        private void ScaleThing_KeyDown(object sender, KeyEventArgs e)
+        {
+            //scalePct = (float)ScaleThing.Value / 100.0f;
+            //PictureBox.Size = new Size((int)(CurrentImage.Width * scalePct), (int)(CurrentImage.Height * scalePct));
+        }
+
         private void GifEditor_Load(object sender, EventArgs e)
         {
 
@@ -256,9 +285,15 @@ namespace imageDeCap
 
         }
 
-        private void ScaleThing_ValueChanged(object sender, EventArgs e)
+        private void ScaleThing_KeyUp(object sender, KeyEventArgs e)
         {
-            float scalePct = (float)ScaleThing.Value / 100.0f;
+            //scalePct = (float)ScaleThing.Value / 100.0f;
+            //PictureBox.Size = new Size((int)(CurrentImage.Width * scalePct), (int)(CurrentImage.Height * scalePct));
+        }
+
+        private void ScaleThing_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            scalePct = (float)ScaleThing.Value / 100.0f;
             PictureBox.Size = new Size((int)(CurrentImage.Width * scalePct), (int)(CurrentImage.Height * scalePct));
         }
     }
