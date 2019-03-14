@@ -666,9 +666,26 @@ namespace imageDeCap
             {
                 Extension = videoFormat.Replace(".", "");
             }
-            if (Preferences.saveImageAtAll && Directory.Exists(Preferences.SaveImagesHere))
+            if (Preferences.saveImageAtAll)
             {
-                File.WriteAllBytes(Path.Combine(Path.GetFullPath(Environment.ExpandEnvironmentVariables(Preferences.SaveImagesHere)), SaveFileName + "." + Extension), FileData);
+                string directory_path = Path.GetFullPath(Environment.ExpandEnvironmentVariables(Preferences.SaveImagesHere));
+                string file_path = Path.Combine(directory_path, SaveFileName + "." + Extension);
+                try
+                {
+                    DirectoryInfo di = Directory.CreateDirectory(directory_path);
+                    try
+                    {
+                        File.WriteAllBytes(file_path, FileData);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine($"Failed to create the file {file_path}. Exception: {e.Message}");
+                    }
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show($"Failed create the directory {directory_path}. Exception: {e.Message}");
+                }
             }
 
             bool wat = Preferences.BackupImages;
