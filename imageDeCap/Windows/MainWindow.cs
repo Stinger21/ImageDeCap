@@ -668,9 +668,8 @@ namespace imageDeCap
             }
             if (Preferences.saveImageAtAll && Directory.Exists(Preferences.SaveImagesHere))
             {
-                File.WriteAllBytes(Preferences.SaveImagesHere + @"\" + SaveFileName + "." + Extension, FileData);
+                File.WriteAllBytes(Path.Combine(Path.GetFullPath(Environment.ExpandEnvironmentVariables(Preferences.SaveImagesHere)), SaveFileName + "." + Extension), FileData);
             }
-
 
             bool wat = Preferences.BackupImages;
             if (Preferences.BackupImages)
