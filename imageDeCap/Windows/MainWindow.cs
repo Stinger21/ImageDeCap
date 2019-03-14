@@ -589,9 +589,20 @@ namespace imageDeCap
             //DataFormats.Format myFormat = DataFormats.GetFormat("myFormat");
             if (imageType != filetype.gif)
             {
-                if(Preferences.CopyImageToClipboard)
+                if (Preferences.CopyImageToClipboard)
                 {
-                    Clipboard.SetImage(Image.FromStream(new MemoryStream(FileData)));
+                    for (int i = 0; i < 10; i++)
+                    {
+                        try
+                        {
+                            Clipboard.SetImage(Image.FromStream(new MemoryStream(FileData)));
+                            break;
+                        }
+                        catch (ExternalException) // Requested clipboard operation did not succeed
+                        {
+                            Thread.Sleep(100);
+                        }
+                    }
                 }
             }
 
@@ -659,6 +670,7 @@ namespace imageDeCap
             {
                 File.WriteAllBytes(Preferences.SaveImagesHere + @"\" + SaveFileName + "." + Extension, FileData);
             }
+
 
             bool wat = Preferences.BackupImages;
             if (Preferences.BackupImages)
