@@ -31,27 +31,27 @@ namespace imageDeCap
             InitializeComponent();
             //SetStyle(ControlStyles.SupportsTransparentBackColor, true);
 
-            MakeBox(58, 57, 4, 4, Color.Red);
+            MakeBox(58, 58, 4, 4, Color.Red);
 
-            // left
-            MakeBox(50 - 28, 58, 32, 2, Color.Black);
-            MakeBox(50 - 28, 58+2, 32, 1, Color.White);
-            MakeBox(50 - 28, 58-1, 32, 1, Color.White);
+            // left  
+            MakeBox(50 - 28,    58     + 1,     32,     2, Color.Black);
+            MakeBox(50 - 28,    58 + 2 + 1,     32,     1, Color.White);
+            MakeBox(50 - 28,    58 - 1 + 1,     32,     1, Color.White);
 
             // up
-            MakeBox(59, 49 - 28, 2, 32, Color.Black);
-            MakeBox(59 + 2, 49 - 28, 1, 32, Color.White);
-            MakeBox(59 - 1, 49 - 28, 1, 32, Color.White);
+            MakeBox(59,         49 - 28 + 1,    2,      32, Color.Black);
+            MakeBox(59 + 2,     49 - 28 + 1,    1,      32, Color.White);
+            MakeBox(59 - 1,     49 - 28 + 1,    1,      32, Color.White);
 
             // right
-            MakeBox(66, 58, 32, 2, Color.Black);
-            MakeBox(66, 58 + 2, 32, 1, Color.White);
-            MakeBox(66, 58 - 1, 32, 1, Color.White);
+            MakeBox(66,         58     + 1,     32,     2, Color.Black);
+            MakeBox(66,         58 + 2 + 1,     32,     1, Color.White);
+            MakeBox(66,         58 - 1 + 1,     32,     1, Color.White);
 
             // down
-            MakeBox(59, 65, 2, 32, Color.Black);
-            MakeBox(59 + 2, 65, 1, 32, Color.White);
-            MakeBox(59 - 1, 65, 1, 32, Color.White);
+            MakeBox(59,         65     + 1,     2,      32, Color.Black);
+            MakeBox(59 + 2,     65     + 1,     1,      32, Color.White);
+            MakeBox(59 - 1,     65     + 1,     1,      32, Color.White);
 
             this.ShowInTaskbar = false;
 
@@ -64,6 +64,12 @@ namespace imageDeCap
                 CaptureType.Text = "Image";
             }
             label1.Text = "0x0";
+
+            label1.Parent = pictureBoxWithInterpolationMode1;
+            CaptureType.Parent = pictureBoxWithInterpolationMode1;
+
+            label1.BackColor = Color.Transparent;
+            CaptureType.BackColor = Color.Transparent;
         }
 
         private void MakeBox(int x, int y, int with, int height, Color color)
@@ -84,13 +90,15 @@ namespace imageDeCap
             g = this.CreateGraphics();
             g = Graphics.FromImage(bmp);
             g.CopyFromScreen(MousePosition.X - 16, MousePosition.Y - 16, 0, 0, new Size(32, 32));
+            g.DrawRectangle(new Pen(Color.FromArgb(128, 0, 0, 0), 5), new Rectangle(3, 3, 6, 5));
+            g.DrawRectangle(new Pen(Color.FromArgb(128, 0, 0, 0), 2), new Rectangle(0, 0, 32, 32));
             pictureBoxWithInterpolationMode1.Image = bmp;
             foreach(PictureBox picture in Boxes)
             {
                 picture.BringToFront();
             }
             label1.Text = Program.ImageDeCap.tempWidth + "x" + Program.ImageDeCap.tempHeight;
-            label1.BringToFront(); // lol
+            label1.BringToFront();
         }
         
         private void Magnificator_Load(object sender, EventArgs e)
@@ -101,6 +109,15 @@ namespace imageDeCap
         private void pictureBoxWithInterpolationMode1_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pictureBox1_Paint(object sender, PaintEventArgs e)
+        {
         }
     }
 }

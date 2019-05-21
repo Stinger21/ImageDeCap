@@ -30,9 +30,9 @@
         {
             this.components = new System.ComponentModel.Container();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.pictureBoxWithInterpolationMode1 = new imageDeCap.PictureBoxWithInterpolationMode();
             this.label1 = new System.Windows.Forms.Label();
             this.CaptureType = new System.Windows.Forms.Label();
+            this.pictureBoxWithInterpolationMode1 = new imageDeCap.PictureBoxWithInterpolationMode();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxWithInterpolationMode1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -41,6 +41,28 @@
             this.timer1.Enabled = true;
             this.timer1.Interval = 1;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.BackColor = System.Drawing.Color.Black;
+            this.label1.ForeColor = System.Drawing.Color.White;
+            this.label1.Location = new System.Drawing.Point(5, 4);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(24, 13);
+            this.label1.TabIndex = 3;
+            this.label1.Text = "0x0";
+            // 
+            // CaptureType
+            // 
+            this.CaptureType.AutoSize = true;
+            this.CaptureType.BackColor = System.Drawing.Color.Black;
+            this.CaptureType.ForeColor = System.Drawing.Color.White;
+            this.CaptureType.Location = new System.Drawing.Point(5, 19);
+            this.CaptureType.Name = "CaptureType";
+            this.CaptureType.Size = new System.Drawing.Size(36, 13);
+            this.CaptureType.TabIndex = 4;
+            this.CaptureType.Text = "Image";
             // 
             // pictureBoxWithInterpolationMode1
             // 
@@ -54,24 +76,6 @@
             this.pictureBoxWithInterpolationMode1.TabIndex = 2;
             this.pictureBoxWithInterpolationMode1.TabStop = false;
             this.pictureBoxWithInterpolationMode1.Click += new System.EventHandler(this.pictureBoxWithInterpolationMode1_Click);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(5, 4);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(24, 13);
-            this.label1.TabIndex = 3;
-            this.label1.Text = "0x0";
-            // 
-            // CaptureType
-            // 
-            this.CaptureType.AutoSize = true;
-            this.CaptureType.Location = new System.Drawing.Point(5, 19);
-            this.CaptureType.Name = "CaptureType";
-            this.CaptureType.Size = new System.Drawing.Size(36, 13);
-            this.CaptureType.TabIndex = 4;
-            this.CaptureType.Text = "Image";
             // 
             // Magnificator
             // 
