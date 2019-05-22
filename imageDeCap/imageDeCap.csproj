@@ -221,11 +221,11 @@
     <Compile Include="Windows\imageEditor.Designer.cs">
       <DependentUpon>imageEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="Windows\Magnificator.cs">
+    <Compile Include="Windows\Magnifier.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Windows\Magnificator.Designer.cs">
-      <DependentUpon>Magnificator.cs</DependentUpon>
+    <Compile Include="Windows\Magnifier.Designer.cs">
+      <DependentUpon>Magnifier.cs</DependentUpon>
     </Compile>
     <Compile Include="Code\PictureBoxWithInterpolationMode.cs">
       <SubType>Component</SubType>
@@ -261,8 +261,8 @@
     <EmbeddedResource Include="Windows\imageEditor.resx">
       <DependentUpon>imageEditor.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Windows\Magnificator.resx">
-      <DependentUpon>Magnificator.cs</DependentUpon>
+    <EmbeddedResource Include="Windows\Magnifier.resx">
+      <DependentUpon>Magnifier.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -324,6 +324,7 @@
     <None Include="FodyWeavers.xml">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Images\Magnifier.png" />
     <Content Include="Images\Untitled-2.ico" />
     <Content Include="Images\Untitled-2_256x256.png" />
     <Content Include="Images\watermark.png" />

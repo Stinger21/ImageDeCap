@@ -8,7 +8,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-//Me
 using System.Drawing.Drawing2D;
 using System.Runtime.InteropServices;
 using System.Media;
@@ -20,19 +19,16 @@ using System.Threading;
 using System.Xml.Linq;
 using Microsoft.Win32;
 using System.Windows.Media.Imaging;
-
 using System.Text.RegularExpressions;
-
 
 namespace imageDeCap
 {
-
-    // The code in this whole program reads like a fucking joke. DW tho, it only crashes sometimes.
+    // The code in this whole program reads like a joke. DW tho, it only crashes sometimes. ;)
 
     public partial class MainWindow : Form
     {
         public static string videoFormat = ".mp4";
-        public static string VersionNumber = "v1.26";
+        public static string VersionNumber = "v1.27";
         List<string> Links = new List<string>();
         private void addToLinks(string link, bool addToXML = true)
         {
@@ -469,7 +465,7 @@ namespace imageDeCap
         }
 
         completeCover CurrentBackCover;
-        public Magnificator magn;
+        public Magnifier magn;
         public bool isTakingSnapshot = false;
         private void UploadToImgurBounds(bool isGif = false)
         {
@@ -484,7 +480,7 @@ namespace imageDeCap
                 CurrentBackCover.Show();
                 CurrentBackCover.AfterShow(background);
 
-                magn = new Magnificator(isGif);
+                magn = new Magnifier(isGif);
                 magn.Show();
                 magn.TopMost = true;
 

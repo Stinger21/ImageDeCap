@@ -299,12 +299,12 @@ namespace imageDeCap
     }
     class TextData
     {
-        public int size;
-        public string text;
-        public int X;
-        public int Y;
-        public int TimeStart;
-        public int TimeEnd;
+        public int size = 0;
+        public string text = "";
+        public int X = 0;
+        public int Y = 0;
+        public int TimeStart = 0;
+        public int TimeEnd = 0;
         public override string ToString()
         {
             return text;
