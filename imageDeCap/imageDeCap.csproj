@@ -215,12 +215,6 @@
     <Compile Include="Windows\GifEditor.Designer.cs">
       <DependentUpon>GifEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="Windows\imageEditor.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Windows\imageEditor.Designer.cs">
-      <DependentUpon>imageEditor.cs</DependentUpon>
-    </Compile>
     <Compile Include="Windows\Magnifier.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -257,9 +251,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Windows\GifEditor.resx">
       <DependentUpon>GifEditor.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Windows\imageEditor.resx">
-      <DependentUpon>imageEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Windows\Magnifier.resx">
       <DependentUpon>Magnifier.cs</DependentUpon>

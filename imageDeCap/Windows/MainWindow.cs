@@ -134,7 +134,6 @@ namespace imageDeCap
         List<Bitmap> gEnc = new List<Bitmap>();
         public void StartRecordingGif(bool ForceEdit)
         {
-            gEnc.Clear();
             GifCaptureTimer.Interval = (int)(1000.0f / Preferences.GIFRecordingFramerate);
             FrameTime = 0;
             counter = 0;
@@ -157,7 +156,6 @@ namespace imageDeCap
         {
             if(GifCaptureTimer.Enabled)
             {
-
                 FrameTime /= counter;
                 GifCaptureTimer.Enabled = false;
                 topBox.Hide();
@@ -181,6 +179,7 @@ namespace imageDeCap
 
                 Program.ImageDeCap.isTakingSnapshot = false;
                 Program.hotkeysEnabled = true;
+
             }
         }
 
@@ -618,7 +617,6 @@ namespace imageDeCap
                     UploadImageData_AfterEdit(NewImageEditor.EditorResult.Upload, FileData, imageType);
                 }
             }
-
         }
         public void EditorDone(object sender, EventArgs e)
         {
@@ -644,6 +642,8 @@ namespace imageDeCap
 
         public void UploadImageData_AfterEdit(NewImageEditor.EditorResult EditorResult, byte[] FileData, filetype imageType)
         {
+            foreach (var v in gEnc) { v.Dispose(); }
+            gEnc.Clear();
 
             string SaveFileName = DateTime.UtcNow.ToString("yyyyMMddHHmmssfff");
             string Extension = imageType.ToString();

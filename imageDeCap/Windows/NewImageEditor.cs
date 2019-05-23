@@ -53,16 +53,16 @@ namespace imageDeCap
 
             int Width;
             int Height;
-            if (Editor.EditedImage.Width < 600)
-                Width = 600;
+            if (Editor.EditedImage.Width < 325)
+                Width = 325;
             else
                 Width = Editor.EditedImage.Width;
-            if (Editor.EditedImage.Height < 200)
-                Height = 200;
+            if (Editor.EditedImage.Height < 253)
+                Height = 253;
             else
                 Height = Editor.EditedImage.Height;
 
-            this.Size = new Size(Width + 23, Height + 111);
+            this.Size = new Size(Width + 23, Height + 95);
             this.StartPosition = FormStartPosition.Manual;
             this.Location = new Point(X - 7, Y - 20);
 

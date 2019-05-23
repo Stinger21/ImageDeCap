@@ -69,9 +69,9 @@
             this.groupBox1.Controls.Add(this.UndoButton);
             this.groupBox1.Controls.Add(this.UploadButton);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.groupBox1.Location = new System.Drawing.Point(0, 423);
+            this.groupBox1.Location = new System.Drawing.Point(0, 262);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(407, 49);
+            this.groupBox1.Size = new System.Drawing.Size(334, 49);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             // 
@@ -93,7 +93,7 @@
             this.BoxButton.BackgroundImage = global::imageDeCap.Properties.Resources.Box;
             this.BoxButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.BoxButton.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.BoxButton.Location = new System.Drawing.Point(299, 13);
+            this.BoxButton.Location = new System.Drawing.Point(226, 13);
             this.BoxButton.Name = "BoxButton";
             this.BoxButton.Size = new System.Drawing.Size(30, 30);
             this.BoxButton.TabIndex = 37;
@@ -116,7 +116,7 @@
             // TextFieldInput
             // 
             this.TextFieldInput.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.TextFieldInput.Location = new System.Drawing.Point(402, 48);
+            this.TextFieldInput.Location = new System.Drawing.Point(329, 48);
             this.TextFieldInput.Multiline = true;
             this.TextFieldInput.Name = "TextFieldInput";
             this.TextFieldInput.Size = new System.Drawing.Size(117, 37);
@@ -130,7 +130,7 @@
             this.ArrowButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.ArrowButton.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("ArrowButton.BackgroundImage")));
             this.ArrowButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.ArrowButton.Location = new System.Drawing.Point(263, 13);
+            this.ArrowButton.Location = new System.Drawing.Point(190, 13);
             this.ArrowButton.Name = "ArrowButton";
             this.ArrowButton.Size = new System.Drawing.Size(30, 30);
             this.ArrowButton.TabIndex = 36;
@@ -143,7 +143,7 @@
             this.FrontSwatch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.FrontSwatch.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(57)))), ((int)(((byte)(43)))));
             this.FrontSwatch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.FrontSwatch.Location = new System.Drawing.Point(189, 13);
+            this.FrontSwatch.Location = new System.Drawing.Point(116, 13);
             this.FrontSwatch.Name = "FrontSwatch";
             this.FrontSwatch.Size = new System.Drawing.Size(22, 22);
             this.FrontSwatch.TabIndex = 30;
@@ -155,7 +155,7 @@
             this.BackSwatch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.BackSwatch.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(174)))), ((int)(((byte)(56)))));
             this.BackSwatch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BackSwatch.Location = new System.Drawing.Point(197, 21);
+            this.BackSwatch.Location = new System.Drawing.Point(124, 21);
             this.BackSwatch.Name = "BackSwatch";
             this.BackSwatch.Size = new System.Drawing.Size(22, 22);
             this.BackSwatch.TabIndex = 38;
@@ -167,7 +167,7 @@
             this.PickButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.PickButton.BackgroundImage = global::imageDeCap.Properties.Resources.Dropper;
             this.PickButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.PickButton.Location = new System.Drawing.Point(335, 13);
+            this.PickButton.Location = new System.Drawing.Point(262, 13);
             this.PickButton.Name = "PickButton";
             this.PickButton.Size = new System.Drawing.Size(30, 30);
             this.PickButton.TabIndex = 31;
@@ -180,7 +180,7 @@
             this.TextButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.TextButton.BackgroundImage = global::imageDeCap.Properties.Resources.Text;
             this.TextButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.TextButton.Location = new System.Drawing.Point(227, 13);
+            this.TextButton.Location = new System.Drawing.Point(154, 13);
             this.TextButton.Name = "TextButton";
             this.TextButton.Size = new System.Drawing.Size(30, 30);
             this.TextButton.TabIndex = 27;
@@ -193,7 +193,7 @@
             this.UndoButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.UndoButton.BackgroundImage = global::imageDeCap.Properties.Resources.undo;
             this.UndoButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.UndoButton.Location = new System.Drawing.Point(371, 13);
+            this.UndoButton.Location = new System.Drawing.Point(298, 13);
             this.UndoButton.Name = "UndoButton";
             this.UndoButton.Size = new System.Drawing.Size(30, 30);
             this.UndoButton.TabIndex = 26;
@@ -215,11 +215,12 @@
             // 
             // HelpButton
             // 
+            this.HelpButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.HelpButton.BackgroundImage = global::imageDeCap.Properties.Resources.Help;
             this.HelpButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.HelpButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.HelpButton.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.HelpButton.Location = new System.Drawing.Point(381, 3);
+            this.HelpButton.Location = new System.Drawing.Point(311, 1);
             this.HelpButton.Name = "HelpButton";
             this.HelpButton.Size = new System.Drawing.Size(22, 22);
             this.HelpButton.TabIndex = 41;
@@ -251,25 +252,25 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(407, 423);
+            this.panel1.Size = new System.Drawing.Size(334, 262);
             this.panel1.TabIndex = 1;
             this.panel1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseClick);
             // 
             // InfoText
             // 
             this.InfoText.AutoSize = true;
-            this.InfoText.Location = new System.Drawing.Point(218, 74);
+            this.InfoText.Location = new System.Drawing.Point(12, 9);
             this.InfoText.Name = "InfoText";
             this.InfoText.Size = new System.Drawing.Size(226, 195);
             this.InfoText.TabIndex = 35;
             this.InfoText.Text = resources.GetString("InfoText.Text");
             this.InfoText.Visible = false;
             // 
-            // imageContainer
+            // ImageContainer
             // 
             this.ImageContainer.Location = new System.Drawing.Point(3, 3);
-            this.ImageContainer.Name = "imageContainer";
-            this.ImageContainer.Size = new System.Drawing.Size(400, 400);
+            this.ImageContainer.Name = "ImageContainer";
+            this.ImageContainer.Size = new System.Drawing.Size(325, 253);
             this.ImageContainer.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.ImageContainer.TabIndex = 0;
             this.ImageContainer.TabStop = false;
@@ -282,14 +283,14 @@
             this.AcceptButton = this.UploadButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(407, 472);
+            this.ClientSize = new System.Drawing.Size(334, 311);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.groupBox1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.MinimumSize = new System.Drawing.Size(350, 350);
             this.Name = "NewImageEditor";
-            this.Text = "ImageDeCap Screenshot Editor";
+            this.Text = "ImageDeCap Editor";
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.imageEditor_KeyDown);
             this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.NewImageEditor_MouseClick);
             this.groupBox1.ResumeLayout(false);
