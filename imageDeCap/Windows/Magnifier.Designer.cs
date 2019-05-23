@@ -47,18 +47,18 @@
             this.CaptureResolution.AutoSize = true;
             this.CaptureResolution.BackColor = System.Drawing.Color.Black;
             this.CaptureResolution.ForeColor = System.Drawing.Color.White;
-            this.CaptureResolution.Location = new System.Drawing.Point(-1, 1);
+            this.CaptureResolution.Location = new System.Drawing.Point(0, 2);
             this.CaptureResolution.Name = "CaptureResolution";
-            this.CaptureResolution.Size = new System.Drawing.Size(24, 13);
+            this.CaptureResolution.Size = new System.Drawing.Size(72, 13);
             this.CaptureResolution.TabIndex = 3;
-            this.CaptureResolution.Text = "0x0";
+            this.CaptureResolution.Text = "00000x00000";
             // 
             // CaptureType
             // 
             this.CaptureType.AutoSize = true;
             this.CaptureType.BackColor = System.Drawing.Color.Black;
             this.CaptureType.ForeColor = System.Drawing.Color.White;
-            this.CaptureType.Location = new System.Drawing.Point(-1, 12);
+            this.CaptureType.Location = new System.Drawing.Point(0, 13);
             this.CaptureType.Name = "CaptureType";
             this.CaptureType.Size = new System.Drawing.Size(36, 13);
             this.CaptureType.TabIndex = 4;

@@ -22,52 +22,51 @@ namespace imageDeCap
             Clipboard,
             Save,
         }
+
+        PictureEditor Editor;
+        public Button CurrentSwatch;
         EditorResult result = EditorResult.Quit;
 
         public (EditorResult output, byte[] Data) FinalFunction()
         {
-            byte[] outputData;
+            byte[] OutputData;
             
             if (result == EditorResult.Quit)
             {
-                outputData = completeCover.GetBytes(editor.UnEditedImage, ImageFormat.Png);
+                OutputData = completeCover.GetBytes(Editor.OriginalImage, ImageFormat.Png);
             }
             else
             {
-                outputData = completeCover.GetBytes(editor.EditedImage, ImageFormat.Png);
+                OutputData = completeCover.GetBytes(Editor.EditedImage, ImageFormat.Png);
                 Clipboard.Clear();
             }
-
-
-            return (result, outputData);
+            return (result, OutputData);
         }
-        
-        PictureEditor editor;
-        
+
         public NewImageEditor(byte[] ImageData, int X, int Y)//on start
         {
             InitializeComponent();
 
             System.Threading.Thread.Sleep(100);
 
-            editor = new PictureEditor(Image.FromStream(new MemoryStream(ImageData)), this);
+            Editor = new PictureEditor(Image.FromStream(new MemoryStream(ImageData)), this);
 
-            int width;
-            int height;
-            if (editor.EditedImage.Width < 600)
-                width = 600;
+            int Width;
+            int Height;
+            if (Editor.EditedImage.Width < 600)
+                Width = 600;
             else
-                width = editor.EditedImage.Width;
-            if (editor.EditedImage.Height < 200)
-                height = 200;
+                Width = Editor.EditedImage.Width;
+            if (Editor.EditedImage.Height < 200)
+                Height = 200;
             else
-                height = editor.EditedImage.Height;
+                Height = Editor.EditedImage.Height;
 
-            this.Size = new Size(width + 40, height + 140);
+            this.Size = new Size(Width + 23, Height + 111);
             this.StartPosition = FormStartPosition.Manual;
             this.Location = new Point(X - 7, Y - 20);
 
-            imageContainer.Image = editor.TempImage;
+            ImageContainer.Image = Editor.TempImage;
             
             if (Preferences.NeverUpload)
             {
@@ -80,8 +79,105 @@ namespace imageDeCap
                 this.AcceptButton = UploadButton;
                 this.ActiveControl = UploadButton;
             }
-            CurrentButton = FrontSwatch;
+            CurrentSwatch = FrontSwatch;
         }
+
+
+        // Drawing
+
+        private void imageContainer_MouseDown(object sender, MouseEventArgs e){imageContainer_MouseMove(sender, e);}
+        private void NewImageEditor_MouseClick(object sender, MouseEventArgs e){imageContainer_MouseClick(sender, e);}
+        private void panel1_MouseClick(object sender, MouseEventArgs e){imageContainer_MouseClick(sender, e);}
+        private void imageContainer_MouseClick(object sender, MouseEventArgs e){imageContainer_MouseMove(sender, e);}
+        private void imageContainer_MouseMove(object sender, MouseEventArgs e)
+        {
+            Point mousePos = ImageContainer.PointToClient(Cursor.Position);
+
+            Editor.LMBIsDown = e.Button == MouseButtons.Left;
+            Editor.RMBIsDown = e.Button == MouseButtons.Right;
+
+            Editor.Alt = false;
+            Editor.Ctrl = false;
+            Editor.Shift = false;
+            if (System.Windows.Input.Keyboard.IsKeyDown(System.Windows.Input.Key.LeftAlt))
+                Editor.Alt = true;
+            if (System.Windows.Input.Keyboard.IsKeyDown(System.Windows.Input.Key.LeftCtrl))
+                Editor.Ctrl = true;
+            if (System.Windows.Input.Keyboard.IsKeyDown(System.Windows.Input.Key.LeftShift))
+                Editor.Shift = true;
+            
+            if (Editor.LastLMBIsDown != Editor.LMBIsDown)
+            {
+                if(Editor.LMBIsDown)
+                    Editor.LMBDown(new Vector2(mousePos));
+                else
+                    Editor.LMBUp(new Vector2(mousePos));
+                Editor.LastLMBIsDown = Editor.LMBIsDown;
+                return;
+            }
+
+            if (Editor.LastRMBIsDown != Editor.RMBIsDown)
+            {
+                if (Editor.RMBIsDown)
+                    Editor.RMBDown(new Vector2(mousePos));
+                else
+                    Editor.RMBUp(new Vector2(mousePos));
+                Editor.LastRMBIsDown = Editor.RMBIsDown;
+                return;
+            }
+            Editor.MouseMove(new Vector2(mousePos));
+        }
+        
+
+        // Hotkeys
+
+        private void imageEditor_KeyDown(object sender, KeyEventArgs e)
+        {
+            string KeyCode = e.KeyCode.ToString();
+
+            if (KeyCode == "Escape")
+            {
+                this.Close();
+                return;
+            }
+            if(TextFieldInput.ContainsFocus)
+            {
+                return;
+            }
+            Vector2 mousePos = new Vector2(ImageContainer.PointToClient(Cursor.Position));
+
+            switch (KeyCode)
+            {
+                case "Z":
+                    if (e.Control)
+                    {
+                        Editor.Undo();
+                    }
+                    break;
+                case "C":
+                    if (e.Control)
+                    {
+                        Clipboard.SetImage(Editor.EditedImage);
+                    }
+                    break;
+                case "T":
+                    AddTextButton_Click(null, null);
+                    break;
+                case "A":
+                    Editor.SetState(mousePos, PictureEditor.EditorState.Arrow);
+                    break;
+                case "B":
+                    Editor.SetState(mousePos, PictureEditor.EditorState.Box);
+                    break;
+                case "X":
+                    CurrentSwatch = (CurrentSwatch == BackSwatch) ? FrontSwatch : BackSwatch;
+                    CurrentSwatch.BringToFront();
+                    break;
+            }
+        }
+
+
+        // Buttons
 
         private void UploadButton_click(object sender, EventArgs e)
         {
@@ -100,160 +196,38 @@ namespace imageDeCap
             Close();
         }
 
-
-        public Button CurrentButton;
-
-        // Mouse down
-        private void imageContainer_MouseDown(object sender, MouseEventArgs e)
+        private void UndoButton_Click(object sender, EventArgs e)
         {
-            editor.Alt = false;
-            editor.Ctrl = false;
-            editor.Shift = false;
-            if (System.Windows.Input.Keyboard.IsKeyDown(System.Windows.Input.Key.LeftAlt))
-                editor.Alt = true;
-            if (System.Windows.Input.Keyboard.IsKeyDown(System.Windows.Input.Key.LeftCtrl))
-                editor.Ctrl = true;
-            if (System.Windows.Input.Keyboard.IsKeyDown(System.Windows.Input.Key.LeftShift))
-                editor.Shift = true;
-            Point mousePos = imageContainer.PointToClient(Cursor.Position);
-            if (e.Button == MouseButtons.Left)
-            {
-                editor.LMBDown(new Vector2(mousePos));
-            }
-            else if(e.Button == MouseButtons.Right)
-            {
-                editor.RMBDown(new Vector2(mousePos));
-            }
-        }
-        // Mouse up
-        private void imageContainer_MouseClick(object sender, MouseEventArgs e)
-        {
-            editor.Alt = false;
-            editor.Ctrl = false;
-            editor.Shift = false;
-            if (System.Windows.Input.Keyboard.IsKeyDown(System.Windows.Input.Key.LeftAlt))
-                editor.Alt = true;
-            if (System.Windows.Input.Keyboard.IsKeyDown(System.Windows.Input.Key.LeftCtrl))
-                editor.Ctrl = true;
-            if (System.Windows.Input.Keyboard.IsKeyDown(System.Windows.Input.Key.LeftShift))
-                editor.Shift = true;
-            Point mousePos = imageContainer.PointToClient(Cursor.Position);
-            if (e.Button == MouseButtons.Left)
-            {
-                editor.LMBUp(new Vector2(mousePos));
-            }
-            else if (e.Button == MouseButtons.Right)
-            {
-                editor.RMBUp(new Vector2(mousePos));
-            }
-        }
-        // Mouse move
-        private void imageContainer_MouseMove(object sender, MouseEventArgs e)
-        {
-            editor.Alt = false;
-            editor.Ctrl = false;
-            editor.Shift = false;
-            if (System.Windows.Input.Keyboard.IsKeyDown(System.Windows.Input.Key.LeftAlt))
-                editor.Alt = true;
-            if (System.Windows.Input.Keyboard.IsKeyDown(System.Windows.Input.Key.LeftCtrl))
-                editor.Ctrl = true;
-            if (System.Windows.Input.Keyboard.IsKeyDown(System.Windows.Input.Key.LeftShift))
-                editor.Shift = true;
-            editor.LMBIsDown = false;
-            editor.RMBIsDown = false;
-            if (e.Button == MouseButtons.Left)
-            {
-                editor.LMBIsDown = true;
-            }
-            else if (e.Button == MouseButtons.Right)
-            {
-                editor.RMBIsDown = true;
-            }
-            Point mousePos = imageContainer.PointToClient(Cursor.Position);
-            editor.MouseMove(new Vector2(mousePos));
-        }
-        
-        private void Undo_Click(object sender, EventArgs e)
-        {
-            editor.Undo();
-        }
-        
-        private void imageEditor_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode.ToString() == "Escape")
-            {
-                this.Close();
-            }
-            else if (e.Control)
-            {
-                if (e.KeyCode.ToString() == "Z")
-                {
-                    editor.Undo();
-                }
-                else if (e.KeyCode.ToString() == "C")
-                {
-                    Clipboard.SetImage(editor.EditedImage);
-                }
-            }
-            if (!TextFieldInput.ContainsFocus)
-            {
-                if (e.KeyCode.ToString() == "T")
-                {
-                    addTextButton_Click(null, null);
-                }
-                else if (e.KeyCode.ToString() == "A")
-                {
-                    editor.SetState(new Vector2(imageContainer.PointToClient(Cursor.Position)), PictureEditor.EditorState.Arrow);
-                }
-                else if (e.KeyCode.ToString() == "B")
-                {
-                    editor.SetState(new Vector2(imageContainer.PointToClient(Cursor.Position)), PictureEditor.EditorState.Box);
-                }
-            }
-            if (e.KeyCode.ToString() == "X")
-            {
-                Point mousePos = imageContainer.PointToClient(Cursor.Position);
-                if(CurrentButton == BackSwatch)
-                {
-                    CurrentButton = FrontSwatch;
-                }
-                else if(CurrentButton == FrontSwatch)
-                {
-                    CurrentButton = BackSwatch;
-                }
-                else
-                {
-                    CurrentButton = FrontSwatch;
-                }
-                CurrentButton.BringToFront();
-            }
+            Editor.Undo();
         }
 
-        private void currentColor_Click(object sender, EventArgs e)
+        private void CurrentColor_Click(object sender, EventArgs e)
         {
-            if((sender as Button) == CurrentButton)
+            var ClickedButton = (sender as Button);
+
+            if (ClickedButton == CurrentSwatch)
             {
                 DialogResult r = colorDialog1.ShowDialog();
                 if(r == DialogResult.OK)
                 {
-                    (sender as Button).BackColor = colorDialog1.Color;
-                    CurrentButton = (Button)sender;
+                    ClickedButton.BackColor = colorDialog1.Color;
+                    CurrentSwatch = ClickedButton;
                 }
             }
             else
             {
-                CurrentButton = (Button)sender;
-                (sender as Button).BringToFront();
+                CurrentSwatch = ClickedButton;
+                ClickedButton.BringToFront();
             }
         }
         
-        private void textBox1_TextChanged(object sender, EventArgs e)
+        private void TextFieldInput_TextChanged(object sender, EventArgs e)
         {
-            editor.DrawTempText();
-            imageContainer.Refresh();
+            Editor.DrawTempText();
+            ImageContainer.Refresh();
         }
 
-        private void textBox1_KeyDown(object sender, KeyEventArgs e)
+        private void TextFieldInput_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Back)
             {
@@ -275,59 +249,52 @@ namespace imageDeCap
         }
 
         
-        private void addTextButton_Click(object sender, EventArgs e)
+        private void AddTextButton_Click(object sender, EventArgs e)
         {
             TextFieldInput.Focus();
             TextFieldInput.SelectAll();
-            editor.SetState(new Vector2(imageContainer.PointToClient(Cursor.Position)), PictureEditor.EditorState.Text);
+            Editor.SetState(new Vector2(ImageContainer.PointToClient(Cursor.Position)), PictureEditor.EditorState.Text);
         }
         private void PickColorButton_click(object sender, EventArgs e)
         {
-            imageContainer.Cursor = Cursors.Cross;
-            editor.SetState(new Vector2(imageContainer.PointToClient(Cursor.Position)), PictureEditor.EditorState.Picking);
+            ImageContainer.Cursor = Cursors.Cross;
+            Editor.SetState(new Vector2(ImageContainer.PointToClient(Cursor.Position)), PictureEditor.EditorState.Picking);
         }
         private void AddArrowButton_Click(object sender, EventArgs e)
         {
-            editor.SetState(new Vector2(imageContainer.PointToClient(Cursor.Position)), PictureEditor.EditorState.Arrow);
+            Editor.SetState(new Vector2(ImageContainer.PointToClient(Cursor.Position)), PictureEditor.EditorState.Arrow);
         }
         private void AddBoxButton_Click(object sender, EventArgs e)
         {
-            editor.SetState(new Vector2(imageContainer.PointToClient(Cursor.Position)), PictureEditor.EditorState.Box);
+            Editor.SetState(new Vector2(ImageContainer.PointToClient(Cursor.Position)), PictureEditor.EditorState.Box);
         }
         private void HelpButton_Click(object sender, EventArgs e)
         {
             InfoText.Visible = !InfoText.Visible;
         }
-        private void button1_Click(object sender, EventArgs e)
-        {
-            editor.SetState(new Vector2(imageContainer.PointToClient(Cursor.Position)), PictureEditor.EditorState.Drawing);
-        }
-
-        private void imageEditor_Load(object sender, EventArgs e) { }
-        
     }
 
-    // Split the actual drawing of tihngs out into this class here because it was getting sphagettied with the UI & outputting code
+    // Split the actual drawing into this class because it was getting sphagettied with the UI & saving code.
     public class PictureEditor
     {
         private EditorState State = EditorState.Drawing;
-        List<Bitmap> undoHistory = new List<Bitmap>();
+        List<Bitmap> UndoHistory = new List<Bitmap>();
         public Image EditedImage;
         public Image TempImage;
-        public Image UnEditedImage;
-        NewImageEditor owner;
+        public Image OriginalImage;
+        NewImageEditor Owner;
 
         public PictureEditor(Image InputImage, NewImageEditor owner)
         {
             //Console.WriteLine("Initialize Editor");
-            this.owner = owner;
-            DrawImage(ref InputImage, ref UnEditedImage);
+            this.Owner = owner;
+            DrawImage(ref InputImage, ref OriginalImage);
             DrawImage(ref InputImage, ref TempImage);
             DrawImage(ref InputImage, ref EditedImage);
 
             Image wat = null;
             DrawImage(ref InputImage, ref wat);
-            undoHistory.Add((Bitmap)wat);
+            UndoHistory.Add((Bitmap)wat);
             SetState(new Vector2(0, 0), EditorState.Drawing);
         }
 
@@ -336,6 +303,8 @@ namespace imageDeCap
         public bool Alt;
         public bool RMBIsDown;
         public bool LMBIsDown;
+        public bool LastRMBIsDown;
+        public bool LastLMBIsDown;
 
         public enum EditorState
         {
@@ -346,32 +315,35 @@ namespace imageDeCap
             Arrow,
         }
 
+        public EditorState GetState()
+        {
+            return this.State;
+        }
+
         public void SetState(Vector2 Position, EditorState State)
         {
             ItemStartPosition = Position;
             this.State = State;
-
-            owner.BrushButton.Enabled   = true;
-            owner.TextButton.Enabled    = true;
-            owner.TextButton.Enabled    = true;
-            owner.BoxButton.Enabled     = true;
-            owner.ArrowButton.Enabled   = true;
+            
+            Owner.TextButton.Enabled    = true;
+            Owner.TextButton.Enabled    = true;
+            Owner.BoxButton.Enabled     = true;
+            Owner.ArrowButton.Enabled   = true;
             switch (State)
             {
                 case EditorState.Drawing:
-                    owner.BrushButton.Enabled = false;
                     break;
                 case EditorState.Text:
-                    owner.TextButton.Enabled = false;
+                    Owner.TextButton.Enabled = false;
                     break;
                 case EditorState.Picking:
-                    owner.TextButton.Enabled = false;
+                    Owner.TextButton.Enabled = false;
                     break;
                 case EditorState.Box:
-                    owner.BoxButton.Enabled = false;
+                    Owner.BoxButton.Enabled = false;
                     break;
                 case EditorState.Arrow:
-                    owner.ArrowButton.Enabled = false;
+                    Owner.ArrowButton.Enabled = false;
                     break;
                 default:
                     break;
@@ -432,7 +404,7 @@ namespace imageDeCap
         public void DrawTempText()
         {
             DrawImage(ref EditedImage, ref TempImage);
-            DrawText(TempImage, owner.TextFieldInput.Text, MousePosition);
+            DrawText(TempImage, Owner.TextFieldInput.Text, MousePosition);
         }
 
         public void MouseMove(Vector2 Position)
@@ -449,7 +421,7 @@ namespace imageDeCap
                     if (Distance > Preferences.BrushSmoothingDistance)
                     {
                         BrushLocation = Vector2.MoveTowards(BrushLocation, MousePosition, Distance - Preferences.BrushSmoothingDistance);
-                        DrawLine(TempImage, LastBrushLocation, BrushLocation, owner.CurrentButton.BackColor, GammaCorrectedBrushSize);
+                        DrawLine(TempImage, LastBrushLocation, BrushLocation, Owner.CurrentSwatch.BackColor, GammaCorrectedBrushSize);
                     }
                     LastBrushLocation = BrushLocation;
                 }
@@ -462,18 +434,18 @@ namespace imageDeCap
                     BrushSize = Math.Max(BrushSize, 0);
 
                     DrawImage(ref EditedImage, ref TempImage);
-                    DrawLine(TempImage, MousePosition, MousePosition + new Vector2(1, 1), Color.FromArgb((int)(0.5f * 255.0f), owner.CurrentButton.BackColor), GammaCorrectedBrushSize);
+                    DrawLine(TempImage, MousePosition, MousePosition + new Vector2(1, 1), Color.FromArgb((int)(0.5f * 255.0f), Owner.CurrentSwatch.BackColor), GammaCorrectedBrushSize);
                 }
                 else
                 {
                     DrawImage(ref EditedImage, ref TempImage);
-                    DrawLine(TempImage, MousePosition, MousePosition + new Vector2(1, 1), Color.FromArgb((int)(0.5f * 255.0f), owner.CurrentButton.BackColor), GammaCorrectedBrushSize);
+                    DrawLine(TempImage, MousePosition, MousePosition + new Vector2(1, 1), Color.FromArgb((int)(0.5f * 255.0f), Owner.CurrentSwatch.BackColor), GammaCorrectedBrushSize);
                 }
             }
             else if (State == EditorState.Text)
             {
                 DrawImage(ref EditedImage, ref TempImage);
-                DrawText(TempImage, owner.TextFieldInput.Text, MousePosition, 1.0f);
+                DrawText(TempImage, Owner.TextFieldInput.Text, MousePosition, 1.0f);
                 if (RMBIsDown)
                 {
                     float BrushValue = (Position.X - MouseDownLocation.X) + (Position.Y - MouseDownLocation.Y);
@@ -503,19 +475,19 @@ namespace imageDeCap
             }
             else if (State == EditorState.Picking)
             {
-                owner.CurrentButton.BackColor = ((Bitmap)EditedImage).GetPixel((int)MousePosition.X, (int)MousePosition.Y);
+                Owner.CurrentSwatch.BackColor = ((Bitmap)EditedImage).GetPixel((int)MousePosition.X, (int)MousePosition.Y);
             }
 
             if (System.Windows.Input.Keyboard.IsKeyDown(System.Windows.Input.Key.LeftAlt))
             {
                 var NewColor = ((Bitmap)EditedImage).GetPixel((int)MousePosition.X, (int)MousePosition.Y);
-                owner.CurrentButton.BackColor = NewColor;
+                Owner.CurrentSwatch.BackColor = NewColor;
                 Clipboard.SetText("#" + NewColor.R.ToString("X2") + NewColor.G.ToString("X2") + NewColor.B.ToString("X2"));
             }
             GammaCorrectedBrushSize = (BrushSize * BrushSize) * 0.01f;
             GammaCorrectedTextSize = (TextSize * TextSize) * 0.01f;
             LastMousePosition = MousePosition;
-            owner.imageContainer.Refresh();
+            Owner.ImageContainer.Refresh();
         }
 
         private void DrawImage(ref Image Input, ref Image TargetImage)
@@ -548,21 +520,21 @@ namespace imageDeCap
 
         private void DrawBox(Image TargetImage, Vector2 P1, Vector2 P2)
         {
-            DrawLine(TargetImage, P1, new Vector2(P1.X, P2.Y), owner.CurrentButton.BackColor, 3);
-            DrawLine(TargetImage, P1, new Vector2(P2.X, P1.Y), owner.CurrentButton.BackColor, 3);
-            DrawLine(TargetImage, P2, new Vector2(P1.X, P2.Y), owner.CurrentButton.BackColor, 3);
-            DrawLine(TargetImage, P2, new Vector2(P2.X, P1.Y), owner.CurrentButton.BackColor, 3);
+            DrawLine(TargetImage, P1, new Vector2(P1.X, P2.Y), Owner.CurrentSwatch.BackColor, 3);
+            DrawLine(TargetImage, P1, new Vector2(P2.X, P1.Y), Owner.CurrentSwatch.BackColor, 3);
+            DrawLine(TargetImage, P2, new Vector2(P1.X, P2.Y), Owner.CurrentSwatch.BackColor, 3);
+            DrawLine(TargetImage, P2, new Vector2(P2.X, P1.Y), Owner.CurrentSwatch.BackColor, 3);
         }
 
         private void DrawText(Image TargetImage, string text, Vector2 Location, float opacity = 1.0f)
         {
             using (Graphics g = Graphics.FromImage(TargetImage))
             {
-                Pen MyPen = new Pen(owner.CurrentButton.BackColor);
+                Pen MyPen = new Pen(Owner.CurrentSwatch.BackColor);
                 MyPen.Width = GammaCorrectedTextSize;
                 g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
                 Size tsize = TextRenderer.MeasureText(text, new Font(Preferences.ImageEditorFont, GammaCorrectedTextSize, (FontStyle)Preferences.FontStyleType));
-                SolidBrush b = new SolidBrush(Color.FromArgb((int)(opacity * 255.0f), owner.CurrentButton.BackColor));
+                SolidBrush b = new SolidBrush(Color.FromArgb((int)(opacity * 255.0f), Owner.CurrentSwatch.BackColor));
                 g.DrawString(text, new Font(Preferences.ImageEditorFont, GammaCorrectedTextSize, (FontStyle)Preferences.FontStyleType), b, new Point((int)Location.X, (int)Location.Y - tsize.Height));
             }
         }
@@ -571,7 +543,7 @@ namespace imageDeCap
         {
             if(color == default(Color))
             {
-                color = owner.CurrentButton.BackColor;
+                color = Owner.CurrentSwatch.BackColor;
             }
             using (Graphics g = Graphics.FromImage(TargetImage))
             {
@@ -586,10 +558,9 @@ namespace imageDeCap
 
         public void LMBUp(Vector2 Position)
         {
-
             Image wat = null;
             DrawImage(ref EditedImage, ref wat);
-            undoHistory.Add((Bitmap)wat);
+            UndoHistory.Add((Bitmap)wat);
             if (State == EditorState.Drawing)
             {
                 DrawImage(ref TempImage, ref EditedImage);
@@ -606,18 +577,18 @@ namespace imageDeCap
             }
             else if (State == EditorState.Text)
             {
-                DrawText(EditedImage, owner.TextFieldInput.Text, Position);
-                owner.FrontSwatch.Focus();
+                DrawText(EditedImage, Owner.TextFieldInput.Text, Position);
+                Owner.FrontSwatch.Focus();
             }
             else if (State == EditorState.Picking)
             {
-                owner.imageContainer.Cursor = Cursors.Default;
-                owner.CurrentButton.BackColor =  ((Bitmap)EditedImage).GetPixel((int)Position.X, (int)Position.Y);
+                Owner.ImageContainer.Cursor = Cursors.Default;
+                Owner.CurrentSwatch.BackColor =  ((Bitmap)EditedImage).GetPixel((int)Position.X, (int)Position.Y);
             }
 
             DrawImage(ref EditedImage, ref TempImage);
             SetState(new Vector2(0, 0), EditorState.Drawing);
-            owner.imageContainer.Refresh();
+            Owner.ImageContainer.Refresh();
         }
 
         public void RMBUp(Vector2 Position)
@@ -631,122 +602,14 @@ namespace imageDeCap
 
         public void Undo()
         {
-            if(undoHistory.Count == 1)
+            if(UndoHistory.Count == 1)
                 return;
-            Image mm = (Image)undoHistory[undoHistory.Count - 1];
-            undoHistory.RemoveAt(undoHistory.Count - 1);
+            Image mm = (Image)UndoHistory[UndoHistory.Count - 1];
+            UndoHistory.RemoveAt(UndoHistory.Count - 1);
             DrawImage(ref mm, ref EditedImage);
             DrawImage(ref EditedImage, ref TempImage);
-            owner.imageContainer.Refresh();
+            Owner.ImageContainer.Refresh();
         }
     }
-
-    // TARGET - GOAL
-    // Little vector class because Points drive me insane :)
-    public struct Vector2
-    {
-        // Members
-        public float X;
-        public float Y;
-
-        // Ctor
-        public Vector2(Vector2 vector)
-        {
-            this.X = vector.X;
-            this.Y = vector.Y;
-        }
-        public Vector2(Point vector)
-        {
-            this.X = vector.X;
-            this.Y = vector.Y;
-        }
-        public Vector2(float X, float Y)
-        {
-            this.X = X;
-            this.Y = Y;
-        }
-
-        // Utility
-        public Point ToPoint()
-        {
-            return new Point((int)X, (int)Y);
-        }
-        // Math
-        public static float Magnitude(Vector2 P1)
-        {
-            return (float)Math.Sqrt(P1.X * P1.X + P1.Y * P1.Y);
-        }
-        public static float Distance(Vector2 P1, Vector2 P2)
-        {
-            return Vector2.Magnitude(P2 - P1);
-        }
-        public static Vector2 Normalize(Vector2 P1)
-        {
-            float magn = Magnitude(P1);
-            if (magn == 0)
-            {
-                return new Vector2(0, 0);
-            }
-            return P1 / magn;
-        }
-        public static Vector2 MoveTowards(Vector2 P1, Vector2 P2, float MaxDistance)
-        {
-            Vector2 DeltaVector = P2 - P1;
-            float Distance = Magnitude(DeltaVector);
-            Distance = Math.Min(Distance, MaxDistance);
-            return P1 + Normalize(DeltaVector) * Distance;
-        }
-        public static Vector2 OrthagonalLeft(Vector2 P1)
-        {
-            return new Vector2(-P1.Y, P1.X);
-        }
-        public static Vector2 OrthagonalRight(Vector2 P1)
-        {
-            return new Vector2(P1.Y, -P1.X);
-        }
-        public static Vector2 fromAtoB(Vector2 A, Vector2 B)
-        {
-            return B - A;
-        }
-        public static Vector2 Lerp(Vector2 A, Vector2 B, float t)
-        {
-            return (A + (B - A) * t);
-        }
-
-        // Operators
-        public static Vector2 operator +(Vector2 vector1, Vector2 vector2)
-        {
-            return new Vector2(vector1.X + vector2.X, vector1.Y + vector2.Y);
-        }
-        public static Vector2 operator -(Vector2 vector1, Vector2 vector2)
-        {
-            return new Vector2(vector1.X - vector2.X, vector1.Y - vector2.Y);
-        }
-        public static Vector2 operator *(Vector2 vector1, Vector2 vector2)
-        {
-            return new Vector2(vector1.X * vector2.X, vector1.Y * vector2.Y);
-        }
-        public static Vector2 operator /(Vector2 vector1, Vector2 vector2)
-        {
-            return new Vector2(vector1.X / vector2.X, vector1.Y / vector2.Y);
-        }
-
-        public static Vector2 operator +(Vector2 vector1, float vector2)
-        {
-            return new Vector2(vector1.X + vector2, vector1.Y + vector2);
-        }
-        public static Vector2 operator -(Vector2 vector1, float vector2)
-        {
-            return new Vector2(vector1.X - vector2, vector1.Y - vector2);
-        }
-        public static Vector2 operator *(Vector2 vector1, float vector2)
-        {
-            return new Vector2(vector1.X * vector2, vector1.Y * vector2);
-        }
-        public static Vector2 operator /(Vector2 vector1, float vector2)
-        {
-            return new Vector2(vector1.X / vector2, vector1.Y / vector2);
-        }
-    }
-
+   
 }

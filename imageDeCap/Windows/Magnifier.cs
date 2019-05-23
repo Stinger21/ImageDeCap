@@ -23,10 +23,11 @@ namespace imageDeCap
 {
     public partial class Magnifier : Form
     {
-        Graphics CopiedImageGraphics;
         Bitmap CopiedImage;
-        Graphics FinalImageGraphics;
+        Graphics CopiedImageGraphics;
+
         Bitmap FinalImage;
+        Graphics FinalImageGraphics;
 
         public Magnifier(bool IsGif)
         {

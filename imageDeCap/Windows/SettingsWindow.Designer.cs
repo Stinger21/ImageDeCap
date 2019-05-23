@@ -52,6 +52,7 @@
             this.checkBoxUploadToFTP = new System.Windows.Forms.CheckBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.label14 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.gifFPS = new System.Windows.Forms.NumericUpDown();
@@ -61,6 +62,7 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.label8 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.ResetHotkeysbutton = new System.Windows.Forms.Button();
             this.label11 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
@@ -94,8 +96,6 @@
             this.fontDialog = new System.Windows.Forms.FontDialog();
             this.imageContainer = new System.Windows.Forms.PictureBox();
             this.PrintScreenTimer = new System.Windows.Forms.Timer(this.components);
-            this.ResetHotkeysbutton = new System.Windows.Forms.Button();
-            this.label14 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gifFPS)).BeginInit();
@@ -366,6 +366,19 @@
             this.tabPage1.Text = "General";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label14.ForeColor = System.Drawing.Color.RoyalBlue;
+            this.label14.Location = new System.Drawing.Point(167, 108);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(31, 13);
+            this.label14.TabIndex = 41;
+            this.label14.Text = "here.";
+            this.label14.Click += new System.EventHandler(this.label14_Click);
+            // 
             // label12
             // 
             this.label12.Location = new System.Drawing.Point(3, 216);
@@ -482,6 +495,17 @@
             this.groupBox3.Text = "Hotkeys";
             this.groupBox3.Enter += new System.EventHandler(this.groupBox3_Enter);
             // 
+            // ResetHotkeysbutton
+            // 
+            this.ResetHotkeysbutton.Location = new System.Drawing.Point(226, 11);
+            this.ResetHotkeysbutton.Name = "ResetHotkeysbutton";
+            this.ResetHotkeysbutton.Size = new System.Drawing.Size(91, 26);
+            this.ResetHotkeysbutton.TabIndex = 39;
+            this.ResetHotkeysbutton.Text = "Reset hotkeys";
+            this.toolTip1.SetToolTip(this.ResetHotkeysbutton, "Re-Sets All Preferences and settings, Including First-Time Startup.");
+            this.ResetHotkeysbutton.UseVisualStyleBackColor = true;
+            this.ResetHotkeysbutton.Click += new System.EventHandler(this.ResetHotkeysbutton_Click);
+            // 
             // label11
             // 
             this.label11.AutoSize = true;
@@ -546,7 +570,7 @@
             // 
             this.groupBox5.Controls.Add(this.webmshareButton);
             this.groupBox5.Controls.Add(this.gfycatButton);
-            this.groupBox5.Location = new System.Drawing.Point(241, 53);
+            this.groupBox5.Location = new System.Drawing.Point(236, 53);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Size = new System.Drawing.Size(93, 94);
             this.groupBox5.TabIndex = 32;
@@ -800,30 +824,6 @@
             this.PrintScreenTimer.Enabled = true;
             this.PrintScreenTimer.Interval = 1000;
             this.PrintScreenTimer.Tick += new System.EventHandler(this.timer1_Tick);
-            // 
-            // ResetHotkeysbutton
-            // 
-            this.ResetHotkeysbutton.Location = new System.Drawing.Point(226, 11);
-            this.ResetHotkeysbutton.Name = "ResetHotkeysbutton";
-            this.ResetHotkeysbutton.Size = new System.Drawing.Size(91, 26);
-            this.ResetHotkeysbutton.TabIndex = 39;
-            this.ResetHotkeysbutton.Text = "Reset hotkeys";
-            this.toolTip1.SetToolTip(this.ResetHotkeysbutton, "Re-Sets All Preferences and settings, Including First-Time Startup.");
-            this.ResetHotkeysbutton.UseVisualStyleBackColor = true;
-            this.ResetHotkeysbutton.Click += new System.EventHandler(this.ResetHotkeysbutton_Click);
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label14.ForeColor = System.Drawing.Color.RoyalBlue;
-            this.label14.Location = new System.Drawing.Point(167, 108);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(31, 13);
-            this.label14.TabIndex = 41;
-            this.label14.Text = "here.";
-            this.label14.Click += new System.EventHandler(this.label14_Click);
             // 
             // SettingsWindow
             // 
