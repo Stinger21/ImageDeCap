@@ -152,7 +152,7 @@ namespace imageDeCap
             ruleOfThirdsBox4.Hide();
 
         }
-        public void StopRecordingGif(completeCover cover, bool abort)
+        public void StopRecordingGif(CompleteCover cover, bool abort)
         {
             if(GifCaptureTimer.Enabled)
             {
@@ -217,7 +217,7 @@ namespace imageDeCap
             int minutes = counter / 600;
             int seconds = (counter/10) % 600;
             int csecs = counter % 10;
-            CurrentBackCover.SetTimer("Time: " + minutes + ":" + seconds + "." + csecs, "Frames: " + counter);
+            CurrentBackCover.SetTimer("Time: " + minutes + ":" + seconds + "." + csecs, "Frames: " + counter, "Size: " + (gEnc.Count * width * height * 8) / 1000000 + " MB");
             counter++;
         }
 
@@ -463,7 +463,7 @@ namespace imageDeCap
             }
         }
 
-        completeCover CurrentBackCover;
+        CompleteCover CurrentBackCover;
         public Magnifier magn;
         public bool isTakingSnapshot = false;
         private void UploadToImgurBounds(bool isGif = false)
@@ -475,7 +475,7 @@ namespace imageDeCap
                 isTakingSnapshot = true;
                 Program.hotkeysEnabled = false;
                 //back cover used for pulling cursor position into updateSelectedArea()
-                CurrentBackCover = new completeCover(isGif);
+                CurrentBackCover = new CompleteCover(isGif);
                 CurrentBackCover.Show();
                 CurrentBackCover.AfterShow(background);
 
@@ -516,7 +516,7 @@ namespace imageDeCap
         {
             Utilities.playSound("snip.wav");
             Bitmap result = cap.Capture(mode);
-            UploadImageData(completeCover.GetBytes(result, System.Drawing.Imaging.ImageFormat.Png), filetype.png);
+            UploadImageData(CompleteCover.GetBytes(result, System.Drawing.Imaging.ImageFormat.Png), filetype.png);
         }
 
         public enum filetype
@@ -882,7 +882,7 @@ namespace imageDeCap
         public int tempHeight = 0;
         int LastCursorX = 0;
         int LastCursorY = 0;
-        public void updateSelectedArea(completeCover backCover, bool EnterPressed, bool EscapePressed, bool LmbDown, bool LmbUp, bool Lmb, bool Gif, bool RMB, bool HoldingAlt) // this thing is essentially a fucking frame-loop.
+        public void updateSelectedArea(CompleteCover backCover, bool EnterPressed, bool EscapePressed, bool LmbDown, bool LmbUp, bool Lmb, bool Gif, bool RMB, bool HoldingAlt) // this thing is essentially a fucking frame-loop.
         {
 
             backCover.Activate();

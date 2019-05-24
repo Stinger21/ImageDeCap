@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 namespace imageDeCap
 {
-    partial class completeCover
+    partial class CompleteCover
     {
         /// <summary>
         /// Required designer variable.
@@ -32,10 +32,12 @@ namespace imageDeCap
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.doneButton = new System.Windows.Forms.Button();
             this.cancelButton = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
+            this.TimeLabel = new System.Windows.Forms.Label();
+            this.FramesLabel = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.MemoryLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // pictureBox1
@@ -78,43 +80,55 @@ namespace imageDeCap
             this.cancelButton.UseVisualStyleBackColor = false;
             this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
             // 
-            // label1
+            // TimeLabel
             // 
-            this.label1.AutoSize = true;
-            this.label1.BackColor = System.Drawing.Color.Black;
-            this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(131, 11);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(28, 13);
-            this.label1.TabIndex = 3;
-            this.label1.Text = "0:00";
+            this.TimeLabel.AutoSize = true;
+            this.TimeLabel.BackColor = System.Drawing.Color.Black;
+            this.TimeLabel.ForeColor = System.Drawing.Color.White;
+            this.TimeLabel.Location = new System.Drawing.Point(131, 11);
+            this.TimeLabel.Name = "TimeLabel";
+            this.TimeLabel.Size = new System.Drawing.Size(28, 13);
+            this.TimeLabel.TabIndex = 3;
+            this.TimeLabel.Text = "0:00";
             // 
-            // label2
+            // FramesLabel
             // 
-            this.label2.AutoSize = true;
-            this.label2.BackColor = System.Drawing.Color.Black;
-            this.label2.ForeColor = System.Drawing.Color.White;
-            this.label2.Location = new System.Drawing.Point(131, 24);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(28, 13);
-            this.label2.TabIndex = 4;
-            this.label2.Text = "0:00";
+            this.FramesLabel.AutoSize = true;
+            this.FramesLabel.BackColor = System.Drawing.Color.Black;
+            this.FramesLabel.ForeColor = System.Drawing.Color.White;
+            this.FramesLabel.Location = new System.Drawing.Point(131, 24);
+            this.FramesLabel.Name = "FramesLabel";
+            this.FramesLabel.Size = new System.Drawing.Size(28, 13);
+            this.FramesLabel.TabIndex = 4;
+            this.FramesLabel.Text = "0:00";
             // 
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.Black;
+            this.panel1.Controls.Add(this.MemoryLabel);
             this.panel1.Location = new System.Drawing.Point(131, 10);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(157, 28);
+            this.panel1.Size = new System.Drawing.Size(157, 44);
             this.panel1.TabIndex = 5;
+            // 
+            // MemoryLabel
+            // 
+            this.MemoryLabel.AutoSize = true;
+            this.MemoryLabel.BackColor = System.Drawing.Color.Black;
+            this.MemoryLabel.ForeColor = System.Drawing.Color.White;
+            this.MemoryLabel.Location = new System.Drawing.Point(0, 27);
+            this.MemoryLabel.Name = "MemoryLabel";
+            this.MemoryLabel.Size = new System.Drawing.Size(28, 13);
+            this.MemoryLabel.TabIndex = 6;
+            this.MemoryLabel.Text = "0:00";
             // 
             // completeCover
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(300, 393);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.FramesLabel);
+            this.Controls.Add(this.TimeLabel);
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.doneButton);
             this.Controls.Add(this.pictureBox1);
@@ -126,11 +140,12 @@ namespace imageDeCap
             this.Text = "completeCover";
             this.TopMost = true;
             this.TransparencyKey = System.Drawing.Color.Red;
-            this.Load += new System.EventHandler(this.completeCover_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.completeCover_KeyDown);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.completeCover_KeyUp);
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.completeCover_MouseMove);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -141,8 +156,9 @@ namespace imageDeCap
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Button doneButton;
         private System.Windows.Forms.Button cancelButton;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label TimeLabel;
+        private System.Windows.Forms.Label FramesLabel;
         private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Label MemoryLabel;
     }
 }

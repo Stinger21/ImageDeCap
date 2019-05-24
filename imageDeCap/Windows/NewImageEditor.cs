@@ -33,11 +33,11 @@ namespace imageDeCap
             
             if (result == EditorResult.Quit)
             {
-                OutputData = completeCover.GetBytes(Editor.OriginalImage, ImageFormat.Png);
+                OutputData = CompleteCover.GetBytes(Editor.OriginalImage, ImageFormat.Png);
             }
             else
             {
-                OutputData = completeCover.GetBytes(Editor.EditedImage, ImageFormat.Png);
+                OutputData = CompleteCover.GetBytes(Editor.EditedImage, ImageFormat.Png);
                 Clipboard.Clear();
             }
             return (result, OutputData);

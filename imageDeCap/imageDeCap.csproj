@@ -191,11 +191,11 @@
     <Compile Include="Windows\boxOfWhy.Designer.cs">
       <DependentUpon>boxOfWhy.cs</DependentUpon>
     </Compile>
-    <Compile Include="Windows\completeCover.cs">
+    <Compile Include="Windows\CompleteCover.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Windows\completeCover.Designer.cs">
-      <DependentUpon>completeCover.cs</DependentUpon>
+    <Compile Include="Windows\CompleteCover.Designer.cs">
+      <DependentUpon>CompleteCover.cs</DependentUpon>
     </Compile>
     <Compile Include="Windows\NewImageEditor.cs">
       <SubType>Form</SubType>
@@ -240,8 +240,8 @@
     <EmbeddedResource Include="Windows\boxOfWhy.resx">
       <DependentUpon>boxOfWhy.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Windows\completeCover.resx">
-      <DependentUpon>completeCover.cs</DependentUpon>
+    <EmbeddedResource Include="Windows\CompleteCover.resx">
+      <DependentUpon>CompleteCover.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Windows\NewImageEditor.resx">
       <DependentUpon>NewImageEditor.cs</DependentUpon>
@@ -300,7 +300,6 @@
     <EmbeddedResource Include="Sounds\snip.wav" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="canvas.png" />
     <None Include="Resources\paint.png" />
     <None Include="Resources\done.png" />
     <None Include="Resources\Help.png" />

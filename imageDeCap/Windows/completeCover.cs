@@ -13,25 +13,23 @@ using System.Windows.Forms;
 
 namespace imageDeCap
 {
-    public partial class completeCover : Form
+    public partial class CompleteCover : Form
     {
-        public completeCover(bool Gif = false)
+        public CompleteCover(bool Gif = false)
         {
-            this.Gif = Gif;
             InitializeComponent();
+            this.Gif = Gif;
             this.Opacity = 0.005f;
+            this.ShowInTaskbar = false;
 
             UseBackCover = false;
             if (imageDeCap.Preferences.FreezeScreenOnRegionShot)
-            {
                 UseBackCover = true;
-            }
+
             if (Gif)
-            {
                 UseBackCover = false;
-            }
-            this.ShowInTaskbar = false;
         }
+
         bool UseBackCover;
         bool Gif = false;
 
@@ -71,9 +69,6 @@ namespace imageDeCap
                 this.SetBounds(x, y, width, height);
             }
             _Activated = true;
-        }
-        private void completeCover_Load(object sender, EventArgs e)
-        {
         }
 
         private void completeCover_MouseMove(object sender, MouseEventArgs e)
@@ -217,11 +212,14 @@ namespace imageDeCap
                 }
             }
         }
-        public void SetTimer(string time, string frames)
+
+        public void SetTimer(string time, string frames, string Size)
         {
-            label1.Text = time;
-            label2.Text = frames;
+            TimeLabel.Text = time;
+            FramesLabel.Text = frames;
+            MemoryLabel.Text = Size;
         }
+
         private void doneButton_Click(object sender, EventArgs e)
         {
             EnterPressed = true;
