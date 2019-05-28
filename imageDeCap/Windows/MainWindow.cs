@@ -280,7 +280,7 @@ namespace imageDeCap
                 if(!hasWriteAccessToFolder(ExeDirectory))
                 {
                     MessageBox.Show("Insufficient permissions to write settings, try starting the program from somewhere else or start it as as administrator.", "Could not write settings.", MessageBoxButtons.OK);
-                    actuallyCloseTheProgram();
+                    ActuallyCloseTheProgram();
                     return;
                 }
                 LinksFilePath = ExeDirectory + @"\imageDecapLinks.ini";
@@ -433,7 +433,7 @@ namespace imageDeCap
             UploadToImgurBounds(true);
         }
 
-        public void actuallyCloseTheProgram()
+        public void ActuallyCloseTheProgram()
         {
             pushThroughCancel = true;
             props.Close();
@@ -870,7 +870,7 @@ namespace imageDeCap
             }
         }
 
-        private void setBox(boxOfWhy box, bool grey)
+        private void setBox(ScreenshotRegionLine box, bool grey)
         {
             box.Show();
             box.ShowInTaskbar = false;
@@ -886,15 +886,15 @@ namespace imageDeCap
         
         public ScreenCapturer cap = new ScreenCapturer();
 
-        public boxOfWhy topBox = new boxOfWhy();
-        public boxOfWhy bottomBox = new boxOfWhy();
-        public boxOfWhy leftBox = new boxOfWhy();
-        public boxOfWhy rightBox = new boxOfWhy();
+        public ScreenshotRegionLine topBox = new ScreenshotRegionLine();
+        public ScreenshotRegionLine bottomBox = new ScreenshotRegionLine();
+        public ScreenshotRegionLine leftBox = new ScreenshotRegionLine();
+        public ScreenshotRegionLine rightBox = new ScreenshotRegionLine();
 
-        public boxOfWhy ruleOfThirdsBox1 = new boxOfWhy(true);
-        public boxOfWhy ruleOfThirdsBox2 = new boxOfWhy(true);
-        public boxOfWhy ruleOfThirdsBox3 = new boxOfWhy(true);
-        public boxOfWhy ruleOfThirdsBox4 = new boxOfWhy(true);
+        public ScreenshotRegionLine ruleOfThirdsBox1 = new ScreenshotRegionLine(true);
+        public ScreenshotRegionLine ruleOfThirdsBox2 = new ScreenshotRegionLine(true);
+        public ScreenshotRegionLine ruleOfThirdsBox3 = new ScreenshotRegionLine(true);
+        public ScreenshotRegionLine ruleOfThirdsBox4 = new ScreenshotRegionLine(true);
 
         public int X = 0;
         public int Y = 0;
@@ -1001,7 +1001,7 @@ namespace imageDeCap
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            actuallyCloseTheProgram();
+            ActuallyCloseTheProgram();
         }
 
         private void hideToolStripMenuItem_Click(object sender, EventArgs e)

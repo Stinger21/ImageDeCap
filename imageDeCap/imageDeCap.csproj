@@ -185,11 +185,11 @@
     <Compile Include="Windows\AboutWindow.Designer.cs">
       <DependentUpon>AboutWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Windows\boxOfWhy.cs">
+    <Compile Include="Windows\ScreenshotRegionLine.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Windows\boxOfWhy.Designer.cs">
-      <DependentUpon>boxOfWhy.cs</DependentUpon>
+    <Compile Include="Windows\ScreenshotRegionLine.Designer.cs">
+      <DependentUpon>ScreenshotRegionLine.cs</DependentUpon>
     </Compile>
     <Compile Include="Windows\CompleteCover.cs">
       <SubType>Form</SubType>
@@ -237,8 +237,8 @@
     <EmbeddedResource Include="Windows\AboutWindow.resx">
       <DependentUpon>AboutWindow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Windows\boxOfWhy.resx">
-      <DependentUpon>boxOfWhy.cs</DependentUpon>
+    <EmbeddedResource Include="Windows\ScreenshotRegionLine.resx">
+      <DependentUpon>ScreenshotRegionLine.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Windows\CompleteCover.resx">
       <DependentUpon>CompleteCover.cs</DependentUpon>

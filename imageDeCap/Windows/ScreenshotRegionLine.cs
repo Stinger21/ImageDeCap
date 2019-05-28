@@ -22,25 +22,19 @@ using System.Threading;
 
 namespace imageDeCap
 {
-    public partial class boxOfWhy : Form
+    // Form used to draw lines when capturing a screenshot
+    public partial class ScreenshotRegionLine : Form
     {
-
-        public boxOfWhy(bool grey = false)
+        public ScreenshotRegionLine(bool grey = false)
         {
             InitializeComponent();
-
-            
         }
-
-        private void boxOfWhy_Load(object sender, EventArgs e)
-        {
-
-        }
-        int WM_NCHITTEST = 0x84;
-        Int32 HTTRANSPARENT = -1;
-
+        
         protected override void WndProc(ref Message m)
         {
+            int WM_NCHITTEST = 0x84;
+            Int32 HTTRANSPARENT = -1;
+
             if (m.Msg == (int)WM_NCHITTEST)
                 m.Result = (IntPtr)HTTRANSPARENT;
             else

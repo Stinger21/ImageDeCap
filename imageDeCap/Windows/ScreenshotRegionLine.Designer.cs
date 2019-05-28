@@ -1,6 +1,6 @@
 ﻿namespace imageDeCap
 {
-    partial class boxOfWhy
+    partial class ScreenshotRegionLine
     {
         /// <summary>
         /// Required designer variable.
@@ -44,7 +44,6 @@
             this.ShowInTaskbar = false;
             this.Text = "BoundingBox";
             this.TopMost = true;
-            this.Load += new System.EventHandler(this.boxOfWhy_Load);
             this.ResumeLayout(false);
 
         }

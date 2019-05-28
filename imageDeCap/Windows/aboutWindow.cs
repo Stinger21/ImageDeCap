@@ -33,7 +33,6 @@ namespace imageDeCap
         private void Peter_Click(object sender, EventArgs e)
         {
             System.Diagnostics.Process.Start("https://github.com/peterlindgren");
-        
         }
     }
 }
