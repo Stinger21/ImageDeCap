@@ -62,7 +62,7 @@ namespace imageDeCap
             else
                 Height = Editor.EditedImage.Height;
 
-            this.Size = new Size(Width + 23, Height + 95);
+            this.Size = new Size(Width + 23-5, Height + 95 - 15);
             this.StartPosition = FormStartPosition.Manual;
             this.Location = new Point(X - 7, Y - 20);
 
@@ -270,6 +270,11 @@ namespace imageDeCap
         private void HelpButton_Click(object sender, EventArgs e)
         {
             InfoText.Visible = !InfoText.Visible;
+        }
+
+        private void groupBox1_Enter(object sender, EventArgs e)
+        {
+
         }
     }
 

@@ -60,7 +60,6 @@
             this.CopyImageToClipboard = new System.Windows.Forms.CheckBox();
             this.checkBox6 = new System.Windows.Forms.CheckBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.label8 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.ResetHotkeysbutton = new System.Windows.Forms.Button();
             this.label11 = new System.Windows.Forms.Label();
@@ -94,8 +93,8 @@
             this.wavFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.ImageFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.fontDialog = new System.Windows.Forms.FontDialog();
-            this.imageContainer = new System.Windows.Forms.PictureBox();
             this.PrintScreenTimer = new System.Windows.Forms.Timer(this.components);
+            this.imageContainer = new System.Windows.Forms.PictureBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gifFPS)).BeginInit();
@@ -456,7 +455,6 @@
             // 
             // tabPage2
             // 
-            this.tabPage2.Controls.Add(this.label8);
             this.tabPage2.Controls.Add(this.groupBox3);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
@@ -465,15 +463,6 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Hotkeys";
             this.tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // label8
-            // 
-            this.label8.Location = new System.Drawing.Point(3, 211);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(334, 32);
-            this.label8.TabIndex = 38;
-            this.label8.Text = "Region screenshots behaving wierd? Turn off windows scaling.\r\nHotkeys not working" +
-    "? Run ImageDeCap as administrator\r\n";
             // 
             // groupBox3
             // 
@@ -806,6 +795,12 @@
             this.ImageFileDialog.Filter = "png (*.png)|*.png|jpg (*.jpg)|*.jpg|bmp (*.bmp)|*.bmp";
             this.ImageFileDialog.Title = "Select image file";
             // 
+            // PrintScreenTimer
+            // 
+            this.PrintScreenTimer.Enabled = true;
+            this.PrintScreenTimer.Interval = 1000;
+            this.PrintScreenTimer.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
             // imageContainer
             // 
             this.imageContainer.Cursor = System.Windows.Forms.Cursors.Hand;
@@ -817,12 +812,6 @@
             this.imageContainer.TabIndex = 1;
             this.imageContainer.TabStop = false;
             this.imageContainer.Click += new System.EventHandler(this.imageContainer_Click);
-            // 
-            // PrintScreenTimer
-            // 
-            this.PrintScreenTimer.Enabled = true;
-            this.PrintScreenTimer.Interval = 1000;
-            this.PrintScreenTimer.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // SettingsWindow
             // 
@@ -907,7 +896,6 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.CheckBox checkBox6;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
