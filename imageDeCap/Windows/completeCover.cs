@@ -164,7 +164,7 @@ namespace imageDeCap
                 {
                     Utilities.playSound("snip.wav");
                     Bitmap result = Program.ImageDeCap.cap.Capture(
-                        enmScreenCaptureMode.Bounds, 
+                        ScreenCaptureMode.Bounds, 
                         Program.ImageDeCap.X - 1, 
                         Program.ImageDeCap.Y - 1,
                         Program.ImageDeCap.tempWidth + 1, 

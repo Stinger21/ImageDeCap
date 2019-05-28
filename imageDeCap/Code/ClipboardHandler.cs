@@ -9,29 +9,28 @@ namespace imageDeCap
 {
     public static class ClipboardHandler
     {
-        static string textToCopyToClipboard = "";
+        static string TextToCopyToClipboard = "";
 
         public static void Update()
         {
-            if (textToCopyToClipboard != "")
+            if (TextToCopyToClipboard != "")
             {
-                Clipboard.SetText(textToCopyToClipboard);
-                textToCopyToClipboard = "";
+                Clipboard.SetText(TextToCopyToClipboard);
+                TextToCopyToClipboard = "";
             }
         }
 
-        public static void setClipboard(string text)
+        public static void SetClipboard(string text)
         {
-            if (imageDeCap.Preferences.CopyLinksToClipboard)
+            if (Preferences.CopyLinksToClipboard)
             {
                 if (text != null)
                 {
-                    textToCopyToClipboard = text;
+                    TextToCopyToClipboard = text;
                 }
                 else
                 {
                     Utilities.BubbleNotification("failed to retrieve link.", null, ToolTipIcon.Error);
-                    //Program.ImageDeCap.BubbleNotification.ShowBalloonTip(500, "imageDeCap", "failed to retrieve link.", ToolTipIcon.Error);
                     Utilities.playSound("error.wav");
                 }
             }

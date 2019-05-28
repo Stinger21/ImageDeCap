@@ -15,6 +15,8 @@ namespace imageDeCap
     {
         public static MainWindow ImageDeCap;
         public static bool hotkeysEnabled = true;
+        public static bool Quit = false;
+
         [STAThread]
         static void Main(string[] args)
         {
@@ -32,6 +34,7 @@ namespace imageDeCap
                     System.Threading.Thread.Sleep(2000);
                 }
             }
+
             if (Process.GetProcessesByName(Process.GetCurrentProcess().ProcessName).Length > 1 && ForceStartup == false)
             {
                 return;
@@ -50,6 +53,5 @@ namespace imageDeCap
                 System.Threading.Thread.Sleep(1);
             } 
         }
-        public static bool Quit;
     }
 }

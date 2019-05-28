@@ -148,8 +148,7 @@ namespace imageDeCap
             {
                 ActualFrameNumber = (CurrentFrame % TheImage.Length);
             }
-
-            //Console.WriteLine(ActualFrameNumber);
+            
             CurrentImage = TheImage[ActualFrameNumber];
             PictureBox.Image = CurrentImage;
             BackgroundTrack.Value = Math.Min(Math.Max(ActualFrameNumber, BackgroundTrack.Minimum), BackgroundTrack.Maximum);

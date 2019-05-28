@@ -206,7 +206,7 @@ namespace imageDeCap
                 height = height - 1;
             // Capture Bitma
             Bitmap b = Program.ImageDeCap.cap.Capture(
-                enmScreenCaptureMode.Bounds,
+                ScreenCaptureMode.Bounds,
                 Program.ImageDeCap.X - 1,
                 Program.ImageDeCap.Y - 1,
                 width,
@@ -460,7 +460,7 @@ namespace imageDeCap
         public bool isTakingSnapshot = false;
         private void UploadToImgurBounds(bool isGif = false)
         {
-            Bitmap background = cap.Capture(enmScreenCaptureMode.Screen);
+            Bitmap background = cap.Capture(ScreenCaptureMode.Screen);
             // prevent blackening
             if (!isTakingSnapshot)
             {
@@ -494,17 +494,17 @@ namespace imageDeCap
         {
             if (!isTakingSnapshot)
             {
-                uploadImgur(enmScreenCaptureMode.Window);
+                uploadImgur(ScreenCaptureMode.Window);
             }
         }
         private void UploadImgurScreen()
         {
             if (!isTakingSnapshot)
             {
-                uploadImgur(enmScreenCaptureMode.Screen);
+                uploadImgur(ScreenCaptureMode.Screen);
             }
         }
-        private void uploadImgur(enmScreenCaptureMode mode)
+        private void uploadImgur(ScreenCaptureMode mode)
         {
             Utilities.playSound("snip.wav");
             Bitmap result = cap.Capture(mode);
@@ -767,7 +767,7 @@ namespace imageDeCap
 
             if (url.Contains("failed"))
             {
-                ClipboardHandler.setClipboard(url);
+                ClipboardHandler.SetClipboard(url);
                 Utilities.BubbleNotification($"Upload to imgur failed! \n{url}\nAre you connected to the internet? \nis Imgur Down?", null, ToolTipIcon.Error);
                 Utilities.playSound("error.wav");
             }
@@ -793,7 +793,7 @@ namespace imageDeCap
                     //means it's probably windows 10, in which case we should not play the noise as windows 10 plays a fucking noise of its own no matter what. :|
                     Utilities.playSound("upload.wav");
                 }
-                ClipboardHandler.setClipboard(url);
+                ClipboardHandler.SetClipboard(url);
                 addToLinks(url);
             }
 
@@ -801,7 +801,7 @@ namespace imageDeCap
             {
                 string name = DateTime.UtcNow.ToString("yyyyMMddHHmmssfff");
                 BackgroundWorker bw = new BackgroundWorker();
-                bw.DoWork += cap.uploadToFTP;
+                bw.DoWork += cap.UploadToFTP;
                 bw.RunWorkerAsync(new object[] {    Preferences.FTPurl,
                                                     Preferences.FTPusername,
                                                     Preferences.FTPpassword,
@@ -821,7 +821,7 @@ namespace imageDeCap
                 bw.RunWorkerAsync(text);
 
                 BackgroundWorker bw2 = new BackgroundWorker();
-                bw2.DoWork += cap.uploadToFTP;
+                bw2.DoWork += cap.UploadToFTP;
                 string name = DateTime.UtcNow.ToString("yyyyMMddHHmmssfff");
                 bw2.RunWorkerAsync(new object[] {    Preferences.FTPurl,
                                                     Preferences.FTPusername,
@@ -844,7 +844,7 @@ namespace imageDeCap
             string pasteBinResult = (string)e.Result;
             if (!pasteBinResult.Contains("failed"))
             {
-                ClipboardHandler.setClipboard(pasteBinResult);
+                ClipboardHandler.SetClipboard(pasteBinResult);
                 if (Preferences.CopyLinksToClipboard)
                 {
                     if (!Preferences.DisableNotifications)
@@ -904,7 +904,7 @@ namespace imageDeCap
         public int tempHeight = 0;
         int LastCursorX = 0;
         int LastCursorY = 0;
-        public void updateSelectedArea(CompleteCover backCover, bool EnterPressed, bool EscapePressed, bool LmbDown, bool LmbUp, bool Lmb, bool Gif, bool RMB, bool HoldingAlt) // this thing is essentially a fucking frame-loop.
+        public void updateSelectedArea(CompleteCover backCover, bool EnterPressed, bool EscapePressed, bool LmbDown, bool LmbUp, bool Lmb, bool Gif, bool RMB, bool HoldingAlt) // this thing is essentially a frame-loop.
         {
 
             backCover.Activate();
@@ -1053,10 +1053,6 @@ namespace imageDeCap
         private void Form1_Load(object sender, EventArgs e)
         {
             VersionLabel.Text = MainWindow.VersionNumber;
-        }
-
-        private void BindPrintscreenTimer_Tick(object sender, EventArgs e)
-        {
         }
     }
 }

@@ -9,8 +9,41 @@ using SharpAvi.Codecs;
 using SharpAvi.Output;
 using System.Windows.Forms;
 
+
+// Most of the code here is not mine. 
+// All the code here is used simply to create the final output video file from the series of screenshots recorded in the gif-recorder.
+// I *think* there is potential for massive memory and performance improvements possible by doing this in some other way.
+
 namespace imageDeCap
 {
+    // IIRC this write function is the only function actually in direct use.
+    public static class VideoWriter
+    {
+        //RecorderParams Params;
+        //AviWriter writer;
+        //IAviVideoStream videoStream;
+        public static void Write(RecorderParams Params, Bitmap[] images)
+        {
+            // this.Params = Params;
+            AviWriter writer = Params.CreateAviWriter();
+            IAviVideoStream videoStream = Params.CreateVideoStream(writer);
+            videoStream.Name = "Video";
+            
+            var frameInterval = TimeSpan.FromSeconds(1 / (double)writer.FramesPerSecond);
+            var buffer = new byte[Params.Width * Params.Height * 4];
+            foreach (Bitmap b in images)
+            {
+                var bits = b.LockBits(new Rectangle(Params.X, Params.Y, Params.Width, Params.Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
+                Marshal.Copy(bits.Scan0, buffer, 0, buffer.Length);
+                b.UnlockBits(bits);
+
+                videoStream.WriteFrame(true, buffer, 0, buffer.Length);
+            }
+            writer.Close();
+        }
+    }
+
+
     // Used to Configure the Recorder
     public class RecorderParams
     {
@@ -66,32 +99,6 @@ namespace imageDeCap
         }
     }
 
-    public static class VideoWriter
-    {
-        //RecorderParams Params;
-        //AviWriter writer;
-        //IAviVideoStream videoStream;
-        public static void Write(RecorderParams Params, Bitmap[] images)
-        {
-            // this.Params = Params;
-            AviWriter writer = Params.CreateAviWriter();
-            IAviVideoStream videoStream = Params.CreateVideoStream(writer);
-            videoStream.Name = "Video";
-
-
-            var frameInterval = TimeSpan.FromSeconds(1 / (double)writer.FramesPerSecond);
-            var buffer = new byte[Params.Width * Params.Height * 4];
-            foreach(Bitmap b in images)
-            {
-                var bits = b.LockBits(new Rectangle(Params.X, Params.Y, Params.Width, Params.Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
-                Marshal.Copy(bits.Scan0, buffer, 0, buffer.Length);
-                b.UnlockBits(bits);
-
-                videoStream.WriteFrame(true, buffer, 0, buffer.Length);
-            }
-            writer.Close();
-        }
-    }
 
     public class Recorder : IDisposable
     {

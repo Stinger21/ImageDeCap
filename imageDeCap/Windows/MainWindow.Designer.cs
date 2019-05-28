@@ -235,7 +235,6 @@
             // 
             this.BindPrintscreenTimer.Enabled = true;
             this.BindPrintscreenTimer.Interval = 1000;
-            this.BindPrintscreenTimer.Tick += new System.EventHandler(this.BindPrintscreenTimer_Tick);
             // 
             // MainWindow
             // 

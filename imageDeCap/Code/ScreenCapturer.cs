@@ -26,7 +26,7 @@ using Newtonsoft.Json.Linq;
 
 namespace imageDeCap
 {
-    public enum enmScreenCaptureMode
+    public enum ScreenCaptureMode
     {
         Screen,
         Window,
@@ -51,37 +51,6 @@ namespace imageDeCap
                 e.Result = ("failed, " + imgurEx.Message, FileData);
             }
         }
-        //public void UploadImage_Imgur(object sender, DoWorkEventArgs e)
-        //{
-        //    byte[] FileData = (byte[])e.Argument;
-        //    /*
-        //    curl --request POST \
-        //    --url https://api.imgur.com/3/image \
-        //    --header 'Authorization: Client-ID {{clientId}}' \
-        //    --header 'content-type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW' \
-        //    --form image=R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7
-        //    */
-        //    string url = nameof(FileData);
-        //
-        //
-        //    var content = new MultipartFormDataContent($"{DateTime.UtcNow.Ticks}")
-        //    {
-        //        {new StringContent("file"), "type"},
-        //        {new ByteArrayContent(FileData), nameof(FileData)}
-        //    };
-        //
-        //    var request = new HttpRequestMessage(HttpMethod.Post, url)
-        //    {
-        //        Content = content
-        //    };
-        //    HttpClient client = new HttpClient();
-        //    //client.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", apiClient.OAuth2Token != null : $"Client-ID {apiClient.ClientId}");
-        //    client.DefaultRequestHeaders.AddWithoutValidation("Authorization", "Client-ID da05117bbfa9bda");
-        //    HttpResponseMessage message = client.SendAsync(request).GetAwaiter().GetResult();
-        //
-        //
-        //
-        //}
 
         public void UploadGif_Webmshare(object sender, DoWorkEventArgs e)
         {
@@ -126,7 +95,7 @@ namespace imageDeCap
 
         }
 
-        public void uploadToFTP(object sender, DoWorkEventArgs e)
+        public void UploadToFTP(object sender, DoWorkEventArgs e)
         {
             object[] arguments = (object[])e.Argument;
             string url = (string)arguments[0];
@@ -136,11 +105,9 @@ namespace imageDeCap
             string filename = (string)arguments[4];
 
             // Get the object used to communicate with the server.
-
             FtpWebRequest request = (FtpWebRequest)WebRequest.Create(url + (url.EndsWith("/") ? "" : "/") + filename);
             request.Method = WebRequestMethods.Ftp.UploadFile;
-
-            // This example assumes the FTP site uses anonymous logon.
+            
             request.Credentials = new NetworkCredential(username, password);
 
             // Copy the contents of the file to the request stream.
@@ -152,9 +119,7 @@ namespace imageDeCap
             requestStream.Close();
 
             FtpWebResponse response = (FtpWebResponse)request.GetResponse();
-
-            //Console.WriteLine("Upload File Complete, status {0}", response.StatusDescription);
-
+            
             response.Close();
         }
 
@@ -198,17 +163,17 @@ namespace imageDeCap
             e.Result = IResponse;
         }
 
-        public Bitmap Capture(enmScreenCaptureMode screenCaptureMode = enmScreenCaptureMode.Window, int X = 0, int Y = 0, int Width = 0, int Height = 0, bool CaptureMouse = false)
+        public Bitmap Capture(ScreenCaptureMode screenCaptureMode = ScreenCaptureMode.Window, int X = 0, int Y = 0, int Width = 0, int Height = 0, bool CaptureMouse = false)
         {
             Rectangle bounds;
 
-            if (screenCaptureMode == enmScreenCaptureMode.Screen)
+            if (screenCaptureMode == ScreenCaptureMode.Screen)
             {
                 //bounds = new Rectangle(0, 0, SystemInformation.VirtualScreen.Width, SystemInformation.VirtualScreen.Height);
                 bounds = SystemInformation.VirtualScreen;
                 CursorPosition = Cursor.Position;
             }
-            else if (screenCaptureMode == enmScreenCaptureMode.Window)
+            else if (screenCaptureMode == ScreenCaptureMode.Window)
             {
                 var foregroundWindowsHandle = Win32Stuff.GetForegroundWindow();
                 var rect = new Win32Stuff.Rect();

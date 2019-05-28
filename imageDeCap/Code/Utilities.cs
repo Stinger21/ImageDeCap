@@ -87,6 +87,7 @@ namespace imageDeCap
         {
             return new Point((int)X, (int)Y);
         }
+
         // Math
         public static float Magnitude(Vector2 P1)
         {

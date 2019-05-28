@@ -51,7 +51,7 @@ namespace imageDeCap
         public static string ImageEditorFont = "Arial Black";
         public static int FontStyleType = (int)FontStyle.Bold;
 
-        // Metaprogramming shenanigans to make the data above avilable as an ini file.
+        // Metaprogramming shenanigans to make the data above available as an ini file.
         static List<object> Defaults = new List<object>();
         public static void ResetAllPreferences()
         {
