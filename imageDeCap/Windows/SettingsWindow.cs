@@ -15,11 +15,11 @@ namespace imageDeCap
 {
     public partial class SettingsWindow : Form
     {
-        MainWindow parentForm;
+        MainWindow ParentForm;
         public SettingsWindow(MainWindow parentForm)
         {
             InitializeComponent();
-            this.parentForm = parentForm;
+            this.ParentForm = parentForm;
             initSettings();
         }
 
@@ -618,7 +618,8 @@ namespace imageDeCap
         private void button4_Click(object sender, EventArgs e)
         {
             MainWindow.AddToStartup();
-            MessageBox.Show("Added to startup", "ImageDeCap added to startup!");
+
+            Utilities.BubbleNotification("Added to startup!");
         }
 
         private void ResetHotkeysbutton_Click(object sender, EventArgs e)

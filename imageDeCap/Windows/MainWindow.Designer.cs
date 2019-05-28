@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
-            this.NotifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
+            this.BubbleNotification = new System.Windows.Forms.NotifyIcon(this.components);
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
@@ -58,13 +58,11 @@
             // 
             // notifyIcon1
             // 
-            this.NotifyIcon.BalloonTipText = "ScreenDeCap Is running in the background";
-            this.NotifyIcon.BalloonTipTitle = "ScreenDeCap";
-            this.NotifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
-            this.NotifyIcon.Text = "ImageDeCap";
-            this.NotifyIcon.Visible = true;
-            this.NotifyIcon.BalloonTipClicked += new System.EventHandler(this.notifyIcon1_BalloonTipClicked);
-            this.NotifyIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseDoubleClick);
+            this.BubbleNotification.BalloonTipText = "ScreenDeCap Is running in the background";
+            this.BubbleNotification.BalloonTipTitle = "ScreenDeCap";
+            this.BubbleNotification.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
+            this.BubbleNotification.Text = "ImageDeCap";
+            this.BubbleNotification.Visible = true;
             // 
             // button2
             // 
@@ -272,7 +270,7 @@
 
         #endregion
 
-        public System.Windows.Forms.NotifyIcon NotifyIcon;
+        public System.Windows.Forms.NotifyIcon BubbleNotification;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button4;

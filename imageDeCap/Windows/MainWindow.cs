@@ -27,8 +27,10 @@ namespace imageDeCap
 
     public partial class MainWindow : Form
     {
+        // Global Variables
         public static string videoFormat = ".mp4";
         public static string VersionNumber = "v1.27";
+
         List<string> Links = new List<string>();
         private void addToLinks(string link, bool addToXML = true)
         {
@@ -52,16 +54,14 @@ namespace imageDeCap
 
         private void listBox1_DoubleClick(object sender, EventArgs e)
         {
-            if (Links.Count > 0)
-                if (Links[listBox1.SelectedIndex].StartsWith("http"))
+            if (Links.Count > 0 && Links[listBox1.SelectedIndex].StartsWith("http"))
                     Process.Start(Links[listBox1.SelectedIndex]);
         }
 
-        private void notifyIcon1_BalloonTipClicked(object sender, EventArgs e)
+        private void BalloonTipClicked(object sender, EventArgs e)
         {
-            if (Links.Count > 0)
-                if (Links[listBox1.SelectedIndex].StartsWith("http"))
-                    Process.Start(Links[listBox1.SelectedIndex]);
+            if (Links.Count > 0 && Links[Links.Count - 1].StartsWith("http"))
+                    Process.Start(Links[Links.Count - 1]);
         }
 
         
@@ -336,7 +336,7 @@ namespace imageDeCap
                     Environment.Exit(0);
                 }
 
-                NotifyIcon.ShowBalloonTip(500, "Welcome to ImageDeCap!", "Press PRINTSCREEN to start!", ToolTipIcon.Info);
+                Utilities.BubbleNotification("Press PRINTSCREEN to start!", null, ToolTipIcon.Info, "Welcome to ImageDeCap!");
 
                 MainWindow.AddToStartup();
             }
@@ -365,8 +365,8 @@ namespace imageDeCap
             }
 
             SystemTrayContextMenu.Initialize();
-            NotifyIcon.ContextMenu = SystemTrayContextMenu.IconRightClickMenu;
-            NotifyIcon.Visible = true;
+            BubbleNotification.ContextMenu = SystemTrayContextMenu.IconRightClickMenu;
+            BubbleNotification.Visible = true;
 
             listBox1.AllowDrop = true;
             listBox1.DragEnter += new DragEventHandler(Form1_DragEnter);
@@ -768,7 +768,7 @@ namespace imageDeCap
             if (url.Contains("failed"))
             {
                 ClipboardHandler.setClipboard(url);
-                NotifyIcon.ShowBalloonTip(500, "ImageDeCap", "Upload to imgur failed! \n" + url + "\nAre you connected to the internet? \nis Imgur Down?", ToolTipIcon.Error);
+                Utilities.BubbleNotification($"Upload to imgur failed! \n{url}\nAre you connected to the internet? \nis Imgur Down?", null, ToolTipIcon.Error);
                 Utilities.playSound("error.wav");
             }
             else
@@ -780,16 +780,17 @@ namespace imageDeCap
                 if (!Preferences.CopyLinksToClipboard)
                 {
                     if (Preferences.DisableNotifications)
-                        NotifyIcon.ShowBalloonTip(500, "ImageDeCap", "Imgur URL copied to clipboard!", ToolTipIcon.Info);
+                        Utilities.BubbleNotification("Imgur URL copied to clipboard!", BalloonTipClicked);
                 }
                 else
                 {
                     if (!Preferences.DisableNotifications)
-                        NotifyIcon.ShowBalloonTip(500, "ImageDeCap", "Upload complete!", ToolTipIcon.Info);
+                        Utilities.BubbleNotification("Upload Complete!", BalloonTipClicked);
                 }
                 
                 if (!Utilities.IsWindows10() || Preferences.DisableNotifications)
-                {//means it's probably windows 10, in which case we should not play the noise as windows 10 plays a fucking noise of its own no matter what. :|
+                {
+                    //means it's probably windows 10, in which case we should not play the noise as windows 10 plays a fucking noise of its own no matter what. :|
                     Utilities.playSound("upload.wav");
                 }
                 ClipboardHandler.setClipboard(url);
@@ -847,23 +848,24 @@ namespace imageDeCap
                 if (Preferences.CopyLinksToClipboard)
                 {
                     if (!Preferences.DisableNotifications)
-                        NotifyIcon.ShowBalloonTip(500, "ImageDeCap", "Pastebin link placed in clipboard!", ToolTipIcon.Info);
+                        Utilities.BubbleNotification("Pastebin link placed in clipboard!", BalloonTipClicked);
                 }
                 else
                 {
                     if (!Preferences.DisableNotifications)
-                        NotifyIcon.ShowBalloonTip(500, "ImageDeCap", "Upload complete!", ToolTipIcon.Info);
+                        Utilities.BubbleNotification("Upload complete!", BalloonTipClicked);
                 }
 
                 if (!Utilities.IsWindows10() || Preferences.DisableNotifications)
-                {//means it's probably windows 10, in which case we should not play the noise as windows 10 plays a fucking noise on its own no matter what. :|
+                {
+                    //means it's probably windows 10, in which case we should not play the noise as windows 10 plays a noise on its own no matter what. :|
                     Utilities.playSound("upload.wav");
                 }
                 addToLinks(pasteBinResult);
             }
             else
             {
-                NotifyIcon.ShowBalloonTip(500, "ImageDeCap", "upload to pastebin failed!\n" + pasteBinResult + "\nAre you connected to the internet? \nIs pastebin Down?", ToolTipIcon.Error);
+                Utilities.BubbleNotification($"upload to pastebin failed!\n{pasteBinResult}\nAre you connected to the internet? \nIs pastebin Down?", null, ToolTipIcon.Error);
                 Utilities.playSound("error.wav");
             }
         }

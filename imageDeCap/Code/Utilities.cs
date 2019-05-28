@@ -38,6 +38,24 @@ namespace imageDeCap
                 }
             }
         }
+
+        // Utility function for displaying bubble notifications.
+        // The most recent call to this gets to choose what function is called when you click it.
+        public delegate void Target(object o, EventArgs e);
+        static EventHandler CurrentTarget;
+        public static void BubbleNotification(string Text, Target OnClickFunction = null, System.Windows.Forms.ToolTipIcon Icon = System.Windows.Forms.ToolTipIcon.Info, string Title = "ImageDeCap", int Timeout = 500)
+        {
+            Program.ImageDeCap.BubbleNotification.ShowBalloonTip(Timeout, Title, Text, Icon);
+            if(CurrentTarget != null)
+            {
+                Program.ImageDeCap.BubbleNotification.BalloonTipClicked -= CurrentTarget;
+            }
+            if(OnClickFunction != null)
+            {
+                CurrentTarget = new EventHandler(OnClickFunction);
+                Program.ImageDeCap.BubbleNotification.BalloonTipClicked += CurrentTarget;
+            }
+        }
     }
 
     // Little vector class because Points drive me insane
