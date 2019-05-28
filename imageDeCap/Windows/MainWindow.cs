@@ -215,9 +215,9 @@ namespace imageDeCap
             gEnc.Add(b);
 
             int minutes = counter / 600;
-            int seconds = (counter/10) % 600;
+            int seconds = (counter / 10) % 600;
             int csecs = counter % 10;
-            CurrentBackCover.SetTimer("Time: " + minutes + ":" + seconds + "." + csecs, "Frames: " + counter, "Size: " + (gEnc.Count * width * height * 8) / 1000000 + " MB");
+            CurrentBackCover.SetTimer("Time: " + minutes + ":" + seconds + "." + csecs, "Frames: " + counter, "Memory Usage: " + (gEnc.Count * width * height * 8) / 1000000 + " MB");
             counter++;
         }
 
@@ -249,7 +249,7 @@ namespace imageDeCap
         public static void AddToStartup()
         {
             string startupPath = Environment.GetFolderPath(Environment.SpecialFolder.Startup) + @"\imageDeCap.lnk";
-            MainWindow.CreateShortcut(startupPath, MainWindow.ExeDirectory);
+            MainWindow.CreateShortcut(startupPath, MainWindow.ExeDirectory + @"\imageDeCap.exe");
         }
         public static string LinksFilePath = "ERROR";
         public static string PreferencesPath = "ERROR";
@@ -305,14 +305,6 @@ namespace imageDeCap
                 {
                     Preferences.BackupImages = false;
                     Preferences.Save();
-                    //// If the program is running in install mode, set the save path to somewhere in my documents :)
-                    //string DefaultSaveFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\ImageDeCap Saved Captures";
-                    //if(!Directory.Exists(DefaultSaveFolder))
-                    //{
-                    //    Directory.CreateDirectory(DefaultSaveFolder);
-                    //}
-                    //Preferences.SaveImagesHere = DefaultSaveFolder;
-                    //Preferences.saveImageAtAll = true;
                 }
                 else
                 {
@@ -344,7 +336,7 @@ namespace imageDeCap
                     Environment.Exit(0);
                 }
 
-                notifyIcon1.ShowBalloonTip(500, "Welcome to ImageDeCap!", "Press PRINTSCREEN to start!", ToolTipIcon.Info);
+                NotifyIcon.ShowBalloonTip(500, "Welcome to ImageDeCap!", "Press PRINTSCREEN to start!", ToolTipIcon.Info);
 
                 MainWindow.AddToStartup();
             }
@@ -373,8 +365,8 @@ namespace imageDeCap
             }
 
             SystemTrayContextMenu.Initialize();
-            notifyIcon1.ContextMenu = SystemTrayContextMenu.IconRightClickMenu;
-            notifyIcon1.Visible = true;
+            NotifyIcon.ContextMenu = SystemTrayContextMenu.IconRightClickMenu;
+            NotifyIcon.Visible = true;
 
             listBox1.AllowDrop = true;
             listBox1.DragEnter += new DragEventHandler(Form1_DragEnter);
@@ -748,7 +740,7 @@ namespace imageDeCap
             if (url.Contains("failed"))
             {
                 ClipboardHandler.setClipboard(url);
-                notifyIcon1.ShowBalloonTip(500, "ImageDeCap", "Upload to imgur failed! \n" + url + "\nAre you connected to the internet? \nis Imgur Down?", ToolTipIcon.Error);
+                NotifyIcon.ShowBalloonTip(500, "ImageDeCap", "Upload to imgur failed! \n" + url + "\nAre you connected to the internet? \nis Imgur Down?", ToolTipIcon.Error);
                 Utilities.playSound("error.wav");
             }
             else
@@ -760,12 +752,12 @@ namespace imageDeCap
                 if (!Preferences.CopyLinksToClipboard)
                 {
                     if (Preferences.DisableNotifications)
-                        notifyIcon1.ShowBalloonTip(500, "ImageDeCap", "Imgur URL copied to clipboard!", ToolTipIcon.Info);
+                        NotifyIcon.ShowBalloonTip(500, "ImageDeCap", "Imgur URL copied to clipboard!", ToolTipIcon.Info);
                 }
                 else
                 {
                     if (!Preferences.DisableNotifications)
-                        notifyIcon1.ShowBalloonTip(500, "ImageDeCap", "Upload complete!", ToolTipIcon.Info);
+                        NotifyIcon.ShowBalloonTip(500, "ImageDeCap", "Upload complete!", ToolTipIcon.Info);
                 }
                 
                 if (!Utilities.IsWindows10() || Preferences.DisableNotifications)
@@ -827,12 +819,12 @@ namespace imageDeCap
                 if (Preferences.CopyLinksToClipboard)
                 {
                     if (!Preferences.DisableNotifications)
-                        notifyIcon1.ShowBalloonTip(500, "ImageDeCap", "Pastebin link placed in clipboard!", ToolTipIcon.Info);
+                        NotifyIcon.ShowBalloonTip(500, "ImageDeCap", "Pastebin link placed in clipboard!", ToolTipIcon.Info);
                 }
                 else
                 {
                     if (!Preferences.DisableNotifications)
-                        notifyIcon1.ShowBalloonTip(500, "ImageDeCap", "Upload complete!", ToolTipIcon.Info);
+                        NotifyIcon.ShowBalloonTip(500, "ImageDeCap", "Upload complete!", ToolTipIcon.Info);
                 }
 
                 if (!Utilities.IsWindows10() || Preferences.DisableNotifications)
@@ -843,7 +835,7 @@ namespace imageDeCap
             }
             else
             {
-                notifyIcon1.ShowBalloonTip(500, "ImageDeCap", "upload to pastebin failed!\n" + pasteBinResult + "\nAre you connected to the internet? \nIs pastebin Down?", ToolTipIcon.Error);
+                NotifyIcon.ShowBalloonTip(500, "ImageDeCap", "upload to pastebin failed!\n" + pasteBinResult + "\nAre you connected to the internet? \nIs pastebin Down?", ToolTipIcon.Error);
                 Utilities.playSound("error.wav");
             }
         }
@@ -988,7 +980,7 @@ namespace imageDeCap
             this.Close();
         }
 
-        aboutWindow about;
+        AboutWindow about;
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if(about?.Visible == true)
@@ -997,7 +989,7 @@ namespace imageDeCap
             }
             else
             {
-                about = new aboutWindow();
+                about = new AboutWindow();
                 about.Show();
             }
         }

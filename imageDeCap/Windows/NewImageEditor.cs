@@ -247,7 +247,6 @@ namespace imageDeCap
                 }
             }
         }
-
         
         private void AddTextButton_Click(object sender, EventArgs e)
         {
@@ -284,20 +283,6 @@ namespace imageDeCap
         public Image OriginalImage;
         NewImageEditor Owner;
 
-        public PictureEditor(Image InputImage, NewImageEditor owner)
-        {
-            //Console.WriteLine("Initialize Editor");
-            this.Owner = owner;
-            DrawImage(ref InputImage, ref OriginalImage);
-            DrawImage(ref InputImage, ref TempImage);
-            DrawImage(ref InputImage, ref EditedImage);
-
-            Image wat = null;
-            DrawImage(ref InputImage, ref wat);
-            UndoHistory.Add((Bitmap)wat);
-            SetState(new Vector2(0, 0), EditorState.Drawing);
-        }
-
         public bool Ctrl;
         public bool Shift;
         public bool Alt;
@@ -305,6 +290,37 @@ namespace imageDeCap
         public bool LMBIsDown;
         public bool LastRMBIsDown;
         public bool LastLMBIsDown;
+
+        public float BrushSize = 20.0f;
+        public float TextSize = 35.0f;
+        public float GammaCorrectedBrushSize = 20.0f;
+        public float GammaCorrectedTextSize = 35.0f;
+
+        Vector2 ItemStartPosition;
+
+        Vector2 BrushLocation;
+        Vector2 LastBrushLocation;
+        Vector2 MousePosition;
+        Vector2 LastMousePosition;
+
+        Vector2 MouseDownLocation;
+
+        float BrushDelta = 0;
+        float LastBrushValue = 0;
+
+        // ctor
+        public PictureEditor(Image InputImage, NewImageEditor owner)
+        {
+            this.Owner = owner;
+            DrawImage(ref InputImage, ref OriginalImage);
+            DrawImage(ref InputImage, ref TempImage);
+            DrawImage(ref InputImage, ref EditedImage);
+
+            Image FirstImage = null;
+            DrawImage(ref InputImage, ref FirstImage);
+            UndoHistory.Add((Bitmap)FirstImage);
+            SetState(new Vector2(0, 0), EditorState.Drawing);
+        }
 
         public enum EditorState
         {
@@ -349,14 +365,14 @@ namespace imageDeCap
                     break;
             }
         }
+
         public void LMBDown(Vector2 Position)
         {
             LMBIsDown = true;
 
             if (Shift)
-            {
                 DrawLine(EditedImage, LastBrushLocation, Position);
-            }
+
             BrushLocation = Position;
             LastBrushLocation = Position;
             MousePosition = Position;
@@ -384,22 +400,6 @@ namespace imageDeCap
             BrushDelta = 0;
         }
 
-        public float BrushSize = 20.0f;
-        public float TextSize = 35.0f;
-        public float GammaCorrectedBrushSize = 20.0f;
-        public float GammaCorrectedTextSize = 35.0f;
-
-        Vector2 ItemStartPosition;
-
-        Vector2 BrushLocation;
-        Vector2 LastBrushLocation;
-        Vector2 MousePosition;
-        Vector2 LastMousePosition;
-
-        Vector2 MouseDownLocation;
-
-        float BrushDelta = 0;
-        float LastBrushValue = 0;
 
         public void DrawTempText()
         {
@@ -455,7 +455,6 @@ namespace imageDeCap
                     TextSize += BrushDelta * 0.1f;
                     TextSize = Math.Max(TextSize, 1);
                 }
-                
             }
             else if (State == EditorState.Box)
             {
@@ -604,6 +603,7 @@ namespace imageDeCap
         {
             if(UndoHistory.Count == 1)
                 return;
+
             Image mm = (Image)UndoHistory[UndoHistory.Count - 1];
             UndoHistory.RemoveAt(UndoHistory.Count - 1);
             DrawImage(ref mm, ref EditedImage);
@@ -611,5 +611,4 @@ namespace imageDeCap
             Owner.ImageContainer.Refresh();
         }
     }
-   
 }

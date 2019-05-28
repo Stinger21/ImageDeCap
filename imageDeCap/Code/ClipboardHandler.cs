@@ -30,7 +30,7 @@ namespace imageDeCap
                 }
                 else
                 {
-                    Program.ImageDeCap.notifyIcon1.ShowBalloonTip(500, "imageDeCap", "failed to retrieve link.", ToolTipIcon.Error);
+                    Program.ImageDeCap.NotifyIcon.ShowBalloonTip(500, "imageDeCap", "failed to retrieve link.", ToolTipIcon.Error);
                     Utilities.playSound("error.wav");
                 }
             }

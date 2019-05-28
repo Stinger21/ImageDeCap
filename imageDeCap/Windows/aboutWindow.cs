@@ -10,34 +10,30 @@ using System.Windows.Forms;
 
 namespace imageDeCap
 {
-    public partial class aboutWindow : Form
+    public partial class AboutWindow : Form
     {
-        public aboutWindow()
+        public AboutWindow()
         {
             InitializeComponent();
             this.StartPosition = FormStartPosition.Manual;
-            this.Location = new Point(Program.ImageDeCap.Location.X - 100, Program.ImageDeCap.Location.Y - 100);
-            this.label2.Text = "ImageDeCap " + MainWindow.VersionNumber;
+            this.Location = new Point(Program.ImageDeCap.Location.X + 100, Program.ImageDeCap.Location.Y - 100);
+            this.ImageDecapLabel.Text = "ImageDeCap " + MainWindow.VersionNumber;
         }
 
-        private void label5_Click(object sender, EventArgs e)
+        private void Andrew_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start("http://www.mattwestphal.com");
+            System.Diagnostics.Process.Start("https://www.linkedin.com/in/andrew-newton-aa1a2094/");
         }
 
-        private void label6_Click(object sender, EventArgs e)
+        private void Alastair_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start("https://alastair.se/");
+            System.Diagnostics.Process.Start("https://github.com/mutoso");
         }
-        
-        private void label7_Click(object sender, EventArgs e)
+
+        private void Peter_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start("http://www.mattwestphal.com/imagedecap");
-        }
+            System.Diagnostics.Process.Start("https://github.com/peterlindgren");
         
-        private void imageContainer_Click(object sender, EventArgs e)
-        {
-            System.Diagnostics.Process.Start("http://www.mattwestphal.com/imagedecap");
         }
     }
 }

@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
-            this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
+            this.NotifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
@@ -58,13 +58,13 @@
             // 
             // notifyIcon1
             // 
-            this.notifyIcon1.BalloonTipText = "ScreenDeCap Is running in the background";
-            this.notifyIcon1.BalloonTipTitle = "ScreenDeCap";
-            this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
-            this.notifyIcon1.Text = "ImageDeCap";
-            this.notifyIcon1.Visible = true;
-            this.notifyIcon1.BalloonTipClicked += new System.EventHandler(this.notifyIcon1_BalloonTipClicked);
-            this.notifyIcon1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseDoubleClick);
+            this.NotifyIcon.BalloonTipText = "ScreenDeCap Is running in the background";
+            this.NotifyIcon.BalloonTipTitle = "ScreenDeCap";
+            this.NotifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
+            this.NotifyIcon.Text = "ImageDeCap";
+            this.NotifyIcon.Visible = true;
+            this.NotifyIcon.BalloonTipClicked += new System.EventHandler(this.notifyIcon1_BalloonTipClicked);
+            this.NotifyIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseDoubleClick);
             // 
             // button2
             // 
@@ -272,7 +272,7 @@
 
         #endregion
 
-        public System.Windows.Forms.NotifyIcon notifyIcon1;
+        public System.Windows.Forms.NotifyIcon NotifyIcon;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button4;

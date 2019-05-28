@@ -179,11 +179,11 @@
     <Compile Include="Code\Preferences.cs" />
     <Compile Include="Code\Recorder.cs" />
     <Compile Include="Code\Utilities.cs" />
-    <Compile Include="Windows\aboutWindow.cs">
+    <Compile Include="Windows\AboutWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Windows\aboutWindow.Designer.cs">
-      <DependentUpon>aboutWindow.cs</DependentUpon>
+    <Compile Include="Windows\AboutWindow.Designer.cs">
+      <DependentUpon>AboutWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="Windows\boxOfWhy.cs">
       <SubType>Form</SubType>
@@ -234,8 +234,8 @@
       <DependentUpon>SettingsWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="Code\SystemTrayContextMenu.cs" />
-    <EmbeddedResource Include="Windows\aboutWindow.resx">
-      <DependentUpon>aboutWindow.cs</DependentUpon>
+    <EmbeddedResource Include="Windows\AboutWindow.resx">
+      <DependentUpon>AboutWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Windows\boxOfWhy.resx">
       <DependentUpon>boxOfWhy.cs</DependentUpon>
