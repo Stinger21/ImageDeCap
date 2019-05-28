@@ -576,9 +576,20 @@ namespace imageDeCap
             //DataFormats.Format myFormat = DataFormats.GetFormat("myFormat");
             if (imageType != filetype.gif)
             {
-                if(Preferences.CopyImageToClipboard)
+                if (Preferences.CopyImageToClipboard)
                 {
-                    Clipboard.SetImage(Image.FromStream(new MemoryStream(FileData)));
+                    for (int i = 0; i < 10; i++)
+                    {
+                        try
+                        {
+                            Clipboard.SetImage(Image.FromStream(new MemoryStream(FileData)));
+                            break;
+                        }
+                        catch (ExternalException) // Requested clipboard operation did not succeed
+                        {
+                            Thread.Sleep(100);
+                        }
+                    }
                 }
             }
 
@@ -643,9 +654,26 @@ namespace imageDeCap
             {
                 Extension = videoFormat.Replace(".", "");
             }
-            if (Preferences.saveImageAtAll && Directory.Exists(Preferences.SaveImagesHere))
+            if (Preferences.saveImageAtAll)
             {
-                File.WriteAllBytes(Preferences.SaveImagesHere + @"\" + SaveFileName + "." + Extension, FileData);
+                string directory_path = Path.GetFullPath(Environment.ExpandEnvironmentVariables(Preferences.SaveImagesHere));
+                string file_path = Path.Combine(directory_path, SaveFileName + "." + Extension);
+                try
+                {
+                    DirectoryInfo di = Directory.CreateDirectory(directory_path);
+                    try
+                    {
+                        File.WriteAllBytes(file_path, FileData);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine($"Failed to create the file {file_path}. Exception: {e.Message}");
+                    }
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show($"Failed create the directory {directory_path}. Exception: {e.Message}");
+                }
             }
 
             bool wat = Preferences.BackupImages;
