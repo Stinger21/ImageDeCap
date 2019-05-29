@@ -89,8 +89,8 @@ namespace imageDeCap
 
             PictureBox.Size = new Size(CurrentImage.Width, CurrentImage.Height);
 
-            int width = Math.Max(CurrentImage.Width + 40, 700);
-            int height = Math.Max(CurrentImage.Height + 63 + 93, 350);
+            int width = Math.Max(CurrentImage.Width + 40 - 22, 700);
+            int height = Math.Max(CurrentImage.Height + 63 + 93 - 80, 350);
 
             this.Size = new Size(width, height);
             this.frames = TheImage.Length;
@@ -114,7 +114,7 @@ namespace imageDeCap
 
             frameTimer.Interval = 1000 / FrameRate;
 
-            FPSLabel.Text = "Average recorded framerate: " + FrameRate.ToString();
+            //FPSLabel.Text = "Average recorded framerate: " + FrameRate.ToString();
         }
 
 
@@ -152,7 +152,6 @@ namespace imageDeCap
             CurrentImage = TheImage[ActualFrameNumber];
             PictureBox.Image = CurrentImage;
             BackgroundTrack.Value = Math.Min(Math.Max(ActualFrameNumber, BackgroundTrack.Minimum), BackgroundTrack.Maximum);
-
         }
         
         private void startTrack_ValueChanged(object sender, EventArgs e)
@@ -179,7 +178,7 @@ namespace imageDeCap
                 startTrack.Value = endTrack.Value - 1;
             }
             SetTracks();
-            CurrentFrame = endTrack.Value-1;
+            CurrentFrame = endTrack.Value;// -1;
         }
         private void GifEditor_Resize(object sender, EventArgs e)
         {
@@ -199,25 +198,71 @@ namespace imageDeCap
         }
 
 
-        bool Scrolling = false;
-        private void startTrack_MouseDown(object sender, MouseEventArgs e)
+        int PositionToValue(int X, TrackBar Track)// int Width, int Min, int Max)
         {
-            Scrolling = true;
-            startTrack.Value = Convert.ToInt32(((double)e.X / (double)startTrack.Width) * (startTrack.Maximum - startTrack.Minimum));
+            int result = Convert.ToInt32((((double)X - 13.0f) / ((double)Track.Width - 26.0)) * (Track.Maximum - Track.Minimum));
+            result = Math.Max(result, 0);
+            result = Math.Min(Math.Max(result, BackgroundTrack.Minimum), BackgroundTrack.Maximum);
+            return result;
         }
+        TrackBar ClosestTrack(int X, TrackBar A, TrackBar B)
+        {
+            int CurrentValue = PositionToValue(X, A); // any value
+            int DistA = Math.Abs(A.Value - CurrentValue);
+            int DistB = Math.Abs(B.Value - CurrentValue);
+            if (DistA < DistB)
+                return A;
+            else
+                return B;
+        }
+
+        bool Scrolling = false;
         private void endTrack_MouseDown(object sender, MouseEventArgs e)
         {
             Scrolling = true;
-            endTrack.Value = Convert.ToInt32(((double)e.X / (double)endTrack.Width) * (endTrack.Maximum - endTrack.Minimum));
+            endTrack.Value = PositionToValue(e.X, endTrack);
         }
-        private void endTrack_MouseUp(object sender, MouseEventArgs e)
+        private void endTrack_MouseMove(object sender, MouseEventArgs e)
         {
-            Scrolling = false;
+            if (Scrolling)
+                endTrack.Value = PositionToValue(e.X, endTrack);
         }
-        private void startTrack_MouseUp(object sender, MouseEventArgs e)
+
+
+        private void startTrack_MouseDown(object sender, MouseEventArgs e)
         {
-            Scrolling = false;
+            Scrolling = true;
+            startTrack.Value = PositionToValue(e.X, startTrack);
         }
+        private void startTrack_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (Scrolling)
+                startTrack.Value = PositionToValue(e.X, startTrack);
+        }
+
+
+        private void BackgroundTrack_MouseDown(object sender, MouseEventArgs e)
+        {
+            Scrolling = true;
+            var ChosenTrack = ClosestTrack(e.X, startTrack, endTrack);
+            ChosenTrack.Value = PositionToValue(e.X, ChosenTrack);
+            BackgroundTrack.Value = PositionToValue(e.X, BackgroundTrack);
+        }
+        private void BackgroundTrack_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (Scrolling)
+            {
+                var ChosenTrack = ClosestTrack(e.X, startTrack, endTrack);
+                ChosenTrack.Value = PositionToValue(e.X, ChosenTrack);
+                BackgroundTrack.Value = PositionToValue(e.X, BackgroundTrack);
+            }
+        }
+
+        private void endTrack_MouseUp(object sender, MouseEventArgs e) { Scrolling = false; }
+        private void startTrack_MouseUp(object sender, MouseEventArgs e) { Scrolling = false; }
+        private void BackgroundTrack_MouseUp(object sender, MouseEventArgs e) { Scrolling = false; }
+
+
 
         public static T[] SubArray<T>(T[] data, int index, int length)
         {
@@ -234,18 +279,18 @@ namespace imageDeCap
         {
             //If this is true, that means the user changed nothing and we don't need to re-compute the image.
             if((SavedImageStart == (int)startTrack.Value) &&
-              (SavedImageEnd == (int)endTrack.Value) &&
-              (SavedImageScale == (int)ScaleThing.Value))
+              (SavedImageEnd == (int)endTrack.Value))// &&
+              //(SavedImageScale == (int)ScaleThing.Value))
             {
                 return;
             }
 
                 
-            scalePct = (float)ScaleThing.Value / 100.0f;
+            //scalePct = (float)ScaleThing.Value / 100.0f;
 
             SavedImageStart = (int)startTrack.Value;
             SavedImageEnd = (int)endTrack.Value;
-            SavedImageScale = (int)ScaleThing.Value;
+            //SavedImageScale = (int)ScaleThing.Value;
 
             EditedImage = SubArray(TheImage, SavedImageStart, SavedImageEnd - SavedImageStart);
         }
@@ -264,7 +309,7 @@ namespace imageDeCap
         float scalePct = 1.0f;
         private void ScaleThing_ValueChanged(object sender, EventArgs e)
         {
-            scalePct = (float)ScaleThing.Value / 100.0f;
+            //scalePct = (float)ScaleThing.Value / 100.0f;
             PictureBox.Size = new Size((int)(CurrentImage.Width * scalePct), (int)(CurrentImage.Height * scalePct));
         }
 
@@ -292,9 +337,10 @@ namespace imageDeCap
 
         private void ScaleThing_KeyPress(object sender, KeyPressEventArgs e)
         {
-            scalePct = (float)ScaleThing.Value / 100.0f;
+            //scalePct = (float)ScaleThing.Value / 100.0f;
             PictureBox.Size = new Size((int)(CurrentImage.Width * scalePct), (int)(CurrentImage.Height * scalePct));
         }
+
     }
     class TextData
     {

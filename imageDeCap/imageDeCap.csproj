@@ -317,7 +317,6 @@
     <None Include="Images\Magnifier.png" />
     <Content Include="Images\Untitled-2.ico" />
     <Content Include="Images\Untitled-2_256x256.png" />
-    <Content Include="Images\watermark.png" />
     <Content Include="MessageBoxManager.dll" />
   </ItemGroup>
   <ItemGroup>
