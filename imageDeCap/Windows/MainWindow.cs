@@ -347,7 +347,7 @@ namespace imageDeCap
             }
 
 
-            props = new SettingsWindow(this);
+            props = new SettingsWindow();
             if (File.Exists(LinksFilePath))
             {
                 string links = File.ReadAllText(LinksFilePath);
@@ -993,7 +993,7 @@ namespace imageDeCap
             }
             catch
             {
-                props = new SettingsWindow(this);
+                props = new SettingsWindow();
             }
             props.Show();
             props.BringToFront();
@@ -1053,6 +1053,11 @@ namespace imageDeCap
         private void Form1_Load(object sender, EventArgs e)
         {
             VersionLabel.Text = MainWindow.VersionNumber;
+        }
+
+        private void BubbleNotification_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            OpenWindow();
         }
     }
 }

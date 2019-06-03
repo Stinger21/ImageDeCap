@@ -58,9 +58,9 @@ namespace imageDeCap
             | System.Windows.Forms.AnchorStyles.Right)));
             this.startTrack.AutoSize = false;
             this.startTrack.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.startTrack.Location = new System.Drawing.Point(72, 269);
+            this.startTrack.Location = new System.Drawing.Point(72, 124);
             this.startTrack.Name = "startTrack";
-            this.startTrack.Size = new System.Drawing.Size(610, 36);
+            this.startTrack.Size = new System.Drawing.Size(112, 36);
             this.startTrack.TabIndex = 1;
             this.startTrack.ValueChanged += new System.EventHandler(this.startTrack_ValueChanged);
             this.startTrack.MouseDown += new System.Windows.Forms.MouseEventHandler(this.startTrack_MouseDown);
@@ -73,9 +73,9 @@ namespace imageDeCap
             | System.Windows.Forms.AnchorStyles.Right)));
             this.endTrack.AutoSize = false;
             this.endTrack.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.endTrack.Location = new System.Drawing.Point(72, 269);
+            this.endTrack.Location = new System.Drawing.Point(72, 124);
             this.endTrack.Name = "endTrack";
-            this.endTrack.Size = new System.Drawing.Size(610, 36);
+            this.endTrack.Size = new System.Drawing.Size(112, 36);
             this.endTrack.TabIndex = 2;
             this.endTrack.Value = 10;
             this.endTrack.ValueChanged += new System.EventHandler(this.endTrack_ValueChanged);
@@ -89,9 +89,10 @@ namespace imageDeCap
             this.UploadButton.BackColor = System.Drawing.SystemColors.Control;
             this.UploadButton.BackgroundImage = global::imageDeCap.Properties.Resources.upload;
             this.UploadButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.UploadButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
             this.UploadButton.FlatAppearance.BorderSize = 0;
             this.UploadButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.UploadButton.Location = new System.Drawing.Point(0, 271);
+            this.UploadButton.Location = new System.Drawing.Point(0, 124);
             this.UploadButton.Name = "UploadButton";
             this.UploadButton.Size = new System.Drawing.Size(36, 36);
             this.UploadButton.TabIndex = 42;
@@ -106,7 +107,7 @@ namespace imageDeCap
             this.SaveButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.SaveButton.FlatAppearance.BorderSize = 0;
             this.SaveButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.SaveButton.Location = new System.Drawing.Point(36, 271);
+            this.SaveButton.Location = new System.Drawing.Point(36, 124);
             this.SaveButton.Name = "SaveButton";
             this.SaveButton.Size = new System.Drawing.Size(36, 36);
             this.SaveButton.TabIndex = 41;
@@ -120,9 +121,9 @@ namespace imageDeCap
             this.BackgroundTrack.AutoSize = false;
             this.BackgroundTrack.BackColor = System.Drawing.SystemColors.Control;
             this.BackgroundTrack.Cursor = System.Windows.Forms.Cursors.Arrow;
-            this.BackgroundTrack.Location = new System.Drawing.Point(72, 269);
+            this.BackgroundTrack.Location = new System.Drawing.Point(72, 124);
             this.BackgroundTrack.Name = "BackgroundTrack";
-            this.BackgroundTrack.Size = new System.Drawing.Size(610, 36);
+            this.BackgroundTrack.Size = new System.Drawing.Size(112, 36);
             this.BackgroundTrack.TabIndex = 4;
             this.BackgroundTrack.MouseDown += new System.Windows.Forms.MouseEventHandler(this.BackgroundTrack_MouseDown);
             this.BackgroundTrack.MouseMove += new System.Windows.Forms.MouseEventHandler(this.BackgroundTrack_MouseMove);
@@ -142,7 +143,7 @@ namespace imageDeCap
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(682, 307);
+            this.ClientSize = new System.Drawing.Size(184, 161);
             this.Controls.Add(this.startTrack);
             this.Controls.Add(this.endTrack);
             this.Controls.Add(this.BackgroundTrack);
@@ -152,7 +153,7 @@ namespace imageDeCap
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.Name = "GifEditor";
-            this.Text = "ImageDeCap Trimmer";
+            this.Text = "Trimmer - ImageDeCap";
             this.Load += new System.EventHandler(this.GifEditor_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.GifEditor_KeyDown);
             this.Resize += new System.EventHandler(this.GifEditor_Resize);

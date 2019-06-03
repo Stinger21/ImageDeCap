@@ -56,13 +56,14 @@
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // notifyIcon1
+            // BubbleNotification
             // 
             this.BubbleNotification.BalloonTipText = "ScreenDeCap Is running in the background";
             this.BubbleNotification.BalloonTipTitle = "ScreenDeCap";
-            this.BubbleNotification.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
+            this.BubbleNotification.Icon = ((System.Drawing.Icon)(resources.GetObject("BubbleNotification.Icon")));
             this.BubbleNotification.Text = "ImageDeCap";
             this.BubbleNotification.Visible = true;
+            this.BubbleNotification.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.BubbleNotification_MouseDoubleClick);
             // 
             // button2
             // 
@@ -138,7 +139,7 @@
             this.VersionLabel.AutoSize = true;
             this.VersionLabel.Location = new System.Drawing.Point(175, 303);
             this.VersionLabel.Name = "VersionLabel";
-            this.VersionLabel.Size = new System.Drawing.Size(34, 13);
+            this.VersionLabel.Size = new System.Drawing.Size(108, 13);
             this.VersionLabel.TabIndex = 17;
             this.VersionLabel.Text = "VERSION_NUMBER";
             // 

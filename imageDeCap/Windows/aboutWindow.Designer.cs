@@ -136,7 +136,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "AboutWindow";
-            this.Text = "About ImageDeCap";
+            this.Text = "About - ImageDeCap";
             ((System.ComponentModel.ISupportInitialize)(this.imageContainer)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

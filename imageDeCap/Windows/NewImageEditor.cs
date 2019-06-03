@@ -10,6 +10,7 @@ using System.Windows.Forms;
 
 using System.IO;
 using System.Drawing.Imaging;
+using System.Runtime.InteropServices;
 
 namespace imageDeCap
 {
@@ -46,7 +47,7 @@ namespace imageDeCap
         public NewImageEditor(byte[] ImageData, int X, int Y)//on start
         {
             InitializeComponent();
-
+            
             System.Threading.Thread.Sleep(100);
 
             Editor = new PictureEditor(Image.FromStream(new MemoryStream(ImageData)), this);
