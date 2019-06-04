@@ -291,7 +291,7 @@
             this.KeyPreview = true;
             this.MinimumSize = new System.Drawing.Size(350, 350);
             this.Name = "NewImageEditor";
-            this.Text = "ImageDeCap Editor";
+            this.Text = "Editor - ImageDeCap";
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.imageEditor_KeyDown);
             this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.NewImageEditor_MouseClick);
             this.panel1.ResumeLayout(false);

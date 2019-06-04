@@ -89,8 +89,8 @@ namespace imageDeCap
 
             PictureBox.Size = new Size(CurrentImage.Width, CurrentImage.Height);
 
-            int width = Math.Max(CurrentImage.Width + 40 - 22, 700);
-            int height = Math.Max(CurrentImage.Height + 63 + 93 - 80, 350);
+            int width = Math.Max(CurrentImage.Width + 40 - 22, 200);
+            int height = Math.Max(CurrentImage.Height + 63 + 93 - 80, 200);
 
             this.Size = new Size(width, height);
             this.frames = TheImage.Length;

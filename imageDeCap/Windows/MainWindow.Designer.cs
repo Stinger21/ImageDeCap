@@ -60,6 +60,7 @@
             this.BubbleNotification.Icon = ((System.Drawing.Icon)(resources.GetObject("BubbleNotification.Icon")));
             this.BubbleNotification.Text = "ImageDeCap";
             this.BubbleNotification.Visible = true;
+            this.BubbleNotification.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.BubbleNotification_MouseDoubleClick);
             // 
             // button2
             // 
@@ -113,6 +114,39 @@
             this.listBox1.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.listBox1_DrawItem);
             this.listBox1.DoubleClick += new System.EventHandler(this.listBox1_DoubleClick);
             this.listBox1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.listBox1_KeyDown);
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
+            this.groupBox2.Controls.Add(this.VersionLabel);
+            this.groupBox2.Controls.Add(this.label2);
+            this.groupBox2.Controls.Add(this.listBox1);
+            this.groupBox2.Location = new System.Drawing.Point(12, 138);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(215, 324);
+            this.groupBox2.TabIndex = 16;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Links";
+            // 
+            // VersionLabel
+            // 
+            this.VersionLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.VersionLabel.AutoSize = true;
+            this.VersionLabel.Location = new System.Drawing.Point(175, 303);
+            this.VersionLabel.Name = "VersionLabel";
+            this.VersionLabel.Size = new System.Drawing.Size(108, 13);
+            this.VersionLabel.TabIndex = 17;
+            this.VersionLabel.Text = "VERSION_NUMBER";
+            // 
+            // label2
+            // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(1, 303);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(10, 13);
+            this.label2.TabIndex = 16;
+            this.label2.Text = "-";
             // 
             // menuStrip1
             // 
