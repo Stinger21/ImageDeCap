@@ -78,31 +78,22 @@ namespace imageDeCap
         {
             Updatee();
         }
-
-        // Called by mainloop in now heuheuhe
+        
         public void Updatee()
         {
             if(!_Activated)
-            {
                 return;
-            }
+
             Cursor.Current = Cursors.Cross;
 
             if (Program.ImageDeCap.GifCaptureTimer.Enabled) // Don't update if we are capturing a gif
-            {
                 return;
-            }
+
             Lmb = MouseButtons == MouseButtons.Left;
             if(wasPressed != (MouseButtons == MouseButtons.Left))
             {
-                if(wasPressed)
-                {
-                    LmbUp = true;
-                }
-                else
-                {
-                    LmbDown = true;
-                }
+                LmbUp = wasPressed;
+                LmbDown = !wasPressed;
             }
 
             Program.ImageDeCap.updateSelectedArea(this, EnterPressed, EscapePressed, LmbDown, LmbUp, Lmb, Gif, MouseButtons == (MouseButtons.Left | MouseButtons.Right), AltKeyDown);
@@ -145,7 +136,7 @@ namespace imageDeCap
         {
             if(!Gif) // If it's not a gif, hide everything and fire off an upload thread instantly.
             {
-                Program.ImageDeCap.magn.Close();
+                Program.ImageDeCap.magnifier.Close();
                 if (!UseBackCover)
                     this.Close();
 
@@ -172,7 +163,7 @@ namespace imageDeCap
                     if (UseBackCover)
                         this.Close();
 
-                    Program.ImageDeCap.UploadImageData(GetBytes(result, ImageFormat.Png), MainWindow.filetype.png, false, ForceEdit);
+                    Program.ImageDeCap.UploadImageData(GetBytes(result, ImageFormat.Png), Filetype.png, false, ForceEdit);
                 }
 
                 if (UseBackCover)
@@ -180,15 +171,13 @@ namespace imageDeCap
 
                 Program.ImageDeCap.isTakingSnapshot = false;
                 Program.hotkeysEnabled = true;
-
-
             }
             else
             {
                 // From here, we fire up gif recording in Form1's main loop :D
                 if (Program.ImageDeCap.tempWidth > 0 && Program.ImageDeCap.tempHeight > 0)
                 {
-                    Program.ImageDeCap.magn.Close();
+                    Program.ImageDeCap.magnifier.Close();
                     Program.ImageDeCap.StartRecordingGif(ForceEdit);
 
                     this.Location = new Point(Program.ImageDeCap.X, Program.ImageDeCap.Y + Program.ImageDeCap.tempHeight);

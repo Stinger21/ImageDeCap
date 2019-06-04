@@ -13,6 +13,15 @@ using System.Threading.Tasks;
 
 namespace imageDeCap
 {
+    public enum Filetype
+    {
+        jpg,
+        png,
+        bmp,
+        gif,
+        error,
+    }
+
     public static class Utilities
     {
         public static bool IsWindows10()
@@ -84,6 +93,34 @@ namespace imageDeCap
             shortcut.TargetPath = targetFileLocation;                 // The path of the file that will launch when the shortcut is run
             shortcut.Save();                                    // Save the shortcut
         }
+        
+
+        // Probably add something to this to make it check what the actual file-type it is instead of just assuming it's 
+        public static Filetype GetImageType(string filepath)
+        {
+            filepath = filepath.ToLower();
+            if (filepath.EndsWith(".jpg") || filepath.EndsWith(".jpeg"))
+            {
+                return Filetype.jpg;
+            }
+            else if (filepath.EndsWith(".png"))
+            {
+                return Filetype.png;
+            }
+            else if (filepath.EndsWith(".bmp"))
+            {
+                return Filetype.bmp;
+            }
+            else if (filepath.EndsWith(".gif") || filepath.EndsWith(MainWindow.videoFormat))
+            {
+                return Filetype.gif;
+            }
+            else
+            {
+                return Filetype.error;
+            }
+        }
+
     }
 
     // Little vector class because Points drive me insane

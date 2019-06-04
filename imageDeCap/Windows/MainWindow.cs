@@ -47,7 +47,7 @@ namespace imageDeCap
         public static string BackupDirectory = "ERROR";
         bool pushThroughCancel = false;
         CompleteCover CurrentBackCover;
-        public Magnifier magn;
+        public Magnifier magnifier;
         public ScreenshotRegionLine topBox = new ScreenshotRegionLine();
         public ScreenshotRegionLine bottomBox = new ScreenshotRegionLine();
         public ScreenshotRegionLine leftBox = new ScreenshotRegionLine();
@@ -67,15 +67,6 @@ namespace imageDeCap
         AboutWindow about;
         public bool isTakingSnapshot = false;
 
-
-        public enum filetype
-        {
-            jpg,
-            png,
-            bmp,
-            gif,
-            error,
-        }
 
 
         private void addToLinks(string link, bool addToXML = true)
@@ -195,7 +186,7 @@ namespace imageDeCap
                     Utilities.playSound("snip.wav");
                     
                     // Feed in through the tag weather the user right-clicked to force editor even when it's disabled.
-                    UploadImageData(new byte[] { }, filetype.gif, false, (bool)GifCaptureTimer.Tag, gEnc.ToArray());
+                    UploadImageData(new byte[] { }, Filetype.gif, false, (bool)GifCaptureTimer.Tag, gEnc.ToArray());
                 }
 
                 Program.ImageDeCap.isTakingSnapshot = false;
@@ -445,14 +436,14 @@ namespace imageDeCap
             {
                 isTakingSnapshot = true;
                 Program.hotkeysEnabled = false;
-                //back cover used for pulling cursor position into updateSelectedArea()
+                // back cover used for pulling cursor position into updateSelectedArea()
                 CurrentBackCover = new CompleteCover(isGif);
                 CurrentBackCover.Show();
                 CurrentBackCover.AfterShow(background);
 
-                magn = new Magnifier(isGif);
-                magn.Show();
-                magn.TopMost = true;
+                magnifier = new Magnifier(isGif);
+                magnifier.Show();
+                magnifier.TopMost = true;
 
                 SetupBox(topBox, true);
                 SetupBox(leftBox, true);
@@ -489,37 +480,13 @@ namespace imageDeCap
         {
             Utilities.playSound("snip.wav");
             Bitmap result = ScreenCapturer.Capture(mode);
-            UploadImageData(CompleteCover.GetBytes(result, System.Drawing.Imaging.ImageFormat.Png), filetype.png);
+            UploadImageData(CompleteCover.GetBytes(result, System.Drawing.Imaging.ImageFormat.Png), Filetype.png);
         }
 
-        public filetype getImageType(string filepath)
-        {
-            filepath = filepath.ToLower();
-            if (filepath.EndsWith(".jpg") || filepath.EndsWith(".jpeg"))
-            {
-                return filetype.jpg;
-            }
-            else if (filepath.EndsWith(".png"))
-            {
-                return filetype.png;
-            }
-            else if (filepath.EndsWith(".bmp"))
-            {
-                return filetype.bmp;
-            }
-            else if (filepath.EndsWith(".gif") || filepath.EndsWith(MainWindow.videoFormat))
-            {
-                return filetype.gif;
-            }
-            else
-            {
-                return filetype.error;
-            }
-        }
 
         public void UploadImageFile(string filepath)
         {
-            UploadImageData(File.ReadAllBytes(filepath), getImageType(filepath), true);
+            UploadImageData(File.ReadAllBytes(filepath), Utilities.GetImageType(filepath), true);
         }
 
         private void FileDialog(string extension, byte[] data)
@@ -535,17 +502,15 @@ namespace imageDeCap
             }
         }
 
-        public void UploadImageData(byte[] FileData, filetype imageType, bool ForceNoEdit = false, bool RMBClickForceEdit = false, Bitmap[] GifImage = null)
+        public void UploadImageData(byte[] FileData, Filetype imageType, bool ForceNoEdit = false, bool RMBClickForceEdit = false, Bitmap[] GifImage = null)
         {
-            if (imageType == filetype.error)
+            if (imageType == Filetype.error)
             {
                 return;
             }
             Program.hotkeysEnabled = true; // Enable hotkeys here again so you can kill the editor by starting a new capture.
-
-            //Clipboard.GetData()
-            //DataFormats.Format myFormat = DataFormats.GetFormat("myFormat");
-            if (imageType != filetype.gif)
+            
+            if (imageType != Filetype.gif)
             {
                 if (Preferences.CopyImageToClipboard)
                 {
@@ -566,7 +531,7 @@ namespace imageDeCap
 
             if ((Preferences.EditScreenshotAfterCapture || RMBClickForceEdit) && ForceNoEdit == false)
             {
-                if (imageType == filetype.gif)
+                if (imageType == Filetype.gif)
                 {
                     GifEditor editor = new GifEditor(GifImage, topBox.Location.X, topBox.Location.Y, 1000 / FrameTime);
                     editor.Show();
@@ -581,7 +546,7 @@ namespace imageDeCap
             }
             else
             {
-                if (imageType == filetype.gif)
+                if (imageType == Filetype.gif)
                 {
                     FileData = GifEditor.VideoFromFrames(GifImage, 1000 / FrameTime);
                     UploadImageData_AfterEdit(NewImageEditor.EditorResult.Upload, FileData, imageType);
@@ -595,7 +560,7 @@ namespace imageDeCap
 
         public void EditorDone(object sender, EventArgs e)
         {
-            filetype f;
+            Filetype f;
             NewImageEditor.EditorResult EditorResult = NewImageEditor.EditorResult.Quit;
             byte[] FileData;
             if (sender is NewImageEditor)
@@ -603,19 +568,19 @@ namespace imageDeCap
                 NewImageEditor editor = (NewImageEditor)sender;
                 (EditorResult, FileData) = editor.FinalFunction();
                 editor.Dispose();
-                f = filetype.png;
+                f = Filetype.png;
             }
             else
             {
                 GifEditor editor = (GifEditor)sender;
                 (EditorResult, FileData) = editor.FinalFunction();
                 editor.Dispose();
-                f = filetype.gif;
+                f = Filetype.gif;
             }
             UploadImageData_AfterEdit(EditorResult, FileData, f);
         }
 
-        public void UploadImageData_AfterEdit(NewImageEditor.EditorResult EditorResult, byte[] FileData, filetype imageType)
+        public void UploadImageData_AfterEdit(NewImageEditor.EditorResult EditorResult, byte[] FileData, Filetype imageType)
         {
             foreach (var v in gEnc) { v.Dispose(); }
             gEnc.Clear();
@@ -626,13 +591,14 @@ namespace imageDeCap
             {
                 Extension = videoFormat.Replace(".", "");
             }
+
             if (Preferences.saveImageAtAll)
             {
                 string directory_path = Path.GetFullPath(Environment.ExpandEnvironmentVariables(Preferences.SaveImagesHere));
                 string file_path = Path.Combine(directory_path, SaveFileName + "." + Extension);
                 try
                 {
-                    DirectoryInfo di = Directory.CreateDirectory(directory_path);
+                    Directory.CreateDirectory(directory_path);
                     try
                     {
                         File.WriteAllBytes(file_path, FileData);
@@ -673,13 +639,13 @@ namespace imageDeCap
             
             if (EditorResult == NewImageEditor.EditorResult.Save) // If gif, ask to save only if 
             {
-                if (imageType == filetype.gif) // If it's a gif
+                if (imageType == Filetype.gif) // If it's a gif
                 {
                     FileDialog(MainWindow.videoFormat, FileData);
                 }
             }
 
-            if (imageType != filetype.gif) // If it's an image, ask to save no matter what
+            if (imageType != Filetype.gif) // If it's an image, ask to save no matter what
             {
                 if (EditorResult == NewImageEditor.EditorResult.Save)
                 {
@@ -688,7 +654,7 @@ namespace imageDeCap
             }
 
              // Copy image to clipboard if it's not a gif
-            if (imageType != filetype.gif)
+            if (imageType != Filetype.gif)
             {
                 if (EditorResult == NewImageEditor.EditorResult.Clipboard)
                 {
@@ -707,7 +673,7 @@ namespace imageDeCap
                 if (!Preferences.NeverUpload)
                 {
                     BackgroundWorker bw = new BackgroundWorker();
-                    if (imageType == filetype.gif)
+                    if (imageType == Filetype.gif)
                     {
                         if (Preferences.GifTarget == "gfycat")
                         {
@@ -794,7 +760,7 @@ namespace imageDeCap
                 BackgroundWorker bw2 = new BackgroundWorker();
                 bw2.DoWork += Uploading.UploadToFTP;
                 string name = DateTime.UtcNow.ToString("yyyyMMddHHmmssfff");
-                bw2.RunWorkerAsync(new object[] {    Preferences.FTPurl,
+                bw2.RunWorkerAsync(new object[] {   Preferences.FTPurl,
                                                     Preferences.FTPusername,
                                                     Preferences.FTPpassword,
                                                     Encoding.ASCII.GetBytes(text),
@@ -850,10 +816,13 @@ namespace imageDeCap
             box.TopMost = true;
         }
 
-        public void updateSelectedArea(CompleteCover backCover, bool EnterPressed, bool EscapePressed, bool LmbDown, bool LmbUp, bool Lmb, bool Gif, bool RMB, bool HoldingAlt) // this thing is essentially a frame-loop.
+        // This thing is essentially a frame-loop.
+        // We already have a frame-loop though.
+        // HMMM.
+        public void updateSelectedArea(CompleteCover backCover, bool EnterPressed, bool EscapePressed, bool LmbDown, bool LmbUp, bool Lmb, bool Gif, bool RMB, bool HoldingAlt) 
         {
             backCover.Activate();
-            magn.Bounds = new Rectangle(Cursor.Position.X + 32, Cursor.Position.Y - 32, 124, 124);
+            magnifier.Bounds = new Rectangle(Cursor.Position.X + 32, Cursor.Position.Y - 32, 124, 124);
             
             if (LmbUp) // keyUp
             {
@@ -907,7 +876,7 @@ namespace imageDeCap
             }
             if (EscapePressed)
             {
-                magn.Close();
+                magnifier.Close();
                 backCover.Close();
 
                 topBox.Hide();
@@ -970,24 +939,32 @@ namespace imageDeCap
 
         private void clearLinksToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if(MessageBox.Show("This will clear all links with no undo.", "Warning", MessageBoxButtons.OKCancel) == DialogResult.OK)
-            {
-                Links.Clear();
-                listBox1.DataSource = null;
-                listBox1.DataSource = Links;
-                File.Delete(LinksFilePath);
-            }
+            if (MessageBox.Show("This will clear all links with no undo.", "Warning", MessageBoxButtons.OKCancel) != DialogResult.OK)
+                return;
+
+            Links.Clear();
+            listBox1.DataSource = null;
+            listBox1.DataSource = Links;
+            File.Delete(LinksFilePath);
         }
 
         private void listBox1_KeyDown(object sender, KeyEventArgs e)
         {
-            if ((System.Windows.Input.Keyboard.IsKeyDown(System.Windows.Input.Key.RightCtrl) || System.Windows.Input.Keyboard.IsKeyDown(System.Windows.Input.Key.LeftCtrl)) &&
-                (System.Windows.Input.Keyboard.IsKeyDown(System.Windows.Input.Key.C) || System.Windows.Input.Keyboard.IsKeyDown(System.Windows.Input.Key.Insert)))
+            bool Copy = false;
+            Copy |= System.Windows.Input.Keyboard.IsKeyDown(System.Windows.Input.Key.RightCtrl) || System.Windows.Input.Keyboard.IsKeyDown(System.Windows.Input.Key.LeftCtrl);
+            Copy |= System.Windows.Input.Keyboard.IsKeyDown(System.Windows.Input.Key.C) || System.Windows.Input.Keyboard.IsKeyDown(System.Windows.Input.Key.Insert);
+
+            bool Delete = System.Windows.Input.Keyboard.IsKeyDown(System.Windows.Input.Key.Delete);
+
+            if (Copy)
             {
                 Clipboard.SetText(Links[listBox1.SelectedIndex]);
             }
-            else if (System.Windows.Input.Keyboard.IsKeyDown(System.Windows.Input.Key.Delete))
+            else if (Delete)
             {
+                if (MessageBox.Show("Delete link?.", "Warning", MessageBoxButtons.OKCancel) != DialogResult.OK)
+                    return;
+
                 Links.RemoveAt(listBox1.SelectedIndex);
                 listBox1.DataSource = null;
                 listBox1.DataSource = Links;
