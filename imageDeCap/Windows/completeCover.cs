@@ -56,7 +56,6 @@ namespace imageDeCap
 
             if (UseBackCover)
             {
-                ScreenCapturer cap = new ScreenCapturer();
                 this.TopMost = false;
                 pictureBox1.Image = background;
                 pictureBox1.SetBounds(0, 0, width, height);
@@ -163,7 +162,7 @@ namespace imageDeCap
                 if (Program.ImageDeCap.tempWidth > 0 && Program.ImageDeCap.tempHeight > 0) // Make sure we actually selected a region to take a screenshot of.
                 {
                     Utilities.playSound("snip.wav");
-                    Bitmap result = Program.ImageDeCap.cap.Capture(
+                    Bitmap result = ScreenCapturer.Capture(
                         ScreenCaptureMode.Bounds, 
                         Program.ImageDeCap.X - 1, 
                         Program.ImageDeCap.Y - 1,

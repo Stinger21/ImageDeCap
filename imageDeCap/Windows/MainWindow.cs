@@ -48,7 +48,6 @@ namespace imageDeCap
         bool pushThroughCancel = false;
         CompleteCover CurrentBackCover;
         public Magnifier magn;
-        public ScreenCapturer cap = new ScreenCapturer();
         public ScreenshotRegionLine topBox = new ScreenshotRegionLine();
         public ScreenshotRegionLine bottomBox = new ScreenshotRegionLine();
         public ScreenshotRegionLine leftBox = new ScreenshotRegionLine();
@@ -67,7 +66,16 @@ namespace imageDeCap
         int LastCursorY = 0;
         AboutWindow about;
         public bool isTakingSnapshot = false;
-        
+
+
+        public enum filetype
+        {
+            jpg,
+            png,
+            bmp,
+            gif,
+            error,
+        }
 
 
         private void addToLinks(string link, bool addToXML = true)
@@ -102,32 +110,15 @@ namespace imageDeCap
                     Process.Start(Links[Links.Count - 1]);
         }
         
-        public void mainLoop()
+        // gamedev much?
+        public void MainLoop()
         {
             ClipboardHandler.Update();
 
             if (Program.hotkeysEnabled)
             {
                 string hotkey = SettingsWindow.getCurrentHotkey();
-                //if(hotkey == null)
-                //{
-                //    return;
-                //}
-                //bool PrintScreenWasPressed = (hotkey.Contains("Snapshot"));
-                //hotkey = hotkey.Replace("+Snapshot", "");
-                //hotkey = hotkey.Replace("Snapshot", "");
-                //bool PrintScreenBoundToSomething = Preferences.Hotkey1_PrintScreen || Preferences.Hotkey2_PrintScreen || Preferences.Hotkey3_PrintScreen;
-                //if (PrintScreenWasPressed && PrintScreenBoundToSomething)
-                //{
-                //    try
-                //    {
-                //        Clipboard.Clear();
-                //    }
-                //    catch
-                //    {
-                //
-                //    }
-                //}
+
                 if (Preferences.Hotkey1 == hotkey)
                 {
                     if (!hKey1Pressed)
@@ -180,7 +171,6 @@ namespace imageDeCap
             ruleOfThirdsBox2.Hide();
             ruleOfThirdsBox3.Hide();
             ruleOfThirdsBox4.Hide();
-
         }
 
         public void StopRecordingGif(CompleteCover cover, bool abort)
@@ -210,18 +200,15 @@ namespace imageDeCap
 
                 Program.ImageDeCap.isTakingSnapshot = false;
                 Program.hotkeysEnabled = true;
-
             }
         }
 
         private void GifCaptureTimer_Tick(object sender, EventArgs e)
         {
-
             TimeSpan DeltaTime = DateTime.Now - LastTime;
             int DeltaTimeInMS = DeltaTime.Seconds * 100 + DeltaTime.Milliseconds;
             FrameTime += DeltaTimeInMS;
             RunningAverageOfFrameTime = FrameTime / (counter+1);
-            //Console.WriteLine(1000 / RunningAverageOfFrameTime);
 
             LastTime = DateTime.Now;
 
@@ -231,8 +218,8 @@ namespace imageDeCap
                 width = width - 1;
             if (height % 2 == 1)
                 height = height - 1;
-            // Capture Bitma
-            Bitmap b = Program.ImageDeCap.cap.Capture(
+            // Capture Bitmap
+            Bitmap b = ScreenCapturer.Capture(
                 ScreenCaptureMode.Bounds,
                 Program.ImageDeCap.X - 1,
                 Program.ImageDeCap.Y - 1,
@@ -247,37 +234,11 @@ namespace imageDeCap
             CurrentBackCover.SetTimer("Time: " + minutes + ":" + seconds + "." + csecs, "Frames: " + counter, "Memory Usage: " + (gEnc.Count * width * height * 8) / 1000000 + " MB");
             counter++;
         }
-
-        private bool hasWriteAccessToFolder(string folderPath)
-        {
-            try
-            {
-                // Attempt to get a list of security permissions from the folder. 
-                // This will raise an exception if the path is read only or do not have access to view the permissions. 
-                System.Security.AccessControl.DirectorySecurity ds = Directory.GetAccessControl(folderPath);
-                return true;
-            }
-            catch (UnauthorizedAccessException)
-            {
-                return false;
-            }
-        }
-
-        public static void CreateShortcut(string shortcutLocation, string targetFileLocation)
-        {
-            IWshRuntimeLibrary.WshShell shell = new IWshRuntimeLibrary.WshShell();
-            IWshRuntimeLibrary.IWshShortcut shortcut = (IWshRuntimeLibrary.IWshShortcut)shell.CreateShortcut(shortcutLocation);
-
-            shortcut.Description = "My shortcut description";   // The description of the shortcut
-            shortcut.IconLocation = @"c:\myicon.ico";           // The icon of the shortcut
-            shortcut.TargetPath = targetFileLocation;                 // The path of the file that will launch when the shortcut is run
-            shortcut.Save();                                    // Save the shortcut
-        }
-
+        
         public static void AddToStartup()
         {
             string startupPath = Environment.GetFolderPath(Environment.SpecialFolder.Startup) + @"\imageDeCap.lnk";
-            MainWindow.CreateShortcut(startupPath, MainWindow.ExeDirectory + @"\imageDeCap.exe");
+            Utilities.CreateShortcut(startupPath, MainWindow.ExeDirectory + @"\imageDeCap.exe");
         }
 
         public MainWindow()
@@ -301,7 +262,7 @@ namespace imageDeCap
                 // If it's not in Program Files that means the user is trying to use it portable and we should write settings next to the exe.
 
                 // If we can't write settings, tell the user they need to run the program as administrator to proceed.
-                if(!hasWriteAccessToFolder(ExeDirectory))
+                if(!Utilities.HasWriteAccessToFolder(ExeDirectory))
                 {
                     MessageBox.Show("Insufficient permissions to write settings, try starting the program from somewhere else or start it as as administrator.", "Could not write settings.", MessageBoxButtons.OK);
                     ActuallyCloseTheProgram();
@@ -369,8 +330,7 @@ namespace imageDeCap
                 this.Hide();
                 this.ShowInTaskbar = false;
             }
-
-
+            
             props = new SettingsWindow();
             if (File.Exists(LinksFilePath))
             {
@@ -395,8 +355,6 @@ namespace imageDeCap
             listBox1.AllowDrop = true;
             listBox1.DragEnter += new DragEventHandler(Form1_DragEnter);
             listBox1.DragDrop += new DragEventHandler(Form1_DragDrop);
-
-
         }
 
         void Form1_DragEnter(object sender, DragEventArgs e)
@@ -481,7 +439,7 @@ namespace imageDeCap
 
         private void UploadToImgurBounds(bool isGif = false)
         {
-            Bitmap background = cap.Capture(ScreenCaptureMode.Screen);
+            Bitmap background = ScreenCapturer.Capture(ScreenCaptureMode.Screen);
             // prevent blackening
             if (!isTakingSnapshot)
             {
@@ -496,15 +454,15 @@ namespace imageDeCap
                 magn.Show();
                 magn.TopMost = true;
 
-                setBox(topBox, true);
-                setBox(leftBox, true);
-                setBox(bottomBox, true);
-                setBox(rightBox, true);
+                SetupBox(topBox, true);
+                SetupBox(leftBox, true);
+                SetupBox(bottomBox, true);
+                SetupBox(rightBox, true);
                 
-                setBox(ruleOfThirdsBox1, false);
-                setBox(ruleOfThirdsBox2, false);
-                setBox(ruleOfThirdsBox3, false);
-                setBox(ruleOfThirdsBox4, false);
+                SetupBox(ruleOfThirdsBox1, false);
+                SetupBox(ruleOfThirdsBox2, false);
+                SetupBox(ruleOfThirdsBox3, false);
+                SetupBox(ruleOfThirdsBox4, false);
 
                 Program.ImageDeCap.tempWidth = 0;
                 Program.ImageDeCap.tempHeight = 0;
@@ -530,17 +488,8 @@ namespace imageDeCap
         private void uploadImgur(ScreenCaptureMode mode)
         {
             Utilities.playSound("snip.wav");
-            Bitmap result = cap.Capture(mode);
+            Bitmap result = ScreenCapturer.Capture(mode);
             UploadImageData(CompleteCover.GetBytes(result, System.Drawing.Imaging.ImageFormat.Png), filetype.png);
-        }
-
-        public enum filetype
-        {
-            jpg,
-            png,
-            bmp,
-            gif,
-            error,
         }
 
         public filetype getImageType(string filepath)
@@ -575,7 +524,6 @@ namespace imageDeCap
 
         private void FileDialog(string extension, byte[] data)
         {
-
             SaveFileDialog saveFileDialog1 = new SaveFileDialog();
 
             saveFileDialog1.Filter = extension+" files (*"+ extension + ")|*"+ extension;
@@ -699,8 +647,7 @@ namespace imageDeCap
                     MessageBox.Show($"Failed create the directory {directory_path}. Exception: {e.Message}");
                 }
             }
-
-            bool wat = Preferences.BackupImages;
+            
             if (Preferences.BackupImages)
             {
                 if(!Directory.Exists(BackupDirectory))
@@ -893,15 +840,11 @@ namespace imageDeCap
             }
         }
 
-        private void setBox(ScreenshotRegionLine box, bool grey)
+        private void SetupBox(ScreenshotRegionLine box, bool grey)
         {
             box.Show();
             box.ShowInTaskbar = false;
-            //box.BackColor = Color.Red;
-            if(grey)
-                box.BackColor = Color.Red;
-            else
-                box.BackColor = Color.Gray;
+            box.BackColor = grey ? Color.Red : Color.Gray;
             box.Opacity = 0.5;
             box.SetBounds(0, 0, 0, 0);
             box.TopMost = true;
@@ -1016,7 +959,7 @@ namespace imageDeCap
         {
             if(about?.Visible == true)
             {
-
+                about.Activate();
             }
             else
             {
@@ -1059,11 +1002,6 @@ namespace imageDeCap
         private void BubbleNotification_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             OpenWindow();
-        }
-
-        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
         }
     }
 }

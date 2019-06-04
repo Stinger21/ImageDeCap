@@ -33,18 +33,15 @@ namespace imageDeCap
         Bounds
     }
 
-    public class ScreenCapturer
+    public static class ScreenCapturer
     {
-
-        public Bitmap Capture(ScreenCaptureMode screenCaptureMode = ScreenCaptureMode.Window, int X = 0, int Y = 0, int Width = 0, int Height = 0, bool CaptureMouse = false)
+        public static Bitmap Capture(ScreenCaptureMode screenCaptureMode = ScreenCaptureMode.Window, int X = 0, int Y = 0, int Width = 0, int Height = 0, bool CaptureMouse = false)
         {
             Rectangle bounds;
 
             if (screenCaptureMode == ScreenCaptureMode.Screen)
             {
-                //bounds = new Rectangle(0, 0, SystemInformation.VirtualScreen.Width, SystemInformation.VirtualScreen.Height);
                 bounds = SystemInformation.VirtualScreen;
-                CursorPosition = Cursor.Position;
             }
             else if (screenCaptureMode == ScreenCaptureMode.Window)
             {
@@ -52,7 +49,6 @@ namespace imageDeCap
                 var rect = new Win32Stuff.Rect();
                 Win32Stuff.GetWindowRect(foregroundWindowsHandle, ref rect);
                 bounds = new Rectangle(rect.Left, rect.Top, rect.Right - rect.Left, rect.Bottom - rect.Top);
-                CursorPosition = new Point(Cursor.Position.X - rect.Left, Cursor.Position.Y - rect.Top);
             }
             else
             {
@@ -106,12 +102,6 @@ namespace imageDeCap
             bmp = ic.ToBitmap();
             return bmp;
         }
-
-        public Point CursorPosition
-        {
-            get;
-            protected set;
-        }
     }
 
     class Win32Stuff
@@ -157,8 +147,7 @@ namespace imageDeCap
         }
 
         #endregion
-
-
+        
         #region Class Functions
 
         [DllImport("user32.dll")]
