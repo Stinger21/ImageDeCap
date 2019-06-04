@@ -30,8 +30,46 @@ namespace imageDeCap
         // Global Variables
         public static string videoFormat = ".mp4";
         public static string VersionNumber = "v1.27";
-
         List<string> Links = new List<string>();
+        SettingsWindow props;
+        bool hKey1Pressed = false;
+        bool hKey2Pressed = false;
+        bool hKey3Pressed = false;
+        List<Bitmap> gEnc = new List<Bitmap>();
+        int RunningAverageOfFrameTime = 0;
+        int FrameTime = 0;
+        DateTime LastTime;
+        int counter = 0;
+        public static string LinksFilePath = "ERROR";
+        public static string PreferencesPath = "ERROR";
+        public static string AppdataDirectory = "ERROR";
+        public static string ExeDirectory = "ERROR";
+        public static string BackupDirectory = "ERROR";
+        bool pushThroughCancel = false;
+        CompleteCover CurrentBackCover;
+        public Magnifier magn;
+        public ScreenCapturer cap = new ScreenCapturer();
+        public ScreenshotRegionLine topBox = new ScreenshotRegionLine();
+        public ScreenshotRegionLine bottomBox = new ScreenshotRegionLine();
+        public ScreenshotRegionLine leftBox = new ScreenshotRegionLine();
+        public ScreenshotRegionLine rightBox = new ScreenshotRegionLine();
+        public ScreenshotRegionLine ruleOfThirdsBox1 = new ScreenshotRegionLine(true);
+        public ScreenshotRegionLine ruleOfThirdsBox2 = new ScreenshotRegionLine(true);
+        public ScreenshotRegionLine ruleOfThirdsBox3 = new ScreenshotRegionLine(true);
+        public ScreenshotRegionLine ruleOfThirdsBox4 = new ScreenshotRegionLine(true);
+        public int X = 0;
+        public int Y = 0;
+        int tempX = 0;
+        int tempY = 0;
+        public int tempWidth = 0;
+        public int tempHeight = 0;
+        int LastCursorX = 0;
+        int LastCursorY = 0;
+        AboutWindow about;
+        public bool isTakingSnapshot = false;
+        
+
+
         private void addToLinks(string link, bool addToXML = true)
         {
             Links.Add(link);
@@ -63,13 +101,7 @@ namespace imageDeCap
             if (Links.Count > 0 && Links[Links.Count - 1].StartsWith("http"))
                     Process.Start(Links[Links.Count - 1]);
         }
-
         
-        SettingsWindow props;
-        bool hKey1Pressed = false;
-        bool hKey2Pressed = false;
-        bool hKey3Pressed = false;
-        bool hKey4Pressed = false;
         public void mainLoop()
         {
             ClipboardHandler.Update();
@@ -126,12 +158,10 @@ namespace imageDeCap
                     hKey1Pressed = false;
                     hKey2Pressed = false;
                     hKey3Pressed = false;
-                    hKey4Pressed = false;
                 }
             }
         }
 
-        List<Bitmap> gEnc = new List<Bitmap>();
         public void StartRecordingGif(bool ForceEdit)
         {
             GifCaptureTimer.Interval = (int)(1000.0f / Preferences.GIFRecordingFramerate);
@@ -152,6 +182,7 @@ namespace imageDeCap
             ruleOfThirdsBox4.Hide();
 
         }
+
         public void StopRecordingGif(CompleteCover cover, bool abort)
         {
             if(GifCaptureTimer.Enabled)
@@ -183,10 +214,6 @@ namespace imageDeCap
             }
         }
 
-        int RunningAverageOfFrameTime = 0;
-        int FrameTime = 0;
-        DateTime LastTime;
-        int counter = 0;
         private void GifCaptureTimer_Tick(object sender, EventArgs e)
         {
 
@@ -221,7 +248,6 @@ namespace imageDeCap
             counter++;
         }
 
-
         private bool hasWriteAccessToFolder(string folderPath)
         {
             try
@@ -236,6 +262,7 @@ namespace imageDeCap
                 return false;
             }
         }
+
         public static void CreateShortcut(string shortcutLocation, string targetFileLocation)
         {
             IWshRuntimeLibrary.WshShell shell = new IWshRuntimeLibrary.WshShell();
@@ -246,16 +273,13 @@ namespace imageDeCap
             shortcut.TargetPath = targetFileLocation;                 // The path of the file that will launch when the shortcut is run
             shortcut.Save();                                    // Save the shortcut
         }
+
         public static void AddToStartup()
         {
             string startupPath = Environment.GetFolderPath(Environment.SpecialFolder.Startup) + @"\imageDeCap.lnk";
             MainWindow.CreateShortcut(startupPath, MainWindow.ExeDirectory + @"\imageDeCap.exe");
         }
-        public static string LinksFilePath = "ERROR";
-        public static string PreferencesPath = "ERROR";
-        public static string AppdataDirectory = "ERROR";
-        public static string ExeDirectory = "ERROR";
-        public static string BackupDirectory = "ERROR";
+
         public MainWindow()
         {
             InitializeComponent();
@@ -379,6 +403,7 @@ namespace imageDeCap
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop)) e.Effect = DragDropEffects.Copy;
         }
+
         void Form1_DragDrop(object sender, DragEventArgs e)
         {
             string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
@@ -388,7 +413,6 @@ namespace imageDeCap
             }
         }
 
-        bool pushThroughCancel = false;
         private void Form1_FormClosing_1(object sender, FormClosingEventArgs e)
         {
             if (e.CloseReason == CloseReason.UserClosing)
@@ -408,12 +432,12 @@ namespace imageDeCap
             this.Show();
             this.Activate();
         }
+
         private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)//Double Click notifyIcon
         {
             OpenWindow();
         }
         
-
         private void UploadToPasteBin(object sender = null, EventArgs e = null)
         {
             UploadPastebinClipboard();
@@ -428,6 +452,7 @@ namespace imageDeCap
         {
             UploadImgurWindow();
         }
+
         private void button4_Click(object sender, EventArgs e)
         {
             UploadToImgurBounds(true);
@@ -442,8 +467,7 @@ namespace imageDeCap
             Program.Quit = true;
             Environment.Exit(0);
         }
-
-
+        
         private void UploadPastebinClipboard()
         {
             if (!isTakingSnapshot)
@@ -455,9 +479,6 @@ namespace imageDeCap
             }
         }
 
-        CompleteCover CurrentBackCover;
-        public Magnifier magn;
-        public bool isTakingSnapshot = false;
         private void UploadToImgurBounds(bool isGif = false)
         {
             Bitmap background = cap.Capture(ScreenCaptureMode.Screen);
@@ -497,6 +518,7 @@ namespace imageDeCap
                 uploadImgur(ScreenCaptureMode.Window);
             }
         }
+
         private void UploadImgurScreen()
         {
             if (!isTakingSnapshot)
@@ -504,6 +526,7 @@ namespace imageDeCap
                 uploadImgur(ScreenCaptureMode.Screen);
             }
         }
+
         private void uploadImgur(ScreenCaptureMode mode)
         {
             Utilities.playSound("snip.wav");
@@ -621,6 +644,7 @@ namespace imageDeCap
                 }
             }
         }
+
         public void EditorDone(object sender, EventArgs e)
         {
             filetype f;
@@ -699,8 +723,7 @@ namespace imageDeCap
             {
                 return;
             }
-
-
+            
             if (EditorResult == NewImageEditor.EditorResult.Save) // If gif, ask to save only if 
             {
                 if (imageType == filetype.gif) // If it's a gif
@@ -708,6 +731,7 @@ namespace imageDeCap
                     FileDialog(MainWindow.videoFormat, FileData);
                 }
             }
+
             if (imageType != filetype.gif) // If it's an image, ask to save no matter what
             {
                 if (EditorResult == NewImageEditor.EditorResult.Save)
@@ -715,6 +739,7 @@ namespace imageDeCap
                     FileDialog(".png", FileData);
                 }
             }
+
              // Copy image to clipboard if it's not a gif
             if (imageType != filetype.gif)
             {
@@ -739,28 +764,27 @@ namespace imageDeCap
                     {
                         if (Preferences.GifTarget == "gfycat")
                         {
-                            bw.DoWork += cap.UploadGif_Gfycat;
+                            bw.DoWork += Uploading.UploadGif_Gfycat;
                         }
                         else if (Preferences.GifTarget == "imgur")
                         {
-                            bw.DoWork += cap.UploadGif_Imgur;
+                            bw.DoWork += Uploading.UploadGif_Imgur;
                         }
                         else if(Preferences.GifTarget == "webmshare")
                         {
-                            bw.DoWork += cap.UploadGif_Webmshare;
+                            bw.DoWork += Uploading.UploadGif_Webmshare;
                         }
                     }
                     else
                     {
-                        bw.DoWork += cap.UploadImage_Imgur;
+                        bw.DoWork += Uploading.UploadImage_Imgur;
                     }
                     bw.RunWorkerCompleted += uploadImageFileCompleted;
                     bw.RunWorkerAsync(FileData);
                 }
             }
         }
-
-
+        
         private void uploadImageFileCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             (string url, byte[] ImageData) = (ValueTuple<string, byte[]>)e.Result;
@@ -801,7 +825,7 @@ namespace imageDeCap
             {
                 string name = DateTime.UtcNow.ToString("yyyyMMddHHmmssfff");
                 BackgroundWorker bw = new BackgroundWorker();
-                bw.DoWork += cap.UploadToFTP;
+                bw.DoWork += Uploading.UploadToFTP;
                 bw.RunWorkerAsync(new object[] {    Preferences.FTPurl,
                                                     Preferences.FTPusername,
                                                     Preferences.FTPpassword,
@@ -816,12 +840,12 @@ namespace imageDeCap
             {
                 Utilities.playSound("snip.wav");
                 BackgroundWorker bw = new BackgroundWorker();
-                bw.DoWork += cap.UploadPastebin;
+                bw.DoWork += Uploading.UploadPastebin;
                 bw.RunWorkerCompleted += uploadPastebinCompleted;
                 bw.RunWorkerAsync(text);
 
                 BackgroundWorker bw2 = new BackgroundWorker();
-                bw2.DoWork += cap.UploadToFTP;
+                bw2.DoWork += Uploading.UploadToFTP;
                 string name = DateTime.UtcNow.ToString("yyyyMMddHHmmssfff");
                 bw2.RunWorkerAsync(new object[] {    Preferences.FTPurl,
                                                     Preferences.FTPusername,
@@ -836,9 +860,8 @@ namespace imageDeCap
                 string whereToSave = Preferences.SaveImagesHere + @"\" + name + ".txt";
                 File.WriteAllText(whereToSave, text);
             }
-            
-
         }
+
         private void uploadPastebinCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             string pasteBinResult = (string)e.Result;
@@ -883,34 +906,12 @@ namespace imageDeCap
             box.SetBounds(0, 0, 0, 0);
             box.TopMost = true;
         }
-        
-        public ScreenCapturer cap = new ScreenCapturer();
 
-        public ScreenshotRegionLine topBox = new ScreenshotRegionLine();
-        public ScreenshotRegionLine bottomBox = new ScreenshotRegionLine();
-        public ScreenshotRegionLine leftBox = new ScreenshotRegionLine();
-        public ScreenshotRegionLine rightBox = new ScreenshotRegionLine();
-
-        public ScreenshotRegionLine ruleOfThirdsBox1 = new ScreenshotRegionLine(true);
-        public ScreenshotRegionLine ruleOfThirdsBox2 = new ScreenshotRegionLine(true);
-        public ScreenshotRegionLine ruleOfThirdsBox3 = new ScreenshotRegionLine(true);
-        public ScreenshotRegionLine ruleOfThirdsBox4 = new ScreenshotRegionLine(true);
-
-        public int X = 0;
-        public int Y = 0;
-        int tempX = 0;
-        int tempY = 0;
-        public int tempWidth = 0;
-        public int tempHeight = 0;
-        int LastCursorX = 0;
-        int LastCursorY = 0;
         public void updateSelectedArea(CompleteCover backCover, bool EnterPressed, bool EscapePressed, bool LmbDown, bool LmbUp, bool Lmb, bool Gif, bool RMB, bool HoldingAlt) // this thing is essentially a frame-loop.
         {
-
             backCover.Activate();
             magn.Bounds = new Rectangle(Cursor.Position.X + 32, Cursor.Position.Y - 32, 124, 124);
             
-                                                                                
             if (LmbUp) // keyUp
             {
 
@@ -985,6 +986,7 @@ namespace imageDeCap
         {
             ShowProperties();
         }
+
         public void ShowProperties()
         {
             try
@@ -1010,7 +1012,6 @@ namespace imageDeCap
             this.Close();
         }
 
-        AboutWindow about;
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if(about?.Visible == true)

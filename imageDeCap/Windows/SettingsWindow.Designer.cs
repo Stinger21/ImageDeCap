@@ -85,7 +85,6 @@
             this.watermarkLocation2 = new System.Windows.Forms.RadioButton();
             this.watermarkLocation0 = new System.Windows.Forms.RadioButton();
             this.watermarkLocation1 = new System.Windows.Forms.RadioButton();
-            this.label2 = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.button4 = new System.Windows.Forms.Button();
             this.ImageFileDialog = new System.Windows.Forms.OpenFileDialog();
@@ -291,7 +290,7 @@
             // AlsoFTPTextFilesBox
             // 
             this.AlsoFTPTextFilesBox.AutoSize = true;
-            this.AlsoFTPTextFilesBox.Location = new System.Drawing.Point(104, 160);
+            this.AlsoFTPTextFilesBox.Location = new System.Drawing.Point(128, 154);
             this.AlsoFTPTextFilesBox.Name = "AlsoFTPTextFilesBox";
             this.AlsoFTPTextFilesBox.Size = new System.Drawing.Size(136, 17);
             this.AlsoFTPTextFilesBox.TabIndex = 8;
@@ -301,7 +300,7 @@
             // checkBoxUploadToFTP
             // 
             this.checkBoxUploadToFTP.AutoSize = true;
-            this.checkBoxUploadToFTP.Location = new System.Drawing.Point(9, 160);
+            this.checkBoxUploadToFTP.Location = new System.Drawing.Point(9, 154);
             this.checkBoxUploadToFTP.Name = "checkBoxUploadToFTP";
             this.checkBoxUploadToFTP.Size = new System.Drawing.Size(95, 17);
             this.checkBoxUploadToFTP.TabIndex = 9;
@@ -468,7 +467,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(6, 123);
+            this.label6.Location = new System.Drawing.Point(4, 111);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(232, 65);
             this.label6.TabIndex = 37;
@@ -546,7 +545,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(3, 145);
+            this.label10.Location = new System.Drawing.Point(3, 139);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(27, 13);
             this.label10.TabIndex = 46;
@@ -557,7 +556,7 @@
             this.CopyLinksToClipboard.AutoSize = true;
             this.CopyLinksToClipboard.Checked = true;
             this.CopyLinksToClipboard.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.CopyLinksToClipboard.Location = new System.Drawing.Point(8, 59);
+            this.CopyLinksToClipboard.Location = new System.Drawing.Point(8, 62);
             this.CopyLinksToClipboard.Name = "CopyLinksToClipboard";
             this.CopyLinksToClipboard.Size = new System.Drawing.Size(135, 17);
             this.CopyLinksToClipboard.TabIndex = 45;
@@ -752,16 +751,6 @@
             this.watermarkLocation1.UseVisualStyleBackColor = true;
             this.watermarkLocation1.CheckedChanged += new System.EventHandler(this.watermarkLocation1_CheckedChanged);
             // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(207, 5);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(162, 13);
-            this.label2.TabIndex = 30;
-            this.label2.Text = "Settings are saved automatically.";
-            this.toolTip1.SetToolTip(this.label2, "Whenever a setting is changed, it is saved immedietly.");
-            // 
             // button4
             // 
             this.button4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -806,7 +795,6 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(464, 254);
-            this.Controls.Add(this.label2);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.imageContainer);
@@ -834,7 +822,6 @@
             this.tabPage4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.imageContainer)).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -867,7 +854,6 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.CheckBox FreezeScreen;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.CheckBox neverUpload;
         private System.Windows.Forms.ToolTip toolTip1;
