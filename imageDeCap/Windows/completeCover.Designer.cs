@@ -122,9 +122,10 @@ namespace imageDeCap
             this.MemoryLabel.TabIndex = 6;
             this.MemoryLabel.Text = "0:00";
             // 
-            // completeCover
+            // CompleteCover
             // 
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(300, 393);
             this.Controls.Add(this.FramesLabel);
@@ -135,7 +136,7 @@ namespace imageDeCap
             this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.KeyPreview = true;
-            this.Name = "completeCover";
+            this.Name = "CompleteCover";
             this.Opacity = 0.01D;
             this.Text = "completeCover";
             this.TopMost = true;

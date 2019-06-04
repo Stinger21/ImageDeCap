@@ -23,7 +23,7 @@ using System.Text.RegularExpressions;
 
 namespace imageDeCap
 {
-    // The code in this whole program reads like a joke. DW tho, it only crashes sometimes. ;)
+    // The code in this whole program is a mess. DW tho, it only crashes sometimes. ;)
 
     public partial class MainWindow : Form
     {
