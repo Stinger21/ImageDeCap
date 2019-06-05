@@ -86,11 +86,11 @@ namespace imageDeCap
 
         // Drawing
 
-        private void imageContainer_MouseDown(object sender, MouseEventArgs e){imageContainer_MouseMove(sender, e);}
-        private void NewImageEditor_MouseClick(object sender, MouseEventArgs e){imageContainer_MouseClick(sender, e);}
-        private void panel1_MouseClick(object sender, MouseEventArgs e){imageContainer_MouseClick(sender, e);}
-        private void imageContainer_MouseClick(object sender, MouseEventArgs e){imageContainer_MouseMove(sender, e);}
-        private void imageContainer_MouseMove(object sender, MouseEventArgs e)
+        private void ImageContainer_MouseDown(object sender, MouseEventArgs e){ImageContainer_MouseMove(sender, e);}
+        private void NewImageEditor_MouseClick(object sender, MouseEventArgs e){ImageContainer_MouseClick(sender, e);}
+        private void Panel1_MouseClick(object sender, MouseEventArgs e){ImageContainer_MouseClick(sender, e);}
+        private void ImageContainer_MouseClick(object sender, MouseEventArgs e){ImageContainer_MouseMove(sender, e);}
+        private void ImageContainer_MouseMove(object sender, MouseEventArgs e)
         {
             Point mousePos = ImageContainer.PointToClient(Cursor.Position);
 
@@ -132,7 +132,7 @@ namespace imageDeCap
 
         // Hotkeys
 
-        private void imageEditor_KeyDown(object sender, KeyEventArgs e)
+        private void ImageEditor_KeyDown(object sender, KeyEventArgs e)
         {
             string KeyCode = e.KeyCode.ToString();
 
@@ -151,15 +151,11 @@ namespace imageDeCap
             {
                 case "Z":
                     if (e.Control)
-                    {
                         Editor.Undo();
-                    }
                     break;
                 case "C":
                     if (e.Control)
-                    {
                         Clipboard.SetImage(Editor.EditedImage);
-                    }
                     break;
                 case "T":
                     AddTextButton_Click(null, null);
@@ -271,11 +267,6 @@ namespace imageDeCap
         private void HelpButton_Click(object sender, EventArgs e)
         {
             InfoText.Visible = !InfoText.Visible;
-        }
-
-        private void groupBox1_Enter(object sender, EventArgs e)
-        {
-
         }
     }
 
@@ -535,8 +526,10 @@ namespace imageDeCap
         {
             using (Graphics g = Graphics.FromImage(TargetImage))
             {
-                Pen MyPen = new Pen(Owner.CurrentSwatch.BackColor);
-                MyPen.Width = GammaCorrectedTextSize;
+                Pen MyPen = new Pen(Owner.CurrentSwatch.BackColor)
+                {
+                    Width = GammaCorrectedTextSize
+                };
                 g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
                 Size tsize = TextRenderer.MeasureText(text, new Font(Preferences.ImageEditorFont, GammaCorrectedTextSize, (FontStyle)Preferences.FontStyleType));
                 SolidBrush b = new SolidBrush(Color.FromArgb((int)(opacity * 255.0f), Owner.CurrentSwatch.BackColor));
@@ -552,10 +545,12 @@ namespace imageDeCap
             }
             using (Graphics g = Graphics.FromImage(TargetImage))
             {
-                Pen MyPen = new Pen(color);
-                MyPen.Width = size;
-                MyPen.EndCap = System.Drawing.Drawing2D.LineCap.Round;
-                MyPen.StartCap = System.Drawing.Drawing2D.LineCap.Round;
+                Pen MyPen = new Pen(color)
+                {
+                    Width = size,
+                    EndCap = System.Drawing.Drawing2D.LineCap.Round,
+                    StartCap = System.Drawing.Drawing2D.LineCap.Round
+                };
                 g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
                 g.DrawLine(MyPen, P1.ToPoint(), P2.ToPoint());
             }

@@ -236,7 +236,7 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(473, 396);
             this.panel1.TabIndex = 1;
-            this.panel1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseClick);
+            this.panel1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.Panel1_MouseClick);
             // 
             // InfoText
             // 
@@ -256,9 +256,9 @@
             this.ImageContainer.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.ImageContainer.TabIndex = 0;
             this.ImageContainer.TabStop = false;
-            this.ImageContainer.MouseClick += new System.Windows.Forms.MouseEventHandler(this.imageContainer_MouseClick);
-            this.ImageContainer.MouseDown += new System.Windows.Forms.MouseEventHandler(this.imageContainer_MouseDown);
-            this.ImageContainer.MouseMove += new System.Windows.Forms.MouseEventHandler(this.imageContainer_MouseMove);
+            this.ImageContainer.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ImageContainer_MouseClick);
+            this.ImageContainer.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ImageContainer_MouseDown);
+            this.ImageContainer.MouseMove += new System.Windows.Forms.MouseEventHandler(this.ImageContainer_MouseMove);
             // 
             // panel2
             // 
@@ -292,7 +292,7 @@
             this.MinimumSize = new System.Drawing.Size(350, 350);
             this.Name = "NewImageEditor";
             this.Text = "Editor - ImageDeCap";
-            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.imageEditor_KeyDown);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ImageEditor_KeyDown);
             this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.NewImageEditor_MouseClick);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();

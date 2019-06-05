@@ -41,7 +41,7 @@ namespace imageDeCap
 
         private static void ExitButton_Click(object Sender, EventArgs e)// Exit button
         {
-            Program.ImageDeCap.ActuallyCloseTheProgram();
+            Program.ImageDeCap.CloseProgram();
         }
         private static void ContactButton_Click(object Sender, EventArgs e)
         {

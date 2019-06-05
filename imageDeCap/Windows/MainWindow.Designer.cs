@@ -34,7 +34,6 @@
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
-            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -45,7 +44,6 @@
             this.preferencesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.GifCaptureTimer = new System.Windows.Forms.Timer(this.components);
             this.BindPrintscreenTimer = new System.Windows.Forms.Timer(this.components);
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -64,6 +62,7 @@
             // 
             // button2
             // 
+            this.button2.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
             this.button2.FlatAppearance.BorderSize = 0;
             this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button2.Location = new System.Drawing.Point(8, 100);
@@ -72,10 +71,11 @@
             this.button2.TabIndex = 9;
             this.button2.Text = "Upload Text";
             this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.UploadToPasteBin);
+            this.button2.Click += new System.EventHandler(this.UploadText_Click);
             // 
             // button3
             // 
+            this.button3.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
             this.button3.FlatAppearance.BorderSize = 0;
             this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button3.Location = new System.Drawing.Point(8, 44);
@@ -84,10 +84,11 @@
             this.button3.TabIndex = 10;
             this.button3.Text = "Capture Image";
             this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click_1);
+            this.button3.Click += new System.EventHandler(this.CaptureImage_Click);
             // 
             // button4
             // 
+            this.button4.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
             this.button4.FlatAppearance.BorderSize = 0;
             this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button4.Location = new System.Drawing.Point(8, 72);
@@ -96,7 +97,7 @@
             this.button4.TabIndex = 11;
             this.button4.Text = "Record Gif";
             this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
+            this.button4.Click += new System.EventHandler(this.RecordGif_Click);
             // 
             // listBox1
             // 
@@ -110,8 +111,8 @@
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(224, 288);
             this.listBox1.TabIndex = 14;
-            this.listBox1.DoubleClick += new System.EventHandler(this.listBox1_DoubleClick);
-            this.listBox1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.listBox1_KeyDown);
+            this.listBox1.DoubleClick += new System.EventHandler(this.ListBox1_DoubleClick);
+            this.listBox1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ListBox1_KeyDown);
             // 
             // menuStrip1
             // 
@@ -141,21 +142,21 @@
             this.hideToolStripMenuItem.Name = "hideToolStripMenuItem";
             this.hideToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
             this.hideToolStripMenuItem.Text = "Hide";
-            this.hideToolStripMenuItem.Click += new System.EventHandler(this.hideToolStripMenuItem_Click);
+            this.hideToolStripMenuItem.Click += new System.EventHandler(this.HideToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
             this.exitToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
             this.exitToolStripMenuItem.Text = "Exit";
-            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItem_Click);
             // 
             // clearLinksToolStripMenuItem
             // 
             this.clearLinksToolStripMenuItem.Name = "clearLinksToolStripMenuItem";
             this.clearLinksToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
             this.clearLinksToolStripMenuItem.Text = "Clear Links";
-            this.clearLinksToolStripMenuItem.Click += new System.EventHandler(this.clearLinksToolStripMenuItem_Click);
+            this.clearLinksToolStripMenuItem.Click += new System.EventHandler(this.ClearLinksToolStripMenuItem_Click);
             // 
             // optionsToolStripMenuItem
             // 
@@ -170,7 +171,7 @@
             this.preferencesToolStripMenuItem.Name = "preferencesToolStripMenuItem";
             this.preferencesToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
             this.preferencesToolStripMenuItem.Text = "Preferences";
-            this.preferencesToolStripMenuItem.Click += new System.EventHandler(this.preferencesToolStripMenuItem_Click);
+            this.preferencesToolStripMenuItem.Click += new System.EventHandler(this.PreferencesToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
             // 
@@ -185,11 +186,7 @@
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
             this.aboutToolStripMenuItem.Text = "About ImageDeCap";
-            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
-            // 
-            // GifCaptureTimer
-            // 
-            this.GifCaptureTimer.Interval = 16;
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.AboutToolStripMenuItem_Click);
             // 
             // BindPrintscreenTimer
             // 
@@ -249,7 +246,7 @@
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "ImageDeCap";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing_1);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainWindow_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
@@ -264,7 +261,6 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button4;
-        private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private System.Windows.Forms.ListBox listBox1;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
@@ -275,7 +271,6 @@
         private System.Windows.Forms.ToolStripMenuItem preferencesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem clearLinksToolStripMenuItem;
-        public System.Windows.Forms.Timer GifCaptureTimer;
         private System.Windows.Forms.Timer BindPrintscreenTimer;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;

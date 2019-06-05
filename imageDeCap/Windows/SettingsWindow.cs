@@ -311,7 +311,7 @@ namespace imageDeCap
         // Unfortunetly this does not work for printscreen. idk why. So we temporaraly bind the PrintScreen button using this 
         // old system so that we can access it.
 
-        public static string getCurrentHotkey()
+        public static string GetCurrentHotkey()
         {
             string textToPutInBox = "";
             int length = Enum.GetValues(typeof(System.Windows.Input.Key)).Length;
@@ -355,7 +355,7 @@ namespace imageDeCap
 
         private void HotkeyTextBox1_KeyDown(object sender, KeyEventArgs e)
         {
-            HotkeyTextBox1.Text = getCurrentHotkey();
+            HotkeyTextBox1.Text = GetCurrentHotkey();
             Preferences.Hotkey1 = HotkeyTextBox1.Text;
             Preferences.Save();
         }
@@ -420,13 +420,13 @@ namespace imageDeCap
         }
         private void HotkeyTextBox2_KeyDown(object sender, KeyEventArgs e)
         {
-            HotkeyTextBox2.Text = getCurrentHotkey();
+            HotkeyTextBox2.Text = GetCurrentHotkey();
             Preferences.Hotkey2 = HotkeyTextBox2.Text;
             Preferences.Save();
         }
         private void HotkeyTextBox3_KeyDown(object sender, KeyEventArgs e)
         {
-            HotkeyTextBox3.Text = getCurrentHotkey();
+            HotkeyTextBox3.Text = GetCurrentHotkey();
             Preferences.Hotkey3 = HotkeyTextBox3.Text;
             Preferences.Save();
         }

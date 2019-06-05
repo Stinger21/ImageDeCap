@@ -121,11 +121,11 @@ namespace imageDeCap
             box.TopMost = true;
         }
 
-        private void completeCover_MouseMove(object sender, MouseEventArgs e)
+        private void CompleteCover_MouseMove(object sender, MouseEventArgs e)
         {
             Updatee();
         }
-        private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
+        private void PictureBox1_MouseMove(object sender, MouseEventArgs e)
         {
             Updatee();
         }
@@ -215,7 +215,7 @@ namespace imageDeCap
                 ruleOfThirdsBox3.Hide();
                 ruleOfThirdsBox4.Hide();
 
-                Program.ImageDeCap.isTakingSnapshot = false;
+                Program.ImageDeCap.IsTakingSnapshot = false;
                 Program.hotkeysEnabled = true;
             }
             
@@ -225,7 +225,7 @@ namespace imageDeCap
             LmbUp = false;
         }
 
-        private void completeCover_KeyDown(object sender, KeyEventArgs e)
+        private void CompleteCover_KeyDown(object sender, KeyEventArgs e)
         {
             if(GifCaptureTimer.Enabled == false)
             {
@@ -242,7 +242,7 @@ namespace imageDeCap
             Updatee();
         }
 
-        private void completeCover_KeyUp(object sender, KeyEventArgs e)
+        private void CompleteCover_KeyUp(object sender, KeyEventArgs e)
         {
             AltKeyDown = false;
         }
@@ -291,7 +291,7 @@ namespace imageDeCap
                 if (UseBackCover)
                     this.Close();
 
-                Program.ImageDeCap.isTakingSnapshot = false;
+                Program.ImageDeCap.IsTakingSnapshot = false;
                 Program.hotkeysEnabled = true;
             }
             else
@@ -330,12 +330,12 @@ namespace imageDeCap
             MemoryLabel.Text = Size;
         }
 
-        private void doneButton_Click(object sender, EventArgs e)
+        private void DoneButton_Click(object sender, EventArgs e)
         {
             StopRecordingGif(this, false);
         }
 
-        private void cancelButton_Click(object sender, EventArgs e)
+        private void CancelButton_Click(object sender, EventArgs e)
         {
             EscapePressed = true;
             StopRecordingGif(this, true);
@@ -386,7 +386,7 @@ namespace imageDeCap
                     Program.ImageDeCap.UploadImageData(new byte[] { }, Filetype.gif, false, (bool)GifCaptureTimer.Tag, gEnc.ToArray());
                 }
 
-                Program.ImageDeCap.isTakingSnapshot = false;
+                Program.ImageDeCap.IsTakingSnapshot = false;
                 Program.hotkeysEnabled = true;
             }
         }

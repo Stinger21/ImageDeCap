@@ -18,6 +18,20 @@ namespace imageDeCap
 
     public partial class GifEditor : Form
     {
+        float scalePct = 1.0f;
+        NewImageEditor.EditorResult result = NewImageEditor.EditorResult.Quit;
+        Bitmap[] TheImage;
+        Bitmap[] EditedImage;
+        Bitmap CurrentImage;
+        int frames = 0;
+        int FrameRate = 15;
+        int SavedImageStart = 0;
+        int SavedImageEnd = 0;
+        int CurrentFrame = 0;
+        int ActualFrameNumber = 0;
+        bool Scrolling = false;
+
+
         public static byte[] VideoFromFrames(Bitmap[] frames, int framerate = 15)
         {
             string outpath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\imageDeCap\out.avi";
@@ -71,14 +85,6 @@ namespace imageDeCap
             return (result, VideoFromFrames(edited ? ScaledImages : EditedImage, FrameRate));
         }
 
-        NewImageEditor.EditorResult result = NewImageEditor.EditorResult.Quit;
-
-        Bitmap[] TheImage;
-        Bitmap[] EditedImage;
-        Bitmap CurrentImage;
-
-        int frames = 0;
-        int FrameRate = 15;
         public GifEditor(Bitmap[] ImageData, int X, int Y, int FrameRate)
         {
             InitializeComponent();
@@ -113,11 +119,8 @@ namespace imageDeCap
             }
 
             frameTimer.Interval = 1000 / FrameRate;
-
-            //FPSLabel.Text = "Average recorded framerate: " + FrameRate.ToString();
         }
-
-
+        
         private void Uploadbutton_Click(object sender, EventArgs e)
         {
             this.Hide();
@@ -133,10 +136,7 @@ namespace imageDeCap
             result = NewImageEditor.EditorResult.Save;
             this.Close();
         }
-
-
-        int CurrentFrame = 0;
-        int ActualFrameNumber = 0;
+        
         private void frameTimer_Tick(object sender, EventArgs e)
         {
             if (Scrolling == false)
@@ -167,6 +167,7 @@ namespace imageDeCap
             SetTracks();
             CurrentFrame = startTrack.Value;
         }
+
         private void endTrack_ValueChanged(object sender, EventArgs e)
         {
             if (endTrack.Value == 0)
@@ -180,6 +181,7 @@ namespace imageDeCap
             SetTracks();
             CurrentFrame = endTrack.Value;// -1;
         }
+
         private void GifEditor_Resize(object sender, EventArgs e)
         {
             SetTracks();
@@ -196,8 +198,7 @@ namespace imageDeCap
             startTrack.Region = new Region(new Rectangle(0, 0, RightWidth, this.Height));
             endTrack.Region = new Region(new Rectangle(LeftWidth, 0, this.Width, this.Height));
         }
-
-
+        
         int PositionToValue(int X, TrackBar Track)// int Width, int Min, int Max)
         {
             int result = Convert.ToInt32((((double)X - 13.0f) / ((double)Track.Width - 26.0)) * (Track.Maximum - Track.Minimum));
@@ -205,6 +206,7 @@ namespace imageDeCap
             result = Math.Min(Math.Max(result, BackgroundTrack.Minimum), BackgroundTrack.Maximum);
             return result;
         }
+
         TrackBar ClosestTrack(int X, TrackBar A, TrackBar B)
         {
             int CurrentValue = PositionToValue(X, A); // any value
@@ -216,7 +218,6 @@ namespace imageDeCap
                 return B;
         }
 
-        bool Scrolling = false;
         private void endTrack_MouseDown(object sender, MouseEventArgs e)
         {
             Scrolling = true;
@@ -261,9 +262,7 @@ namespace imageDeCap
         private void endTrack_MouseUp(object sender, MouseEventArgs e) { Scrolling = false; }
         private void startTrack_MouseUp(object sender, MouseEventArgs e) { Scrolling = false; }
         private void BackgroundTrack_MouseUp(object sender, MouseEventArgs e) { Scrolling = false; }
-
-
-
+        
         public static T[] SubArray<T>(T[] data, int index, int length)
         {
             T[] result = new T[length];
@@ -271,32 +270,24 @@ namespace imageDeCap
             return result;
         }
 
-        int SavedImageStart = 0;
-        int SavedImageEnd = 0;
-
         private void CalculateFileSizeAndSaveOutputImage()
         {
             //If this is true, that means the user changed nothing and we don't need to re-compute the image.
             if((SavedImageStart == (int)startTrack.Value) &&
-              (SavedImageEnd == (int)endTrack.Value))// &&
-              //(SavedImageScale == (int)ScaleThing.Value))
+              (SavedImageEnd == (int)endTrack.Value))
             {
                 return;
             }
-
-                
-            //scalePct = (float)ScaleThing.Value / 100.0f;
-
             SavedImageStart = (int)startTrack.Value;
             SavedImageEnd = (int)endTrack.Value;
-            //SavedImageScale = (int)ScaleThing.Value;
-
             EditedImage = SubArray(TheImage, SavedImageStart, SavedImageEnd - SavedImageStart);
         }
+
         private void calcSizeButton_Click(object sender, EventArgs e)
         {
             CalculateFileSizeAndSaveOutputImage();
         }
+
         private void GifEditor_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode.ToString() == "Escape")
@@ -305,53 +296,9 @@ namespace imageDeCap
             }
         }
         
-        float scalePct = 1.0f;
         private void ScaleThing_ValueChanged(object sender, EventArgs e)
         {
-            //scalePct = (float)ScaleThing.Value / 100.0f;
             PictureBox.Size = new Size((int)(CurrentImage.Width * scalePct), (int)(CurrentImage.Height * scalePct));
-        }
-
-        private void ScaleThing_KeyDown(object sender, KeyEventArgs e)
-        {
-            //scalePct = (float)ScaleThing.Value / 100.0f;
-            //PictureBox.Size = new Size((int)(CurrentImage.Width * scalePct), (int)(CurrentImage.Height * scalePct));
-        }
-
-        private void GifEditor_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void PictureBox_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void ScaleThing_KeyUp(object sender, KeyEventArgs e)
-        {
-            //scalePct = (float)ScaleThing.Value / 100.0f;
-            //PictureBox.Size = new Size((int)(CurrentImage.Width * scalePct), (int)(CurrentImage.Height * scalePct));
-        }
-
-        private void ScaleThing_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            //scalePct = (float)ScaleThing.Value / 100.0f;
-            PictureBox.Size = new Size((int)(CurrentImage.Width * scalePct), (int)(CurrentImage.Height * scalePct));
-        }
-
-    }
-    class TextData
-    {
-        public int size = 0;
-        public string text = "";
-        public int X = 0;
-        public int Y = 0;
-        public int TimeStart = 0;
-        public int TimeEnd = 0;
-        public override string ToString()
-        {
-            return text;
         }
     }
 }

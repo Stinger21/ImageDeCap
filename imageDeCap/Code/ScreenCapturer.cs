@@ -81,7 +81,6 @@ namespace imageDeCap
             Bitmap bmp;
             IntPtr hicon;
             Win32Stuff.CURSORINFO ci = new Win32Stuff.CURSORINFO();
-            Win32Stuff.ICONINFO icInfo;
             ci.cbSize = Marshal.SizeOf(ci);
             if (!Win32Stuff.GetCursorInfo(out ci))
                 return null;
@@ -90,7 +89,7 @@ namespace imageDeCap
                 return null;
 
             hicon = Win32Stuff.CopyIcon(ci.hCursor);
-            if (!Win32Stuff.GetIconInfo(hicon, out icInfo))
+            if (!Win32Stuff.GetIconInfo(hicon, out Win32Stuff.ICONINFO icInfo))
                 return null;
             
             x = ci.ptScreenPos.x - ((int)icInfo.xHotspot);
@@ -204,15 +203,16 @@ namespace imageDeCap
     
     
             HttpClient client = new HttpClient();
-            MultipartFormDataContent form = new MultipartFormDataContent();
-    
-            form.Add(new StringContent("0"), "expiration");
-            form.Add(new StringContent("0"), "public");
-            form.Add(new StringContent("1"), "autoplay");
-            form.Add(new StringContent("1"), "loop");
-            form.Add(new StringContent("1"), "muted");
-            form.Add(new ByteArrayContent(FileData), "file", "something.webm");
-    
+            MultipartFormDataContent form = new MultipartFormDataContent
+            {
+                { new StringContent("0"), "expiration" },
+                { new StringContent("0"), "public" },
+                { new StringContent("1"), "autoplay" },
+                { new StringContent("1"), "loop" },
+                { new StringContent("1"), "muted" },
+                { new ByteArrayContent(FileData), "file", "something.webm" }
+            };
+
             var response = client.PostAsync("http://webmshare.com/api/upload", form).GetAwaiter().GetResult();
     
             var responseString = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
@@ -237,7 +237,7 @@ namespace imageDeCap
     {
         public static (bool UploadSuccessfull, string Message) Upload(byte[] FileData)
         {
-            var createResponse = Create(new GfycatCreateRequest() { noMd5 = true }).GetAwaiter().GetResult();
+            var createResponse = Create(new GfycatCreateRequest() { NoMd5 = true }).GetAwaiter().GetResult();
     
             Upload(createResponse.GfyName, FileData).GetAwaiter().GetResult();
             int notfounds = 0;
@@ -296,7 +296,7 @@ namespace imageDeCap
     
         struct GfycatCreateRequest
         {
-            public bool noMd5 { get; set; }
+            public bool NoMd5 { get; set; }
         }
     
         struct GfycatCreateResponse

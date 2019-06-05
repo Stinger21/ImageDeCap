@@ -50,7 +50,7 @@ namespace imageDeCap
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
-            this.pictureBox1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseMove);
+            this.pictureBox1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.PictureBox1_MouseMove);
             // 
             // doneButton
             // 
@@ -65,7 +65,7 @@ namespace imageDeCap
             this.doneButton.TabIndex = 1;
             this.doneButton.Text = "Done";
             this.doneButton.UseVisualStyleBackColor = false;
-            this.doneButton.Click += new System.EventHandler(this.doneButton_Click);
+            this.doneButton.Click += new System.EventHandler(this.DoneButton_Click);
             // 
             // cancelButton
             // 
@@ -80,7 +80,7 @@ namespace imageDeCap
             this.cancelButton.TabIndex = 2;
             this.cancelButton.Text = "Cancel";
             this.cancelButton.UseVisualStyleBackColor = false;
-            this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
+            this.cancelButton.Click += new System.EventHandler(this.CancelButton_Click);
             // 
             // TimeLabel
             // 
@@ -148,9 +148,9 @@ namespace imageDeCap
             this.Text = "completeCover";
             this.TopMost = true;
             this.TransparencyKey = System.Drawing.Color.Red;
-            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.completeCover_KeyDown);
-            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.completeCover_KeyUp);
-            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.completeCover_MouseMove);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.CompleteCover_KeyDown);
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.CompleteCover_KeyUp);
+            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.CompleteCover_MouseMove);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();

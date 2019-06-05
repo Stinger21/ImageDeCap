@@ -137,7 +137,6 @@ namespace imageDeCap
             this.PictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.PictureBox.TabIndex = 0;
             this.PictureBox.TabStop = false;
-            this.PictureBox.Click += new System.EventHandler(this.PictureBox_Click);
             // 
             // GifEditor
             // 
@@ -154,7 +153,6 @@ namespace imageDeCap
             this.KeyPreview = true;
             this.Name = "GifEditor";
             this.Text = "Trimmer - ImageDeCap";
-            this.Load += new System.EventHandler(this.GifEditor_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.GifEditor_KeyDown);
             this.Resize += new System.EventHandler(this.GifEditor_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.startTrack)).EndInit();
