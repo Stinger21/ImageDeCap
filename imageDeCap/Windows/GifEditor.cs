@@ -273,7 +273,6 @@ namespace imageDeCap
 
         int SavedImageStart = 0;
         int SavedImageEnd = 0;
-        int SavedImageScale = 0;
 
         private void CalculateFileSizeAndSaveOutputImage()
         {

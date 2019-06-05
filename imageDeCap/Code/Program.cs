@@ -78,7 +78,7 @@ namespace imageDeCap
             while (!Quit)
             {
                 Application.DoEvents();
-                ImageDeCap.mainLoop();
+                ImageDeCap.MainLoop();
                 System.Threading.Thread.Sleep(1);
             } 
         }

@@ -7,33 +7,29 @@ using System.Windows.Forms;
 
 namespace imageDeCap
 {
+    // uuhhh... thread safety. yeah.. that's it.
     public static class ClipboardHandler
     {
         static string TextToCopyToClipboard = "";
 
         public static void Update()
         {
-            if (TextToCopyToClipboard != "")
-            {
-                Clipboard.SetText(TextToCopyToClipboard);
-                TextToCopyToClipboard = "";
-            }
+            if (TextToCopyToClipboard == "")
+                return;
+
+            Clipboard.SetText(TextToCopyToClipboard);
+            TextToCopyToClipboard = "";
         }
 
         public static void SetClipboard(string text)
         {
-            if (Preferences.CopyLinksToClipboard)
-            {
-                if (text != null)
-                {
-                    TextToCopyToClipboard = text;
-                }
-                else
-                {
-                    Utilities.BubbleNotification("failed to retrieve link.", null, ToolTipIcon.Error);
-                    Utilities.playSound("error.wav");
-                }
-            }
+            if (!Preferences.CopyLinksToClipboard)
+                return;
+
+            if (text == null)
+                return;
+
+            TextToCopyToClipboard = text;
         }
     }
 }

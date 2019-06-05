@@ -56,7 +56,6 @@ namespace imageDeCap
 
             if (UseBackCover)
             {
-                ScreenCapturer cap = new ScreenCapturer();
                 this.TopMost = false;
                 pictureBox1.Image = background;
                 pictureBox1.SetBounds(0, 0, width, height);
@@ -79,31 +78,22 @@ namespace imageDeCap
         {
             Updatee();
         }
-
-        // Called by mainloop in now heuheuhe
+        
         public void Updatee()
         {
             if(!_Activated)
-            {
                 return;
-            }
+
             Cursor.Current = Cursors.Cross;
 
             if (Program.ImageDeCap.GifCaptureTimer.Enabled) // Don't update if we are capturing a gif
-            {
                 return;
-            }
+
             Lmb = MouseButtons == MouseButtons.Left;
             if(wasPressed != (MouseButtons == MouseButtons.Left))
             {
-                if(wasPressed)
-                {
-                    LmbUp = true;
-                }
-                else
-                {
-                    LmbDown = true;
-                }
+                LmbUp = wasPressed;
+                LmbDown = !wasPressed;
             }
 
             Program.ImageDeCap.updateSelectedArea(this, EnterPressed, EscapePressed, LmbDown, LmbUp, Lmb, Gif, MouseButtons == (MouseButtons.Left | MouseButtons.Right), AltKeyDown);
@@ -146,7 +136,7 @@ namespace imageDeCap
         {
             if(!Gif) // If it's not a gif, hide everything and fire off an upload thread instantly.
             {
-                Program.ImageDeCap.magn.Close();
+                Program.ImageDeCap.magnifier.Close();
                 if (!UseBackCover)
                     this.Close();
 
@@ -163,7 +153,7 @@ namespace imageDeCap
                 if (Program.ImageDeCap.tempWidth > 0 && Program.ImageDeCap.tempHeight > 0) // Make sure we actually selected a region to take a screenshot of.
                 {
                     Utilities.playSound("snip.wav");
-                    Bitmap result = Program.ImageDeCap.cap.Capture(
+                    Bitmap result = ScreenCapturer.Capture(
                         ScreenCaptureMode.Bounds, 
                         Program.ImageDeCap.X - 1, 
                         Program.ImageDeCap.Y - 1,
@@ -173,7 +163,7 @@ namespace imageDeCap
                     if (UseBackCover)
                         this.Close();
 
-                    Program.ImageDeCap.UploadImageData(GetBytes(result, ImageFormat.Png), MainWindow.filetype.png, false, ForceEdit);
+                    Program.ImageDeCap.UploadImageData(GetBytes(result, ImageFormat.Png), Filetype.png, false, ForceEdit);
                 }
 
                 if (UseBackCover)
@@ -181,15 +171,13 @@ namespace imageDeCap
 
                 Program.ImageDeCap.isTakingSnapshot = false;
                 Program.hotkeysEnabled = true;
-
-
             }
             else
             {
                 // From here, we fire up gif recording in Form1's main loop :D
                 if (Program.ImageDeCap.tempWidth > 0 && Program.ImageDeCap.tempHeight > 0)
                 {
-                    Program.ImageDeCap.magn.Close();
+                    Program.ImageDeCap.magnifier.Close();
                     Program.ImageDeCap.StartRecordingGif(ForceEdit);
 
                     this.Location = new Point(Program.ImageDeCap.X, Program.ImageDeCap.Y + Program.ImageDeCap.tempHeight);
