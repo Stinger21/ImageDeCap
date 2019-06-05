@@ -28,46 +28,131 @@ namespace imageDeCap
     public partial class MainWindow : Form
     {
         // Global Variables
-        public static string videoFormat = ".mp4";
-        public static string VersionNumber = "v1.27";
-        List<string> Links = new List<string>();
+        AboutWindow about;
         SettingsWindow props;
+        public CompleteCover CurrentBackCover;
+        List<string> Links = new List<string>();
         bool hKey1Pressed = false;
         bool hKey2Pressed = false;
         bool hKey3Pressed = false;
-        List<Bitmap> gEnc = new List<Bitmap>();
-        int RunningAverageOfFrameTime = 0;
-        int FrameTime = 0;
-        DateTime LastTime;
-        int counter = 0;
+        public static string videoFormat = ".mp4";
+        public static string VersionNumber = "v1.27";
         public static string LinksFilePath = "ERROR";
         public static string PreferencesPath = "ERROR";
         public static string AppdataDirectory = "ERROR";
         public static string ExeDirectory = "ERROR";
         public static string BackupDirectory = "ERROR";
         bool pushThroughCancel = false;
-        CompleteCover CurrentBackCover;
-        public Magnifier magnifier;
-        public ScreenshotRegionLine topBox = new ScreenshotRegionLine();
-        public ScreenshotRegionLine bottomBox = new ScreenshotRegionLine();
-        public ScreenshotRegionLine leftBox = new ScreenshotRegionLine();
-        public ScreenshotRegionLine rightBox = new ScreenshotRegionLine();
-        public ScreenshotRegionLine ruleOfThirdsBox1 = new ScreenshotRegionLine(true);
-        public ScreenshotRegionLine ruleOfThirdsBox2 = new ScreenshotRegionLine(true);
-        public ScreenshotRegionLine ruleOfThirdsBox3 = new ScreenshotRegionLine(true);
-        public ScreenshotRegionLine ruleOfThirdsBox4 = new ScreenshotRegionLine(true);
-        public int X = 0;
-        public int Y = 0;
-        int tempX = 0;
-        int tempY = 0;
-        public int tempWidth = 0;
-        public int tempHeight = 0;
-        int LastCursorX = 0;
-        int LastCursorY = 0;
-        AboutWindow about;
         public bool isTakingSnapshot = false;
 
+        public MainWindow()
+        {
+            InitializeComponent();
+            this.VersionLabel.Text = MainWindow.VersionNumber;
+            bool Portable = false;
+            ExeDirectory = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
+            AppdataDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\imageDeCap";
+            if (ExeDirectory.Contains("Program Files"))
+            {
+                // If it's in an install folder, put the settings files in appdata.
+                if (!Directory.Exists(AppdataDirectory))
+                    Directory.CreateDirectory(AppdataDirectory);
+                LinksFilePath = AppdataDirectory + @"\imageDecapLinks.ini";
+                PreferencesPath = AppdataDirectory + @"\ImageDeCap.ini";
+                Portable = false;
+            }
+            else
+            {
+                // If it's not in Program Files that means the user is trying to use it portable and we should write settings next to the exe.
 
+                // If we can't write settings, tell the user they need to run the program as administrator to proceed.
+                if (!Utilities.HasWriteAccessToFolder(ExeDirectory))
+                {
+                    MessageBox.Show("Insufficient permissions to write settings, try starting the program from somewhere else or start it as as administrator.", "Could not write settings.", MessageBoxButtons.OK);
+                    ActuallyCloseTheProgram();
+                    return;
+                }
+                LinksFilePath = ExeDirectory + @"\imageDecapLinks.ini";
+                PreferencesPath = ExeDirectory + @"\ImageDeCap.ini";
+                Portable = true;
+            }
+            
+            BackupDirectory = AppdataDirectory + @"\Backup";
+
+            Preferences.Load();
+            if (Preferences.FirstStartup)
+            {
+                Preferences.FirstStartup = false;
+                if (Portable)
+                {
+                    Preferences.BackupImages = false;
+                    Preferences.Save();
+                }
+                else
+                {
+                    Preferences.BackupImages = true;
+                    Preferences.Save();
+                }
+                Preferences.Save();
+                OpenWindow();
+
+                // Try deleting any old shortcut memes from 1.23 and earlier
+                string startupPath = Environment.GetFolderPath(Environment.SpecialFolder.Startup) + @"\imageDeCap.lnk";
+                string startMenuPath = Environment.GetFolderPath(Environment.SpecialFolder.StartMenu) + @"\imageDeCap.lnk";
+                string appdataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\imageDeCap\imageDeCap.exe";
+
+                if (File.Exists(startupPath))
+                    File.Delete(startupPath);
+
+                if (File.Exists(startMenuPath))
+                    File.Delete(startMenuPath);
+
+                try
+                {
+                    if (File.Exists(appdataPath))
+                        File.Delete(appdataPath);
+                }
+                catch
+                {
+                    MessageBox.Show("An old version of ImageDeCap is currently running. Please close it before starting the new one.", "Error");
+                    Environment.Exit(0);
+                }
+
+                Utilities.BubbleNotification("Press PRINTSCREEN to start!", null, ToolTipIcon.Info, "Welcome to ImageDeCap!");
+
+                AddToStartup();
+            }
+            else
+            {
+                this.Hide();
+                this.ShowInTaskbar = false;
+            }
+
+            props = new SettingsWindow();
+            if (File.Exists(LinksFilePath))
+            {
+                string links = File.ReadAllText(LinksFilePath);
+                links = Regex.Replace(links, @"^\s+$[\r\n]*", "", RegexOptions.Multiline);
+                foreach (string s in links.Split('\n'))
+                {
+                    if (s == "")
+                        continue;
+                    addToLinks(s, false);
+                }
+            }
+            else
+            {
+                File.WriteAllText(LinksFilePath, "");
+            }
+
+            SystemTrayContextMenu.Initialize();
+            BubbleNotification.ContextMenu = SystemTrayContextMenu.IconRightClickMenu;
+            BubbleNotification.Visible = true;
+
+            listBox1.AllowDrop = true;
+            listBox1.DragEnter += new DragEventHandler(Form1_DragEnter);
+            listBox1.DragDrop += new DragEventHandler(Form1_DragDrop);
+        }
 
         private void addToLinks(string link, bool addToXML = true)
         {
@@ -122,7 +207,7 @@ namespace imageDeCap
                 {
                     if (!hKey2Pressed)
                     {
-                        UploadToImgurBounds(true);
+                        UploadToImageOrGifBounds(true);
                     }
                     hKey2Pressed = true;
                 }
@@ -130,7 +215,7 @@ namespace imageDeCap
                 {
                     if (!hKey3Pressed)
                     {
-                        UploadToImgurBounds();
+                        UploadToImageOrGifBounds();
                     }
                     hKey3Pressed = true;
                 }
@@ -144,87 +229,87 @@ namespace imageDeCap
             }
         }
 
-        public void StartRecordingGif(bool ForceEdit)
-        {
-            GifCaptureTimer.Interval = (int)(1000.0f / Preferences.GIFRecordingFramerate);
-            FrameTime = 0;
-            counter = 0;
-            GifCaptureTimer.Enabled = true;
-            GifCaptureTimer.Tag = ForceEdit;
-            LastTime = DateTime.Now;
-
-            this.topBox.BackColor = Color.Green;
-            this.bottomBox.BackColor = Color.Green;
-            this.leftBox.BackColor = Color.Green;
-            this.rightBox.BackColor = Color.Green;
-
-            ruleOfThirdsBox1.Hide();
-            ruleOfThirdsBox2.Hide();
-            ruleOfThirdsBox3.Hide();
-            ruleOfThirdsBox4.Hide();
-        }
-
-        public void StopRecordingGif(CompleteCover cover, bool abort)
-        {
-            if(GifCaptureTimer.Enabled)
-            {
-                FrameTime /= counter;
-                GifCaptureTimer.Enabled = false;
-                topBox.Hide();
-                bottomBox.Hide();
-                leftBox.Hide();
-                rightBox.Hide();
-
-                ruleOfThirdsBox1.Hide();
-                ruleOfThirdsBox2.Hide();
-                ruleOfThirdsBox3.Hide();
-                ruleOfThirdsBox4.Hide();
-
-                cover.Close();
-                if (!abort)
-                {
-                    Utilities.playSound("snip.wav");
-                    
-                    // Feed in through the tag weather the user right-clicked to force editor even when it's disabled.
-                    UploadImageData(new byte[] { }, Filetype.gif, false, (bool)GifCaptureTimer.Tag, gEnc.ToArray());
-                }
-
-                Program.ImageDeCap.isTakingSnapshot = false;
-                Program.hotkeysEnabled = true;
-            }
-        }
-
-        private void GifCaptureTimer_Tick(object sender, EventArgs e)
-        {
-            TimeSpan DeltaTime = DateTime.Now - LastTime;
-            int DeltaTimeInMS = DeltaTime.Seconds * 100 + DeltaTime.Milliseconds;
-            FrameTime += DeltaTimeInMS;
-            RunningAverageOfFrameTime = FrameTime / (counter+1);
-
-            LastTime = DateTime.Now;
-
-            int width = Program.ImageDeCap.tempWidth + 1;
-            int height = Program.ImageDeCap.tempHeight + 1;
-            if (width % 2 == 1)
-                width = width - 1;
-            if (height % 2 == 1)
-                height = height - 1;
-            // Capture Bitmap
-            Bitmap b = ScreenCapturer.Capture(
-                ScreenCaptureMode.Bounds,
-                Program.ImageDeCap.X - 1,
-                Program.ImageDeCap.Y - 1,
-                width,
-                height, true);
-
-            gEnc.Add(b);
-
-            int minutes = counter / 600;
-            int seconds = (counter / 10) % 600;
-            int csecs = counter % 10;
-            CurrentBackCover.SetTimer("Time: " + minutes + ":" + seconds + "." + csecs, "Frames: " + counter, "Memory Usage: " + (gEnc.Count * width * height * 8) / 1000000 + " MB");
-            counter++;
-        }
+        //public void StartRecordingGif(bool ForceEdit)
+        //{
+        //    GifCaptureTimer.Interval = (int)(1000.0f / Preferences.GIFRecordingFramerate);
+        //    FrameTime = 0;
+        //    counter = 0;
+        //    GifCaptureTimer.Enabled = true;
+        //    GifCaptureTimer.Tag = ForceEdit;
+        //    LastTime = DateTime.Now;
+        //
+        //    CurrentBackCover.topBox.BackColor = Color.Green;
+        //    CurrentBackCover.bottomBox.BackColor = Color.Green;
+        //    CurrentBackCover.leftBox.BackColor = Color.Green;
+        //    CurrentBackCover.rightBox.BackColor = Color.Green;
+        //
+        //    CurrentBackCover.ruleOfThirdsBox1.Hide();
+        //    CurrentBackCover.ruleOfThirdsBox2.Hide();
+        //    CurrentBackCover.ruleOfThirdsBox3.Hide();
+        //    CurrentBackCover.ruleOfThirdsBox4.Hide();
+        //}
+        //
+        //public void StopRecordingGif(CompleteCover cover, bool abort)
+        //{
+        //    if(GifCaptureTimer.Enabled)
+        //    {
+        //        FrameTime /= counter;
+        //        GifCaptureTimer.Enabled = false;
+        //        CurrentBackCover.topBox.Hide();
+        //        CurrentBackCover.bottomBox.Hide();
+        //        CurrentBackCover.leftBox.Hide();
+        //        CurrentBackCover.rightBox.Hide();
+        //
+        //        CurrentBackCover.ruleOfThirdsBox1.Hide();
+        //        CurrentBackCover.ruleOfThirdsBox2.Hide();
+        //        CurrentBackCover.ruleOfThirdsBox3.Hide();
+        //        CurrentBackCover.ruleOfThirdsBox4.Hide();
+        //
+        //        cover.Close();
+        //        if (!abort)
+        //        {
+        //            Utilities.playSound("snip.wav");
+        //            
+        //            // Feed in through the tag weather the user right-clicked to force editor even when it's disabled.
+        //            UploadImageData(new byte[] { }, Filetype.gif, false, (bool)GifCaptureTimer.Tag, gEnc.ToArray());
+        //        }
+        //
+        //        Program.ImageDeCap.isTakingSnapshot = false;
+        //        Program.hotkeysEnabled = true;
+        //    }
+        //}
+        //
+        //private void GifCaptureTimer_Tick(object sender, EventArgs e)
+        //{
+        //    TimeSpan DeltaTime = DateTime.Now - LastTime;
+        //    int DeltaTimeInMS = DeltaTime.Seconds * 100 + DeltaTime.Milliseconds;
+        //    FrameTime += DeltaTimeInMS;
+        //    RunningAverageOfFrameTime = FrameTime / (counter+1);
+        //
+        //    LastTime = DateTime.Now;
+        //
+        //    int width   = CurrentBackCover.tempWidth + 1;
+        //    int height  = CurrentBackCover.tempHeight + 1;
+        //    if (width % 2 == 1)
+        //        width = width - 1;
+        //    if (height % 2 == 1)
+        //        height = height - 1;
+        //    // Capture Bitmap
+        //    Bitmap b = ScreenCapturer.Capture(
+        //        ScreenCaptureMode.Bounds,
+        //        CurrentBackCover.X - 1,
+        //        CurrentBackCover.Y - 1,
+        //        width,
+        //        height, true);
+        //
+        //    gEnc.Add(b);
+        //
+        //    int minutes = counter / 600;
+        //    int seconds = (counter / 10) % 600;
+        //    int csecs = counter % 10;
+        //    CurrentBackCover.SetTimer("Time: " + minutes + ":" + seconds + "." + csecs, "Frames: " + counter, "Memory Usage: " + (gEnc.Count * width * height * 8) / 1000000 + " MB");
+        //    counter++;
+        //}
         
         public static void AddToStartup()
         {
@@ -232,121 +317,6 @@ namespace imageDeCap
             Utilities.CreateShortcut(startupPath, MainWindow.ExeDirectory + @"\imageDeCap.exe");
         }
 
-        public MainWindow()
-        {
-            InitializeComponent();
-            this.VersionLabel.Text = MainWindow.VersionNumber;
-            bool Portable = false;
-            ExeDirectory = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
-            AppdataDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\imageDeCap";
-            if (ExeDirectory.Contains("Program Files"))
-            {
-                // If it's in an install folder, put the settings files in appdata.
-                if (!Directory.Exists(AppdataDirectory))
-                    Directory.CreateDirectory(AppdataDirectory);
-                LinksFilePath = AppdataDirectory + @"\imageDecapLinks.ini";
-                PreferencesPath = AppdataDirectory + @"\ImageDeCap.ini";
-                Portable = false;
-            }
-            else
-            {
-                // If it's not in Program Files that means the user is trying to use it portable and we should write settings next to the exe.
-
-                // If we can't write settings, tell the user they need to run the program as administrator to proceed.
-                if(!Utilities.HasWriteAccessToFolder(ExeDirectory))
-                {
-                    MessageBox.Show("Insufficient permissions to write settings, try starting the program from somewhere else or start it as as administrator.", "Could not write settings.", MessageBoxButtons.OK);
-                    ActuallyCloseTheProgram();
-                    return;
-                }
-                LinksFilePath = ExeDirectory + @"\imageDecapLinks.ini";
-                PreferencesPath = ExeDirectory + @"\ImageDeCap.ini";
-                Portable = true;
-            }
-
-            if(Portable)
-            {
-                BackupDirectory = MainWindow.AppdataDirectory + @"\Backup";
-            }
-            else
-            {
-                BackupDirectory = MainWindow.AppdataDirectory + @"\Backup";
-            }
-
-            Preferences.Load();
-            if(Preferences.FirstStartup)
-            {
-                Preferences.FirstStartup = false;
-                if(Portable)
-                {
-                    Preferences.BackupImages = false;
-                    Preferences.Save();
-                }
-                else
-                {
-                    Preferences.BackupImages = true;
-                    Preferences.Save();
-                }
-                Preferences.Save();
-                OpenWindow();
-
-                // Try deleting any old shortcut memes from 1.23 and earlier
-                string startupPath = Environment.GetFolderPath(Environment.SpecialFolder.Startup) + @"\imageDeCap.lnk";
-                string startMenuPath = Environment.GetFolderPath(Environment.SpecialFolder.StartMenu) + @"\imageDeCap.lnk";
-                string appdataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\imageDeCap\imageDeCap.exe";
-
-                if (File.Exists(startupPath))
-                    File.Delete(startupPath);
-
-                if (File.Exists(startMenuPath))
-                    File.Delete(startMenuPath);
-
-                try
-                {
-                    if (File.Exists(appdataPath))
-                        File.Delete(appdataPath);
-                }
-                catch
-                {
-                    MessageBox.Show("An old version of ImageDeCap is currently running. Please close it before starting the new one.", "Error");
-                    Environment.Exit(0);
-                }
-
-                Utilities.BubbleNotification("Press PRINTSCREEN to start!", null, ToolTipIcon.Info, "Welcome to ImageDeCap!");
-
-                MainWindow.AddToStartup();
-            }
-            else
-            {
-                this.Hide();
-                this.ShowInTaskbar = false;
-            }
-            
-            props = new SettingsWindow();
-            if (File.Exists(LinksFilePath))
-            {
-                string links = File.ReadAllText(LinksFilePath);
-                links = Regex.Replace(links, @"^\s+$[\r\n]*", "", RegexOptions.Multiline);
-                foreach (string s in links.Split('\n'))
-                {
-                    if (s == "")
-                        continue;
-                    addToLinks(s, false);
-                }
-            }
-            else
-            {
-                File.WriteAllText(LinksFilePath, "");
-            }
-
-            SystemTrayContextMenu.Initialize();
-            BubbleNotification.ContextMenu = SystemTrayContextMenu.IconRightClickMenu;
-            BubbleNotification.Visible = true;
-
-            listBox1.AllowDrop = true;
-            listBox1.DragEnter += new DragEventHandler(Form1_DragEnter);
-            listBox1.DragDrop += new DragEventHandler(Form1_DragDrop);
-        }
 
         void Form1_DragEnter(object sender, DragEventArgs e)
         {
@@ -394,17 +364,17 @@ namespace imageDeCap
 
         private void button3_Click_1(object sender, EventArgs e)
         {
-            UploadToImgurBounds();
+            UploadToImageOrGifBounds();
         }
 
         private void button5_Click(object sender, EventArgs e)
         {
-            UploadImgurWindow();
+            UploadImageOrGifWindow();
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
-            UploadToImgurBounds(true);
+            UploadToImageOrGifBounds(true);
         }
 
         public void ActuallyCloseTheProgram()
@@ -428,7 +398,7 @@ namespace imageDeCap
             }
         }
 
-        private void UploadToImgurBounds(bool isGif = false)
+        private void UploadToImageOrGifBounds(bool isGif = false)
         {
             Bitmap background = ScreenCapturer.Capture(ScreenCaptureMode.Screen);
             // prevent blackening
@@ -437,30 +407,16 @@ namespace imageDeCap
                 isTakingSnapshot = true;
                 Program.hotkeysEnabled = false;
                 // back cover used for pulling cursor position into updateSelectedArea()
+                if (CurrentBackCover != null)
+                    CurrentBackCover.Dispose();
+
                 CurrentBackCover = new CompleteCover(isGif);
                 CurrentBackCover.Show();
-                CurrentBackCover.AfterShow(background);
-
-                magnifier = new Magnifier(isGif);
-                magnifier.Show();
-                magnifier.TopMost = true;
-
-                SetupBox(topBox, true);
-                SetupBox(leftBox, true);
-                SetupBox(bottomBox, true);
-                SetupBox(rightBox, true);
-                
-                SetupBox(ruleOfThirdsBox1, false);
-                SetupBox(ruleOfThirdsBox2, false);
-                SetupBox(ruleOfThirdsBox3, false);
-                SetupBox(ruleOfThirdsBox4, false);
-
-                Program.ImageDeCap.tempWidth = 0;
-                Program.ImageDeCap.tempHeight = 0;
+                CurrentBackCover.AfterShow(background, isGif);
             }
         }
 
-        private void UploadImgurWindow()
+        private void UploadImageOrGifWindow()
         {
             if (!isTakingSnapshot)
             {
@@ -482,8 +438,7 @@ namespace imageDeCap
             Bitmap result = ScreenCapturer.Capture(mode);
             UploadImageData(CompleteCover.GetBytes(result, System.Drawing.Imaging.ImageFormat.Png), Filetype.png);
         }
-
-
+        
         public void UploadImageFile(string filepath)
         {
             UploadImageData(File.ReadAllBytes(filepath), Utilities.GetImageType(filepath), true);
@@ -533,13 +488,13 @@ namespace imageDeCap
             {
                 if (imageType == Filetype.gif)
                 {
-                    GifEditor editor = new GifEditor(GifImage, topBox.Location.X, topBox.Location.Y, 1000 / FrameTime);
+                    GifEditor editor = new GifEditor(GifImage, CurrentBackCover.topBox.Location.X, CurrentBackCover.topBox.Location.Y, 1000 / CurrentBackCover.FrameTime);
                     editor.Show();
                     editor.FormClosed += EditorDone;
                 }
                 else
                 {
-                    NewImageEditor editor = new NewImageEditor(FileData, topBox.Location.X, topBox.Location.Y);
+                    NewImageEditor editor = new NewImageEditor(FileData, CurrentBackCover.topBox.Location.X, CurrentBackCover.topBox.Location.Y);
                     editor.Show();
                     editor.FormClosed += EditorDone;
                 }
@@ -548,7 +503,7 @@ namespace imageDeCap
             {
                 if (imageType == Filetype.gif)
                 {
-                    FileData = GifEditor.VideoFromFrames(GifImage, 1000 / FrameTime);
+                    FileData = GifEditor.VideoFromFrames(GifImage, 1000 / CurrentBackCover.FrameTime);
                     UploadImageData_AfterEdit(NewImageEditor.EditorResult.Upload, FileData, imageType);
                 }
                 else
@@ -582,8 +537,9 @@ namespace imageDeCap
 
         public void UploadImageData_AfterEdit(NewImageEditor.EditorResult EditorResult, byte[] FileData, Filetype imageType)
         {
-            foreach (var v in gEnc) { v.Dispose(); }
-            gEnc.Clear();
+            
+            foreach (var v in CurrentBackCover.gEnc) { v.Dispose(); }
+            CurrentBackCover.gEnc.Clear();
 
             string SaveFileName = DateTime.UtcNow.ToString("yyyyMMddHHmmssfff");
             string Extension = imageType.ToString();
@@ -739,11 +695,11 @@ namespace imageDeCap
                 string name = DateTime.UtcNow.ToString("yyyyMMddHHmmssfff");
                 BackgroundWorker bw = new BackgroundWorker();
                 bw.DoWork += Uploading.UploadToFTP;
-                bw.RunWorkerAsync(new object[] {    Preferences.FTPurl,
-                                                    Preferences.FTPusername,
-                                                    Preferences.FTPpassword,
-                                                    ImageData,
-                                                    name + (url.EndsWith(".png") ? ".png" : ".jpg") });
+                bw.RunWorkerAsync(new object[] { Preferences.FTPurl,
+                                                 Preferences.FTPusername,
+                                                 Preferences.FTPpassword,
+                                                 ImageData,
+                                                 name + (url.EndsWith(".png") ? ".png" : ".jpg") });
             }
         }
 
@@ -806,93 +762,6 @@ namespace imageDeCap
             }
         }
 
-        private void SetupBox(ScreenshotRegionLine box, bool grey)
-        {
-            box.Show();
-            box.ShowInTaskbar = false;
-            box.BackColor = grey ? Color.Red : Color.Gray;
-            box.Opacity = 0.5;
-            box.SetBounds(0, 0, 0, 0);
-            box.TopMost = true;
-        }
-
-        // This thing is essentially a frame-loop.
-        // We already have a frame-loop though.
-        // HMMM.
-        public void updateSelectedArea(CompleteCover backCover, bool EnterPressed, bool EscapePressed, bool LmbDown, bool LmbUp, bool Lmb, bool Gif, bool RMB, bool HoldingAlt) 
-        {
-            backCover.Activate();
-            magnifier.Bounds = new Rectangle(Cursor.Position.X + 32, Cursor.Position.Y - 32, 124, 124);
-            
-            if (LmbUp) // keyUp
-            {
-
-                //* This should be a function to call for what happens when we have aquired a region.
-                backCover.CompletedSelection(RMB);
-                // End function thing
-            }
-
-            if (LmbDown)
-            {
-                tempX = Cursor.Position.X;
-                tempY = Cursor.Position.Y;
-            }
-            
-            // Holding M1
-            if (Lmb)
-            {
-                topBox.SetBounds(X - 3, Y - 3, tempWidth + 3, 0);
-                leftBox.SetBounds(X - 3, Y - 1, 0, tempHeight + 1);
-                bottomBox.SetBounds(X - 3, tempHeight + Y, tempWidth + 5, 0);
-                rightBox.SetBounds(tempWidth + X, Y - 3, 0, tempHeight + 3);
-
-                if(Preferences.UseRuleOfThirds)
-                {
-                    ruleOfThirdsBox1.SetBounds(X + (tempWidth / 3), Y, 0, tempHeight);
-                    ruleOfThirdsBox2.SetBounds(X + (tempWidth / 3) * 2, Y, 0, tempHeight);
-                    ruleOfThirdsBox3.SetBounds(X, Y + (tempHeight / 3), tempWidth, 0);
-                    ruleOfThirdsBox4.SetBounds(X, Y + (tempHeight / 3) * 2, tempWidth, 0);
-                }
-
-                tempWidth = Math.Abs(Cursor.Position.X - tempX);
-                tempHeight = Math.Abs(Cursor.Position.Y - tempY);
-
-                X = tempX;
-                Y = tempY;
-
-                if ((Cursor.Position.Y - tempY) < 0)
-                    Y = tempY + (Cursor.Position.Y - tempY);
-
-                if ((Cursor.Position.X - tempX) < 0)
-                    X = tempX + (Cursor.Position.X - tempX);
-
-                if (HoldingAlt)
-                {
-                    tempX += Cursor.Position.X - LastCursorX;
-                    tempY += Cursor.Position.Y - LastCursorY;
-                }
-                LastCursorX = Cursor.Position.X;
-                LastCursorY = Cursor.Position.Y;
-            }
-            if (EscapePressed)
-            {
-                magnifier.Close();
-                backCover.Close();
-
-                topBox.Hide();
-                bottomBox.Hide();
-                leftBox.Hide();
-                rightBox.Hide();
-
-                ruleOfThirdsBox1.Hide();
-                ruleOfThirdsBox2.Hide();
-                ruleOfThirdsBox3.Hide();
-                ruleOfThirdsBox4.Hide();
-
-                isTakingSnapshot = false;
-                Program.hotkeysEnabled = true;
-            }
-        }
 
         private void preferencesToolStripMenuItem_Click(object sender, EventArgs e)
         {

@@ -190,7 +190,6 @@
             // GifCaptureTimer
             // 
             this.GifCaptureTimer.Interval = 16;
-            this.GifCaptureTimer.Tick += new System.EventHandler(this.GifCaptureTimer_Tick);
             // 
             // BindPrintscreenTimer
             // 

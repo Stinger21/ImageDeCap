@@ -29,6 +29,7 @@ namespace imageDeCap
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.doneButton = new System.Windows.Forms.Button();
             this.cancelButton = new System.Windows.Forms.Button();
@@ -36,6 +37,7 @@ namespace imageDeCap
             this.FramesLabel = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.MemoryLabel = new System.Windows.Forms.Label();
+            this.GifCaptureTimer = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -122,6 +124,11 @@ namespace imageDeCap
             this.MemoryLabel.TabIndex = 6;
             this.MemoryLabel.Text = "0:00";
             // 
+            // GifCaptureTimer
+            // 
+            this.GifCaptureTimer.Interval = 16;
+            this.GifCaptureTimer.Tick += new System.EventHandler(this.GifCaptureTimer_Tick);
+            // 
             // CompleteCover
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -161,5 +168,6 @@ namespace imageDeCap
         private System.Windows.Forms.Label FramesLabel;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label MemoryLabel;
+        public System.Windows.Forms.Timer GifCaptureTimer;
     }
 }

@@ -68,7 +68,7 @@ namespace imageDeCap
                     Bitmap cursorBMP = CaptureCursor(ref cursorX, ref cursorY);
                     if (cursorBMP != null)
                     {
-                        g.DrawImage(cursorBMP, new Rectangle(cursorX - Program.ImageDeCap.X, cursorY - Program.ImageDeCap.Y, cursorBMP.Width, cursorBMP.Height));
+                        g.DrawImage(cursorBMP, new Rectangle(cursorX - Program.ImageDeCap.CurrentBackCover.X, cursorY - Program.ImageDeCap.CurrentBackCover.Y, cursorBMP.Width, cursorBMP.Height));
                         g.Flush();
                     }
                 }

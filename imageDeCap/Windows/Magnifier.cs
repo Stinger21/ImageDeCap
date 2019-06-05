@@ -28,6 +28,7 @@ namespace imageDeCap
 
         Bitmap FinalImage;
         Graphics FinalImageGraphics;
+        int resolution = 16;
 
         public Magnifier(bool IsGif)
         {
@@ -44,7 +45,7 @@ namespace imageDeCap
             CaptureType.BackColor = Color.Transparent;
 
             // Init drawing stuff
-            CopiedImage = new Bitmap(32, 32);
+            CopiedImage = new Bitmap(resolution, resolution);
             CopiedImageGraphics = Graphics.FromImage(CopiedImage);
             CopiedImageGraphics.InterpolationMode = InterpolationMode.NearestNeighbor;
 
@@ -55,13 +56,13 @@ namespace imageDeCap
 
         private void UpdateTimer_Tick(object sender, EventArgs e)
         {
-            CopiedImageGraphics.CopyFromScreen(MousePosition.X - 16, MousePosition.Y - 16, 0, 0, new Size(32, 32));
+            CopiedImageGraphics.CopyFromScreen(MousePosition.X - (resolution / 2), MousePosition.Y - (resolution / 2), 0, 0, new Size(resolution, resolution));
             FinalImageGraphics.DrawImage(CopiedImage, 0, 0, 128, 128);
             FinalImageGraphics.DrawImage(Properties.Resources.Magnifier, 0, 0, 128, 128);
             
             MainPictureBox.Image = FinalImage;
             
-            CaptureResolution.Text = Program.ImageDeCap.tempWidth + "x" + Program.ImageDeCap.tempHeight;
+            CaptureResolution.Text = Program.ImageDeCap.CurrentBackCover.tempWidth + "x" + Program.ImageDeCap.CurrentBackCover.tempHeight;
         }
         
         private void Magnifier_Load(object sender, EventArgs e)
