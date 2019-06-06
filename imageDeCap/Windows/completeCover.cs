@@ -46,28 +46,21 @@ namespace imageDeCap
             this.Opacity = 0.005f;
             this.ShowInTaskbar = false;
 
-            UseBackCover = false;
-            if (imageDeCap.Preferences.FreezeScreenOnRegionShot)
-                UseBackCover = true;
-
+            FreezeScreen = imageDeCap.Preferences.FreezeScreenOnRegionShot;
             if (Gif)
-                UseBackCover = false;
+                FreezeScreen = false;
         }
 
-        bool UseBackCover;
+        bool FreezeScreen;
         bool Gif = false;
-        
         bool EscapePressed = false;
-
         bool LmbDown = false;
         bool LmbUp = false;
         bool Lmb = false;
-
         bool wasPressed = false;
-
         bool AltKeyDown = false;
-
         bool _Activated = false;
+
         public void AfterShow(Bitmap background, bool isGif)
         {
             float scaler = 1.0f/1.0f;
@@ -77,7 +70,7 @@ namespace imageDeCap
             int width = (int)(SystemInformation.VirtualScreen.Width * scaler);
             int height = (int)(SystemInformation.VirtualScreen.Height * scaler);
 
-            if (UseBackCover)
+            if (FreezeScreen)
             {
                 this.TopMost = false;
                 pictureBox1.Image = background;
@@ -201,7 +194,7 @@ namespace imageDeCap
 
             if (EscapePressed)
             {
-                Program.ImageDeCap.CurrentBackCover.magnifier.Close();
+                ScreenCapturer.CurrentBackCover.magnifier.Close();
                 this.Close();
 
                 topBox.Hide();
@@ -214,7 +207,7 @@ namespace imageDeCap
                 ruleOfThirdsBox3.Hide();
                 ruleOfThirdsBox4.Hide();
 
-                Program.ImageDeCap.IsTakingSnapshot = false;
+                ScreenCapturer.IsTakingSnapshot = false;
                 Program.hotkeysEnabled = true;
             }
             
@@ -258,7 +251,7 @@ namespace imageDeCap
             if(!Gif) // If it's not a gif, hide everything and fire off an upload thread instantly.
             {
                 magnifier.Close();
-                if (!UseBackCover)
+                if (!FreezeScreen)
                     this.Close();
 
                 topBox.Hide();
@@ -281,16 +274,16 @@ namespace imageDeCap
                         tempWidth + 1, 
                         tempHeight + 1);
 
-                    if (UseBackCover)
+                    if (FreezeScreen)
                         this.Close();
 
-                    Program.ImageDeCap.UploadImageData(GetBytes(result, ImageFormat.Png), Filetype.png, false, ForceEdit);
+                    ScreenCapturer.UploadImageData(GetBytes(result, ImageFormat.Png), Filetype.png, false, ForceEdit);
                 }
 
-                if (UseBackCover)
+                if (FreezeScreen)
                     this.Close();
 
-                Program.ImageDeCap.IsTakingSnapshot = false;
+                ScreenCapturer.IsTakingSnapshot = false;
                 Program.hotkeysEnabled = true;
             }
             else
@@ -382,10 +375,10 @@ namespace imageDeCap
                     Utilities.playSound("snip.wav");
 
                     // Feed in through the tag weather the user right-clicked to force editor even when it's disabled.
-                    Program.ImageDeCap.UploadImageData(new byte[] { }, Filetype.gif, false, (bool)GifCaptureTimer.Tag, gEnc.ToArray());
+                    ScreenCapturer.UploadImageData(new byte[] { }, Filetype.gif, false, (bool)GifCaptureTimer.Tag, gEnc.ToArray());
                 }
 
-                Program.ImageDeCap.IsTakingSnapshot = false;
+                ScreenCapturer.IsTakingSnapshot = false;
                 Program.hotkeysEnabled = true;
             }
         }

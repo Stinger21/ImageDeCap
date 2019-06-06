@@ -23,6 +23,8 @@ using Imgur.API.Models;
 
 using System.Net.Http;
 using Newtonsoft.Json.Linq;
+using System.Threading;
+using System.Diagnostics;
 
 namespace imageDeCap
 {
@@ -35,6 +37,351 @@ namespace imageDeCap
 
     public static class ScreenCapturer
     {
+
+
+
+
+        public static CompleteCover CurrentBackCover;
+        public static bool IsTakingSnapshot = false;
+
+
+
+
+        // UPLOADING FUNCTIONS
+
+        public static void UploadPastebinClipboard()
+        {
+            if (!IsTakingSnapshot)
+            {
+                SendKeys.SendWait("^c");
+                System.Threading.Thread.Sleep(500);
+                string clipboard = Clipboard.GetText();
+
+                if (!Preferences.NeverUpload)
+                {
+                    Utilities.playSound("snip.wav");
+                    BackgroundWorker bw = new BackgroundWorker();
+                    bw.DoWork += Uploading.UploadPastebin;
+                    bw.RunWorkerCompleted += UploadPastebinCompleted;
+                    bw.RunWorkerAsync(clipboard);
+
+                    BackgroundWorker bw2 = new BackgroundWorker();
+                    bw2.DoWork += Uploading.UploadToFTP;
+                    string name = DateTime.UtcNow.ToString("yyyyMMddHHmmssfff");
+                    bw2.RunWorkerAsync(new object[] { Preferences.FTPurl,
+                                                  Preferences.FTPusername,
+                                                  Preferences.FTPpassword,
+                                                  Encoding.ASCII.GetBytes(clipboard),
+                                                  name + ".txt" });
+                }
+
+                if (Preferences.saveImageAtAll && Directory.Exists(Preferences.SaveImagesHere))
+                {
+                    string name = DateTime.UtcNow.ToString("yyyyMMddHHmmssfff");
+                    string whereToSave = Preferences.SaveImagesHere + @"\" + name + ".txt";
+                    File.WriteAllText(whereToSave, clipboard);
+                }
+            }
+        }
+
+        public static void CaptureScreenRegion(bool isGif = false)
+        {
+            Bitmap background = ScreenCapturer.Capture(ScreenCaptureMode.Screen);
+            // prevent blackening
+            if (!IsTakingSnapshot)
+            {
+                IsTakingSnapshot = true;
+                Program.hotkeysEnabled = false;
+                // back cover used for pulling cursor position into updateSelectedArea()
+                if (CurrentBackCover != null)
+                    CurrentBackCover.Dispose();
+
+                CurrentBackCover = new CompleteCover(isGif);
+                CurrentBackCover.Show();
+                CurrentBackCover.AfterShow(background, isGif);
+            }
+        }
+
+        public static void UploadImageData(byte[] FileData, Filetype imageType, bool ForceNoEdit = false, bool RMBClickForceEdit = false, Bitmap[] GifImage = null)
+        {
+            if (imageType == Filetype.error)
+                return;
+
+            Program.hotkeysEnabled = true; // Enable hotkeys here again so you can kill the editor by starting a new capture.
+
+            if (imageType != Filetype.gif)
+            {
+                if (Preferences.CopyImageToClipboard)
+                {
+                    for (int i = 0; i < 10; i++)
+                    {
+                        try
+                        {
+                            Clipboard.SetImage(Image.FromStream(new MemoryStream(FileData)));
+                            break;
+                        }
+                        catch (ExternalException) // Requested clipboard operation did not succeed
+                        {
+                            Thread.Sleep(100);
+                        }
+                    }
+                }
+            }
+
+            if ((Preferences.EditScreenshotAfterCapture || RMBClickForceEdit) && ForceNoEdit == false)
+            {
+                if (imageType == Filetype.gif)
+                {
+                    GifEditor editor = new GifEditor(GifImage, CurrentBackCover.topBox.Location.X, CurrentBackCover.topBox.Location.Y, 1000 / CurrentBackCover.FrameTime);
+                    editor.Show();
+                    editor.FormClosed += EditorDone;
+                }
+                else
+                {
+                    NewImageEditor editor = new NewImageEditor(FileData, CurrentBackCover.topBox.Location.X, CurrentBackCover.topBox.Location.Y);
+                    editor.Show();
+                    editor.FormClosed += EditorDone;
+                }
+            }
+            else
+            {
+                if (imageType == Filetype.gif)
+                {
+                    FileData = GifEditor.VideoFromFrames(GifImage, 1000 / CurrentBackCover.FrameTime);
+                    UploadImageData_AfterEdit(NewImageEditor.EditorResult.Upload, FileData, imageType);
+                }
+                else
+                {
+                    UploadImageData_AfterEdit(NewImageEditor.EditorResult.Upload, FileData, imageType);
+                }
+            }
+        }
+
+        public static void EditorDone(object sender, EventArgs e)
+        {
+            Filetype f;
+            NewImageEditor.EditorResult EditorResult = NewImageEditor.EditorResult.Quit;
+            byte[] FileData;
+            if (sender is NewImageEditor)
+            {
+                NewImageEditor editor = (NewImageEditor)sender;
+                (EditorResult, FileData) = editor.FinalFunction();
+                editor.Dispose();
+                f = Filetype.png;
+            }
+            else
+            {
+                GifEditor editor = (GifEditor)sender;
+                (EditorResult, FileData) = editor.FinalFunction();
+                editor.Dispose();
+                f = Filetype.gif;
+            }
+            UploadImageData_AfterEdit(EditorResult, FileData, f);
+        }
+
+        public static void UploadImageData_AfterEdit(NewImageEditor.EditorResult EditorResult, byte[] FileData, Filetype imageType)
+        {
+            foreach (var v in CurrentBackCover.gEnc) { v.Dispose(); }
+            CurrentBackCover.gEnc.Clear();
+
+            string SaveFileName = DateTime.UtcNow.ToString("yyyyMMddHHmmssfff");
+            string Extension = imageType.ToString();
+            if (Extension == "gif")
+            {
+                Extension = MainWindow.videoFormat.Replace(".", "");
+            }
+
+            if (Preferences.saveImageAtAll)
+            {
+                string directory_path = Path.GetFullPath(Environment.ExpandEnvironmentVariables(Preferences.SaveImagesHere));
+                string file_path = Path.Combine(directory_path, SaveFileName + "." + Extension);
+                try
+                {
+                    Directory.CreateDirectory(directory_path);
+                    try
+                    {
+                        File.WriteAllBytes(file_path, FileData);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine($"Failed to create the file {file_path}. Exception: {e.Message}");
+                    }
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show($"Failed create the directory {directory_path}. Exception: {e.Message}");
+                }
+            }
+
+            if (Preferences.BackupImages)
+            {
+                if (!Directory.Exists(MainWindow.BackupDirectory))
+                {
+                    Directory.CreateDirectory(MainWindow.BackupDirectory);
+                }
+                File.WriteAllBytes(MainWindow.BackupDirectory + @"\" + SaveFileName + "." + Extension, FileData);
+                int i = 0;
+                foreach (string file in Directory.GetFiles(MainWindow.BackupDirectory).OrderBy(f => f).Reverse())
+                {
+                    i++;
+                    if (i > 100)
+                    {
+                        File.Delete(file);
+                    }
+                }
+            }
+
+            if (EditorResult == NewImageEditor.EditorResult.Quit)
+            {
+                return;
+            }
+
+            if (EditorResult == NewImageEditor.EditorResult.Save) // If gif, ask to save only if 
+            {
+                if (imageType == Filetype.gif) // If it's a gif
+                {
+                    Utilities.FileDialog(MainWindow.videoFormat, FileData);
+                }
+            }
+
+            if (imageType != Filetype.gif) // If it's an image, ask to save no matter what
+            {
+                if (EditorResult == NewImageEditor.EditorResult.Save)
+                {
+                    Utilities.FileDialog(".png", FileData);
+                }
+            }
+
+            // Copy image to clipboard if it's not a gif
+            if (imageType != Filetype.gif)
+            {
+                if (EditorResult == NewImageEditor.EditorResult.Clipboard)
+                {
+                    if (Preferences.CopyImageToClipboard)
+                    {
+                        Image bitmapImage = Image.FromStream(new MemoryStream(FileData));
+                        Clipboard.SetImage(bitmapImage);
+                        bitmapImage.Dispose();
+                    }
+                }
+            }
+
+            // Upload the image
+            if (EditorResult == NewImageEditor.EditorResult.Upload)
+            {
+                if (!Preferences.NeverUpload)
+                {
+                    BackgroundWorker bw = new BackgroundWorker();
+                    if (imageType == Filetype.gif)
+                    {
+                        if (Preferences.GifTarget == "gfycat")
+                        {
+                            bw.DoWork += Uploading.UploadGif_Gfycat;
+                        }
+                        else if (Preferences.GifTarget == "imgur")
+                        {
+                            bw.DoWork += Uploading.UploadGif_Imgur;
+                        }
+                        else if (Preferences.GifTarget == "webmshare")
+                        {
+                            bw.DoWork += Uploading.UploadGif_Webmshare;
+                        }
+                    }
+                    else
+                    {
+                        bw.DoWork += Uploading.UploadImage_Imgur;
+                    }
+                    bw.RunWorkerCompleted += UploadImageFileCompleted;
+                    bw.RunWorkerAsync(FileData);
+                }
+            }
+        }
+
+        public static void UploadImageFileCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            (string url, byte[] ImageData) = (ValueTuple<string, byte[]>)e.Result;
+
+            if (url.Contains("failed"))
+            {
+                ClipboardHandler.SetClipboard(url);
+                Utilities.BubbleNotification($"Upload to imgur failed! \n{url}\nAre you connected to the internet? \nis Imgur Down?", null, ToolTipIcon.Error);
+                Utilities.playSound("error.wav");
+            }
+            else
+            {
+                if (Preferences.OpenInBrowser)
+                {
+                    Process.Start(url);
+                }
+                if (!Preferences.CopyLinksToClipboard)
+                {
+                    if (Preferences.DisableNotifications)
+                        Utilities.BubbleNotification("Imgur URL copied to clipboard!", Program.ImageDeCap.BalloonTipClicked);
+                }
+                else
+                {
+                    if (!Preferences.DisableNotifications)
+                        Utilities.BubbleNotification("Upload Complete!", Program.ImageDeCap.BalloonTipClicked);
+                }
+
+                if (!Utilities.IsWindows10() || Preferences.DisableNotifications)
+                {
+                    Utilities.playSound("upload.wav");
+                }
+                ClipboardHandler.SetClipboard(url);
+                Program.ImageDeCap.AddToLinks(url);
+            }
+
+            if (Preferences.uploadToFTP)
+            {
+                string name = DateTime.UtcNow.ToString("yyyyMMddHHmmssfff");
+                BackgroundWorker bw = new BackgroundWorker();
+                bw.DoWork += Uploading.UploadToFTP;
+                bw.RunWorkerAsync(new object[] { Preferences.FTPurl,
+                                                 Preferences.FTPusername,
+                                                 Preferences.FTPpassword,
+                                                 ImageData,
+                                                 name + (url.EndsWith(".png") ? ".png" : ".jpg") });
+            }
+        }
+
+        public static void UploadPastebinCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            string pasteBinResult = (string)e.Result;
+            if (!pasteBinResult.Contains("failed"))
+            {
+                ClipboardHandler.SetClipboard(pasteBinResult);
+                if (Preferences.CopyLinksToClipboard)
+                {
+                    if (!Preferences.DisableNotifications)
+                        Utilities.BubbleNotification("Pastebin link placed in clipboard!", Program.ImageDeCap.BalloonTipClicked);
+                }
+                else
+                {
+                    if (!Preferences.DisableNotifications)
+                        Utilities.BubbleNotification("Upload complete!", Program.ImageDeCap.BalloonTipClicked);
+                }
+
+                if (!Utilities.IsWindows10() || Preferences.DisableNotifications)
+                {
+                    Utilities.playSound("upload.wav");
+                }
+                Program.ImageDeCap.AddToLinks(pasteBinResult);
+            }
+            else
+            {
+                Utilities.BubbleNotification($"upload to pastebin failed!\n{pasteBinResult}\nAre you connected to the internet? \nIs pastebin Down?", null, ToolTipIcon.Error);
+                Utilities.playSound("error.wav");
+            }
+        }
+
+
+
+
+
+
+
+
         public static Bitmap Capture(ScreenCaptureMode screenCaptureMode = ScreenCaptureMode.Window, int X = 0, int Y = 0, int Width = 0, int Height = 0, bool CaptureMouse = false)
         {
             Rectangle bounds;
@@ -68,7 +415,7 @@ namespace imageDeCap
                     Bitmap cursorBMP = CaptureCursor(ref cursorX, ref cursorY);
                     if (cursorBMP != null)
                     {
-                        g.DrawImage(cursorBMP, new Rectangle(cursorX - Program.ImageDeCap.CurrentBackCover.X, cursorY - Program.ImageDeCap.CurrentBackCover.Y, cursorBMP.Width, cursorBMP.Height));
+                        g.DrawImage(cursorBMP, new Rectangle(cursorX - CurrentBackCover.X, cursorY - CurrentBackCover.Y, cursorBMP.Width, cursorBMP.Height));
                         g.Flush();
                     }
                 }
