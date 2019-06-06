@@ -8,6 +8,7 @@ using System.Media;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 // Utilities, Math and Extensions.
 
@@ -79,6 +80,21 @@ namespace imageDeCap
             catch (UnauthorizedAccessException)
             {
                 return false;
+            }
+        }
+
+        public static void FileDialog(string extension, byte[] data)
+        {
+            SaveFileDialog saveFileDialog1 = new SaveFileDialog
+            {
+                Filter = extension + " files (*" + extension + ")|*" + extension,
+                FilterIndex = 2,
+                RestoreDirectory = true
+            };
+
+            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                File.WriteAllBytes(saveFileDialog1.FileName, data);
             }
         }
 

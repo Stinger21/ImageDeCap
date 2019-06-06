@@ -49,7 +49,7 @@ namespace imageDeCap
         }
         private static void Preferences_Click(object Sender, EventArgs e)
         {
-            Program.ImageDeCap.ShowProperties();
+            Program.ImageDeCap.ShowSettings();
         }
         private static void OpenWindowButton_Click(object Sender, EventArgs e)// Open Window
         {

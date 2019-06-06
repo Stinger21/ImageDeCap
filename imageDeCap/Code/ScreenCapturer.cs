@@ -103,7 +103,7 @@ namespace imageDeCap
         }
     }
 
-    class Win32Stuff
+    static class Win32Stuff
     {
         #region Class Variables
 

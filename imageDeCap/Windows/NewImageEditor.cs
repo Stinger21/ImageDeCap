@@ -298,7 +298,6 @@ namespace imageDeCap
         Vector2 BrushLocation;
         Vector2 LastBrushLocation;
         Vector2 MousePosition;
-        Vector2 LastMousePosition;
 
         Vector2 MouseDownLocation;
 
@@ -373,7 +372,6 @@ namespace imageDeCap
             BrushLocation = Position;
             LastBrushLocation = Position;
             MousePosition = Position;
-            LastMousePosition = Position;
 
             if (State == EditorState.Box)
             {
@@ -482,7 +480,6 @@ namespace imageDeCap
             }
             GammaCorrectedBrushSize = (BrushSize * BrushSize) * 0.01f;
             GammaCorrectedTextSize = (TextSize * TextSize) * 0.01f;
-            LastMousePosition = MousePosition;
             Owner.ImageContainer.Refresh();
         }
 
@@ -526,10 +523,6 @@ namespace imageDeCap
         {
             using (Graphics g = Graphics.FromImage(TargetImage))
             {
-                Pen MyPen = new Pen(Owner.CurrentSwatch.BackColor)
-                {
-                    Width = GammaCorrectedTextSize
-                };
                 g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
                 Size tsize = TextRenderer.MeasureText(text, new Font(Preferences.ImageEditorFont, GammaCorrectedTextSize, (FontStyle)Preferences.FontStyleType));
                 SolidBrush b = new SolidBrush(Color.FromArgb((int)(opacity * 255.0f), Owner.CurrentSwatch.BackColor));

@@ -29,7 +29,6 @@ namespace imageDeCap
             IAviVideoStream videoStream = Params.CreateVideoStream(writer);
             videoStream.Name = "Video";
             
-            var frameInterval = TimeSpan.FromSeconds(1 / (double)writer.FramesPerSecond);
             var buffer = new byte[Params.Width * Params.Height * 4];
             foreach (Bitmap b in images)
             {

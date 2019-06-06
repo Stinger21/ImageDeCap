@@ -26,7 +26,6 @@ namespace imageDeCap
 
         public List<Bitmap> gEnc = new List<Bitmap>();
         DateTime LastTime;
-        int RunningAverageOfFrameTime = 0;
         public int FrameTime = 0;
         int counter = 0;
 
@@ -395,7 +394,6 @@ namespace imageDeCap
             TimeSpan DeltaTime = DateTime.Now - LastTime;
             int DeltaTimeInMS = DeltaTime.Seconds * 100 + DeltaTime.Milliseconds;
             FrameTime += DeltaTimeInMS;
-            RunningAverageOfFrameTime = FrameTime / (counter + 1);
 
             LastTime = DateTime.Now;
 

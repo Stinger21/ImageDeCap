@@ -216,7 +216,7 @@
             // 
             this.VersionLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.VersionLabel.AutoSize = true;
-            this.VersionLabel.Location = new System.Drawing.Point(3, 445);
+            this.VersionLabel.Location = new System.Drawing.Point(3, 444);
             this.VersionLabel.Name = "VersionLabel";
             this.VersionLabel.Size = new System.Drawing.Size(28, 13);
             this.VersionLabel.TabIndex = 17;

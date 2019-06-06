@@ -39,7 +39,6 @@ namespace imageDeCap
             this.UploadButton = new System.Windows.Forms.Button();
             this.SaveButton = new System.Windows.Forms.Button();
             this.BackgroundTrack = new System.Windows.Forms.TrackBar();
-            this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.PictureBox = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.startTrack)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.endTrack)).BeginInit();
@@ -170,7 +169,6 @@ namespace imageDeCap
         private System.Windows.Forms.TrackBar startTrack;
         private System.Windows.Forms.TrackBar endTrack;
         private System.Windows.Forms.TrackBar BackgroundTrack;
-        private System.Windows.Forms.ColorDialog colorDialog1;
         private System.Windows.Forms.Button SaveButton;
         private System.Windows.Forms.Button UploadButton;
     }

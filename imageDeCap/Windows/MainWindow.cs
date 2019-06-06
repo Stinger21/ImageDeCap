@@ -25,6 +25,16 @@ namespace imageDeCap
 {
     // The code in this whole program is a mess. DW tho, it only crashes sometimes. ;)
 
+
+    // Notes about the files and what they are meant for as I am refactoring it, 2019-06-06
+    // Static classes:
+    // ScreenCapturer.cs Contains functions for capturing images off the screen and functions fr uploading bitmaps to websites
+    
+    // Forms:
+    // CompleteCover.cs Handles freezing the screen, firing up the editors, recording gifs etc.
+
+
+
     public partial class MainWindow : Form
     {
         // Global Variables
@@ -175,18 +185,37 @@ namespace imageDeCap
             }
         }
 
-        private void ListBox1_DoubleClick(object sender, EventArgs e)
+        public static void AddToStartup()
         {
-            if (Links.Count > 0 && Links[listBox1.SelectedIndex].StartsWith("http"))
-                    Process.Start(Links[listBox1.SelectedIndex]);
+            string startupPath = Environment.GetFolderPath(Environment.SpecialFolder.Startup) + @"\imageDeCap.lnk";
+            Utilities.CreateShortcut(startupPath, ExeDirectory + @"\imageDeCap.exe");
         }
 
-        private void BalloonTipClicked(object sender, EventArgs e)
+        public void CloseProgram()
         {
-            if (Links.Count > 0 && Links[Links.Count - 1].StartsWith("http"))
-                    Process.Start(Links[Links.Count - 1]);
+            Program.Quit = true;
         }
-        
+
+        public void ShowSettings()
+        {
+            try
+            {
+                props.Show();
+            }
+            catch
+            {
+                props = new SettingsWindow();
+            }
+            props.Show();
+            props.BringToFront();
+        }
+        public void OpenWindow()
+        {
+            this.ShowInTaskbar = true;
+            this.Show();
+            this.Activate();
+        }
+
         public void MainLoop()
         {
             ClipboardHandler.Update();
@@ -229,63 +258,11 @@ namespace imageDeCap
             }
         }
 
-        public static void AddToStartup()
-        {
-            string startupPath = Environment.GetFolderPath(Environment.SpecialFolder.Startup) + @"\imageDeCap.lnk";
-            Utilities.CreateShortcut(startupPath, ExeDirectory + @"\imageDeCap.exe");
-        }
-        
-        void Form1_DragEnter(object sender, DragEventArgs e)
-        {
-            if (e.Data.GetDataPresent(DataFormats.FileDrop)) e.Effect = DragDropEffects.Copy;
-        }
 
-        void Form1_DragDrop(object sender, DragEventArgs e)
-        {
-            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
-            if (files.Length > 0)
-            {
-                UploadImageData(File.ReadAllBytes(files[0]), Utilities.GetImageType(files[0]), true);
-            }
-        }
 
-        private void MainWindow_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            if (e.CloseReason == CloseReason.UserClosing)
-            {
-                e.Cancel = true;
-                this.Hide();
-                this.ShowInTaskbar = false;
-            }
-        }
 
-        public void OpenWindow()
-        {
-            this.ShowInTaskbar = true;
-            this.Show();
-            this.Activate();
-        }
+        // UPLOADING FUNCTIONS
 
-        private void CaptureImage_Click(object sender, EventArgs e)
-        {
-            CaptureScreenRegion();
-        }
-        
-        private void RecordGif_Click(object sender, EventArgs e)
-        {
-            CaptureScreenRegion(true);
-        }
-        
-        private void UploadText_Click(object sender = null, EventArgs e = null)
-        {
-            UploadPastebinClipboard();
-        }
-
-        public void CloseProgram()
-        {
-            Program.Quit = true;
-        }
-        
         private void UploadPastebinClipboard()
         {
             if (!IsTakingSnapshot)
@@ -310,7 +287,6 @@ namespace imageDeCap
                                                   Preferences.FTPpassword,
                                                   Encoding.ASCII.GetBytes(clipboard),
                                                   name + ".txt" });
-
                 }
 
                 if (Preferences.saveImageAtAll && Directory.Exists(Preferences.SaveImagesHere))
@@ -337,21 +313,6 @@ namespace imageDeCap
                 CurrentBackCover = new CompleteCover(isGif);
                 CurrentBackCover.Show();
                 CurrentBackCover.AfterShow(background, isGif);
-            }
-        }
-        
-        private void FileDialog(string extension, byte[] data)
-        {
-            SaveFileDialog saveFileDialog1 = new SaveFileDialog
-            {
-                Filter = extension + " files (*" + extension + ")|*" + extension,
-                FilterIndex = 2,
-                RestoreDirectory = true
-            };
-
-            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
-            {
-                File.WriteAllBytes(saveFileDialog1.FileName, data);
             }
         }
 
@@ -493,7 +454,7 @@ namespace imageDeCap
             {
                 if (imageType == Filetype.gif) // If it's a gif
                 {
-                    FileDialog(MainWindow.videoFormat, FileData);
+                    Utilities.FileDialog(MainWindow.videoFormat, FileData);
                 }
             }
 
@@ -501,7 +462,7 @@ namespace imageDeCap
             {
                 if (EditorResult == NewImageEditor.EditorResult.Save)
                 {
-                    FileDialog(".png", FileData);
+                    Utilities.FileDialog(".png", FileData);
                 }
             }
 
@@ -627,24 +588,68 @@ namespace imageDeCap
                 Utilities.playSound("error.wav");
             }
         }
+
+
+
+
+
+
+        // Direct UI Stuff
+
+        private void ListBox1_DoubleClick(object sender, EventArgs e)
+        {
+            if (Links.Count > 0 && Links[listBox1.SelectedIndex].StartsWith("http"))
+                Process.Start(Links[listBox1.SelectedIndex]);
+        }
+
+        private void BalloonTipClicked(object sender, EventArgs e)
+        {
+            if (Links.Count > 0 && Links[Links.Count - 1].StartsWith("http"))
+                Process.Start(Links[Links.Count - 1]);
+        }
+
+        void Form1_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop)) e.Effect = DragDropEffects.Copy;
+        }
+
+        void Form1_DragDrop(object sender, DragEventArgs e)
+        {
+            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+            if (files.Length > 0)
+            {
+                UploadImageData(File.ReadAllBytes(files[0]), Utilities.GetImageType(files[0]), true);
+            }
+        }
+
+        private void MainWindow_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (e.CloseReason == CloseReason.UserClosing)
+            {
+                e.Cancel = true;
+                this.Hide();
+                this.ShowInTaskbar = false;
+            }
+        }
+
+        private void CaptureImage_Click(object sender, EventArgs e)
+        {
+            CaptureScreenRegion();
+        }
+
+        private void RecordGif_Click(object sender, EventArgs e)
+        {
+            CaptureScreenRegion(true);
+        }
+
+        private void UploadText_Click(object sender = null, EventArgs e = null)
+        {
+            UploadPastebinClipboard();
+        }
         
         private void PreferencesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ShowProperties();
-        }
-
-        public void ShowProperties()
-        {
-            try
-            {
-                props.Show();
-            }
-            catch
-            {
-                props = new SettingsWindow();
-            }
-            props.Show();
-            props.BringToFront();
+            ShowSettings();
         }
 
         private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
