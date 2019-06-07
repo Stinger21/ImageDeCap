@@ -222,9 +222,9 @@
             this.VersionLabel.AutoSize = true;
             this.VersionLabel.Location = new System.Drawing.Point(3, 445);
             this.VersionLabel.Name = "VersionLabel";
-            this.VersionLabel.Size = new System.Drawing.Size(28, 13);
+            this.VersionLabel.Size = new System.Drawing.Size(40, 13);
             this.VersionLabel.TabIndex = 17;
-            this.VersionLabel.Text = "v1.1";
+            this.VersionLabel.Text = "v1.100";
             // 
             // MainWindow
             // 
