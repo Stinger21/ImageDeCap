@@ -415,7 +415,8 @@ namespace imageDeCap
             int minutes = counter / 600;
             int seconds = (counter / 10) % 600;
             int csecs = counter % 10;
-            SetTimer("Time: " + minutes + ":" + seconds + "." + csecs, "Frames: " + counter, "Memory Usage: " + (gEnc.Count * width * height * 8) / 1000000 + " MB");
+            
+            SetTimer($"Time: {minutes}:{seconds}.{csecs}", $"Frames: {counter}", $"Memory Usage:{(gEnc.Count * width * height * 8) / 1000000} MB");
             counter++;
         }
     }

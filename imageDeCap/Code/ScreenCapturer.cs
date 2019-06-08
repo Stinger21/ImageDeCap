@@ -72,13 +72,13 @@ namespace imageDeCap
                                                   Preferences.FTPusername,
                                                   Preferences.FTPpassword,
                                                   Encoding.ASCII.GetBytes(clipboard),
-                                                  name + ".txt" });
+                                                  $"{name}.txt" });
                 }
 
                 if (Preferences.saveImageAtAll && Directory.Exists(Preferences.SaveImagesHere))
                 {
                     string name = DateTime.UtcNow.ToString("yyyyMMddHHmmssfff");
-                    string whereToSave = Preferences.SaveImagesHere + @"\" + name + ".txt";
+                    string whereToSave = $"{Preferences.SaveImagesHere}\\{name}.txt";
                     File.WriteAllText(whereToSave, clipboard);
                 }
             }
@@ -216,7 +216,7 @@ namespace imageDeCap
             if (Preferences.saveImageAtAll)
             {
                 string directory_path = Path.GetFullPath(Environment.ExpandEnvironmentVariables(Preferences.SaveImagesHere));
-                string file_path = Path.Combine(directory_path, SaveFileName + "." + Extension);
+                string file_path = Path.Combine(directory_path, $"{SaveFileName}.{Extension}");
                 try
                 {
                     Directory.CreateDirectory(directory_path);
@@ -241,7 +241,7 @@ namespace imageDeCap
                 {
                     Directory.CreateDirectory(MainWindow.BackupDirectory);
                 }
-                File.WriteAllBytes(MainWindow.BackupDirectory + @"\" + SaveFileName + "." + Extension, FileData);
+                File.WriteAllBytes(MainWindow.BackupDirectory + $"\\{SaveFileName}.{Extension}", FileData);
                 int i = 0;
                 foreach (string file in Directory.GetFiles(MainWindow.BackupDirectory).OrderBy(f => f).Reverse())
                 {
@@ -374,13 +374,7 @@ namespace imageDeCap
                 Utilities.PlaySound("error.wav");
             }
         }
-
-
-
-
-
-
-
+        
 
         public static Bitmap Capture(ScreenCaptureMode screenCaptureMode = ScreenCaptureMode.Window, int X = 0, int Y = 0, int Width = 0, int Height = 0, bool CaptureMouse = false)
         {
@@ -570,12 +564,12 @@ namespace imageDeCap
             try
             {
                 result = objects.GetValue("id").ToString();
-                return (true, "https://webmshare.com/play/" + result);
+                return (true, $"https://webmshare.com/play/{result}");
             }
             catch
             {
                 result = responseString;
-                return (false, "failed, " + result);
+                return (false, $"failed, {result}");
             }
         }
     }
@@ -591,7 +585,6 @@ namespace imageDeCap
             while (true)
             {
                 var statusResponse = Status(createResponse.GfyName).GetAwaiter().GetResult();
-                //Console.WriteLine("Gfycat " + FileData.Length + ", " + statusResponse.Task + ", " + statusResponse.Progress);
     
                 if (statusResponse.Task == "NotFoundo")
                 {
@@ -601,7 +594,7 @@ namespace imageDeCap
                 }
                 else if (statusResponse.Task == "encoding") { }
                 else if (statusResponse.Task == "complete")
-                    return (true, "https://gfycat.com/" + statusResponse.GfyName);
+                    return (true, $"https://gfycat.com/{statusResponse.GfyName}");
                 else
                     return (false, statusResponse.Task);
     

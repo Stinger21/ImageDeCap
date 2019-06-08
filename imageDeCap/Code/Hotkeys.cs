@@ -64,7 +64,7 @@ namespace imageDeCap
                     bool isDown = System.Windows.Input.Keyboard.IsKeyDown((System.Windows.Input.Key)i);
                     if (isDown)
                     {
-                        textToPutInBox += ((System.Windows.Input.Key)i).ToString() + "+";
+                        textToPutInBox += $"{((System.Windows.Input.Key)i).ToString()}+";
                     }
                 }
             }

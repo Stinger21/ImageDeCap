@@ -132,12 +132,12 @@ namespace imageDeCap
             {
                 if(f.Name.StartsWith("c_"))
                 {
-                    FileData += "\n[" + f.Name.Replace("c_", "") + "]\n";
+                    FileData += $"\n[{f.Name.Replace("c_", "")}]\n";
                 }
                 else
                 {
                     
-                    FileData += f.Name + "=" + f.GetValue(typeof(Preferences)).ToString() + "\n";
+                    FileData += $"{f.Name}={f.GetValue(typeof(Preferences)).ToString()}\n";
                 }
             }
             File.WriteAllText(MainWindow.PreferencesPath, FileData);

@@ -124,7 +124,7 @@ namespace imageDeCap
 
             screenThread = new Thread(RecordScreen)
             {
-                Name = typeof(Recorder).Name + ".RecordScreen",
+                Name = $"{typeof(Recorder).Name}.RecordScreen",
                 IsBackground = true
             };
 

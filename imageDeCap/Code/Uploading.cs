@@ -41,7 +41,7 @@ namespace imageDeCap
             }
             catch (ImgurException imgurEx)
             {
-                e.Result = ("failed, " + imgurEx.Message, FileData);
+                e.Result = ($"failed, {imgurEx.Message}", FileData);
             }
         }
 
@@ -55,7 +55,7 @@ namespace imageDeCap
             }
             else
             {
-                e.Result = ("failed, " + result.Message, FileData);
+                e.Result = ($"failed, {result.Message}", FileData);
             }
         }
 
@@ -69,7 +69,7 @@ namespace imageDeCap
             }
             else
             {
-                e.Result = ("failed, " + result.Message, FileData);
+                e.Result = ($"failed, {result.Message}", FileData);
             }
         }
 
@@ -150,7 +150,7 @@ namespace imageDeCap
                 }
                 catch (Exception ee)
                 {
-                    IResponse = "failed, " + ee.Message;
+                    IResponse = $"failed, {ee.Message}";
                 }
             }
             e.Result = IResponse;

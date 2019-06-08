@@ -476,7 +476,7 @@ namespace imageDeCap
             {
                 var NewColor = ((Bitmap)EditedImage).GetPixel((int)MousePosition.X, (int)MousePosition.Y);
                 Owner.CurrentSwatch.BackColor = NewColor;
-                Clipboard.SetText("#" + NewColor.R.ToString("X2") + NewColor.G.ToString("X2") + NewColor.B.ToString("X2"));
+                Clipboard.SetText($"#{NewColor.R.ToString("X2")}{NewColor.G.ToString("X2")}{NewColor.B.ToString("X2")}");
             }
             GammaCorrectedBrushSize = (BrushSize * BrushSize) * 0.01f;
             GammaCorrectedTextSize = (TextSize * TextSize) * 0.01f;
