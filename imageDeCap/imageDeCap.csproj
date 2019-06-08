@@ -174,7 +174,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Code\ClipboardHandler.cs" />
-    <Compile Include="Code\Keyboard.cs" />
+    <Compile Include="Code\Hotkeys.cs" />
+    <Compile Include="old\Keyboard.cs" />
     <Compile Include="Code\Preferences.cs" />
     <Compile Include="Code\Recorder.cs" />
     <Compile Include="Code\Uploading.cs" />
@@ -221,9 +222,6 @@
     <Compile Include="Windows\Magnifier.Designer.cs">
       <DependentUpon>Magnifier.cs</DependentUpon>
     </Compile>
-    <Compile Include="Code\PictureBoxWithInterpolationMode.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Code\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Code\ScreenCapturer.cs" />
@@ -233,7 +231,6 @@
     <Compile Include="Windows\SettingsWindow.Designer.cs">
       <DependentUpon>SettingsWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Code\SystemTrayContextMenu.cs" />
     <EmbeddedResource Include="Windows\AboutWindow.resx">
       <DependentUpon>AboutWindow.cs</DependentUpon>
     </EmbeddedResource>

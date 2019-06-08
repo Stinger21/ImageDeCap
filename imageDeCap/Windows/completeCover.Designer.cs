@@ -38,6 +38,9 @@ namespace imageDeCap
             this.panel1 = new System.Windows.Forms.Panel();
             this.MemoryLabel = new System.Windows.Forms.Label();
             this.GifCaptureTimer = new System.Windows.Forms.Timer(this.components);
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.BoxMovementTimer = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -107,6 +110,8 @@ namespace imageDeCap
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.Black;
+            this.panel1.Controls.Add(this.label2);
+            this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.MemoryLabel);
             this.panel1.Location = new System.Drawing.Point(131, 10);
             this.panel1.Name = "panel1";
@@ -128,6 +133,33 @@ namespace imageDeCap
             // 
             this.GifCaptureTimer.Interval = 16;
             this.GifCaptureTimer.Tick += new System.EventHandler(this.GifCaptureTimer_Tick);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.BackColor = System.Drawing.Color.Black;
+            this.label1.ForeColor = System.Drawing.Color.White;
+            this.label1.Location = new System.Drawing.Point(66, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(88, 13);
+            this.label1.TabIndex = 6;
+            this.label1.Text = "Target Framerate";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.BackColor = System.Drawing.Color.Black;
+            this.label2.ForeColor = System.Drawing.Color.White;
+            this.label2.Location = new System.Drawing.Point(66, 14);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(87, 13);
+            this.label2.TabIndex = 7;
+            this.label2.Text = "Actual Framerate";
+            // 
+            // BoxMovementTimer
+            // 
+            this.BoxMovementTimer.Interval = 1;
+            this.BoxMovementTimer.Tick += new System.EventHandler(this.BoxMovementTimer_Tick);
             // 
             // CompleteCover
             // 
@@ -169,5 +201,8 @@ namespace imageDeCap
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label MemoryLabel;
         public System.Windows.Forms.Timer GifCaptureTimer;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Timer BoxMovementTimer;
     }
 }

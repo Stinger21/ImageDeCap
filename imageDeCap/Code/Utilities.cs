@@ -25,6 +25,17 @@ namespace imageDeCap
 
     public static class Utilities
     {
+        public static void AddToStartup()
+        {
+            string startupPath = Environment.GetFolderPath(Environment.SpecialFolder.Startup) + @"\imageDeCap.lnk";
+            Utilities.CreateShortcut(startupPath, MainWindow.ExeDirectory + @"\imageDeCap.exe");
+        }
+
+        public static void CloseProgram()
+        {
+            Program.Quit = true;
+        }
+
         public static bool IsWindows10()
         {
             var reg = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion");
@@ -32,7 +43,7 @@ namespace imageDeCap
             return productName.StartsWith("Windows 10");
         }
 
-        public static void playSound(string soundName)
+        public static void PlaySound(string soundName)
         {
             if (!imageDeCap.Preferences.DisableSoundEffects)
             {
@@ -67,6 +78,12 @@ namespace imageDeCap
             }
         }
 
+        public static T[] SubArray<T>(T[] data, int index, int length)
+        {
+            T[] result = new T[length];
+            Array.Copy(data, index, result, 0, length);
+            return result;
+        }
 
         public static bool HasWriteAccessToFolder(string folderPath)
         {
@@ -83,19 +100,20 @@ namespace imageDeCap
             }
         }
 
-        public static void FileDialog(string extension, byte[] data)
+        public static string FileDialog(string extension)
         {
-            SaveFileDialog saveFileDialog1 = new SaveFileDialog
+            SaveFileDialog dialog = new SaveFileDialog
             {
                 Filter = extension + " files (*" + extension + ")|*" + extension,
                 FilterIndex = 2,
                 RestoreDirectory = true
             };
 
-            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+            if (dialog.ShowDialog() == DialogResult.OK)
             {
-                File.WriteAllBytes(saveFileDialog1.FileName, data);
+                return dialog.FileName;
             }
+            return null;
         }
 
 

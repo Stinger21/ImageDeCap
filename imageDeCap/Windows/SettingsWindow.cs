@@ -274,7 +274,7 @@ namespace imageDeCap
         // Add the program to startup
         private void button4_Click(object sender, EventArgs e)
         {
-            MainWindow.AddToStartup();
+            Utilities.AddToStartup();
             Utilities.BubbleNotification("Added to startup!");
         }
 
@@ -303,63 +303,17 @@ namespace imageDeCap
         }
         
         /* PRINT SCREEN AAAA*/
-        // So originally this whole program used this system for binding hotkeys (RegisterHotKey/UnregisterHotKey)
+        // originally this whole program used this system for binding hotkeys (RegisterHotKey/UnregisterHotKey)
         // But the hotkeys were constantly being unbound for wierd reasons
-        // So eventually I reaplaced it with a simple loop in MainWindow() that constantly checks what keys are being pressed.
-        // If the keys pressed match the ones chosen in here, then it execures.
 
-        // Unfortunetly this does not work for printscreen. idk why. So we temporaraly bind the PrintScreen button using this 
-        // old system so that we can access it.
-
-        public static string GetCurrentHotkey()
-        {
-            string textToPutInBox = "";
-            int length = Enum.GetValues(typeof(System.Windows.Input.Key)).Length;
-
-            for (int i = length; i-- > 0;)
-            {
-                if (Enum.IsDefined(typeof(System.Windows.Input.Key), i) && i != 0)
-                {
-                    bool isDown = System.Windows.Input.Keyboard.IsKeyDown((System.Windows.Input.Key)i);
-                    if (isDown)
-                    {
-                        textToPutInBox += ((System.Windows.Input.Key)i).ToString() + "+";
-                    }
-                }
-            }
-            if (textToPutInBox == null)
-            {
-                return "";
-            }
-            else if (textToPutInBox == "")
-            {
-                return "";
-            }
-            else
-            {
-                textToPutInBox = textToPutInBox.Replace("LeftAlt", "Alt");
-                textToPutInBox = textToPutInBox.Replace("RightAlt", "Alt");
-
-                textToPutInBox = textToPutInBox.Replace("LeftCtrl", "Ctrl");
-                textToPutInBox = textToPutInBox.Replace("RightCtrl", "Ctrl");
-
-                textToPutInBox = textToPutInBox.Replace("LeftShift", "Shift");
-                textToPutInBox = textToPutInBox.Replace("RightShift", "Shift");
-
-                textToPutInBox = textToPutInBox.Remove(textToPutInBox.Length - 1);
-                textToPutInBox = textToPutInBox.Replace("Scroll", "ScrollLock");
-                return textToPutInBox;
-            }
-
-        }
+        // This is left here to lock up the printscreen button so it can be used for typing into the hotkey box.
 
         private void HotkeyTextBox1_KeyDown(object sender, KeyEventArgs e)
         {
-            HotkeyTextBox1.Text = GetCurrentHotkey();
+            HotkeyTextBox1.Text = Hotkeys.GetCurrentHotkey();
             Preferences.Hotkey1 = HotkeyTextBox1.Text;
             Preferences.Save();
         }
-
         private void HotkeyTextBox2_GotFocus(object sender, EventArgs e)
         {
             Program.hotkeysEnabled = false;
@@ -420,13 +374,13 @@ namespace imageDeCap
         }
         private void HotkeyTextBox2_KeyDown(object sender, KeyEventArgs e)
         {
-            HotkeyTextBox2.Text = GetCurrentHotkey();
+            HotkeyTextBox2.Text = Hotkeys.GetCurrentHotkey();
             Preferences.Hotkey2 = HotkeyTextBox2.Text;
             Preferences.Save();
         }
         private void HotkeyTextBox3_KeyDown(object sender, KeyEventArgs e)
         {
-            HotkeyTextBox3.Text = GetCurrentHotkey();
+            HotkeyTextBox3.Text = Hotkeys.GetCurrentHotkey();
             Preferences.Hotkey3 = HotkeyTextBox3.Text;
             Preferences.Save();
         }
@@ -451,29 +405,16 @@ namespace imageDeCap
             
             if (m.Msg == 0x0312)
             {
-                /* Note that the three lines below are not needed if you only want to register one hotkey.
-                 * The below lines are useful in case you want to register multiple keys, which you can use a switch with the id as argument, or if you want to know which key/modifier was pressed for some particular reason. */
-
-                //Keys key = (Keys)(((int)m.LParam >> 16) & 0xFFFF);                  // The key of the hotkey that was pressed.
-                //KeyModifier modifier = (KeyModifier)((int)m.LParam & 0xFFFF);       // The modifier of the hotkey that was pressed.
-                //int id = m.WParam.ToInt32();                                        // The id of the hotkey that was pressed.
-                
                 if (HotkeyTextBox1.ContainsFocus)
-                {
                     HotkeyTextBox_PrintScreen(1);
-                }
                 if (HotkeyTextBox2.ContainsFocus)
-                {
                     HotkeyTextBox_PrintScreen(2);
-                }
                 if (HotkeyTextBox3.ContainsFocus)
-                {
                     HotkeyTextBox_PrintScreen(3);
-                }
             }
         }
 
-        private void BindUpPrintScreen()
+        private void LockPrintScreen()
         {
             Console.WriteLine("Enter");
             RegisterHotKey(this.Handle, 0, 0, Keys.PrintScreen.GetHashCode());
@@ -488,17 +429,17 @@ namespace imageDeCap
 
         private void HotkeyTextBox3_Enter(object sender, EventArgs e)
         {
-            BindUpPrintScreen();
+            LockPrintScreen();
         }
 
         private void HotkeyTextBox2_Enter(object sender, EventArgs e)
         {
-            BindUpPrintScreen();
+            LockPrintScreen();
         }
 
         private void HotkeyTextBox1_Enter(object sender, EventArgs e)
         {
-            BindUpPrintScreen();
+            LockPrintScreen();
         }
 
         private void HotkeyTextBox3_Leave(object sender, EventArgs e)

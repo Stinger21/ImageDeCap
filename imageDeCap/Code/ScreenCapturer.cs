@@ -59,7 +59,7 @@ namespace imageDeCap
 
                 if (!Preferences.NeverUpload)
                 {
-                    Utilities.playSound("snip.wav");
+                    Utilities.PlaySound("snip.wav");
                     BackgroundWorker bw = new BackgroundWorker();
                     bw.DoWork += Uploading.UploadPastebin;
                     bw.RunWorkerCompleted += UploadPastebinCompleted;
@@ -102,29 +102,19 @@ namespace imageDeCap
             }
         }
 
-        public static void UploadImageData(byte[] FileData, Filetype imageType, bool ForceNoEdit = false, bool RMBClickForceEdit = false, Bitmap[] GifImage = null)
+        public static void UploadImageData(byte[] ImageData, Filetype imageType, bool ForceNoEdit = false, bool RMBClickForceEdit = false, Bitmap[] GifImage = null)
         {
+            Program.hotkeysEnabled = true; // Enable hotkeys here again so you can take more screenshots
+
             if (imageType == Filetype.error)
                 return;
 
-            Program.hotkeysEnabled = true; // Enable hotkeys here again so you can kill the editor by starting a new capture.
-
+            // Copy image to clipboard
             if (imageType != Filetype.gif)
             {
                 if (Preferences.CopyImageToClipboard)
                 {
-                    for (int i = 0; i < 10; i++)
-                    {
-                        try
-                        {
-                            Clipboard.SetImage(Image.FromStream(new MemoryStream(FileData)));
-                            break;
-                        }
-                        catch (ExternalException) // Requested clipboard operation did not succeed
-                        {
-                            Thread.Sleep(100);
-                        }
-                    }
+                    ClipboardHandler.SetClipboardImage(ImageData);
                 }
             }
 
@@ -138,22 +128,22 @@ namespace imageDeCap
                 }
                 else
                 {
-                    NewImageEditor editor = new NewImageEditor(FileData, CurrentBackCover.topBox.Location.X, CurrentBackCover.topBox.Location.Y);
+                    NewImageEditor editor = new NewImageEditor(ImageData, CurrentBackCover.topBox.Location.X, CurrentBackCover.topBox.Location.Y);
                     editor.Show();
                     editor.FormClosed += EditorDone;
                 }
             }
             else
             {
-                if (imageType == Filetype.gif)
-                {
-                    FileData = GifEditor.VideoFromFrames(GifImage, 1000 / CurrentBackCover.FrameTime);
-                    UploadImageData_AfterEdit(NewImageEditor.EditorResult.Upload, FileData, imageType);
-                }
-                else
-                {
-                    UploadImageData_AfterEdit(NewImageEditor.EditorResult.Upload, FileData, imageType);
-                }
+                //if (imageType == Filetype.gif)
+                //    FileData = GifEditor.VideoFromFrames(GifImage, 1000 / CurrentBackCover.FrameTime);
+
+                // If it's a gif make save the default :>
+                NewImageEditor.EditorResult EditorResult = NewImageEditor.EditorResult.Upload;
+                if(imageType == Filetype.gif)
+                    EditorResult = NewImageEditor.EditorResult.Save;
+
+                UploadImageData_AfterEdit(EditorResult, imageType, ImageData, GifImage);
             }
         }
 
@@ -161,28 +151,60 @@ namespace imageDeCap
         {
             Filetype f;
             NewImageEditor.EditorResult EditorResult = NewImageEditor.EditorResult.Quit;
-            byte[] FileData;
+            byte[] ImageData = null;
+            Bitmap[] GifData = null;
             if (sender is NewImageEditor)
             {
                 NewImageEditor editor = (NewImageEditor)sender;
-                (EditorResult, FileData) = editor.FinalFunction();
+                (EditorResult, ImageData) = editor.FinalFunction();
                 editor.Dispose();
                 f = Filetype.png;
             }
             else
             {
                 GifEditor editor = (GifEditor)sender;
-                (EditorResult, FileData) = editor.FinalFunction();
+                (EditorResult, GifData) = editor.FinalFunction();
                 editor.Dispose();
                 f = Filetype.gif;
             }
-            UploadImageData_AfterEdit(EditorResult, FileData, f);
+            UploadImageData_AfterEdit(EditorResult, f, ImageData, GifData);
         }
 
-        public static void UploadImageData_AfterEdit(NewImageEditor.EditorResult EditorResult, byte[] FileData, Filetype imageType)
+        // TODO: Change this to take a path with the editorresult
+        public static void UploadImageData_AfterEdit(NewImageEditor.EditorResult EditorResult, Filetype imageType, byte[] FileData, Bitmap[] GifImage)
         {
-            foreach (var v in CurrentBackCover.gEnc) { v.Dispose(); }
-            CurrentBackCover.gEnc.Clear();
+            if (EditorResult == NewImageEditor.EditorResult.Quit)
+            {
+                foreach (var v in CurrentBackCover.gEnc) { v.Dispose(); }
+                CurrentBackCover.gEnc.Clear();
+                return;
+            }
+
+            // Ask the user where to save before turning the array of images into a video because video compression can take a while.
+            string SavePath = null;
+            if (EditorResult == NewImageEditor.EditorResult.Save) // If gif, ask to save only if 
+            {
+                if (imageType == Filetype.gif)
+                {
+                    SavePath = Utilities.FileDialog(MainWindow.videoFormat);
+                }
+                if (imageType != Filetype.gif)
+                {
+                    SavePath = Utilities.FileDialog(".png");
+                }
+            }
+
+            // compress video
+            if (imageType == Filetype.gif)
+            {
+                FileData = GifEditor.VideoFromFrames(GifImage, 1000 / CurrentBackCover.FrameTime);
+                foreach (var v in CurrentBackCover.gEnc) { v.Dispose(); }
+                CurrentBackCover.gEnc.Clear();
+            }
+            if (SavePath != null)
+            {
+                File.WriteAllBytes(SavePath, FileData);
+            }
 
             string SaveFileName = DateTime.UtcNow.ToString("yyyyMMddHHmmssfff");
             string Extension = imageType.ToString();
@@ -231,26 +253,6 @@ namespace imageDeCap
                 }
             }
 
-            if (EditorResult == NewImageEditor.EditorResult.Quit)
-            {
-                return;
-            }
-
-            if (EditorResult == NewImageEditor.EditorResult.Save) // If gif, ask to save only if 
-            {
-                if (imageType == Filetype.gif) // If it's a gif
-                {
-                    Utilities.FileDialog(MainWindow.videoFormat, FileData);
-                }
-            }
-
-            if (imageType != Filetype.gif) // If it's an image, ask to save no matter what
-            {
-                if (EditorResult == NewImageEditor.EditorResult.Save)
-                {
-                    Utilities.FileDialog(".png", FileData);
-                }
-            }
 
             // Copy image to clipboard if it's not a gif
             if (imageType != Filetype.gif)
@@ -259,9 +261,7 @@ namespace imageDeCap
                 {
                     if (Preferences.CopyImageToClipboard)
                     {
-                        Image bitmapImage = Image.FromStream(new MemoryStream(FileData));
-                        Clipboard.SetImage(bitmapImage);
-                        bitmapImage.Dispose();
+                        ClipboardHandler.SetClipboardImage(FileData);
                     }
                 }
             }
@@ -303,9 +303,9 @@ namespace imageDeCap
 
             if (url.Contains("failed"))
             {
-                ClipboardHandler.SetClipboard(url);
+                ClipboardHandler.SetClipboardText(url);
                 Utilities.BubbleNotification($"Upload to imgur failed! \n{url}\nAre you connected to the internet? \nis Imgur Down?", null, ToolTipIcon.Error);
-                Utilities.playSound("error.wav");
+                Utilities.PlaySound("error.wav");
             }
             else
             {
@@ -326,10 +326,10 @@ namespace imageDeCap
 
                 if (!Utilities.IsWindows10() || Preferences.DisableNotifications)
                 {
-                    Utilities.playSound("upload.wav");
+                    Utilities.PlaySound("upload.wav");
                 }
-                ClipboardHandler.SetClipboard(url);
-                Program.ImageDeCap.AddToLinks(url);
+                ClipboardHandler.SetClipboardText(url);
+                Program.ImageDeCap.AddLink(url);
             }
 
             if (Preferences.uploadToFTP)
@@ -350,7 +350,7 @@ namespace imageDeCap
             string pasteBinResult = (string)e.Result;
             if (!pasteBinResult.Contains("failed"))
             {
-                ClipboardHandler.SetClipboard(pasteBinResult);
+                ClipboardHandler.SetClipboardText(pasteBinResult);
                 if (Preferences.CopyLinksToClipboard)
                 {
                     if (!Preferences.DisableNotifications)
@@ -364,14 +364,14 @@ namespace imageDeCap
 
                 if (!Utilities.IsWindows10() || Preferences.DisableNotifications)
                 {
-                    Utilities.playSound("upload.wav");
+                    Utilities.PlaySound("upload.wav");
                 }
-                Program.ImageDeCap.AddToLinks(pasteBinResult);
+                Program.ImageDeCap.AddLink(pasteBinResult);
             }
             else
             {
                 Utilities.BubbleNotification($"upload to pastebin failed!\n{pasteBinResult}\nAre you connected to the internet? \nIs pastebin Down?", null, ToolTipIcon.Error);
-                Utilities.playSound("error.wav");
+                Utilities.PlaySound("error.wav");
             }
         }
 

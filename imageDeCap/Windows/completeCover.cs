@@ -84,7 +84,8 @@ namespace imageDeCap
                 this.SetBounds(x, y, width, height);
             }
             _Activated = true;
-            
+            BoxMovementTimer.Enabled = true;
+
             magnifier = new Magnifier(isGif);
             magnifier.Show();
             magnifier.TopMost = true;
@@ -115,13 +116,17 @@ namespace imageDeCap
 
         private void CompleteCover_MouseMove(object sender, MouseEventArgs e)
         {
-            Updatee();
+            //Updatee();
         }
         private void PictureBox1_MouseMove(object sender, MouseEventArgs e)
         {
+            //Updatee();
+        }
+        private void BoxMovementTimer_Tick(object sender, EventArgs e)
+        {
             Updatee();
         }
-        
+
         public void Updatee()
         {
             if(!_Activated)
@@ -143,8 +148,11 @@ namespace imageDeCap
             this.Activate();
             magnifier.Bounds = new Rectangle(Cursor.Position.X + 32, Cursor.Position.Y - 32, 124, 124);
             bool RMB = MouseButtons == (MouseButtons.Left | MouseButtons.Right);
-
-            if (LmbUp) // keyUp
+            if(RMB)
+            {
+                EscapePressed = true;
+            }
+            if (LmbUp && !EscapePressed) // keyUp
             {
                 CompletedSelection(RMB);
             }
@@ -216,7 +224,7 @@ namespace imageDeCap
             LmbDown = false;
             LmbUp = false;
         }
-
+        
         private void CompleteCover_KeyDown(object sender, KeyEventArgs e)
         {
             if(GifCaptureTimer.Enabled == false)
@@ -224,14 +232,12 @@ namespace imageDeCap
                 if (e.KeyCode == Keys.Escape)
                 {
                     EscapePressed = true;
-                    StopRecordingGif(this, true);
                 }
             }
             if(e.Alt)
             {
                 AltKeyDown = true;
             }
-            Updatee();
         }
 
         private void CompleteCover_KeyUp(object sender, KeyEventArgs e)
@@ -266,7 +272,7 @@ namespace imageDeCap
 
                 if (tempWidth > 0 && tempHeight > 0) // Make sure we actually selected a region to take a screenshot of.
                 {
-                    Utilities.playSound("snip.wav");
+                    Utilities.PlaySound("snip.wav");
                     Bitmap result = ScreenCapturer.Capture(
                         ScreenCaptureMode.Bounds, 
                         X - 1, 
@@ -372,7 +378,7 @@ namespace imageDeCap
                 cover.Close();
                 if (!abort)
                 {
-                    Utilities.playSound("snip.wav");
+                    Utilities.PlaySound("snip.wav");
 
                     // Feed in through the tag weather the user right-clicked to force editor even when it's disabled.
                     ScreenCapturer.UploadImageData(new byte[] { }, Filetype.gif, false, (bool)GifCaptureTimer.Tag, gEnc.ToArray());

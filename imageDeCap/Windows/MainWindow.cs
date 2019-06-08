@@ -28,13 +28,17 @@ namespace imageDeCap
 
     // Notes about the files and what they are meant for as I am refactoring it, 2019-06-06
     // Static classes:
-    // ScreenCapturer.cs Contains functions for capturing images off the screen and functions fr uploading bitmaps to websites
-    // Hotkeys.cs [does not exist yet] handles hotkey stuff
+    // ScreenCapturer.cs    Contains functions for capturing images off the screen
+    // Uploading.cs         Contains functions for uploading bitmaps to websites
+
+    // Hotkeys.cs           [does not exist yet] handles hotkey stuff
+    // Preferences.cs       metaprogramming thing for saving preferences to ini
+    // Utilities.cs         misc utilities / program-wide functions
+    // ClipboardHandler.cs  threadsafe clipboard interaction
 
     // Forms:
     // CompleteCover.cs Handles freezing the screen, firing up the editors, recording gifs etc.
-
-
+    
 
     public partial class MainWindow : Form
     {
@@ -43,11 +47,9 @@ namespace imageDeCap
         SettingsWindow props;
 
         List<string> Links = new List<string>();
-        bool hKey1Pressed = false;
-        bool hKey2Pressed = false;
-        bool hKey3Pressed = false;
         public static string videoFormat = ".mp4";
         public static string VersionNumber = "v1.27";
+
         public static string LinksFilePath = "ERROR";
         public static string PreferencesPath = "ERROR";
         public static string AppdataDirectory = "ERROR";
@@ -58,55 +60,52 @@ namespace imageDeCap
         {
             InitializeComponent();
             this.VersionLabel.Text = MainWindow.VersionNumber;
-            bool Portable = false;
             ExeDirectory = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
             AppdataDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\imageDeCap";
-            
+
             // If the program is started from a folder containing the name "Program Files"
             // we assume that it's not running in portablemode.
-            if (ExeDirectory.Contains("Program Files"))
+            bool Portable = !ExeDirectory.Contains("Program Files");
+
+            if (Portable)
+            {
+                // If we can't write settings, tell the user they need to run the program as administrator to proceed.
+                if (!Utilities.HasWriteAccessToFolder(ExeDirectory))
+                {
+                    MessageBox.Show("Insufficient permissions to write settings next to the program executable, try starting the program from somewhere else or start it as as administrator.", "Could not write settings.", MessageBoxButtons.OK);
+                    Utilities.CloseProgram();
+                    return;
+                }
+                LinksFilePath = ExeDirectory + @"\imageDecapLinks.ini";
+                PreferencesPath = ExeDirectory + @"\ImageDeCap.ini";
+            }
+            else
             {
                 // If it's in an install folder, put the settings files in appdata.
                 if (!Directory.Exists(AppdataDirectory))
                     Directory.CreateDirectory(AppdataDirectory);
                 LinksFilePath = AppdataDirectory + @"\imageDecapLinks.ini";
                 PreferencesPath = AppdataDirectory + @"\ImageDeCap.ini";
-                Portable = false;
             }
-            else
-            {
-                // If we can't write settings, tell the user they need to run the program as administrator to proceed.
-                if (!Utilities.HasWriteAccessToFolder(ExeDirectory))
-                {
-                    MessageBox.Show("Insufficient permissions to write settings next to the program executable, try starting the program from somewhere else or start it as as administrator.", "Could not write settings.", MessageBoxButtons.OK);
-                    CloseProgram();
-                    return;
-                }
-                LinksFilePath = ExeDirectory + @"\imageDecapLinks.ini";
-                PreferencesPath = ExeDirectory + @"\ImageDeCap.ini";
-                Portable = true;
-            }
-            
             BackupDirectory = AppdataDirectory + @"\Backup";
 
             Preferences.Load();
             if (Preferences.FirstStartup)
             {
+
+                // do first-startup stuff
                 Preferences.FirstStartup = false;
                 if (Portable)
-                {
                     Preferences.BackupImages = false;
-                    Preferences.Save();
-                }
                 else
-                {
                     Preferences.BackupImages = true;
-                    Preferences.Save();
-                }
                 Preferences.Save();
-                OpenWindow();
 
-                // Try deleting any old shortcut memes from 1.23 and earlier
+                OpenWindow();
+                Utilities.BubbleNotification("Press PRINTSCREEN to start!", null, ToolTipIcon.Info, "Welcome to ImageDeCap!");
+                Utilities.AddToStartup();
+                
+                // Try deleting any old shortcut stuff from 1.23 and earlier
                 string startupPath = Environment.GetFolderPath(Environment.SpecialFolder.Startup) + @"\imageDeCap.lnk";
                 string startMenuPath = Environment.GetFolderPath(Environment.SpecialFolder.StartMenu) + @"\imageDeCap.lnk";
                 string appdataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\imageDeCap\imageDeCap.exe";
@@ -127,10 +126,6 @@ namespace imageDeCap
                     MessageBox.Show("An old version of ImageDeCap is currently running. Please close it before starting the new one.", "Error");
                     Environment.Exit(0);
                 }
-
-                Utilities.BubbleNotification("Press PRINTSCREEN to start!", null, ToolTipIcon.Info, "Welcome to ImageDeCap!");
-
-                AddToStartup();
             }
             else
             {
@@ -138,7 +133,6 @@ namespace imageDeCap
                 this.ShowInTaskbar = false;
             }
 
-            props = new SettingsWindow();
             if (File.Exists(LinksFilePath))
             {
                 string links = File.ReadAllText(LinksFilePath);
@@ -147,7 +141,7 @@ namespace imageDeCap
                 {
                     if (s == "")
                         continue;
-                    AddToLinks(s, false);
+                    AddLink(s, false);
                 }
             }
             else
@@ -159,41 +153,31 @@ namespace imageDeCap
             BubbleNotification.ContextMenu = SystemTrayContextMenu.IconRightClickMenu;
             BubbleNotification.Visible = true;
 
-            listBox1.AllowDrop = true;
-            listBox1.DragEnter += new DragEventHandler(Form1_DragEnter);
-            listBox1.DragDrop += new DragEventHandler(Form1_DragDrop);
+            LinksListBox.AllowDrop = true;
+            LinksListBox.DragEnter += new DragEventHandler(Form1_DragEnter);
+            LinksListBox.DragDrop += new DragEventHandler(Form1_DragDrop);
         }
 
-        public void AddToLinks(string link, bool addToXML = true)
+        public void AddLink(string link, bool Write = true)
         {
             Links.Add(link);
-            listBox1.DataSource = null;
-            listBox1.DataSource = Links;
+            LinksListBox.DataSource = null;
+            LinksListBox.DataSource = Links;
             try
             {
-                listBox1.SelectedIndex = listBox1.Items.Count - 1;
+                LinksListBox.SelectedIndex = LinksListBox.Items.Count - 1;
             }
             catch
             {
 
             }
-            if (addToXML)
+            if (Write)
             {
                 string links = String.Join("\n", Links);
                 File.WriteAllText(LinksFilePath, links);
             }
         }
 
-        public static void AddToStartup()
-        {
-            string startupPath = Environment.GetFolderPath(Environment.SpecialFolder.Startup) + @"\imageDeCap.lnk";
-            Utilities.CreateShortcut(startupPath, ExeDirectory + @"\imageDeCap.exe");
-        }
-
-        public void CloseProgram()
-        {
-            Program.Quit = true;
-        }
 
         public void ShowSettings()
         {
@@ -208,6 +192,7 @@ namespace imageDeCap
             props.Show();
             props.BringToFront();
         }
+
         public void OpenWindow()
         {
             this.ShowInTaskbar = true;
@@ -218,66 +203,13 @@ namespace imageDeCap
         public void MainLoop()
         {
             ClipboardHandler.Update();
-
-            if (Program.hotkeysEnabled)
-            {
-                string hotkey = SettingsWindow.GetCurrentHotkey();
-
-                if (Preferences.Hotkey1 == hotkey)
-                {
-                    if (!hKey1Pressed)
-                    {
-                        ScreenCapturer.UploadPastebinClipboard();
-                    }
-                    hKey1Pressed = true;
-                }
-                else if (Preferences.Hotkey2 == hotkey)
-                {
-                    if (!hKey2Pressed)
-                    {
-                        ScreenCapturer.CaptureScreenRegion(true);
-                    }
-                    hKey2Pressed = true;
-                }
-                else if (Preferences.Hotkey3 == hotkey)
-                {
-                    if (!hKey3Pressed)
-                    {
-                        ScreenCapturer.CaptureScreenRegion();
-                    }
-                    hKey3Pressed = true;
-                }
-                else
-                {
-                    // no recognized hotkey
-                    hKey1Pressed = false;
-                    hKey2Pressed = false;
-                    hKey3Pressed = false;
-                }
-            }
+            Hotkeys.Update();
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        // Direct UI Stuff
 
         private void ListBox1_DoubleClick(object sender, EventArgs e)
         {
-            if (Links.Count > 0 && Links[listBox1.SelectedIndex].StartsWith("http"))
-                Process.Start(Links[listBox1.SelectedIndex]);
+            if (Links.Count > 0 && Links[LinksListBox.SelectedIndex].StartsWith("http"))
+                Process.Start(Links[LinksListBox.SelectedIndex]);
         }
 
         public void BalloonTipClicked(object sender, EventArgs e)
@@ -332,7 +264,7 @@ namespace imageDeCap
 
         private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            CloseProgram();
+            Utilities.CloseProgram();
         }
 
         private void HideToolStripMenuItem_Click(object sender, EventArgs e)
@@ -360,8 +292,8 @@ namespace imageDeCap
                 return;
 
             Links.Clear();
-            listBox1.DataSource = null;
-            listBox1.DataSource = Links;
+            LinksListBox.DataSource = null;
+            LinksListBox.DataSource = Links;
             File.Delete(LinksFilePath);
         }
 
@@ -375,16 +307,16 @@ namespace imageDeCap
 
             if (Copy)
             {
-                Clipboard.SetText(Links[listBox1.SelectedIndex]);
+                Clipboard.SetText(Links[LinksListBox.SelectedIndex]);
             }
             else if (Delete)
             {
                 if (MessageBox.Show("Delete link?.", "Warning", MessageBoxButtons.OKCancel) != DialogResult.OK)
                     return;
 
-                Links.RemoveAt(listBox1.SelectedIndex);
-                listBox1.DataSource = null;
-                listBox1.DataSource = Links;
+                Links.RemoveAt(LinksListBox.SelectedIndex);
+                LinksListBox.DataSource = null;
+                LinksListBox.DataSource = Links;
             }
         }
 
@@ -396,6 +328,56 @@ namespace imageDeCap
         private void BubbleNotification_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             OpenWindow();
+        }
+    }
+
+    public static class SystemTrayContextMenu
+    {
+        public static ContextMenu IconRightClickMenu;
+        public static MenuItem ExitButton = new MenuItem();
+        public static MenuItem OpenWindowButton = new MenuItem();
+        public static MenuItem ContactButton = new MenuItem();
+        public static MenuItem PreferencesButton = new MenuItem();
+
+        public static void Initialize()
+        {
+
+            IconRightClickMenu = new ContextMenu();
+
+            IconRightClickMenu.MenuItems.Add(OpenWindowButton);
+            IconRightClickMenu.MenuItems.Add("-");
+            IconRightClickMenu.MenuItems.Add(ContactButton);
+            IconRightClickMenu.MenuItems.Add(PreferencesButton);
+            IconRightClickMenu.MenuItems.Add(ExitButton);
+
+            ExitButton.Text = "Exit";
+            ExitButton.Click += new EventHandler(ExitButton_Click);
+
+            ContactButton.Text = "Contact / Bugs";
+            ContactButton.Click += new EventHandler(ContactButton_Click);
+
+            PreferencesButton.Text = "Preferences";
+            PreferencesButton.Click += new EventHandler(Preferences_Click);
+
+            OpenWindowButton.Text = "Open Window";
+            OpenWindowButton.Click += new EventHandler(OpenWindowButton_Click);
+        }
+
+        private static void ExitButton_Click(object Sender, EventArgs e)// Exit button
+        {
+            Utilities.CloseProgram();
+        }
+        private static void ContactButton_Click(object Sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start("http://www.mattwestphal.com/imagedecap");
+        }
+        private static void Preferences_Click(object Sender, EventArgs e)
+        {
+            Program.ImageDeCap.ShowSettings();
+        }
+        private static void OpenWindowButton_Click(object Sender, EventArgs e)// Open Window
+        {
+            Program.ImageDeCap.OpenWindow();
         }
     }
 }

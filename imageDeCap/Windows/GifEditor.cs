@@ -53,36 +53,36 @@ namespace imageDeCap
         }
 
         // Trun the image into a byte array
-        public (NewImageEditor.EditorResult output, byte[] Data) FinalFunction()
+        public (NewImageEditor.EditorResult output, Bitmap[] Data) FinalFunction()
         {
             if(result == NewImageEditor.EditorResult.Quit)
             {
-                return (result, new byte[] { });
+                return (result, new Bitmap[] { });
             }
 
-            Bitmap[] ScaledImages = null;
-            bool edited = scalePct != 1.0f;
-            if (edited)
-            {
-                ScaledImages = new Bitmap[EditedImage.Length];
-                for (int i = 0; i < EditedImage.Length; i++)
-                {
-                    int newWidth = (int)((float)EditedImage[i].Width * scalePct);
-                    int newHeight = (int)((float)EditedImage[i].Height * scalePct);
-                    ScaledImages[i] = new Bitmap(newWidth, newHeight);
-                    using (Graphics gr = Graphics.FromImage(ScaledImages[i]))
-                    {
-                        gr.SmoothingMode = SmoothingMode.HighQuality;
-                        gr.InterpolationMode = InterpolationMode.HighQualityBicubic;
-                        gr.PixelOffsetMode = PixelOffsetMode.HighQuality;
-                        gr.CompositingQuality = CompositingQuality.HighQuality;
-                        gr.DrawImage(EditedImage[i], new Rectangle(0, 0, newWidth, newHeight));
-                    }
-                }
-            }
+            //Bitmap[] ScaledImages = null;
+            //bool edited = scalePct != 1.0f;
+            //if (edited)
+            //{
+            //    ScaledImages = new Bitmap[EditedImage.Length];
+            //    for (int i = 0; i < EditedImage.Length; i++)
+            //    {
+            //        int newWidth = (int)((float)EditedImage[i].Width * scalePct);
+            //        int newHeight = (int)((float)EditedImage[i].Height * scalePct);
+            //        ScaledImages[i] = new Bitmap(newWidth, newHeight);
+            //        using (Graphics gr = Graphics.FromImage(ScaledImages[i]))
+            //        {
+            //            gr.SmoothingMode = SmoothingMode.HighQuality;
+            //            gr.InterpolationMode = InterpolationMode.HighQualityBicubic;
+            //            gr.PixelOffsetMode = PixelOffsetMode.HighQuality;
+            //            gr.CompositingQuality = CompositingQuality.HighQuality;
+            //            gr.DrawImage(EditedImage[i], new Rectangle(0, 0, newWidth, newHeight));
+            //        }
+            //    }
+            //}
 
             // cleanup
-            return (result, VideoFromFrames(edited ? ScaledImages : EditedImage, FrameRate));
+            return (result, EditedImage);// VideoFromFrames(EditedImage, FrameRate));
         }
 
         public GifEditor(Bitmap[] ImageData, int X, int Y, int FrameRate)
@@ -263,12 +263,6 @@ namespace imageDeCap
         private void startTrack_MouseUp(object sender, MouseEventArgs e) { Scrolling = false; }
         private void BackgroundTrack_MouseUp(object sender, MouseEventArgs e) { Scrolling = false; }
         
-        public static T[] SubArray<T>(T[] data, int index, int length)
-        {
-            T[] result = new T[length];
-            Array.Copy(data, index, result, 0, length);
-            return result;
-        }
 
         private void CalculateFileSizeAndSaveOutputImage()
         {
@@ -280,7 +274,7 @@ namespace imageDeCap
             }
             SavedImageStart = (int)startTrack.Value;
             SavedImageEnd = (int)endTrack.Value;
-            EditedImage = SubArray(TheImage, SavedImageStart, SavedImageEnd - SavedImageStart);
+            EditedImage = Utilities.SubArray(TheImage, SavedImageStart, SavedImageEnd - SavedImageStart);
         }
 
         private void calcSizeButton_Click(object sender, EventArgs e)

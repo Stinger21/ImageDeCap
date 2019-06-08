@@ -34,7 +34,7 @@
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
-            this.listBox1 = new System.Windows.Forms.ListBox();
+            this.LinksListBox = new System.Windows.Forms.ListBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hideToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -101,18 +101,18 @@
             // 
             // listBox1
             // 
-            this.listBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.LinksListBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.listBox1.BackColor = System.Drawing.SystemColors.Control;
-            this.listBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.Location = new System.Drawing.Point(8, 151);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(224, 288);
-            this.listBox1.TabIndex = 14;
-            this.listBox1.DoubleClick += new System.EventHandler(this.ListBox1_DoubleClick);
-            this.listBox1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ListBox1_KeyDown);
+            this.LinksListBox.BackColor = System.Drawing.SystemColors.Control;
+            this.LinksListBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.LinksListBox.FormattingEnabled = true;
+            this.LinksListBox.Location = new System.Drawing.Point(8, 151);
+            this.LinksListBox.Name = "listBox1";
+            this.LinksListBox.Size = new System.Drawing.Size(224, 288);
+            this.LinksListBox.TabIndex = 14;
+            this.LinksListBox.DoubleClick += new System.EventHandler(this.ListBox1_DoubleClick);
+            this.LinksListBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ListBox1_KeyDown);
             // 
             // menuStrip1
             // 
@@ -230,7 +230,7 @@
             this.ClientSize = new System.Drawing.Size(240, 461);
             this.Controls.Add(this.VersionLabel);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.listBox1);
+            this.Controls.Add(this.LinksListBox);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.button3);
@@ -261,7 +261,7 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.ListBox LinksListBox;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
