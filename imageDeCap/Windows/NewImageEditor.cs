@@ -172,10 +172,8 @@ namespace imageDeCap
                     break;
             }
         }
-
-
+        
         // Buttons
-
         private void UploadButton_click(object sender, EventArgs e)
         {
             result = EditorResult.Upload;
@@ -472,7 +470,7 @@ namespace imageDeCap
                 Owner.CurrentSwatch.BackColor = ((Bitmap)EditedImage).GetPixel((int)MousePosition.X, (int)MousePosition.Y);
             }
 
-            if (System.Windows.Input.Keyboard.IsKeyDown(System.Windows.Input.Key.LeftAlt))
+            if (System.Windows.Input.Keyboard.IsKeyDown(System.Windows.Input.Key.LeftAlt) && LMBIsDown)
             {
                 var NewColor = ((Bitmap)EditedImage).GetPixel((int)MousePosition.X, (int)MousePosition.Y);
                 Owner.CurrentSwatch.BackColor = NewColor;

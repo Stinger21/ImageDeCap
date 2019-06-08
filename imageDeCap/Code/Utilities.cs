@@ -48,7 +48,7 @@ namespace imageDeCap
             if (!imageDeCap.Preferences.DisableSoundEffects)
             {
                 SoundPlayer sp = null;
-                string soundPath = $"imageDeCap.Sounds. {soundName}";
+                string soundPath = $"imageDeCap.Sounds.{soundName}";
                 Assembly assembly = Assembly.GetExecutingAssembly();
                 Stream soundResource = assembly.GetManifestResourceStream(soundPath);
                 sp = new SoundPlayer(soundResource);
