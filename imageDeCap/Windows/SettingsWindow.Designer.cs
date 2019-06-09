@@ -51,11 +51,11 @@
             this.checkBoxUploadToFTP = new System.Windows.Forms.CheckBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.RecordingFramerate = new System.Windows.Forms.NumericUpDown();
             this.label8 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
-            this.RecordingFramerate = new System.Windows.Forms.NumericUpDown();
             this.CopyImageToClipboard = new System.Windows.Forms.CheckBox();
             this.FreezeScreen = new System.Windows.Forms.CheckBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
@@ -341,6 +341,31 @@
             this.tabPage1.Text = "General";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // RecordingFramerate
+            // 
+            this.RecordingFramerate.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.RecordingFramerate.Location = new System.Drawing.Point(8, 176);
+            this.RecordingFramerate.Maximum = new decimal(new int[] {
+            60,
+            0,
+            0,
+            0});
+            this.RecordingFramerate.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.RecordingFramerate.Name = "RecordingFramerate";
+            this.RecordingFramerate.Size = new System.Drawing.Size(44, 20);
+            this.RecordingFramerate.TabIndex = 31;
+            this.toolTip1.SetToolTip(this.RecordingFramerate, "The framerate will decrease if performance is low.");
+            this.RecordingFramerate.Value = new decimal(new int[] {
+            24,
+            0,
+            0,
+            0});
+            this.RecordingFramerate.ValueChanged += new System.EventHandler(this.gifFPS_ValueChanged);
+            // 
             // label8
             // 
             this.label8.AutoSize = true;
@@ -380,31 +405,6 @@
             this.label9.Size = new System.Drawing.Size(135, 13);
             this.label9.TabIndex = 35;
             this.label9.Text = "Target recording framerate.";
-            // 
-            // RecordingFramerate
-            // 
-            this.RecordingFramerate.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.RecordingFramerate.Location = new System.Drawing.Point(8, 176);
-            this.RecordingFramerate.Maximum = new decimal(new int[] {
-            60,
-            0,
-            0,
-            0});
-            this.RecordingFramerate.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.RecordingFramerate.Name = "RecordingFramerate";
-            this.RecordingFramerate.Size = new System.Drawing.Size(44, 20);
-            this.RecordingFramerate.TabIndex = 31;
-            this.toolTip1.SetToolTip(this.RecordingFramerate, "The framerate will decrease if performance is low.");
-            this.RecordingFramerate.Value = new decimal(new int[] {
-            24,
-            0,
-            0,
-            0});
-            this.RecordingFramerate.ValueChanged += new System.EventHandler(this.gifFPS_ValueChanged);
             // 
             // CopyImageToClipboard
             // 
@@ -463,27 +463,27 @@
             this.label7.AutoSize = true;
             this.label7.Location = new System.Drawing.Point(3, 3);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(159, 13);
+            this.label7.Size = new System.Drawing.Size(78, 13);
             this.label7.TabIndex = 36;
-            this.label7.Text = "Upload selected region to imgur.";
+            this.label7.Text = "Capture image.";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(3, 76);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(176, 13);
+            this.label4.Size = new System.Drawing.Size(64, 13);
             this.label4.TabIndex = 34;
-            this.label4.Text = "Upload text in clipboard to pastebin.";
+            this.label4.Text = "Upload text.";
             // 
             // label5
             // 
             this.label5.AutoSize = true;
             this.label5.Location = new System.Drawing.Point(3, 39);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(160, 13);
+            this.label5.Size = new System.Drawing.Size(64, 13);
             this.label5.TabIndex = 35;
-            this.label5.Text = "Upload a GIF recording to imgur.";
+            this.label5.Text = "Record clip.";
             // 
             // tabPage3
             // 

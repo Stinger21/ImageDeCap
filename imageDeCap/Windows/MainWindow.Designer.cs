@@ -70,7 +70,7 @@
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(224, 28);
             this.button2.TabIndex = 9;
-            this.button2.Text = "Upload Text";
+            this.button2.Text = "Upload text";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.UploadText_Click);
             // 
@@ -96,7 +96,7 @@
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(224, 28);
             this.button4.TabIndex = 11;
-            this.button4.Text = "Record Gif";
+            this.button4.Text = "Record clip";
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.RecordGif_Click);
             // 
