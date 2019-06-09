@@ -122,7 +122,8 @@ namespace imageDeCap
             {
                 if (imageType == Filetype.gif)
                 {
-                    GifEditor editor = new GifEditor(GifImage, CurrentBackCover.topBox.Location.X, CurrentBackCover.topBox.Location.Y, 1000 / CurrentBackCover.RecordedTime);
+                    //int framerate = 1000 / CurrentBackCover.RecordedTime;
+                    GifEditor editor = new GifEditor(GifImage, CurrentBackCover.topBox.Location.X, CurrentBackCover.topBox.Location.Y, CurrentBackCover.ActualFramerate);
                     editor.Show();
                     editor.FormClosed += EditorDone;
                 }

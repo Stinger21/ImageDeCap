@@ -28,7 +28,7 @@ namespace imageDeCap
         DateTime LastTime;
         public int RecordedTime = 0;
         int FramesCaptured = 0;
-
+        public int ActualFramerate = 0;
         public ScreenshotRegionLine topBox = new ScreenshotRegionLine();
         public ScreenshotRegionLine bottomBox = new ScreenshotRegionLine();
         public ScreenshotRegionLine leftBox = new ScreenshotRegionLine();
@@ -62,9 +62,19 @@ namespace imageDeCap
                 FreezeScreen = false;
         }
 
+        void CaptureVideoHotkeyPressed()
+        {
+            StopRecordingGif(this, false);
+        }
+
         public void AfterShow(Bitmap background, bool isGif)
         {
             float scaler = 1.0f/1.0f;
+
+            if(isGif)
+            {
+                Hotkeys.CaptureVideoHotkeyPressed += CaptureVideoHotkeyPressed;
+            }
 
             int x = (int)(SystemInformation.VirtualScreen.X * scaler);
             int y = (int)(SystemInformation.VirtualScreen.Y * scaler);
@@ -127,10 +137,10 @@ namespace imageDeCap
 
         private void BoxMovementTimer_Tick(object sender, EventArgs e)
         {
-            Updatee();
+            UpdateSelection();
         }
 
-        public void Updatee()
+        public void UpdateSelection()
         {
             if(!_Activated)
                 return;
@@ -423,6 +433,7 @@ namespace imageDeCap
             MemoryLabel.Text = $"Memory Usage: {(gEnc.Count * width * height * 8) / 1000000} MB";
             TargetFramerateLabel.Text = $"TF: {Preferences.RecordingFramerate}";
             ActualFramerateLabel.Text = $"RF: {((FramesCaptured + 1) / RecordedTimeSeconds)}";
+            ActualFramerate = (int)(((float)FramesCaptured + 1.0f) / RecordedTimeSeconds);
 
             FramesCaptured++;
         }

@@ -4,46 +4,53 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+public delegate void HotkeyPressed();
+
 namespace imageDeCap
 {
     public static class Hotkeys
     {
+        public static HotkeyPressed CaptureVideoHotkeyPressed = null;
         static bool UploadPastebitHotkey = false;
         static bool CaptureVideoHotkey = false;
         static bool CaptureImageHotkey = false;
 
         public static void Update()
         {
-            if (Program.hotkeysEnabled)
-            {
-                string hotkey = GetCurrentHotkey();
+            
+            string hotkey = GetCurrentHotkey();
 
-                if (Preferences.HotkeyText == hotkey)
-                {
-                    if (!UploadPastebitHotkey)
+            if (Preferences.HotkeyText == hotkey)
+            {
+                if (!UploadPastebitHotkey)
+                    if (Program.hotkeysEnabled)
                         ScreenCapturer.UploadPastebinClipboard();
-                    UploadPastebitHotkey = true;
-                }
-                else if (Preferences.HotkeyVideo == hotkey)
-                {
-                    if (!CaptureVideoHotkey)
-                        ScreenCapturer.CaptureScreenRegion(true);
-                    CaptureVideoHotkey = true;
-                }
-                else if (Preferences.HotkeyImage == hotkey)
-                {
-                    if (!CaptureImageHotkey)
-                        ScreenCapturer.CaptureScreenRegion();
-                    CaptureImageHotkey = true;
-                }
-                else
-                {
-                    // no recognized hotkey
-                    UploadPastebitHotkey = false;
-                    CaptureVideoHotkey = false;
-                    CaptureImageHotkey = false;
-                }
+                UploadPastebitHotkey = true;
             }
+            else if (Preferences.HotkeyVideo == hotkey)
+            {
+                if (!CaptureVideoHotkey)
+                    if (Program.hotkeysEnabled)
+                        ScreenCapturer.CaptureScreenRegion(true);
+
+                CaptureVideoHotkeyPressed();
+                CaptureVideoHotkey = true;
+            }
+            else if (Preferences.HotkeyImage == hotkey)
+            {
+                if (!CaptureImageHotkey)
+                    if (Program.hotkeysEnabled)
+                        ScreenCapturer.CaptureScreenRegion();
+                CaptureImageHotkey = true;
+            }
+            else
+            {
+                // no recognized hotkey
+                UploadPastebitHotkey = false;
+                CaptureVideoHotkey = false;
+                CaptureImageHotkey = false;
+            }
+            
         }
 
 
