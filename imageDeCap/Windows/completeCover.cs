@@ -94,7 +94,7 @@ namespace imageDeCap
             {
                 this.SetBounds(x, y, width, height);
             }
-            _Activated = true;
+            //_Activated = true;
             BoxMovementTimer.Enabled = true;
 
             magnifier = new Magnifier(isGif);
@@ -127,12 +127,10 @@ namespace imageDeCap
 
         private void CompleteCover_MouseMove(object sender, MouseEventArgs e)
         {
-            //Updatee();
         }
 
         private void PictureBox1_MouseMove(object sender, MouseEventArgs e)
         {
-            //Updatee();
         }
 
         private void BoxMovementTimer_Tick(object sender, EventArgs e)
@@ -142,9 +140,6 @@ namespace imageDeCap
 
         public void UpdateSelection()
         {
-            if(!_Activated)
-                return;
-
             Cursor.Current = Cursors.Cross;
 
             if (GifCaptureTimer.Enabled) // Don't update if we are capturing a gif
@@ -179,10 +174,11 @@ namespace imageDeCap
             // Holding M1
             if (Lmb)
             {
-               topBox.SetBounds(X - 3, Y - 3, tempWidth + 3, 0);
-               leftBox.SetBounds(X - 3, Y - 1, 0, tempHeight + 1);
-               bottomBox.SetBounds(X - 3, tempHeight + Y, tempWidth + 5, 0);
-               rightBox.SetBounds(tempWidth + X, Y - 3, 0, tempHeight + 3);
+                // Magic numbers
+                topBox.SetBounds(       X - 3 + 1,                Y - 3 + 1,              tempWidth + 3,      0);
+                leftBox.SetBounds(      X - 3 + 1,                Y - 1 + 1,              0,                  tempHeight + 1);
+                bottomBox.SetBounds(    X - 3 + 1,                tempHeight + Y + 1,     tempWidth + 5,      0);
+                rightBox.SetBounds(     tempWidth + X + 1,        Y - 3 + 1,              0,                  tempHeight + 3);
 
                 if (Preferences.UseRuleOfThirds)
                 {
@@ -268,7 +264,9 @@ namespace imageDeCap
         // this is called from Form1's updateSelectedArea when it considers itself done figuring out what region to capture.
         public void CompletedSelection(bool ForceEdit = false)
         {
-            if(!Gif) // If it's not a gif, hide everything and fire off an upload thread instantly.
+            Cursor.Current = Cursors.Default;
+            BoxMovementTimer.Enabled = false;
+            if (!Gif) // If it's not a gif, hide everything and fire off an upload thread instantly.
             {
                 magnifier.Close();
                 if (!FreezeScreen)
@@ -289,8 +287,8 @@ namespace imageDeCap
                     Utilities.PlaySound("snip.wav");
                     Bitmap result = ScreenCapturer.Capture(
                         ScreenCaptureMode.Bounds, 
-                        X - 1, 
-                        Y - 1,
+                        X, 
+                        Y,
                         tempWidth + 1, 
                         tempHeight + 1);
 
@@ -314,7 +312,7 @@ namespace imageDeCap
                     magnifier.Close();
                     StartRecordingGif(ForceEdit);
 
-                    this.Location = new Point(X, Y + tempHeight);
+                    this.Location = new Point(X - 2, Y + tempHeight + 3);
                     this.Width = Math.Max(tempWidth, 300);
                     this.Height = 50;
                     
@@ -432,7 +430,7 @@ namespace imageDeCap
             FramesLabel.Text = $"Frames: {FramesCaptured + 1}";
             MemoryLabel.Text = $"Memory Usage: {(gEnc.Count * width * height * 8) / 1000000} MB";
             TargetFramerateLabel.Text = $"TF: {Preferences.RecordingFramerate}";
-            ActualFramerateLabel.Text = $"RF: {((FramesCaptured + 1) / RecordedTimeSeconds)}";
+            ActualFramerateLabel.Text = $"RF: {(int)((FramesCaptured + 1) / RecordedTimeSeconds)}";
             ActualFramerate = (int)(((float)FramesCaptured + 1.0f) / RecordedTimeSeconds);
 
             FramesCaptured++;

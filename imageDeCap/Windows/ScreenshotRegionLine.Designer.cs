@@ -37,7 +37,6 @@
             this.BackColor = System.Drawing.Color.Gray;
             this.ClientSize = new System.Drawing.Size(10, 10);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.HelpButton = true;
             this.Name = "ScreenshotRegionLine";
             this.Opacity = 0.1D;
             this.RightToLeft = System.Windows.Forms.RightToLeft.Yes;

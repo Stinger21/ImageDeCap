@@ -62,9 +62,9 @@ namespace imageDeCap
             this.doneButton.FlatAppearance.BorderSize = 0;
             this.doneButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.doneButton.ForeColor = System.Drawing.Color.White;
-            this.doneButton.Location = new System.Drawing.Point(5, 10);
+            this.doneButton.Location = new System.Drawing.Point(0, 0);
             this.doneButton.Name = "doneButton";
-            this.doneButton.Size = new System.Drawing.Size(57, 28);
+            this.doneButton.Size = new System.Drawing.Size(57, 45);
             this.doneButton.TabIndex = 1;
             this.doneButton.Text = "Done";
             this.doneButton.UseVisualStyleBackColor = false;
@@ -77,9 +77,9 @@ namespace imageDeCap
             this.cancelButton.FlatAppearance.BorderSize = 0;
             this.cancelButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cancelButton.ForeColor = System.Drawing.Color.White;
-            this.cancelButton.Location = new System.Drawing.Point(68, 10);
+            this.cancelButton.Location = new System.Drawing.Point(57, 0);
             this.cancelButton.Name = "cancelButton";
-            this.cancelButton.Size = new System.Drawing.Size(57, 28);
+            this.cancelButton.Size = new System.Drawing.Size(57, 45);
             this.cancelButton.TabIndex = 2;
             this.cancelButton.Text = "Cancel";
             this.cancelButton.UseVisualStyleBackColor = false;
@@ -90,7 +90,7 @@ namespace imageDeCap
             this.TimeLabel.AutoSize = true;
             this.TimeLabel.BackColor = System.Drawing.Color.Black;
             this.TimeLabel.ForeColor = System.Drawing.Color.White;
-            this.TimeLabel.Location = new System.Drawing.Point(131, 11);
+            this.TimeLabel.Location = new System.Drawing.Point(0, 2);
             this.TimeLabel.Name = "TimeLabel";
             this.TimeLabel.Size = new System.Drawing.Size(28, 13);
             this.TimeLabel.TabIndex = 3;
@@ -101,7 +101,7 @@ namespace imageDeCap
             this.FramesLabel.AutoSize = true;
             this.FramesLabel.BackColor = System.Drawing.Color.Black;
             this.FramesLabel.ForeColor = System.Drawing.Color.White;
-            this.FramesLabel.Location = new System.Drawing.Point(131, 24);
+            this.FramesLabel.Location = new System.Drawing.Point(0, 15);
             this.FramesLabel.Name = "FramesLabel";
             this.FramesLabel.Size = new System.Drawing.Size(28, 13);
             this.FramesLabel.TabIndex = 4;
@@ -110,12 +110,14 @@ namespace imageDeCap
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.Black;
+            this.panel1.Controls.Add(this.FramesLabel);
+            this.panel1.Controls.Add(this.TimeLabel);
             this.panel1.Controls.Add(this.ActualFramerateLabel);
             this.panel1.Controls.Add(this.TargetFramerateLabel);
             this.panel1.Controls.Add(this.MemoryLabel);
-            this.panel1.Location = new System.Drawing.Point(131, 10);
+            this.panel1.Location = new System.Drawing.Point(114, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(157, 44);
+            this.panel1.Size = new System.Drawing.Size(157, 45);
             this.panel1.TabIndex = 5;
             // 
             // ActualFramerateLabel
@@ -123,22 +125,22 @@ namespace imageDeCap
             this.ActualFramerateLabel.AutoSize = true;
             this.ActualFramerateLabel.BackColor = System.Drawing.Color.Black;
             this.ActualFramerateLabel.ForeColor = System.Drawing.Color.White;
-            this.ActualFramerateLabel.Location = new System.Drawing.Point(66, 14);
+            this.ActualFramerateLabel.Location = new System.Drawing.Point(111, 14);
             this.ActualFramerateLabel.Name = "ActualFramerateLabel";
-            this.ActualFramerateLabel.Size = new System.Drawing.Size(87, 13);
+            this.ActualFramerateLabel.Size = new System.Drawing.Size(45, 13);
             this.ActualFramerateLabel.TabIndex = 7;
-            this.ActualFramerateLabel.Text = "Actual Framerate";
+            this.ActualFramerateLabel.Text = "RF: 100";
             // 
             // TargetFramerateLabel
             // 
             this.TargetFramerateLabel.AutoSize = true;
             this.TargetFramerateLabel.BackColor = System.Drawing.Color.Black;
             this.TargetFramerateLabel.ForeColor = System.Drawing.Color.White;
-            this.TargetFramerateLabel.Location = new System.Drawing.Point(66, 0);
+            this.TargetFramerateLabel.Location = new System.Drawing.Point(111, 0);
             this.TargetFramerateLabel.Name = "TargetFramerateLabel";
-            this.TargetFramerateLabel.Size = new System.Drawing.Size(88, 13);
+            this.TargetFramerateLabel.Size = new System.Drawing.Size(44, 13);
             this.TargetFramerateLabel.TabIndex = 6;
-            this.TargetFramerateLabel.Text = "Target Framerate";
+            this.TargetFramerateLabel.Text = "TF: 100";
             // 
             // MemoryLabel
             // 
@@ -165,10 +167,8 @@ namespace imageDeCap
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(300, 393);
-            this.Controls.Add(this.FramesLabel);
-            this.Controls.Add(this.TimeLabel);
+            this.BackColor = System.Drawing.Color.Black;
+            this.ClientSize = new System.Drawing.Size(268, 45);
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.doneButton);
             this.Controls.Add(this.pictureBox1);
@@ -176,7 +176,7 @@ namespace imageDeCap
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.KeyPreview = true;
             this.Name = "CompleteCover";
-            this.Opacity = 0.01D;
+            this.Opacity = 0.5D;
             this.Text = "completeCover";
             this.TopMost = true;
             this.TransparencyKey = System.Drawing.Color.Red;
@@ -187,7 +187,6 @@ namespace imageDeCap
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
