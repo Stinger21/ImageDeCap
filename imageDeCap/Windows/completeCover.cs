@@ -26,8 +26,8 @@ namespace imageDeCap
 
         public List<Bitmap> gEnc = new List<Bitmap>();
         DateTime LastTime;
-        public int FrameTime = 0;
-        int counter = 0;
+        public int RecordedTime = 0;
+        int FramesCaptured = 0;
 
         public ScreenshotRegionLine topBox = new ScreenshotRegionLine();
         public ScreenshotRegionLine bottomBox = new ScreenshotRegionLine();
@@ -320,14 +320,7 @@ namespace imageDeCap
                 }
             }
         }
-
-        public void SetTimer(string time, string frames, string Size)
-        {
-            TimeLabel.Text = time;
-            FramesLabel.Text = frames;
-            MemoryLabel.Text = Size;
-        }
-
+        
         private void DoneButton_Click(object sender, EventArgs e)
         {
             StopRecordingGif(this, false);
@@ -342,9 +335,11 @@ namespace imageDeCap
 
         public void StartRecordingGif(bool ForceEdit)
         {
-            GifCaptureTimer.Interval = (int)(1000.0f / Preferences.GIFRecordingFramerate);
-            FrameTime = 0;
-            counter = 0;
+            GifCaptureTimer.Interval = (int)(1000.0f / Preferences.RecordingFramerate);
+            Console.WriteLine(GifCaptureTimer.Interval);
+            Console.WriteLine(Preferences.RecordingFramerate);
+            RecordedTime = 0;
+            FramesCaptured = 0;
             GifCaptureTimer.Enabled = true;
             GifCaptureTimer.Tag = ForceEdit;
             LastTime = DateTime.Now;
@@ -363,7 +358,7 @@ namespace imageDeCap
         {
             if (GifCaptureTimer.Enabled)
             {
-                FrameTime /= counter;
+                //RecordedTime /= FramesCaptured;
                 GifCaptureTimer.Enabled = false;
                 topBox.Hide();
                 bottomBox.Hide();
@@ -391,10 +386,11 @@ namespace imageDeCap
         private void GifCaptureTimer_Tick(object sender, EventArgs e)
         {
             TimeSpan DeltaTime = DateTime.Now - LastTime;
-            int DeltaTimeInMS = DeltaTime.Seconds * 100 + DeltaTime.Milliseconds;
-            FrameTime += DeltaTimeInMS;
-
             LastTime = DateTime.Now;
+            
+            //int DeltaTimeInMS = DeltaTime.Seconds * 100 + DeltaTime.Milliseconds;
+            RecordedTime += DeltaTime.Milliseconds;
+
 
             int width  = tempWidth + 1;
             int height = tempHeight + 1;
@@ -412,12 +408,18 @@ namespace imageDeCap
 
             gEnc.Add(b);
 
-            int minutes = counter / 600;
-            int seconds = (counter / 10) % 600;
-            int csecs = counter % 10;
-            
-            SetTimer($"Time: {minutes}:{seconds}.{csecs}", $"Frames: {counter}", $"Memory Usage:{(gEnc.Count * width * height * 8) / 1000000} MB");
-            counter++;
+            //int minutes = (RecordedTime / 1000 / 60) % 60;
+            int seconds = (RecordedTime / 1000);
+            int csecs = RecordedTime % 1000;
+            float RecordedTimeSeconds = RecordedTime / 1000.0f;
+
+            TimeLabel.Text = $"Time: {seconds}.{csecs}";
+            FramesLabel.Text = $"Frames: {FramesCaptured + 1}";
+            MemoryLabel.Text = $"Memory Usage:{(gEnc.Count * width * height * 8) / 1000000} MB";
+            TargetFramerateLabel.Text = $"TF: {Preferences.RecordingFramerate}";
+            ActualFramerateLabel.Text = $"RF: {((FramesCaptured + 1) / RecordedTimeSeconds)}";
+
+            FramesCaptured++;
         }
     }
 }

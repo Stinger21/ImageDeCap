@@ -99,7 +99,7 @@
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.RecordGif_Click);
             // 
-            // listBox1
+            // LinksListBox
             // 
             this.LinksListBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
@@ -108,7 +108,7 @@
             this.LinksListBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.LinksListBox.FormattingEnabled = true;
             this.LinksListBox.Location = new System.Drawing.Point(8, 151);
-            this.LinksListBox.Name = "listBox1";
+            this.LinksListBox.Name = "LinksListBox";
             this.LinksListBox.Size = new System.Drawing.Size(224, 288);
             this.LinksListBox.TabIndex = 14;
             this.LinksListBox.DoubleClick += new System.EventHandler(this.ListBox1_DoubleClick);
@@ -130,9 +130,9 @@
             // fileToolStripMenuItem
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.clearLinksToolStripMenuItem,
             this.hideToolStripMenuItem,
-            this.exitToolStripMenuItem,
-            this.clearLinksToolStripMenuItem});
+            this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
@@ -140,21 +140,21 @@
             // hideToolStripMenuItem
             // 
             this.hideToolStripMenuItem.Name = "hideToolStripMenuItem";
-            this.hideToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
-            this.hideToolStripMenuItem.Text = "Hide";
+            this.hideToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.hideToolStripMenuItem.Text = "Close";
             this.hideToolStripMenuItem.Click += new System.EventHandler(this.HideToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItem_Click);
             // 
             // clearLinksToolStripMenuItem
             // 
             this.clearLinksToolStripMenuItem.Name = "clearLinksToolStripMenuItem";
-            this.clearLinksToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
+            this.clearLinksToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.clearLinksToolStripMenuItem.Text = "Clear Links";
             this.clearLinksToolStripMenuItem.Click += new System.EventHandler(this.ClearLinksToolStripMenuItem_Click);
             // 
@@ -169,8 +169,8 @@
             // preferencesToolStripMenuItem
             // 
             this.preferencesToolStripMenuItem.Name = "preferencesToolStripMenuItem";
-            this.preferencesToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
-            this.preferencesToolStripMenuItem.Text = "Preferences";
+            this.preferencesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.preferencesToolStripMenuItem.Text = "Settings";
             this.preferencesToolStripMenuItem.Click += new System.EventHandler(this.PreferencesToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
@@ -184,7 +184,7 @@
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.aboutToolStripMenuItem.Text = "About ImageDeCap";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.AboutToolStripMenuItem_Click);
             // 

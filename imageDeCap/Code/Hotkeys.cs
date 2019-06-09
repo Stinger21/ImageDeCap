@@ -8,45 +8,40 @@ namespace imageDeCap
 {
     public static class Hotkeys
     {
-        static bool hKey1Pressed = false;
-        static bool hKey2Pressed = false;
-        static bool hKey3Pressed = false;
+        static bool UploadPastebitHotkey = false;
+        static bool CaptureVideoHotkey = false;
+        static bool CaptureImageHotkey = false;
+
         public static void Update()
         {
             if (Program.hotkeysEnabled)
             {
                 string hotkey = GetCurrentHotkey();
 
-                if (Preferences.Hotkey1 == hotkey)
+                if (Preferences.HotkeyText == hotkey)
                 {
-                    if (!hKey1Pressed)
-                    {
+                    if (!UploadPastebitHotkey)
                         ScreenCapturer.UploadPastebinClipboard();
-                    }
-                    hKey1Pressed = true;
+                    UploadPastebitHotkey = true;
                 }
-                else if (Preferences.Hotkey2 == hotkey)
+                else if (Preferences.HotkeyVideo == hotkey)
                 {
-                    if (!hKey2Pressed)
-                    {
+                    if (!CaptureVideoHotkey)
                         ScreenCapturer.CaptureScreenRegion(true);
-                    }
-                    hKey2Pressed = true;
+                    CaptureVideoHotkey = true;
                 }
-                else if (Preferences.Hotkey3 == hotkey)
+                else if (Preferences.HotkeyImage == hotkey)
                 {
-                    if (!hKey3Pressed)
-                    {
+                    if (!CaptureImageHotkey)
                         ScreenCapturer.CaptureScreenRegion();
-                    }
-                    hKey3Pressed = true;
+                    CaptureImageHotkey = true;
                 }
                 else
                 {
                     // no recognized hotkey
-                    hKey1Pressed = false;
-                    hKey2Pressed = false;
-                    hKey3Pressed = false;
+                    UploadPastebitHotkey = false;
+                    CaptureVideoHotkey = false;
+                    CaptureImageHotkey = false;
                 }
             }
         }
@@ -68,6 +63,7 @@ namespace imageDeCap
                     }
                 }
             }
+
             if (textToPutInBox == null)
             {
                 return "";
@@ -91,9 +87,6 @@ namespace imageDeCap
                 textToPutInBox = textToPutInBox.Replace("Scroll", "ScrollLock");
                 return textToPutInBox;
             }
-
         }
-
-
     }
 }

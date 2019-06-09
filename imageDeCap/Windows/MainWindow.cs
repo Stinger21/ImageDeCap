@@ -39,7 +39,6 @@ namespace imageDeCap
     // Forms:
     // CompleteCover.cs Handles freezing the screen, firing up the editors, recording gifs etc.
     
-
     public partial class MainWindow : Form
     {
         // Global Variables
@@ -177,8 +176,7 @@ namespace imageDeCap
                 File.WriteAllText(LinksFilePath, links);
             }
         }
-
-
+        
         public void ShowSettings()
         {
             try
@@ -341,7 +339,6 @@ namespace imageDeCap
 
         public static void Initialize()
         {
-
             IconRightClickMenu = new ContextMenu();
 
             IconRightClickMenu.MenuItems.Add(OpenWindowButton);
@@ -356,7 +353,7 @@ namespace imageDeCap
             ContactButton.Text = "Contact / Bugs";
             ContactButton.Click += new EventHandler(ContactButton_Click);
 
-            PreferencesButton.Text = "Preferences";
+            PreferencesButton.Text = "Settings";
             PreferencesButton.Click += new EventHandler(Preferences_Click);
 
             OpenWindowButton.Text = "Open Window";
@@ -367,14 +364,17 @@ namespace imageDeCap
         {
             Utilities.CloseProgram();
         }
+
         private static void ContactButton_Click(object Sender, EventArgs e)
         {
             System.Diagnostics.Process.Start("http://www.mattwestphal.com/imagedecap");
         }
+
         private static void Preferences_Click(object Sender, EventArgs e)
         {
             Program.ImageDeCap.ShowSettings();
         }
+
         private static void OpenWindowButton_Click(object Sender, EventArgs e)// Open Window
         {
             Program.ImageDeCap.OpenWindow();

@@ -12,21 +12,21 @@ namespace imageDeCap
     {
         // General
         public static string c_General;
-        public static string SaveImagesHere = "";
-        public static bool saveImageAtAll = false;
+        public static bool SaveImages = false;
+        public static string SaveImagesLocation = "";
         public static bool FreezeScreenOnRegionShot = true;
         public static bool EditScreenshotAfterCapture = true;
         public static bool CopyImageToClipboard = true;
         public static bool DisableNotifications = false;
         public static bool DisableSoundEffects = false;
-        public static int GIFRecordingFramerate = 24;
+        public static int RecordingFramerate = 24;
         public static bool BackupImages = true;
 
         // Hotkeys
         public static string c_Hotkeys;
-        public static string Hotkey1 = "ScrollLock";
-        public static string Hotkey2 = "Shift+Snapshot";
-        public static string Hotkey3 = "Snapshot";
+        public static string HotkeyText = "ScrollLock";
+        public static string HotkeyVideo = "Shift+Snapshot";
+        public static string HotkeyImage = "Snapshot";
 
         // Uploading
         public static string c_Uploading;
@@ -47,7 +47,7 @@ namespace imageDeCap
         public static bool AddWatermark = false;
         public static string WatermarkFilePath = "";
         public static int WatermarkLocation = 3;
-        public static int BrushSmoothingDistance = 5;
+        public static int BrushSmoothingDistance = 8;
         public static string ImageEditorFont = "Arial Black";
         public static int FontStyleType = (int)FontStyle.Bold;
 

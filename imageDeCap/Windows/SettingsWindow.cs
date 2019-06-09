@@ -18,14 +18,14 @@ namespace imageDeCap
         public SettingsWindow()
         {
             InitializeComponent();
-            initSettings();
+            InitSettings();
         }
 
-        void initSettings()
+        void InitSettings()
         {
-            SaveImages.Checked = Preferences.saveImageAtAll;
-            SaveImagesBrowseButton.Enabled = Preferences.saveImageAtAll;
-            SaveImagesHereTextBox.Text = Preferences.SaveImagesHere;
+            SaveImages.Checked = Preferences.SaveImages;
+            SaveImagesBrowseButton.Enabled = Preferences.SaveImages;
+            SaveImagesHereTextBox.Text = Preferences.SaveImagesLocation;
             SaveImagesHereTextBox.Enabled = SaveImages.Checked;
             EditImages.Checked = Preferences.EditScreenshotAfterCapture;
             CopyLinksToClipboard.Checked = Preferences.CopyLinksToClipboard;
@@ -44,13 +44,13 @@ namespace imageDeCap
             FTPURL.Enabled = Preferences.uploadToFTP;
             FTPUsername.Enabled = Preferences.uploadToFTP;
             FTPpassword.Enabled = Preferences.uploadToFTP;
-            HotkeyTextBox1.Text = Preferences.Hotkey1;
-            HotkeyTextBox2.Text = Preferences.Hotkey2;
-            HotkeyTextBox3.Text = Preferences.Hotkey3;
+            HotkeyTextBox1.Text = Preferences.HotkeyText;
+            HotkeyTextBox2.Text = Preferences.HotkeyVideo;
+            HotkeyTextBox3.Text = Preferences.HotkeyImage;
             FTPpassword.Text = Preferences.FTPpassword;
             FTPURL.Text = Preferences.FTPurl;
             FTPUsername.Text = Preferences.FTPusername;
-            RecordingFramerate.Value = Preferences.GIFRecordingFramerate;
+            RecordingFramerate.Value = Preferences.RecordingFramerate;
             CopyImageToClipboard.Checked = Preferences.CopyImageToClipboard;
             RuleOfThirds.Checked = Preferences.UseRuleOfThirds;
             watermarkCheckbox.Checked = Preferences.AddWatermark;
@@ -97,13 +97,13 @@ namespace imageDeCap
         {
             SaveImagesHereTextBox.Enabled = SaveImages.Checked;
             SaveImagesBrowseButton.Enabled = SaveImages.Checked;
-            Preferences.saveImageAtAll = SaveImages.Checked;
+            Preferences.SaveImages = SaveImages.Checked;
             Preferences.Save();
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
-            Preferences.SaveImagesHere = SaveImagesHereTextBox.Text;
+            Preferences.SaveImagesLocation = SaveImagesHereTextBox.Text;
             Preferences.Save();
         }
         
@@ -144,7 +144,7 @@ namespace imageDeCap
         private void button3_Click(object sender, EventArgs e)
         {
             Preferences.ResetAllPreferences();
-            initSettings();
+            InitSettings();
             Preferences.Save();
         }
 
@@ -202,7 +202,8 @@ namespace imageDeCap
         
         private void gifFPS_ValueChanged(object sender, EventArgs e)
         {
-            Preferences.GIFRecordingFramerate = (int)RecordingFramerate.Value;
+            Preferences.RecordingFramerate = (int)RecordingFramerate.Value;
+            Preferences.Save();
         }
         
         private void checkBox8_CheckedChanged(object sender, EventArgs e)
@@ -280,11 +281,11 @@ namespace imageDeCap
 
         private void ResetHotkeysbutton_Click(object sender, EventArgs e)
         {
-            Preferences.ResetPreference(nameof(Preferences.Hotkey1));
-            Preferences.ResetPreference(nameof(Preferences.Hotkey2));
-            Preferences.ResetPreference(nameof(Preferences.Hotkey3));
+            Preferences.ResetPreference(nameof(Preferences.HotkeyText));
+            Preferences.ResetPreference(nameof(Preferences.HotkeyVideo));
+            Preferences.ResetPreference(nameof(Preferences.HotkeyImage));
             Preferences.Save();
-            initSettings();
+            InitSettings();
         }
 
         private void label14_Click(object sender, EventArgs e)
@@ -311,7 +312,7 @@ namespace imageDeCap
         private void HotkeyTextBox1_KeyDown(object sender, KeyEventArgs e)
         {
             HotkeyTextBox1.Text = Hotkeys.GetCurrentHotkey();
-            Preferences.Hotkey1 = HotkeyTextBox1.Text;
+            Preferences.HotkeyText = HotkeyTextBox1.Text;
             Preferences.Save();
         }
         private void HotkeyTextBox2_GotFocus(object sender, EventArgs e)
@@ -349,7 +350,7 @@ namespace imageDeCap
                         HotkeyTextBox1.Text += "Snapshot";
                     else
                         HotkeyTextBox1.Text += "+Snapshot";
-                    Preferences.Hotkey1 = HotkeyTextBox1.Text;
+                    Preferences.HotkeyText = HotkeyTextBox1.Text;
                     break;
                 case 2:
                     HotkeyTextBox2_KeyDown(null, null);
@@ -357,7 +358,7 @@ namespace imageDeCap
                         HotkeyTextBox2.Text += "Snapshot";
                     else
                         HotkeyTextBox2.Text += "+Snapshot";
-                    Preferences.Hotkey2 = HotkeyTextBox2.Text;
+                    Preferences.HotkeyVideo = HotkeyTextBox2.Text;
                     break;
                 case 3:
                     HotkeyTextBox3_KeyDown(null, null);
@@ -365,7 +366,7 @@ namespace imageDeCap
                         HotkeyTextBox3.Text += "Snapshot";
                     else
                         HotkeyTextBox3.Text += "+Snapshot";
-                    Preferences.Hotkey3 = HotkeyTextBox3.Text;
+                    Preferences.HotkeyImage = HotkeyTextBox3.Text;
                     break;
                 default:
                     break;
@@ -375,13 +376,13 @@ namespace imageDeCap
         private void HotkeyTextBox2_KeyDown(object sender, KeyEventArgs e)
         {
             HotkeyTextBox2.Text = Hotkeys.GetCurrentHotkey();
-            Preferences.Hotkey2 = HotkeyTextBox2.Text;
+            Preferences.HotkeyVideo = HotkeyTextBox2.Text;
             Preferences.Save();
         }
         private void HotkeyTextBox3_KeyDown(object sender, KeyEventArgs e)
         {
             HotkeyTextBox3.Text = Hotkeys.GetCurrentHotkey();
-            Preferences.Hotkey3 = HotkeyTextBox3.Text;
+            Preferences.HotkeyImage = HotkeyTextBox3.Text;
             Preferences.Save();
         }
 
@@ -457,5 +458,11 @@ namespace imageDeCap
             UnregisterHotKey(this.Handle, 0);
         }
 
+        private void SettingsWindow_Shown(object sender, EventArgs e)
+        {
+            // Starting location
+            this.StartPosition = FormStartPosition.Manual;
+            this.Location = new Point(Screen.PrimaryScreen.Bounds.Width/3, Screen.PrimaryScreen.Bounds.Height/3);
+        }
     }
 }

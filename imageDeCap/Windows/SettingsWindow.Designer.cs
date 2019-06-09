@@ -60,7 +60,6 @@
             this.FreezeScreen = new System.Windows.Forms.CheckBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.ResetHotkeysbutton = new System.Windows.Forms.Button();
-            this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
@@ -70,9 +69,6 @@
             this.label10 = new System.Windows.Forms.Label();
             this.CopyLinksToClipboard = new System.Windows.Forms.CheckBox();
             this.OpenInBrowser = new System.Windows.Forms.CheckBox();
-            this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.webmshareButton = new System.Windows.Forms.RadioButton();
-            this.gfycatButton = new System.Windows.Forms.RadioButton();
             this.neverUpload = new System.Windows.Forms.CheckBox();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.label15 = new System.Windows.Forms.Label();
@@ -95,7 +91,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.RecordingFramerate)).BeginInit();
             this.tabPage2.SuspendLayout();
             this.tabPage3.SuspendLayout();
-            this.groupBox5.SuspendLayout();
             this.tabPage4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.imageContainer)).BeginInit();
             this.SuspendLayout();
@@ -144,7 +139,7 @@
             // 
             // FTPpassword
             // 
-            this.FTPpassword.Location = new System.Drawing.Point(128, 205);
+            this.FTPpassword.Location = new System.Drawing.Point(128, 196);
             this.FTPpassword.Name = "FTPpassword";
             this.FTPpassword.PasswordChar = '*';
             this.FTPpassword.Size = new System.Drawing.Size(110, 20);
@@ -154,7 +149,7 @@
             // 
             // FTPUsername
             // 
-            this.FTPUsername.Location = new System.Drawing.Point(9, 205);
+            this.FTPUsername.Location = new System.Drawing.Point(9, 196);
             this.FTPUsername.Name = "FTPUsername";
             this.FTPUsername.Size = new System.Drawing.Size(113, 20);
             this.FTPUsername.TabIndex = 28;
@@ -163,7 +158,7 @@
             // 
             // FTPURL
             // 
-            this.FTPURL.Location = new System.Drawing.Point(9, 179);
+            this.FTPURL.Location = new System.Drawing.Point(9, 172);
             this.FTPURL.Name = "FTPURL";
             this.FTPURL.Size = new System.Drawing.Size(229, 20);
             this.FTPURL.TabIndex = 27;
@@ -176,9 +171,9 @@
             this.button3.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
             this.button3.FlatAppearance.BorderSize = 0;
             this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button3.Location = new System.Drawing.Point(363, 84);
+            this.button3.Location = new System.Drawing.Point(362, 84);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(100, 36);
+            this.button3.Size = new System.Drawing.Size(101, 36);
             this.button3.TabIndex = 26;
             this.button3.Text = "Reset all settings";
             this.toolTip1.SetToolTip(this.button3, "Re-Sets All Preferences and settings, Including First-Time Startup.");
@@ -188,7 +183,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(9, 108);
+            this.label1.Location = new System.Drawing.Point(9, 102);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(69, 13);
             this.label1.TabIndex = 23;
@@ -196,7 +191,7 @@
             // 
             // PastebinSubjectLineTextBox
             // 
-            this.PastebinSubjectLineTextBox.Location = new System.Drawing.Point(84, 105);
+            this.PastebinSubjectLineTextBox.Location = new System.Drawing.Point(84, 99);
             this.PastebinSubjectLineTextBox.Name = "PastebinSubjectLineTextBox";
             this.PastebinSubjectLineTextBox.Size = new System.Drawing.Size(212, 20);
             this.PastebinSubjectLineTextBox.TabIndex = 22;
@@ -208,7 +203,7 @@
             this.EditImages.AutoSize = true;
             this.EditImages.Checked = true;
             this.EditImages.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.EditImages.Location = new System.Drawing.Point(8, 180);
+            this.EditImages.Location = new System.Drawing.Point(8, 158);
             this.EditImages.Name = "EditImages";
             this.EditImages.Size = new System.Drawing.Size(141, 17);
             this.EditImages.TabIndex = 8;
@@ -221,7 +216,7 @@
             this.BackupImages.AutoSize = true;
             this.BackupImages.Checked = true;
             this.BackupImages.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.BackupImages.Location = new System.Drawing.Point(8, 112);
+            this.BackupImages.Location = new System.Drawing.Point(8, 107);
             this.BackupImages.Name = "BackupImages";
             this.BackupImages.Size = new System.Drawing.Size(168, 17);
             this.BackupImages.TabIndex = 5;
@@ -234,7 +229,7 @@
             this.SaveImagesBrowseButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
             this.SaveImagesBrowseButton.FlatAppearance.BorderSize = 0;
             this.SaveImagesBrowseButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.SaveImagesBrowseButton.Location = new System.Drawing.Point(238, 41);
+            this.SaveImagesBrowseButton.Location = new System.Drawing.Point(238, 37);
             this.SaveImagesBrowseButton.Name = "SaveImagesBrowseButton";
             this.SaveImagesBrowseButton.Size = new System.Drawing.Size(75, 22);
             this.SaveImagesBrowseButton.TabIndex = 2;
@@ -244,7 +239,7 @@
             // 
             // SaveImagesHereTextBox
             // 
-            this.SaveImagesHereTextBox.Location = new System.Drawing.Point(8, 42);
+            this.SaveImagesHereTextBox.Location = new System.Drawing.Point(8, 38);
             this.SaveImagesHereTextBox.Name = "SaveImagesHereTextBox";
             this.SaveImagesHereTextBox.Size = new System.Drawing.Size(228, 20);
             this.SaveImagesHereTextBox.TabIndex = 1;
@@ -268,9 +263,9 @@
             this.button1.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
             this.button1.FlatAppearance.BorderSize = 0;
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Location = new System.Drawing.Point(363, 216);
+            this.button1.Location = new System.Drawing.Point(362, 216);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(100, 36);
+            this.button1.Size = new System.Drawing.Size(101, 36);
             this.button1.TabIndex = 2;
             this.button1.Text = "Close";
             this.button1.UseVisualStyleBackColor = true;
@@ -279,7 +274,7 @@
             // DisableNotifications
             // 
             this.DisableNotifications.AutoSize = true;
-            this.DisableNotifications.Location = new System.Drawing.Point(8, 159);
+            this.DisableNotifications.Location = new System.Drawing.Point(8, 141);
             this.DisableNotifications.Name = "DisableNotifications";
             this.DisableNotifications.Size = new System.Drawing.Size(123, 17);
             this.DisableNotifications.TabIndex = 5;
@@ -290,7 +285,7 @@
             // AlsoFTPTextFilesBox
             // 
             this.AlsoFTPTextFilesBox.AutoSize = true;
-            this.AlsoFTPTextFilesBox.Location = new System.Drawing.Point(128, 154);
+            this.AlsoFTPTextFilesBox.Location = new System.Drawing.Point(110, 154);
             this.AlsoFTPTextFilesBox.Name = "AlsoFTPTextFilesBox";
             this.AlsoFTPTextFilesBox.Size = new System.Drawing.Size(136, 17);
             this.AlsoFTPTextFilesBox.TabIndex = 8;
@@ -325,19 +320,19 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.SaveImagesBrowseButton);
+            this.tabPage1.Controls.Add(this.SaveImagesHereTextBox);
+            this.tabPage1.Controls.Add(this.RecordingFramerate);
+            this.tabPage1.Controls.Add(this.EditImages);
+            this.tabPage1.Controls.Add(this.DisableNotifications);
             this.tabPage1.Controls.Add(this.label8);
             this.tabPage1.Controls.Add(this.label3);
             this.tabPage1.Controls.Add(this.SaveImages);
-            this.tabPage1.Controls.Add(this.SaveImagesHereTextBox);
-            this.tabPage1.Controls.Add(this.SaveImagesBrowseButton);
             this.tabPage1.Controls.Add(this.label14);
             this.tabPage1.Controls.Add(this.label9);
-            this.tabPage1.Controls.Add(this.RecordingFramerate);
             this.tabPage1.Controls.Add(this.CopyImageToClipboard);
-            this.tabPage1.Controls.Add(this.EditImages);
             this.tabPage1.Controls.Add(this.BackupImages);
             this.tabPage1.Controls.Add(this.FreezeScreen);
-            this.tabPage1.Controls.Add(this.DisableNotifications);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
@@ -370,7 +365,7 @@
             this.label14.Cursor = System.Windows.Forms.Cursors.Hand;
             this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label14.ForeColor = System.Drawing.Color.RoyalBlue;
-            this.label14.Location = new System.Drawing.Point(169, 113);
+            this.label14.Location = new System.Drawing.Point(169, 108);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(31, 13);
             this.label14.TabIndex = 41;
@@ -380,15 +375,16 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(54, 204);
+            this.label9.Location = new System.Drawing.Point(55, 179);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(106, 13);
+            this.label9.Size = new System.Drawing.Size(135, 13);
             this.label9.TabIndex = 35;
-            this.label9.Text = "Recording framerate.";
+            this.label9.Text = "Target recording framerate.";
             // 
             // RecordingFramerate
             // 
-            this.RecordingFramerate.Location = new System.Drawing.Point(7, 201);
+            this.RecordingFramerate.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.RecordingFramerate.Location = new System.Drawing.Point(8, 176);
             this.RecordingFramerate.Maximum = new decimal(new int[] {
             60,
             0,
@@ -413,7 +409,7 @@
             // CopyImageToClipboard
             // 
             this.CopyImageToClipboard.AutoSize = true;
-            this.CopyImageToClipboard.Location = new System.Drawing.Point(8, 136);
+            this.CopyImageToClipboard.Location = new System.Drawing.Point(8, 124);
             this.CopyImageToClipboard.Name = "CopyImageToClipboard";
             this.CopyImageToClipboard.Size = new System.Drawing.Size(247, 17);
             this.CopyImageToClipboard.TabIndex = 9;
@@ -435,7 +431,6 @@
             // tabPage2
             // 
             this.tabPage2.Controls.Add(this.ResetHotkeysbutton);
-            this.tabPage2.Controls.Add(this.label6);
             this.tabPage2.Controls.Add(this.HotkeyTextBox3);
             this.tabPage2.Controls.Add(this.label7);
             this.tabPage2.Controls.Add(this.HotkeyTextBox1);
@@ -455,7 +450,7 @@
             this.ResetHotkeysbutton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
             this.ResetHotkeysbutton.FlatAppearance.BorderSize = 0;
             this.ResetHotkeysbutton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ResetHotkeysbutton.Location = new System.Drawing.Point(250, 6);
+            this.ResetHotkeysbutton.Location = new System.Drawing.Point(6, 114);
             this.ResetHotkeysbutton.Name = "ResetHotkeysbutton";
             this.ResetHotkeysbutton.Size = new System.Drawing.Size(100, 36);
             this.ResetHotkeysbutton.TabIndex = 39;
@@ -463,16 +458,6 @@
             this.toolTip1.SetToolTip(this.ResetHotkeysbutton, "Re-Sets All Preferences and settings, Including First-Time Startup.");
             this.ResetHotkeysbutton.UseVisualStyleBackColor = true;
             this.ResetHotkeysbutton.Click += new System.EventHandler(this.ResetHotkeysbutton_Click);
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(4, 111);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(232, 65);
-            this.label6.TabIndex = 37;
-            this.label6.Text = "Image Editor Hotkeys:\r\nYou can hold down RMB to resize brush or text.\r\nPressing T" +
-    " adds text,\r\nPressing B adds a box,\r\nPressing A adds an arrow";
             // 
             // label7
             // 
@@ -503,6 +488,7 @@
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.FTPURL);
             this.tabPage3.Controls.Add(this.label12);
             this.tabPage3.Controls.Add(this.label11);
             this.tabPage3.Controls.Add(this.PastebinSubjectLineTextBox);
@@ -510,11 +496,9 @@
             this.tabPage3.Controls.Add(this.label10);
             this.tabPage3.Controls.Add(this.checkBoxUploadToFTP);
             this.tabPage3.Controls.Add(this.CopyLinksToClipboard);
-            this.tabPage3.Controls.Add(this.FTPURL);
             this.tabPage3.Controls.Add(this.FTPpassword);
             this.tabPage3.Controls.Add(this.OpenInBrowser);
             this.tabPage3.Controls.Add(this.AlsoFTPTextFilesBox);
-            this.tabPage3.Controls.Add(this.groupBox5);
             this.tabPage3.Controls.Add(this.FTPUsername);
             this.tabPage3.Controls.Add(this.neverUpload);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
@@ -536,7 +520,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(5, 91);
+            this.label11.Location = new System.Drawing.Point(5, 85);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(48, 13);
             this.label11.TabIndex = 47;
@@ -556,7 +540,7 @@
             this.CopyLinksToClipboard.AutoSize = true;
             this.CopyLinksToClipboard.Checked = true;
             this.CopyLinksToClipboard.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.CopyLinksToClipboard.Location = new System.Drawing.Point(8, 62);
+            this.CopyLinksToClipboard.Location = new System.Drawing.Point(8, 52);
             this.CopyLinksToClipboard.Name = "CopyLinksToClipboard";
             this.CopyLinksToClipboard.Size = new System.Drawing.Size(135, 17);
             this.CopyLinksToClipboard.TabIndex = 45;
@@ -567,49 +551,13 @@
             // OpenInBrowser
             // 
             this.OpenInBrowser.AutoSize = true;
-            this.OpenInBrowser.Location = new System.Drawing.Point(8, 39);
+            this.OpenInBrowser.Location = new System.Drawing.Point(8, 35);
             this.OpenInBrowser.Name = "OpenInBrowser";
             this.OpenInBrowser.Size = new System.Drawing.Size(207, 17);
             this.OpenInBrowser.TabIndex = 44;
             this.OpenInBrowser.Text = "Open uploaded image in web browser.";
             this.OpenInBrowser.UseVisualStyleBackColor = true;
             this.OpenInBrowser.CheckedChanged += new System.EventHandler(this.OpenInBrowser_CheckedChanged);
-            // 
-            // groupBox5
-            // 
-            this.groupBox5.Controls.Add(this.webmshareButton);
-            this.groupBox5.Controls.Add(this.gfycatButton);
-            this.groupBox5.Location = new System.Drawing.Point(260, 0);
-            this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(93, 63);
-            this.groupBox5.TabIndex = 32;
-            this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "Gif";
-            this.groupBox5.Visible = false;
-            // 
-            // webmshareButton
-            // 
-            this.webmshareButton.AutoSize = true;
-            this.webmshareButton.Checked = true;
-            this.webmshareButton.Location = new System.Drawing.Point(6, 43);
-            this.webmshareButton.Name = "webmshareButton";
-            this.webmshareButton.Size = new System.Drawing.Size(82, 17);
-            this.webmshareButton.TabIndex = 1;
-            this.webmshareButton.TabStop = true;
-            this.webmshareButton.Text = "Wembshare";
-            this.webmshareButton.UseVisualStyleBackColor = true;
-            this.webmshareButton.CheckedChanged += new System.EventHandler(this.radioButton2_CheckedChanged);
-            // 
-            // gfycatButton
-            // 
-            this.gfycatButton.AutoSize = true;
-            this.gfycatButton.Location = new System.Drawing.Point(7, 20);
-            this.gfycatButton.Name = "gfycatButton";
-            this.gfycatButton.Size = new System.Drawing.Size(56, 17);
-            this.gfycatButton.TabIndex = 0;
-            this.gfycatButton.Text = "Gfycat";
-            this.gfycatButton.UseVisualStyleBackColor = true;
-            this.gfycatButton.CheckedChanged += new System.EventHandler(this.radioButton1_CheckedChanged);
             // 
             // neverUpload
             // 
@@ -757,9 +705,9 @@
             this.button4.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
             this.button4.FlatAppearance.BorderSize = 0;
             this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button4.Location = new System.Drawing.Point(363, 119);
+            this.button4.Location = new System.Drawing.Point(362, 119);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(100, 36);
+            this.button4.Size = new System.Drawing.Size(101, 36);
             this.button4.TabIndex = 32;
             this.button4.Text = "Add to startup";
             this.toolTip1.SetToolTip(this.button4, "Re-Sets All Preferences and settings, Including First-Time Startup.");
@@ -796,18 +744,20 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(464, 254);
             this.Controls.Add(this.button4);
-            this.Controls.Add(this.tabControl1);
-            this.Controls.Add(this.imageContainer);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button1);
+            this.Controls.Add(this.tabControl1);
+            this.Controls.Add(this.imageContainer);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(488, 335);
             this.MinimizeBox = false;
             this.Name = "SettingsWindow";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Settings - ImageDeCap";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SettingsWindow_FormClosing);
             this.Load += new System.EventHandler(this.SettingsWindow_Load);
+            this.Shown += new System.EventHandler(this.SettingsWindow_Shown);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
@@ -816,8 +766,6 @@
             this.tabPage2.PerformLayout();
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
-            this.groupBox5.ResumeLayout(false);
-            this.groupBox5.PerformLayout();
             this.tabPage4.ResumeLayout(false);
             this.tabPage4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.imageContainer)).EndInit();
@@ -870,10 +818,6 @@
         private System.Windows.Forms.CheckBox watermarkCheckbox;
         private System.Windows.Forms.OpenFileDialog ImageFileDialog;
         private System.Windows.Forms.Timer PrintScreenTimer;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.GroupBox groupBox5;
-        private System.Windows.Forms.RadioButton webmshareButton;
-        private System.Windows.Forms.RadioButton gfycatButton;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button ResetHotkeysbutton;
         private System.Windows.Forms.Label label14;

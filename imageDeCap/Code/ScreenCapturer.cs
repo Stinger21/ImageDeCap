@@ -75,10 +75,10 @@ namespace imageDeCap
                                                   $"{name}.txt" });
                 }
 
-                if (Preferences.saveImageAtAll && Directory.Exists(Preferences.SaveImagesHere))
+                if (Preferences.SaveImages && Directory.Exists(Preferences.SaveImagesLocation))
                 {
                     string name = DateTime.UtcNow.ToString("yyyyMMddHHmmssfff");
-                    string whereToSave = $"{Preferences.SaveImagesHere}\\{name}.txt";
+                    string whereToSave = $"{Preferences.SaveImagesLocation}\\{name}.txt";
                     File.WriteAllText(whereToSave, clipboard);
                 }
             }
@@ -122,7 +122,7 @@ namespace imageDeCap
             {
                 if (imageType == Filetype.gif)
                 {
-                    GifEditor editor = new GifEditor(GifImage, CurrentBackCover.topBox.Location.X, CurrentBackCover.topBox.Location.Y, 1000 / CurrentBackCover.FrameTime);
+                    GifEditor editor = new GifEditor(GifImage, CurrentBackCover.topBox.Location.X, CurrentBackCover.topBox.Location.Y, 1000 / CurrentBackCover.RecordedTime);
                     editor.Show();
                     editor.FormClosed += EditorDone;
                 }
@@ -135,9 +135,6 @@ namespace imageDeCap
             }
             else
             {
-                //if (imageType == Filetype.gif)
-                //    FileData = GifEditor.VideoFromFrames(GifImage, 1000 / CurrentBackCover.FrameTime);
-
                 // If it's a gif make save the default :>
                 NewImageEditor.EditorResult EditorResult = NewImageEditor.EditorResult.Upload;
                 if(imageType == Filetype.gif)
@@ -197,7 +194,7 @@ namespace imageDeCap
             // compress video
             if (imageType == Filetype.gif)
             {
-                FileData = GifEditor.VideoFromFrames(GifImage, 1000 / CurrentBackCover.FrameTime);
+                FileData = GifEditor.VideoFromFrames(GifImage, 1000 / CurrentBackCover.RecordedTime);
                 foreach (var v in CurrentBackCover.gEnc) { v.Dispose(); }
                 CurrentBackCover.gEnc.Clear();
             }
@@ -213,9 +210,9 @@ namespace imageDeCap
                 Extension = MainWindow.videoFormat.Replace(".", "");
             }
 
-            if (Preferences.saveImageAtAll)
+            if (Preferences.SaveImages)
             {
-                string directory_path = Path.GetFullPath(Environment.ExpandEnvironmentVariables(Preferences.SaveImagesHere));
+                string directory_path = Path.GetFullPath(Environment.ExpandEnvironmentVariables(Preferences.SaveImagesLocation));
                 string file_path = Path.Combine(directory_path, $"{SaveFileName}.{Extension}");
                 try
                 {

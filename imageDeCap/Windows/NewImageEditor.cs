@@ -106,7 +106,9 @@ namespace imageDeCap
                 Editor.Ctrl = true;
             if (System.Windows.Input.Keyboard.IsKeyDown(System.Windows.Input.Key.LeftShift))
                 Editor.Shift = true;
-            
+
+            Editor.MouseMove(new Vector2(mousePos));
+
             if (Editor.LastLMBIsDown != Editor.LMBIsDown)
             {
                 if(Editor.LMBIsDown)
@@ -126,7 +128,6 @@ namespace imageDeCap
                 Editor.LastRMBIsDown = Editor.RMBIsDown;
                 return;
             }
-            Editor.MouseMove(new Vector2(mousePos));
         }
         
 
@@ -296,6 +297,7 @@ namespace imageDeCap
         Vector2 BrushLocation;
         Vector2 LastBrushLocation;
         Vector2 MousePosition;
+        Vector2 LastMousePosition;
 
         Vector2 MouseDownLocation;
 
@@ -408,7 +410,7 @@ namespace imageDeCap
             }
             if (State == EditorState.Drawing)
             {
-                if (LMBIsDown)
+                if (LMBIsDown && LastLMBIsDown)
                 {
                     float Distance = Vector2.Distance(BrushLocation, MousePosition);
                     if (Distance > Preferences.BrushSmoothingDistance)
@@ -418,7 +420,11 @@ namespace imageDeCap
                     }
                     LastBrushLocation = BrushLocation;
                 }
-                else if (RMBIsDown)
+                else if(!LMBIsDown && LastLMBIsDown) // Mouse up
+                {
+                    DrawLine(TempImage, LastBrushLocation, MousePosition, Owner.CurrentSwatch.BackColor, GammaCorrectedBrushSize);
+                }
+                else if (RMBIsDown && LastRMBIsDown)
                 {
                     float BrushValue = (Position.X - MouseDownLocation.X) + (Position.Y - MouseDownLocation.Y);
                     BrushDelta = BrushValue - LastBrushValue;
@@ -439,7 +445,7 @@ namespace imageDeCap
             {
                 DrawImage(ref EditedImage, ref TempImage);
                 DrawText(TempImage, Owner.TextFieldInput.Text, MousePosition, 1.0f);
-                if (RMBIsDown)
+                if (RMBIsDown && LastRMBIsDown)
                 {
                     float BrushValue = (Position.X - MouseDownLocation.X) + (Position.Y - MouseDownLocation.Y);
                     BrushDelta = BrushValue - LastBrushValue;
@@ -451,7 +457,7 @@ namespace imageDeCap
             }
             else if (State == EditorState.Box)
             {
-                if (LMBIsDown)
+                if (LMBIsDown && LastLMBIsDown)
                 {
                     DrawImage(ref EditedImage, ref TempImage);
                     DrawBox(TempImage, ItemStartPosition, MousePosition);
@@ -459,7 +465,7 @@ namespace imageDeCap
             }
             else if (State == EditorState.Arrow)
             {
-                if (LMBIsDown)
+                if (LMBIsDown && LastLMBIsDown)
                 {
                     DrawImage(ref EditedImage, ref TempImage);
                     DrawArrow(TempImage, ItemStartPosition, MousePosition);
@@ -479,6 +485,8 @@ namespace imageDeCap
             GammaCorrectedBrushSize = (BrushSize * BrushSize) * 0.01f;
             GammaCorrectedTextSize = (TextSize * TextSize) * 0.01f;
             Owner.ImageContainer.Refresh();
+
+            LastMousePosition = MousePosition;
         }
 
         private void DrawImage(ref Image Input, ref Image TargetImage)
@@ -511,10 +519,10 @@ namespace imageDeCap
 
         private void DrawBox(Image TargetImage, Vector2 P1, Vector2 P2)
         {
-            DrawLine(TargetImage, P1, new Vector2(P1.X, P2.Y), Owner.CurrentSwatch.BackColor, 3);
-            DrawLine(TargetImage, P1, new Vector2(P2.X, P1.Y), Owner.CurrentSwatch.BackColor, 3);
-            DrawLine(TargetImage, P2, new Vector2(P1.X, P2.Y), Owner.CurrentSwatch.BackColor, 3);
-            DrawLine(TargetImage, P2, new Vector2(P2.X, P1.Y), Owner.CurrentSwatch.BackColor, 3);
+            DrawLine(TargetImage, P1, new Vector2(P1.X, P2.Y), Owner.CurrentSwatch.BackColor, GammaCorrectedBrushSize);
+            DrawLine(TargetImage, P1, new Vector2(P2.X, P1.Y), Owner.CurrentSwatch.BackColor, GammaCorrectedBrushSize);
+            DrawLine(TargetImage, P2, new Vector2(P1.X, P2.Y), Owner.CurrentSwatch.BackColor, GammaCorrectedBrushSize);
+            DrawLine(TargetImage, P2, new Vector2(P2.X, P1.Y), Owner.CurrentSwatch.BackColor, GammaCorrectedBrushSize);
         }
 
         private void DrawText(Image TargetImage, string text, Vector2 Location, float opacity = 1.0f)
@@ -538,7 +546,7 @@ namespace imageDeCap
             {
                 Pen MyPen = new Pen(color)
                 {
-                    Width = size,
+                    Width = GammaCorrectedBrushSize,
                     EndCap = System.Drawing.Drawing2D.LineCap.Round,
                     StartCap = System.Drawing.Drawing2D.LineCap.Round
                 };
