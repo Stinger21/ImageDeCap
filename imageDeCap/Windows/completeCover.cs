@@ -39,6 +39,17 @@ namespace imageDeCap
         public ScreenshotRegionLine ruleOfThirdsBox4 = new ScreenshotRegionLine(true);
 
         public Magnifier magnifier;
+
+        bool FreezeScreen;
+        bool Gif = false;
+        bool EscapePressed = false;
+        bool LmbDown = false;
+        bool LmbUp = false;
+        bool Lmb = false;
+        bool wasPressed = false;
+        bool AltKeyDown = false;
+        bool _Activated = false;
+        
         public CompleteCover(bool Gif = false)
         {
             InitializeComponent();
@@ -50,16 +61,6 @@ namespace imageDeCap
             if (Gif)
                 FreezeScreen = false;
         }
-
-        bool FreezeScreen;
-        bool Gif = false;
-        bool EscapePressed = false;
-        bool LmbDown = false;
-        bool LmbUp = false;
-        bool Lmb = false;
-        bool wasPressed = false;
-        bool AltKeyDown = false;
-        bool _Activated = false;
 
         public void AfterShow(Bitmap background, bool isGif)
         {
@@ -118,10 +119,12 @@ namespace imageDeCap
         {
             //Updatee();
         }
+
         private void PictureBox1_MouseMove(object sender, MouseEventArgs e)
         {
             //Updatee();
         }
+
         private void BoxMovementTimer_Tick(object sender, EventArgs e)
         {
             Updatee();
@@ -251,6 +254,7 @@ namespace imageDeCap
             image.Save(ms, format);
             return ms.ToArray();
         }
+
         // this is called from Form1's updateSelectedArea when it considers itself done figuring out what region to capture.
         public void CompletedSelection(bool ForceEdit = false)
         {
@@ -331,8 +335,7 @@ namespace imageDeCap
             EscapePressed = true;
             StopRecordingGif(this, true);
         }
-
-
+        
         public void StartRecordingGif(bool ForceEdit)
         {
             GifCaptureTimer.Interval = (int)(1000.0f / Preferences.RecordingFramerate);
@@ -354,6 +357,7 @@ namespace imageDeCap
             ruleOfThirdsBox3.Hide();
             ruleOfThirdsBox4.Hide();
         }
+
         public void StopRecordingGif(CompleteCover cover, bool abort)
         {
             if (GifCaptureTimer.Enabled)
@@ -383,6 +387,7 @@ namespace imageDeCap
                 Program.hotkeysEnabled = true;
             }
         }
+
         private void GifCaptureTimer_Tick(object sender, EventArgs e)
         {
             TimeSpan DeltaTime = DateTime.Now - LastTime;
@@ -415,11 +420,23 @@ namespace imageDeCap
 
             TimeLabel.Text = $"Time: {seconds}.{csecs}";
             FramesLabel.Text = $"Frames: {FramesCaptured + 1}";
-            MemoryLabel.Text = $"Memory Usage:{(gEnc.Count * width * height * 8) / 1000000} MB";
+            MemoryLabel.Text = $"Memory Usage: {(gEnc.Count * width * height * 8) / 1000000} MB";
             TargetFramerateLabel.Text = $"TF: {Preferences.RecordingFramerate}";
             ActualFramerateLabel.Text = $"RF: {((FramesCaptured + 1) / RecordedTimeSeconds)}";
 
             FramesCaptured++;
+        }
+        
+        // Makes the form not show up in alt-tab
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams cp = base.CreateParams;
+                // turn on WS_EX_TOOLWINDOW style bit
+                cp.ExStyle |= 0x80;
+                return cp;
+            }
         }
     }
 }

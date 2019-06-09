@@ -30,7 +30,7 @@
         {
             this.SuspendLayout();
             // 
-            // boxOfWhy
+            // ScreenshotRegionLine
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -38,7 +38,7 @@
             this.ClientSize = new System.Drawing.Size(10, 10);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.HelpButton = true;
-            this.Name = "BoundingBox";
+            this.Name = "ScreenshotRegionLine";
             this.Opacity = 0.1D;
             this.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.ShowInTaskbar = false;

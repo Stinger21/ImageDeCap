@@ -46,7 +46,6 @@
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.panel1 = new System.Windows.Forms.Panel();
-            this.InfoText = new System.Windows.Forms.Label();
             this.ImageContainer = new System.Windows.Forms.PictureBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel1.SuspendLayout();
@@ -228,7 +227,6 @@
             // panel1
             // 
             this.panel1.AutoScroll = true;
-            this.panel1.Controls.Add(this.InfoText);
             this.panel1.Controls.Add(this.ImageContainer);
             this.panel1.Controls.Add(this.TextFieldInput);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -237,16 +235,6 @@
             this.panel1.Size = new System.Drawing.Size(473, 396);
             this.panel1.TabIndex = 1;
             this.panel1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.Panel1_MouseClick);
-            // 
-            // InfoText
-            // 
-            this.InfoText.AutoSize = true;
-            this.InfoText.Location = new System.Drawing.Point(116, 122);
-            this.InfoText.Name = "InfoText";
-            this.InfoText.Size = new System.Drawing.Size(226, 195);
-            this.InfoText.TabIndex = 35;
-            this.InfoText.Text = resources.GetString("InfoText.Text");
-            this.InfoText.Visible = false;
             // 
             // ImageContainer
             // 
@@ -321,7 +309,6 @@
         public System.Windows.Forms.Button PickButton;
         public System.Windows.Forms.Button UndoButton;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Label InfoText;
         public System.Windows.Forms.PictureBox ImageContainer;
         private System.Windows.Forms.Panel panel2;
     }

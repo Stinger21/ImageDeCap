@@ -129,24 +129,6 @@
   <metadata name="colorDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>282, 17</value>
   </metadata>
-  <data name="InfoText.Text" xml:space="preserve">
-    <value>Click Drag Right Mouse button to resize brush.
-Shift-Click to draw straight lines
-Hotkeys:
-        T: Add Text
-        B: Add Box
-        A: Add Arrow
-
-        Ctrl+Z: Undo
-        Alt: Pick Color
-        Ctrl+C: Copy current image.
-
-        Enter: Done
-
-        
-        
-</value>
-  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>

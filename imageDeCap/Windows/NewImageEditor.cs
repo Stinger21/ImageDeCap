@@ -265,7 +265,7 @@ namespace imageDeCap
         }
         private void HelpButton_Click(object sender, EventArgs e)
         {
-            InfoText.Visible = !InfoText.Visible;
+            //InfoText.Visible = !InfoText.Visible;
         }
     }
 

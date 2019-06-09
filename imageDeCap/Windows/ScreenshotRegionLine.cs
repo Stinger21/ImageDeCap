@@ -40,5 +40,17 @@ namespace imageDeCap
             else
                 base.WndProc(ref m);
         }
+
+        // Makes the form not show up in alt-tab
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams cp = base.CreateParams;
+                // turn on WS_EX_TOOLWINDOW style bit
+                cp.ExStyle |= 0x80;
+                return cp;
+            }
+        }
     }
 }

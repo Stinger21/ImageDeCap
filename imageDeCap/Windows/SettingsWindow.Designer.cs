@@ -176,7 +176,7 @@
             this.button3.Size = new System.Drawing.Size(101, 36);
             this.button3.TabIndex = 26;
             this.button3.Text = "Reset all settings";
-            this.toolTip1.SetToolTip(this.button3, "Re-Sets All Preferences and settings, Including First-Time Startup.");
+            this.toolTip1.SetToolTip(this.button3, "Resets all preferences and settings, including first-time startup.");
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
@@ -455,7 +455,6 @@
             this.ResetHotkeysbutton.Size = new System.Drawing.Size(100, 36);
             this.ResetHotkeysbutton.TabIndex = 39;
             this.ResetHotkeysbutton.Text = "Reset hotkeys";
-            this.toolTip1.SetToolTip(this.ResetHotkeysbutton, "Re-Sets All Preferences and settings, Including First-Time Startup.");
             this.ResetHotkeysbutton.UseVisualStyleBackColor = true;
             this.ResetHotkeysbutton.Click += new System.EventHandler(this.ResetHotkeysbutton_Click);
             // 
@@ -710,7 +709,7 @@
             this.button4.Size = new System.Drawing.Size(101, 36);
             this.button4.TabIndex = 32;
             this.button4.Text = "Add to startup";
-            this.toolTip1.SetToolTip(this.button4, "Re-Sets All Preferences and settings, Including First-Time Startup.");
+            this.toolTip1.SetToolTip(this.button4, "Adds the program to startup.");
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
