@@ -62,7 +62,7 @@ namespace imageDeCap
             
             MainPictureBox.Image = FinalImage;
             
-            CaptureResolution.Text = $"{ScreenCapturer.CurrentBackCover.tempWidth + 1}x{ScreenCapturer.CurrentBackCover.tempHeight + 1}";
+            CaptureResolution.Text = $"{ScreenCapturer.CurrentBackCover.SelectedRegion.Width + 1}x{ScreenCapturer.CurrentBackCover.SelectedRegion.Height + 1}";
         }
         
         private void Magnifier_Load(object sender, EventArgs e)

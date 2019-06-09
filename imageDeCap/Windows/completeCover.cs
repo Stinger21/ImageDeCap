@@ -15,20 +15,23 @@ namespace imageDeCap
 {
     public partial class CompleteCover : Form
     {
-        public int X = 0;
-        public int Y = 0;
-        public int tempX = 0;
-        public int tempY = 0;
-        public int tempWidth = 0;
-        public int tempHeight = 0;
-        public int LastCursorX = 0;
-        public int LastCursorY = 0;
+        // Final rectangle representing the VirtualScreen region selected
+        public Rectangle SelectedRegion;
 
-        public List<Bitmap> gEnc = new List<Bitmap>();
-        DateTime LastTime;
+        // Initial location you clicked.
+        int BoxStartX = 0;
+        int BoxStartY = 0;
+
+        // Vector from mouse position to box corner.
+        int BoxDeltaX = 0;
+        int BoxDeltaY = 0;
+
+        public List<Bitmap> CapturedClpFrames = new List<Bitmap>();
         public int RecordedTime = 0;
+        public int RecorderFramerate = 0;
         int FramesCaptured = 0;
-        public int ActualFramerate = 0;
+        DateTime LastTime;
+
         public ScreenshotRegionLine topBox = new ScreenshotRegionLine();
         public ScreenshotRegionLine bottomBox = new ScreenshotRegionLine();
         public ScreenshotRegionLine leftBox = new ScreenshotRegionLine();
@@ -43,12 +46,11 @@ namespace imageDeCap
         bool FreezeScreen;
         bool Gif = false;
         bool EscapePressed = false;
-        bool LmbDown = false;
-        bool LmbUp = false;
-        bool Lmb = false;
+        
         bool wasPressed = false;
         bool AltKeyDown = false;
-        
+        bool ShiftKeyDown = false;
+
         public CompleteCover(bool Gif = false)
         {
             InitializeComponent();
@@ -110,8 +112,8 @@ namespace imageDeCap
             SetupBox(ruleOfThirdsBox3, false);
             SetupBox(ruleOfThirdsBox4, false);
 
-            tempWidth = 0;
-            tempHeight = 0;
+            SelectedRegion.Width = 0;
+            SelectedRegion.Height = 0;
         }
 
         private void SetupBox(ScreenshotRegionLine box, bool grey)
@@ -126,17 +128,22 @@ namespace imageDeCap
 
         private void CompleteCover_MouseMove(object sender, MouseEventArgs e)
         {
+
         }
 
         private void PictureBox1_MouseMove(object sender, MouseEventArgs e)
         {
+
         }
 
         private void BoxMovementTimer_Tick(object sender, EventArgs e)
         {
             UpdateSelection();
         }
-
+        double Frac(double a)
+        {
+            return a - Math.Floor(a);
+        }
         public void UpdateSelection()
         {
             Cursor.Current = Cursors.Cross;
@@ -144,7 +151,9 @@ namespace imageDeCap
             if (GifCaptureTimer.Enabled) // Don't update if we are capturing a gif
                 return;
 
-            Lmb = MouseButtons == MouseButtons.Left;
+            bool LmbUp = false;
+            bool LmbDown = false;
+            bool LmbIsDown = MouseButtons == MouseButtons.Left;
             if(wasPressed != (MouseButtons == MouseButtons.Left))
             {
                 LmbUp = wasPressed;
@@ -166,46 +175,58 @@ namespace imageDeCap
             
             if (LmbDown)
             {
-                tempX = Cursor.Position.X;
-                tempY = Cursor.Position.Y;
+                BoxStartX = Cursor.Position.X;
+                BoxStartY = Cursor.Position.Y;
             }
 
             // Holding M1
-            if (Lmb)
+            if (LmbIsDown)
             {
-                // Magic numbers
-                topBox.SetBounds(       X - 3 + 1,                Y - 3 + 1,              tempWidth + 3,      0);
-                leftBox.SetBounds(      X - 3 + 1,                Y - 1 + 1,              0,                  tempHeight + 1);
-                bottomBox.SetBounds(    X - 3 + 1,                tempHeight + Y + 1,     tempWidth + 5,      0);
-                rightBox.SetBounds(     tempWidth + X + 1,        Y - 3 + 1,              0,                  tempHeight + 3);
+                int MouseX = Cursor.Position.X;
+                int MouseY = Cursor.Position.Y;
 
-                if (Preferences.UseRuleOfThirds)
+                if (ShiftKeyDown)
                 {
-                    ruleOfThirdsBox1.SetBounds(X + (tempWidth / 3), Y, 0, tempHeight);
-                    ruleOfThirdsBox2.SetBounds(X + (tempWidth / 3) * 2, Y, 0, tempHeight);
-                    ruleOfThirdsBox3.SetBounds(X, Y + (tempHeight / 3), tempWidth, 0);
-                    ruleOfThirdsBox4.SetBounds(X, Y + (tempHeight / 3) * 2, tempWidth, 0);
+                    int MXD = MouseX - BoxStartX;
+                    int MYD = MouseY - BoxStartY;
+
+                    // angle value is 0 at all 90 degree angles and 1 at all 45 degree angles.
+                    float angle = (float)Math.Abs(Frac(((Math.Atan2(MXD, MYD) + 0.785380) / 3.141521 / 2.0) * 4.0) * 2.0 - 1.0);
+
+                    int Average = (int)((float)(Math.Abs(MXD) + Math.Abs(MYD)) / (angle + 1.0));
+                    MouseX = (Average * Math.Sign(MXD)) + BoxStartX;
+                    MouseY = (Average * Math.Sign(MYD)) + BoxStartY;
                 }
-
-                tempWidth = Math.Abs(Cursor.Position.X - tempX);
-                tempHeight = Math.Abs(Cursor.Position.Y - tempY);
-
-                X = tempX;
-                Y = tempY;
-
-                if ((Cursor.Position.Y - tempY) < 0)
-                    Y = tempY + (Cursor.Position.Y - tempY);
-
-                if ((Cursor.Position.X - tempX) < 0)
-                    X = tempX + (Cursor.Position.X - tempX);
 
                 if (AltKeyDown)
                 {
-                    tempX += Cursor.Position.X - LastCursorX;
-                    tempY += Cursor.Position.Y - LastCursorY;
+                    BoxStartX  = Cursor.Position.X + BoxDeltaX;
+                    BoxStartY  = Cursor.Position.Y + BoxDeltaY;
                 }
-                LastCursorX = Cursor.Position.X;
-                LastCursorY = Cursor.Position.Y;
+
+                // Get vector from 
+                BoxDeltaX = BoxStartX - Cursor.Position.X;
+                BoxDeltaY = BoxStartY - Cursor.Position.Y;
+
+                SelectedRegion = Rectangle.FromLTRB(Math.Min(MouseX, BoxStartX),
+                                                    Math.Min(MouseY, BoxStartY),
+                                                    Math.Max(MouseX, BoxStartX),
+                                                    Math.Max(MouseY, BoxStartY));
+                
+                // Magic numbers
+                topBox.SetBounds(       SelectedRegion.X - 3 + 1,                SelectedRegion.Y - 3 + 1,              SelectedRegion.Width + 3,      0);
+                leftBox.SetBounds(      SelectedRegion.X - 3 + 1,                SelectedRegion.Y - 1 + 1,              0,                  SelectedRegion.Height + 1);
+                bottomBox.SetBounds(    SelectedRegion.X - 3 + 1,                SelectedRegion.Height + SelectedRegion.Y + 1,     SelectedRegion.Width + 5,      0);
+                rightBox.SetBounds(     SelectedRegion.Width + SelectedRegion.X + 1,        SelectedRegion.Y - 3 + 1,              0,                  SelectedRegion.Height + 3);
+
+                if (Preferences.UseRuleOfThirds)
+                {
+                    ruleOfThirdsBox1.SetBounds(SelectedRegion.X + (SelectedRegion.Width / 3), SelectedRegion.Y, 0, SelectedRegion.Height);
+                    ruleOfThirdsBox2.SetBounds(SelectedRegion.X + (SelectedRegion.Width / 3) * 2, SelectedRegion.Y, 0, SelectedRegion.Height);
+                    ruleOfThirdsBox3.SetBounds(SelectedRegion.X, SelectedRegion.Y + (SelectedRegion.Height / 3), SelectedRegion.Width, 0);
+                    ruleOfThirdsBox4.SetBounds(SelectedRegion.X, SelectedRegion.Y + (SelectedRegion.Height / 3) * 2, SelectedRegion.Width, 0);
+                }
+
             }
 
             if (EscapePressed)
@@ -229,8 +250,6 @@ namespace imageDeCap
             
             EscapePressed = false;
             wasPressed = MouseButtons == MouseButtons.Left;
-            LmbDown = false;
-            LmbUp = false;
         }
         
         private void CompleteCover_KeyDown(object sender, KeyEventArgs e)
@@ -246,11 +265,22 @@ namespace imageDeCap
             {
                 AltKeyDown = true;
             }
+            if(e.Shift)
+            {
+                ShiftKeyDown = true;
+            }
         }
 
         private void CompleteCover_KeyUp(object sender, KeyEventArgs e)
         {
-            AltKeyDown = false;
+            if (!e.Alt)
+            {
+                AltKeyDown = false;
+            }
+            if (!e.Shift)
+            {
+                ShiftKeyDown = false;
+            }
         }
 
         public static byte[] GetBytes(Image image, ImageFormat format)
@@ -281,15 +311,15 @@ namespace imageDeCap
                 ruleOfThirdsBox3.Hide();
                 ruleOfThirdsBox4.Hide();
 
-                if (tempWidth > 0 && tempHeight > 0) // Make sure we actually selected a region to take a screenshot of.
+                if (SelectedRegion.Width > 0 && SelectedRegion.Height > 0) // Make sure we actually selected a region to take a screenshot of.
                 {
                     Utilities.PlaySound("snip.wav");
                     Bitmap result = ScreenCapturer.Capture(
                         ScreenCaptureMode.Bounds, 
-                        X, 
-                        Y,
-                        tempWidth + 1, 
-                        tempHeight + 1);
+                        SelectedRegion.X, 
+                        SelectedRegion.Y,
+                        SelectedRegion.Width + 1, 
+                        SelectedRegion.Height + 1);
 
                     if (FreezeScreen)
                         this.Close();
@@ -306,19 +336,19 @@ namespace imageDeCap
             else
             {
                 // From here, we fire up gif recording in Form1's main loop :D
-                if (tempWidth > 0 && tempHeight > 0)
+                if (SelectedRegion.Width > 0 && SelectedRegion.Height > 0)
                 {
                     magnifier.Close();
                     StartRecordingGif(ForceEdit);
 
-                    this.Location = new Point(X - 2, Y + tempHeight + 3);
-                    this.Width = Math.Max(tempWidth, 300);
+                    this.Location = new Point(SelectedRegion.X - 2, SelectedRegion.Y + SelectedRegion.Height + 3);
+                    this.Width = Math.Max(SelectedRegion.Width, 300);
                     this.Height = 50;
                     
                     // If it's near the bottom of the screen
                     if(this.Location.Y > Screen.FromControl(this).Bounds.Height - 200)
                     {
-                        this.Location = new Point(X - 2, Y - 50 + 3);
+                        this.Location = new Point(SelectedRegion.X - 2, SelectedRegion.Y - 50 + 3);
                     }
 
                     this.ResumeLayout(false);
@@ -393,7 +423,7 @@ namespace imageDeCap
                     Utilities.PlaySound("snip.wav");
 
                     // Feed in through the tag weather the user right-clicked to force editor even when it's disabled.
-                    ScreenCapturer.UploadImageData(new byte[] { }, Filetype.gif, false, (bool)GifCaptureTimer.Tag, gEnc.ToArray());
+                    ScreenCapturer.UploadImageData(new byte[] { }, Filetype.gif, false, (bool)GifCaptureTimer.Tag, CapturedClpFrames.ToArray());
                 }
 
                 ScreenCapturer.IsTakingSnapshot = false;
@@ -413,8 +443,8 @@ namespace imageDeCap
             RecordedTime += DeltaTime.Milliseconds;
 
 
-            int width  = tempWidth + 1;
-            int height = tempHeight + 1;
+            int width  = SelectedRegion.Width + 1;
+            int height = SelectedRegion.Height + 1;
             if (width % 2 == 1)
                 width = width - 1;
             if (height % 2 == 1)
@@ -422,12 +452,12 @@ namespace imageDeCap
             // Capture Bitmap
             Bitmap b = ScreenCapturer.Capture(
                 ScreenCaptureMode.Bounds,
-                X - 1,
-                Y - 1,
+                SelectedRegion.X - 1,
+                SelectedRegion.Y - 1,
                 width,
                 height, true);
 
-            gEnc.Add(b);
+            CapturedClpFrames.Add(b);
 
             //int minutes = (RecordedTime / 1000 / 60) % 60;
             int seconds = (RecordedTime / 1000);
@@ -436,10 +466,10 @@ namespace imageDeCap
 
             TimeLabel.Text = $"Time: {seconds}.{csecs}";
             FramesLabel.Text = $"Frames: {FramesCaptured + 1}";
-            MemoryLabel.Text = $"Memory Usage: {(gEnc.Count * width * height * 8) / 1000000} MB";
+            MemoryLabel.Text = $"Memory Usage: {(CapturedClpFrames.Count * width * height * 8) / 1000000} MB";
             TargetFramerateLabel.Text = $"TF: {Preferences.RecordingFramerate}";
             ActualFramerateLabel.Text = $"RF: {(int)((FramesCaptured + 1) / RecordedTimeSeconds)}";
-            ActualFramerate = (int)(((float)FramesCaptured + 1.0f) / RecordedTimeSeconds);
+            RecorderFramerate = (int)(((float)FramesCaptured + 1.0f) / RecordedTimeSeconds);
 
             FramesCaptured++;
         }
@@ -455,5 +485,6 @@ namespace imageDeCap
                 return cp;
             }
         }
+
     }
 }

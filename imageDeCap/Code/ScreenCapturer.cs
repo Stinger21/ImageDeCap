@@ -38,15 +38,9 @@ namespace imageDeCap
     public static class ScreenCapturer
     {
 
-
-
-
         public static CompleteCover CurrentBackCover;
         public static bool IsTakingSnapshot = false;
-
-
-
-
+        
         // UPLOADING FUNCTIONS
 
         public static void UploadPastebinClipboard()
@@ -123,7 +117,7 @@ namespace imageDeCap
                 if (imageType == Filetype.gif)
                 {
                     //int framerate = 1000 / CurrentBackCover.RecordedTime;
-                    GifEditor editor = new GifEditor(GifImage, CurrentBackCover.topBox.Location.X, CurrentBackCover.topBox.Location.Y, CurrentBackCover.ActualFramerate);
+                    GifEditor editor = new GifEditor(GifImage, CurrentBackCover.topBox.Location.X, CurrentBackCover.topBox.Location.Y, CurrentBackCover.RecorderFramerate);
                     editor.Show();
                     editor.FormClosed += EditorDone;
                 }
@@ -173,8 +167,8 @@ namespace imageDeCap
         {
             if (EditorResult == NewImageEditor.EditorResult.Quit)
             {
-                foreach (var v in CurrentBackCover.gEnc) { v.Dispose(); }
-                CurrentBackCover.gEnc.Clear();
+                foreach (var v in CurrentBackCover.CapturedClpFrames) { v.Dispose(); }
+                CurrentBackCover.CapturedClpFrames.Clear();
                 return;
             }
 
@@ -196,8 +190,8 @@ namespace imageDeCap
             if (imageType == Filetype.gif)
             {
                 FileData = GifEditor.VideoFromFrames(GifImage, 1000 / CurrentBackCover.RecordedTime);
-                foreach (var v in CurrentBackCover.gEnc) { v.Dispose(); }
-                CurrentBackCover.gEnc.Clear();
+                foreach (var v in CurrentBackCover.CapturedClpFrames) { v.Dispose(); }
+                CurrentBackCover.CapturedClpFrames.Clear();
             }
             if (SavePath != null)
             {
@@ -407,7 +401,7 @@ namespace imageDeCap
                     Bitmap cursorBMP = CaptureCursor(ref cursorX, ref cursorY);
                     if (cursorBMP != null)
                     {
-                        g.DrawImage(cursorBMP, new Rectangle(cursorX - CurrentBackCover.X, cursorY - CurrentBackCover.Y, cursorBMP.Width, cursorBMP.Height));
+                        g.DrawImage(cursorBMP, new Rectangle(cursorX - CurrentBackCover.SelectedRegion.X, cursorY - CurrentBackCover.SelectedRegion.Y, cursorBMP.Width, cursorBMP.Height));
                         g.Flush();
                     }
                 }
