@@ -48,7 +48,6 @@ namespace imageDeCap
         bool Lmb = false;
         bool wasPressed = false;
         bool AltKeyDown = false;
-        bool _Activated = false;
         
         public CompleteCover(bool Gif = false)
         {
@@ -316,6 +315,12 @@ namespace imageDeCap
                     this.Width = Math.Max(tempWidth, 300);
                     this.Height = 50;
                     
+                    // If it's near the bottom of the screen
+                    if(this.Location.Y > Screen.FromControl(this).Bounds.Height - 200)
+                    {
+                        this.Location = new Point(X - 2, Y - 50 + 3);
+                    }
+
                     this.ResumeLayout(false);
                     this.TopMost = true;
 
@@ -398,6 +403,9 @@ namespace imageDeCap
 
         private void GifCaptureTimer_Tick(object sender, EventArgs e)
         {
+            this.BringToFront();
+            this.TopMost = true;
+
             TimeSpan DeltaTime = DateTime.Now - LastTime;
             LastTime = DateTime.Now;
             
