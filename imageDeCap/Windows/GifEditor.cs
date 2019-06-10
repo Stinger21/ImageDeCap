@@ -36,7 +36,7 @@ namespace imageDeCap
         {
             string outpath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\imageDeCap\out.avi";
             string outcompressedpath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\imageDeCap\out" + MainWindow.videoFormat;
-
+            
             VideoWriter.Write(new RecorderParams(outpath, framerate, SharpAvi.KnownFourCCs.Codecs.MotionJpeg, 100, 0, 0, frames[0].Width, frames[0].Height), frames);
 
             var inputFile = new MediaFile { Filename = outpath };

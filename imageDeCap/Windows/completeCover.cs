@@ -28,7 +28,7 @@ namespace imageDeCap
 
         public List<Bitmap> CapturedClpFrames = new List<Bitmap>();
         public int RecordedTime = 0;
-        public int RecorderFramerate = 0;
+        public int RecordedFramerate = 0;
         int FramesCaptured = 0;
         DateTime LastTime;
 
@@ -381,13 +381,11 @@ namespace imageDeCap
         
         public void StartRecordingGif(bool ForceEdit)
         {
-            GifCaptureTimer.Interval = (int)(1000.0f / Preferences.RecordingFramerate);
-            Console.WriteLine(GifCaptureTimer.Interval);
-            Console.WriteLine(Preferences.RecordingFramerate);
             RecordedTime = 0;
             FramesCaptured = 0;
             GifCaptureTimer.Enabled = true;
             GifCaptureTimer.Tag = ForceEdit;
+            GifCaptureTimer.Interval = 1000 / Preferences.RecordingFramerate;
             LastTime = DateTime.Now;
 
             topBox.BackColor = Color.Green;
@@ -466,10 +464,10 @@ namespace imageDeCap
 
             TimeLabel.Text = $"Time: {seconds}.{csecs}";
             FramesLabel.Text = $"Frames: {FramesCaptured + 1}";
-            MemoryLabel.Text = $"Memory Usage: {(CapturedClpFrames.Count * width * height * 8) / 1000000} MB";
+            MemoryLabel.Text = $"Memory Usage: {(FramesCaptured * SelectedRegion.Width * SelectedRegion.Height * 8L) / 1000000L} MB"; // marked L (int64) because the standard int32's would overflow.
             TargetFramerateLabel.Text = $"TF: {Preferences.RecordingFramerate}";
             ActualFramerateLabel.Text = $"RF: {(int)((FramesCaptured + 1) / RecordedTimeSeconds)}";
-            RecorderFramerate = (int)(((float)FramesCaptured + 1.0f) / RecordedTimeSeconds);
+            RecordedFramerate = (int)(((float)FramesCaptured + 1.0f) / RecordedTimeSeconds);
 
             FramesCaptured++;
         }

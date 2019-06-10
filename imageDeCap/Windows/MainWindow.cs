@@ -273,7 +273,7 @@ namespace imageDeCap
 
         private void AboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if(about?.Visible == true)
+            if (about?.Visible == true)
             {
                 about.Activate();
             }

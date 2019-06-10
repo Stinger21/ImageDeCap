@@ -19,7 +19,7 @@ namespace imageDeCap
         public static bool CopyImageToClipboard = true;
         public static bool DisableNotifications = false;
         public static bool DisableSoundEffects = false;
-        public static int RecordingFramerate = 24;
+        public static int RecordingFramerate = 32;
         public static bool BackupImages = true;
 
         // Hotkeys

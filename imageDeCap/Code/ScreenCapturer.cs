@@ -117,7 +117,7 @@ namespace imageDeCap
                 if (imageType == Filetype.gif)
                 {
                     //int framerate = 1000 / CurrentBackCover.RecordedTime;
-                    GifEditor editor = new GifEditor(GifImage, CurrentBackCover.topBox.Location.X, CurrentBackCover.topBox.Location.Y, CurrentBackCover.RecorderFramerate);
+                    GifEditor editor = new GifEditor(GifImage, CurrentBackCover.topBox.Location.X, CurrentBackCover.topBox.Location.Y, CurrentBackCover.RecordedFramerate);
                     editor.Show();
                     editor.FormClosed += EditorDone;
                 }
@@ -189,7 +189,13 @@ namespace imageDeCap
             // compress video
             if (imageType == Filetype.gif)
             {
-                FileData = GifEditor.VideoFromFrames(GifImage, 1000 / CurrentBackCover.RecordedTime);
+                if(CurrentBackCover.RecordedFramerate == 0)
+                {
+                    // ERROR, the recorded framerate was 0. o_o
+                    MessageBox.Show("Something went wrong with this recording.", "Framerate was 0.");
+                    return;
+                }
+                FileData = GifEditor.VideoFromFrames(GifImage, CurrentBackCover.RecordedFramerate);
                 foreach (var v in CurrentBackCover.CapturedClpFrames) { v.Dispose(); }
                 CurrentBackCover.CapturedClpFrames.Clear();
             }

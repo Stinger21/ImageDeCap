@@ -360,7 +360,7 @@
             this.RecordingFramerate.TabIndex = 31;
             this.toolTip1.SetToolTip(this.RecordingFramerate, "The framerate will decrease if performance is low.");
             this.RecordingFramerate.Value = new decimal(new int[] {
-            24,
+            32,
             0,
             0,
             0});

@@ -24,20 +24,28 @@ namespace imageDeCap
         //IAviVideoStream videoStream;
         public static void Write(RecorderParams Params, Bitmap[] images)
         {
-            // this.Params = Params;
+            ProgressWindow w = new ProgressWindow();
+            w.Location = Cursor.Position;
+            w.Show();
+            w.SetProgress($"Processing frame 0/{images.Length}", 0, images.Length);
             AviWriter writer = Params.CreateAviWriter();
             IAviVideoStream videoStream = Params.CreateVideoStream(writer);
             videoStream.Name = "Video";
             
             var buffer = new byte[Params.Width * Params.Height * 4];
+            int i = 0;
             foreach (Bitmap b in images)
             {
+                i++;
+                w.SetProgress($"Processing frame {i}/{images.Length}", i, images.Length);
+
                 var bits = b.LockBits(new Rectangle(Params.X, Params.Y, Params.Width, Params.Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
                 Marshal.Copy(bits.Scan0, buffer, 0, buffer.Length);
                 b.UnlockBits(bits);
 
                 videoStream.WriteFrame(true, buffer, 0, buffer.Length);
             }
+            w.Close();
             writer.Close();
         }
     }

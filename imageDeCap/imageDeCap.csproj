@@ -186,6 +186,12 @@
     <Compile Include="Windows\AboutWindow.Designer.cs">
       <DependentUpon>AboutWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="Windows\ProgressWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Windows\ProgressWindow.Designer.cs">
+      <DependentUpon>ProgressWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="Windows\ScreenshotRegionLine.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -233,6 +239,9 @@
     </Compile>
     <EmbeddedResource Include="Windows\AboutWindow.resx">
       <DependentUpon>AboutWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Windows\ProgressWindow.resx">
+      <DependentUpon>ProgressWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Windows\ScreenshotRegionLine.resx">
       <DependentUpon>ScreenshotRegionLine.cs</DependentUpon>
