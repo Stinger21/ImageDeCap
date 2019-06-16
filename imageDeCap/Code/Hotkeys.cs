@@ -33,7 +33,9 @@ namespace imageDeCap
                     if (Program.hotkeysEnabled)
                         ScreenCapturer.CaptureScreenRegion(true);
 
-                CaptureVideoHotkeyPressed();
+                if(CaptureVideoHotkeyPressed != null)
+                    CaptureVideoHotkeyPressed();
+
                 CaptureVideoHotkey = true;
             }
             else if (Preferences.HotkeyImage == hotkey)

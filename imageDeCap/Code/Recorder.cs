@@ -4,11 +4,12 @@ using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
+
 using SharpAvi;
 using SharpAvi.Codecs;
 using SharpAvi.Output;
-using System.Windows.Forms;
 
+using System.Windows.Forms;
 
 // Most of the code here is not mine. 
 // All the code here is used simply to create the final output video file from the series of screenshots recorded in the gif-recorder.
@@ -16,6 +17,8 @@ using System.Windows.Forms;
 
 namespace imageDeCap
 {
+
+
     // IIRC this write function is the only function actually in direct use.
     public static class VideoWriter
     {
@@ -28,6 +31,7 @@ namespace imageDeCap
             w.Location = Cursor.Position;
             w.Show();
             w.SetProgress($"Processing frame 0/{images.Length}", 0, images.Length);
+
             AviWriter writer = Params.CreateAviWriter();
             IAviVideoStream videoStream = Params.CreateVideoStream(writer);
             videoStream.Name = "Video";

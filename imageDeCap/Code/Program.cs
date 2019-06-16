@@ -74,6 +74,8 @@ namespace imageDeCap
             
             ImageDeCap = new MainWindow();
 
+            NewRecorder.ReadVideoFrame();
+
             Quit = false;
             while (!Quit)
             {
