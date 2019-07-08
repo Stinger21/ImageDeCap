@@ -54,10 +54,9 @@ namespace imageDeCap
         public static string AppdataDirectory = "ERROR";
         public static string ExeDirectory = "ERROR";
         public static string BackupDirectory = "ERROR";
-
-        public MainWindow()
+        public void Initialize()
         {
-            InitializeComponent();
+
             this.VersionLabel.Text = MainWindow.VersionNumber;
             ExeDirectory = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
             AppdataDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\imageDeCap";
@@ -103,7 +102,7 @@ namespace imageDeCap
                 OpenWindow();
                 Utilities.BubbleNotification("Press PRINTSCREEN to start!", null, ToolTipIcon.Info, "Welcome to ImageDeCap!");
                 Utilities.AddToStartup();
-                
+
                 // Try deleting any old shortcut stuff from 1.23 and earlier
                 string startupPath = Environment.GetFolderPath(Environment.SpecialFolder.Startup) + @"\imageDeCap.lnk";
                 string startMenuPath = Environment.GetFolderPath(Environment.SpecialFolder.StartMenu) + @"\imageDeCap.lnk";
@@ -155,6 +154,10 @@ namespace imageDeCap
             LinksListBox.AllowDrop = true;
             LinksListBox.DragEnter += new DragEventHandler(Form1_DragEnter);
             LinksListBox.DragDrop += new DragEventHandler(Form1_DragDrop);
+        }
+        public MainWindow()
+        {
+            InitializeComponent();
         }
 
         public void AddLink(string link, bool Write = true)

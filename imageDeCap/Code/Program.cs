@@ -73,6 +73,7 @@ namespace imageDeCap
             Application.SetCompatibleTextRenderingDefault(false);
             
             ImageDeCap = new MainWindow();
+            ImageDeCap.Initialize();
 
             NewRecorder.ReadVideoFrame();
 
