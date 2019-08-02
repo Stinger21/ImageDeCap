@@ -52,7 +52,7 @@ namespace imageDeCap
         //RecorderParams Params;
         //AviWriter writer;
         //IAviVideoStream videoStream;
-        public static void Write(RecorderParams Params, Bitmap[] images)
+        public static void Write(RecorderParams Params, string[] images)
         {
             ProgressWindow w = new ProgressWindow();
             w.Location = Cursor.Position;
@@ -65,9 +65,10 @@ namespace imageDeCap
             
             var buffer = new byte[Params.Width * Params.Height * 4];
             int i = 0;
-            foreach (Bitmap b in images)
+            foreach (string filepath in images)
             {
                 i++;
+                Bitmap b = Utilities.LoadBitmapNolock(filepath);
                 w.SetProgress($"Processing frame {i}/{images.Length}", i, images.Length);
 
                 var bits = b.LockBits(new Rectangle(Params.X, Params.Y, Params.Width, Params.Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);

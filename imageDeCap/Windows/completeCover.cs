@@ -384,9 +384,7 @@ namespace imageDeCap
         
         public void StartRecordingGif(bool ForceEdit)
         {
-            Console.WriteLine(SelectedRegion);
-            MyVideoWriter = new VideoWriter2(@"C:\Users\mattias\Desktop\test1.mp4", 30, SelectedRegion.X, SelectedRegion.Y);
-
+            CapturedFrames.Clear();
             RecordedTime = 0;
             FramesCaptured = 0;
             GifCaptureTimer.Enabled = true;
@@ -426,8 +424,7 @@ namespace imageDeCap
                 if (!abort)
                 {
                     Utilities.PlaySound("snip.wav");
-                    MyVideoWriter.Complete();
-
+                    
                     // Feed in through the tag weather the user right-clicked to force editor even when it's disabled.
                     ScreenCapturer.UploadImageData(new byte[] { }, Filetype.gif, false, (bool)GifCaptureTimer.Tag, CapturedFrames.ToArray());
                 }
@@ -474,12 +471,12 @@ namespace imageDeCap
                 width,
                 height, true);
 
-            Console.WriteLine(b.Size);
-            MyVideoWriter.WriteFrame(b);
 
-            test.Add(b);
-            
-            //b.Dispose();
+            string AppdataDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\imageDeCap";
+            string path = AppdataDirectory + "\\frame_" + FramesCaptured + ".jpg";
+            b.Save(path);
+            CapturedFrames.Add(path);
+            b.Dispose();
 
             int seconds = (RecordedTime / 1000);
             int csecs = RecordedTime % 1000;
