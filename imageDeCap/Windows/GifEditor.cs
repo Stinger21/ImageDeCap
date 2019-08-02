@@ -20,8 +20,8 @@ namespace imageDeCap
     {
         float scalePct = 1.0f;
         NewImageEditor.EditorResult result = NewImageEditor.EditorResult.Quit;
-        Bitmap[] TheImage;
-        Bitmap[] EditedImage;
+        string[] TheImage;
+        string[] EditedImage;
         Bitmap CurrentImage;
         int frames = 0;
         int FrameRate = 15;
@@ -32,12 +32,15 @@ namespace imageDeCap
         bool Scrolling = false;
 
 
-        public static byte[] VideoFromFrames(Bitmap[] frames, int framerate = 15)
+        public static byte[] VideoFromFrames(string[] frames, int framerate = 15)
         {
             string outpath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\imageDeCap\out.avi";
             string outcompressedpath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\imageDeCap\out" + MainWindow.videoFormat;
             
-            VideoWriter.Write(new RecorderParams(outpath, framerate, SharpAvi.KnownFourCCs.Codecs.MotionJpeg, 100, 0, 0, frames[0].Width, frames[0].Height), frames);
+            Bitmap FirstFrame = Utilities.LoadBitmapNolock(frames[0]) as Bitmap;
+            
+            VideoWriter.Write(new RecorderParams(outpath, framerate, SharpAvi.KnownFourCCs.Codecs.Uncompressed, 100, 0, 0, FirstFrame.Width, FirstFrame.Height), null);
+            FirstFrame.Dispose();
 
             var inputFile = new MediaFile { Filename = outpath };
             var outputFile = new MediaFile { Filename = outcompressedpath };
@@ -53,11 +56,11 @@ namespace imageDeCap
         }
 
         // Trun the image into a byte array
-        public (NewImageEditor.EditorResult output, Bitmap[] Data) FinalFunction()
+        public (NewImageEditor.EditorResult output, string[] Data) FinalFunction()
         {
             if(result == NewImageEditor.EditorResult.Quit)
             {
-                return (result, new Bitmap[] { });
+                return (result, new string[] { });
             }
 
             //Bitmap[] ScaledImages = null;
@@ -85,12 +88,14 @@ namespace imageDeCap
             return (result, EditedImage);// VideoFromFrames(EditedImage, FrameRate));
         }
 
-        public GifEditor(Bitmap[] ImageData, int X, int Y, int FrameRate)
+        public GifEditor(string[] ImageData, int X, int Y, int FrameRate)
         {
             InitializeComponent();
             TheImage = ImageData;
             this.FrameRate = FrameRate;
-            CurrentImage = TheImage[0];
+            if (CurrentImage != null)
+                CurrentImage.Dispose();
+            CurrentImage = (Bitmap)Utilities.LoadBitmapNolock(TheImage[0]);
             PictureBox.Image = CurrentImage;//.ToBitmap();
 
             PictureBox.Size = new Size(CurrentImage.Width, CurrentImage.Height);
@@ -148,8 +153,10 @@ namespace imageDeCap
             {
                 ActualFrameNumber = (CurrentFrame % TheImage.Length);
             }
-            
-            CurrentImage = TheImage[ActualFrameNumber];
+
+            if (CurrentImage != null)
+                CurrentImage.Dispose();
+            CurrentImage = Utilities.LoadBitmapNolock(TheImage[ActualFrameNumber]) as Bitmap;
             PictureBox.Image = CurrentImage;
             BackgroundTrack.Value = Math.Min(Math.Max(ActualFrameNumber, BackgroundTrack.Minimum), BackgroundTrack.Maximum);
         }

@@ -26,7 +26,9 @@ namespace imageDeCap
         int BoxDeltaX = 0;
         int BoxDeltaY = 0;
 
-        public List<Bitmap> CapturedClpFrames = new List<Bitmap>();
+        //public List<Bitmap> CapturedClpFrames = new List<Bitmap>();
+        public List<string> CapturedFrames = new List<string>();
+
         public int RecordedTime = 0;
         public int RecordedFramerate = 0;
         int FramesCaptured = 0;
@@ -50,6 +52,9 @@ namespace imageDeCap
         bool wasPressed = false;
         bool AltKeyDown = false;
         bool ShiftKeyDown = false;
+
+        VideoWriter2 MyVideoWriter;
+        List<Bitmap> test = new List<Bitmap>();
 
         public CompleteCover(bool Gif = false)
         {
@@ -335,7 +340,6 @@ namespace imageDeCap
             }
             else
             {
-                // From here, we fire up gif recording in Form1's main loop :D
                 if (SelectedRegion.Width > 0 && SelectedRegion.Height > 0)
                 {
                     magnifier.Close();
@@ -346,10 +350,10 @@ namespace imageDeCap
                     this.Height = 50;
                     
                     // If it's near the bottom of the screen
-                    if(this.Location.Y > Screen.FromControl(this).Bounds.Height - 200)
-                    {
-                        this.Location = new Point(SelectedRegion.X - 2, SelectedRegion.Y - 50 + 3);
-                    }
+                    //if(this.Location.Y > Screen.FromControl(this).Bounds.Height - 200)
+                    //{
+                    //    this.Location = new Point(SelectedRegion.X - 2, SelectedRegion.Y - 50 + 3);
+                    //}
 
                     this.ResumeLayout(false);
                     this.TopMost = true;
@@ -363,7 +367,6 @@ namespace imageDeCap
                     myBrush.Dispose();
                     formGraphics.Dispose();
                     this.Opacity = 1;
-
                 }
             }
         }
@@ -381,6 +384,9 @@ namespace imageDeCap
         
         public void StartRecordingGif(bool ForceEdit)
         {
+            Console.WriteLine(SelectedRegion);
+            MyVideoWriter = new VideoWriter2(@"C:\Users\mattias\Desktop\test1.mp4", 30, SelectedRegion.X, SelectedRegion.Y);
+
             RecordedTime = 0;
             FramesCaptured = 0;
             GifCaptureTimer.Enabled = true;
@@ -397,6 +403,7 @@ namespace imageDeCap
             ruleOfThirdsBox2.Hide();
             ruleOfThirdsBox3.Hide();
             ruleOfThirdsBox4.Hide();
+            
         }
 
         public void StopRecordingGif(CompleteCover cover, bool abort)
@@ -419,14 +426,27 @@ namespace imageDeCap
                 if (!abort)
                 {
                     Utilities.PlaySound("snip.wav");
+                    MyVideoWriter.Complete();
 
                     // Feed in through the tag weather the user right-clicked to force editor even when it's disabled.
-                    ScreenCapturer.UploadImageData(new byte[] { }, Filetype.gif, false, (bool)GifCaptureTimer.Tag, CapturedClpFrames.ToArray());
+                    ScreenCapturer.UploadImageData(new byte[] { }, Filetype.gif, false, (bool)GifCaptureTimer.Tag, CapturedFrames.ToArray());
                 }
 
                 ScreenCapturer.IsTakingSnapshot = false;
                 Program.hotkeysEnabled = true;
             }
+        } 
+        private ImageCodecInfo GetEncoder(ImageFormat format)
+        {
+            ImageCodecInfo[] codecs = ImageCodecInfo.GetImageDecoders();
+            foreach (ImageCodecInfo codec in codecs)
+            {
+                if (codec.FormatID == format.Guid)
+                {
+                    return codec;
+                }
+            }
+            return null;
         }
 
         private void GifCaptureTimer_Tick(object sender, EventArgs e)
@@ -439,8 +459,7 @@ namespace imageDeCap
             
             //int DeltaTimeInMS = DeltaTime.Seconds * 100 + DeltaTime.Milliseconds;
             RecordedTime += DeltaTime.Milliseconds;
-
-
+            
             int width  = SelectedRegion.Width + 1;
             int height = SelectedRegion.Height + 1;
             if (width % 2 == 1)
@@ -455,16 +474,20 @@ namespace imageDeCap
                 width,
                 height, true);
 
-            CapturedClpFrames.Add(b);
+            Console.WriteLine(b.Size);
+            MyVideoWriter.WriteFrame(b);
 
-            //int minutes = (RecordedTime / 1000 / 60) % 60;
+            test.Add(b);
+            
+            //b.Dispose();
+
             int seconds = (RecordedTime / 1000);
             int csecs = RecordedTime % 1000;
             float RecordedTimeSeconds = RecordedTime / 1000.0f;
 
             TimeLabel.Text = $"Time: {seconds}.{csecs}";
             FramesLabel.Text = $"Frames: {FramesCaptured + 1}";
-            MemoryLabel.Text = $"Memory Usage: {(FramesCaptured * SelectedRegion.Width * SelectedRegion.Height * 8L) / 1000000L} MB"; // marked L (int64) because the standard int32's would overflow.
+
             TargetFramerateLabel.Text = $"TF: {Preferences.RecordingFramerate}";
             ActualFramerateLabel.Text = $"RF: {(int)((FramesCaptured + 1) / RecordedTimeSeconds)}";
             RecordedFramerate = (int)(((float)FramesCaptured + 1.0f) / RecordedTimeSeconds);

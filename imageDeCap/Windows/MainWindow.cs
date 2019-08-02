@@ -41,6 +41,8 @@ namespace imageDeCap
     
     public partial class MainWindow : Form
     {
+
+
         // Global Variables
         AboutWindow about;
         SettingsWindow props;
@@ -56,7 +58,6 @@ namespace imageDeCap
         public static string BackupDirectory = "ERROR";
         public void Initialize()
         {
-
             this.VersionLabel.Text = MainWindow.VersionNumber;
             ExeDirectory = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
             AppdataDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\imageDeCap";
@@ -329,6 +330,10 @@ namespace imageDeCap
         private void BubbleNotification_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             OpenWindow();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
         }
     }
 
