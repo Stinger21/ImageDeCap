@@ -17,34 +17,7 @@ using System.Windows.Forms;
 
 namespace imageDeCap
 {
-    public class VideoWriter2
-    {
-        AviWriter writer;
-        byte[] buffer;
-        RecorderParams Params;
-        IAviVideoStream videoStream;
-        public VideoWriter2(string filename, int FrameRate, int Width, int Height)
-        {
-            Params = new RecorderParams(filename, FrameRate, SharpAvi.KnownFourCCs.Codecs.Uncompressed, 100, 0, 0, Width, Height);
-            writer = Params.CreateAviWriter();
-            videoStream = Params.CreateVideoStream(writer);
-            videoStream.Name = "Video";
-            buffer = new byte[Params.Width * Params.Height * 4];
-        }
 
-        public void WriteFrame(Bitmap Frame)
-        {
-            var bits = Frame.LockBits(new Rectangle(0, 0, Params.Width, Params.Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
-            Marshal.Copy(bits.Scan0, buffer, 0, buffer.Length);
-            Frame.UnlockBits(bits);
-            videoStream.WriteFrame(true, buffer, 0, buffer.Length);
-        }
-
-        public void Complete()
-        {
-            writer.Close();
-        }
-    }
 
     // IIRC this write function is the only function actually in direct use.
     public static class VideoWriter

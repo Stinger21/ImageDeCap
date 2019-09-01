@@ -38,6 +38,7 @@ namespace imageDeCap
             this.panel1 = new System.Windows.Forms.Panel();
             this.ActualFramerateLabel = new System.Windows.Forms.Label();
             this.TargetFramerateLabel = new System.Windows.Forms.Label();
+            this.MemoryLabel = new System.Windows.Forms.Label();
             this.GifCaptureTimer = new System.Windows.Forms.Timer(this.components);
             this.BoxMovementTimer = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -63,7 +64,7 @@ namespace imageDeCap
             this.doneButton.ForeColor = System.Drawing.Color.White;
             this.doneButton.Location = new System.Drawing.Point(0, 0);
             this.doneButton.Name = "doneButton";
-            this.doneButton.Size = new System.Drawing.Size(57, 33);
+            this.doneButton.Size = new System.Drawing.Size(57, 45);
             this.doneButton.TabIndex = 1;
             this.doneButton.Text = "Done";
             this.doneButton.UseVisualStyleBackColor = false;
@@ -78,7 +79,7 @@ namespace imageDeCap
             this.cancelButton.ForeColor = System.Drawing.Color.White;
             this.cancelButton.Location = new System.Drawing.Point(57, 0);
             this.cancelButton.Name = "cancelButton";
-            this.cancelButton.Size = new System.Drawing.Size(57, 33);
+            this.cancelButton.Size = new System.Drawing.Size(57, 45);
             this.cancelButton.TabIndex = 2;
             this.cancelButton.Text = "Cancel";
             this.cancelButton.UseVisualStyleBackColor = false;
@@ -113,9 +114,10 @@ namespace imageDeCap
             this.panel1.Controls.Add(this.TimeLabel);
             this.panel1.Controls.Add(this.ActualFramerateLabel);
             this.panel1.Controls.Add(this.TargetFramerateLabel);
+            this.panel1.Controls.Add(this.MemoryLabel);
             this.panel1.Location = new System.Drawing.Point(114, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(157, 33);
+            this.panel1.Size = new System.Drawing.Size(157, 45);
             this.panel1.TabIndex = 5;
             // 
             // ActualFramerateLabel
@@ -140,6 +142,17 @@ namespace imageDeCap
             this.TargetFramerateLabel.TabIndex = 6;
             this.TargetFramerateLabel.Text = "TF: 100";
             // 
+            // MemoryLabel
+            // 
+            this.MemoryLabel.AutoSize = true;
+            this.MemoryLabel.BackColor = System.Drawing.Color.Black;
+            this.MemoryLabel.ForeColor = System.Drawing.Color.White;
+            this.MemoryLabel.Location = new System.Drawing.Point(0, 27);
+            this.MemoryLabel.Name = "MemoryLabel";
+            this.MemoryLabel.Size = new System.Drawing.Size(28, 13);
+            this.MemoryLabel.TabIndex = 6;
+            this.MemoryLabel.Text = "0:00";
+            // 
             // GifCaptureTimer
             // 
             this.GifCaptureTimer.Interval = 16;
@@ -155,7 +168,7 @@ namespace imageDeCap
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
-            this.ClientSize = new System.Drawing.Size(268, 35);
+            this.ClientSize = new System.Drawing.Size(268, 45);
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.doneButton);
             this.Controls.Add(this.pictureBox1);
@@ -185,6 +198,7 @@ namespace imageDeCap
         private System.Windows.Forms.Label TimeLabel;
         private System.Windows.Forms.Label FramesLabel;
         private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Label MemoryLabel;
         public System.Windows.Forms.Timer GifCaptureTimer;
         private System.Windows.Forms.Label ActualFramerateLabel;
         private System.Windows.Forms.Label TargetFramerateLabel;

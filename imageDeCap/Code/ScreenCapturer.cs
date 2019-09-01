@@ -96,7 +96,7 @@ namespace imageDeCap
             }
         }
 
-        public static void UploadImageData(byte[] ImageData, Filetype imageType, bool ForceNoEdit = false, bool RMBClickForceEdit = false, string[] GifImage = null)
+        public static void UploadImageData(byte[] ImageData, Filetype imageType, bool ForceNoEdit = false, bool RMBClickForceEdit = false, Bitmap[] GifImage = null)
         {
             Program.hotkeysEnabled = true; // Enable hotkeys here again so you can take more screenshots
 
@@ -144,7 +144,7 @@ namespace imageDeCap
             Filetype f;
             NewImageEditor.EditorResult EditorResult = NewImageEditor.EditorResult.Quit;
             byte[] ImageData = null;
-            string[] GifData = null;
+            Bitmap[] GifData = null;
             if (sender is NewImageEditor)
             {
                 NewImageEditor editor = (NewImageEditor)sender;
@@ -163,18 +163,12 @@ namespace imageDeCap
         }
 
         // TODO: Change this to take a path with the editorresult
-        public static void UploadImageData_AfterEdit(NewImageEditor.EditorResult EditorResult, Filetype imageType, byte[] FileData, string[] GifImage)
+        public static void UploadImageData_AfterEdit(NewImageEditor.EditorResult EditorResult, Filetype imageType, byte[] FileData, Bitmap[] GifImage)
         {
             if (EditorResult == NewImageEditor.EditorResult.Quit)
             {
-                foreach (var file in CurrentBackCover.CapturedFrames)
-                {
-                    while (File.Exists(file))
-                    {
-                        try { File.Delete(file); } catch { }
-                    }
-                }
-                CurrentBackCover.CapturedFrames.Clear();
+                foreach (var v in CurrentBackCover.CapturedClpFrames) { v.Dispose(); }
+                CurrentBackCover.CapturedClpFrames.Clear();
                 return;
             }
 
@@ -202,24 +196,12 @@ namespace imageDeCap
                     return;
                 }
                 FileData = GifEditor.VideoFromFrames(GifImage, CurrentBackCover.RecordedFramerate);
-                CurrentBackCover.CapturedFrames.Clear();
+                foreach (var v in CurrentBackCover.CapturedClpFrames) { v.Dispose(); }
+                CurrentBackCover.CapturedClpFrames.Clear();
             }
-
             if (SavePath != null)
             {
                 File.WriteAllBytes(SavePath, FileData);
-            }
-
-            if (imageType == Filetype.gif)
-            {
-                // nuke images
-                foreach (var file in CurrentBackCover.CapturedFrames)
-                {
-                    while (File.Exists(file))
-                    {
-                        try { File.Delete(file); } catch { }
-                    }
-                }
             }
 
             string SaveFileName = DateTime.UtcNow.ToString("yyyyMMddHHmmssfff");
@@ -427,7 +409,6 @@ namespace imageDeCap
                     {
                         g.DrawImage(cursorBMP, new Rectangle(cursorX - CurrentBackCover.SelectedRegion.X, cursorY - CurrentBackCover.SelectedRegion.Y, cursorBMP.Width, cursorBMP.Height));
                         g.Flush();
-                        cursorBMP.Dispose();
                     }
                 }
             }

@@ -25,13 +25,6 @@ namespace imageDeCap
 
     public static class Utilities
     {
-        public static Bitmap LoadBitmapNolock(string path)
-        {
-            using (var img = Image.FromFile(path))
-            {
-                return new Bitmap(img);
-            }
-        }
         public static void AddToStartup()
         {
             string startupPath = Environment.GetFolderPath(Environment.SpecialFolder.Startup) + @"\imageDeCap.lnk";
