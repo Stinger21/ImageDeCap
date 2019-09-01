@@ -39,7 +39,7 @@ namespace imageDeCap
             
             Bitmap FirstFrame = Utilities.LoadBitmapNolock(frames[0]) as Bitmap;
             
-            VideoWriter.Write(new RecorderParams(outpath, framerate, SharpAvi.KnownFourCCs.Codecs.MotionJpeg, 100, 0, 0, FirstFrame.Width, FirstFrame.Height), frames);
+            VideoWriter.Write(new RecorderParams(outpath, framerate, SharpAvi.KnownFourCCs.Codecs.Uncompressed, 100, 0, 0, FirstFrame.Width, FirstFrame.Height), null);
             FirstFrame.Dispose();
 
             var inputFile = new MediaFile { Filename = outpath };
