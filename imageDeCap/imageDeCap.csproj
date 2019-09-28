@@ -307,6 +307,7 @@
     <EmbeddedResource Include="Sounds\snip.wav" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\camera.png" />
     <None Include="Resources\paint.png" />
     <None Include="Resources\done.png" />
     <None Include="Resources\Help.png" />

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Media;
@@ -14,6 +15,7 @@ using System.Windows.Forms;
 
 namespace imageDeCap
 {
+
     public enum Filetype
     {
         jpg,
@@ -25,6 +27,14 @@ namespace imageDeCap
 
     public static class Utilities
     {
+
+        public static byte[] GetBytes(Image image, ImageFormat format)
+        {
+            var ms = new MemoryStream();
+            image.Save(ms, format);
+            return ms.ToArray();
+        }
+
         public static void AddToStartup()
         {
             string startupPath = Environment.GetFolderPath(Environment.SpecialFolder.Startup) + @"\imageDeCap.lnk";

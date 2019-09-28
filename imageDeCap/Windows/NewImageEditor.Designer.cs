@@ -40,6 +40,7 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.UploadButton = new System.Windows.Forms.Button();
+            this.CaptureAgain = new System.Windows.Forms.Button();
             this.BoxButton = new System.Windows.Forms.Button();
             this.SaveButton = new System.Windows.Forms.Button();
             this.ArrowButton = new System.Windows.Forms.Button();
@@ -56,7 +57,7 @@
             // TextFieldInput
             // 
             this.TextFieldInput.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.TextFieldInput.Location = new System.Drawing.Point(349, 139);
+            this.TextFieldInput.Location = new System.Drawing.Point(397, 139);
             this.TextFieldInput.Multiline = true;
             this.TextFieldInput.Name = "TextFieldInput";
             this.TextFieldInput.Size = new System.Drawing.Size(102, 40);
@@ -71,7 +72,7 @@
             this.FrontSwatch.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(57)))), ((int)(((byte)(43)))));
             this.FrontSwatch.FlatAppearance.BorderSize = 0;
             this.FrontSwatch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.FrontSwatch.Location = new System.Drawing.Point(114, 2);
+            this.FrontSwatch.Location = new System.Drawing.Point(116, 2);
             this.FrontSwatch.Name = "FrontSwatch";
             this.FrontSwatch.Size = new System.Drawing.Size(26, 26);
             this.FrontSwatch.TabIndex = 30;
@@ -84,7 +85,7 @@
             this.BackSwatch.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(174)))), ((int)(((byte)(56)))));
             this.BackSwatch.FlatAppearance.BorderSize = 0;
             this.BackSwatch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BackSwatch.Location = new System.Drawing.Point(124, 12);
+            this.BackSwatch.Location = new System.Drawing.Point(126, 12);
             this.BackSwatch.Name = "BackSwatch";
             this.BackSwatch.Size = new System.Drawing.Size(26, 26);
             this.BackSwatch.TabIndex = 38;
@@ -114,13 +115,14 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(334, 311);
+            this.panel1.Size = new System.Drawing.Size(382, 311);
             this.panel1.TabIndex = 1;
             this.panel1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.Panel1_MouseClick);
             // 
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.SystemColors.Control;
+            this.panel2.Controls.Add(this.CaptureAgain);
             this.panel2.Controls.Add(this.UploadButton);
             this.panel2.Controls.Add(this.BoxButton);
             this.panel2.Controls.Add(this.SaveButton);
@@ -134,7 +136,7 @@
             this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel2.Location = new System.Drawing.Point(0, 271);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(334, 40);
+            this.panel2.Size = new System.Drawing.Size(382, 40);
             this.panel2.TabIndex = 36;
             // 
             // UploadButton
@@ -151,6 +153,21 @@
             this.UploadButton.UseVisualStyleBackColor = true;
             this.UploadButton.Click += new System.EventHandler(this.UploadButton_click);
             // 
+            // CaptureAgain
+            // 
+            this.CaptureAgain.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.CaptureAgain.BackgroundImage = global::imageDeCap.Properties.Resources.camera;
+            this.CaptureAgain.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.CaptureAgain.FlatAppearance.BorderSize = 0;
+            this.CaptureAgain.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.CaptureAgain.Location = new System.Drawing.Point(163, 2);
+            this.CaptureAgain.Name = "CaptureAgain";
+            this.CaptureAgain.Size = new System.Drawing.Size(36, 36);
+            this.CaptureAgain.TabIndex = 41;
+            this.toolTip1.SetToolTip(this.CaptureAgain, "Text (T & Click Image)");
+            this.CaptureAgain.UseVisualStyleBackColor = true;
+            this.CaptureAgain.Click += new System.EventHandler(this.CaptureAgain_Click);
+            // 
             // BoxButton
             // 
             this.BoxButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -159,7 +176,7 @@
             this.BoxButton.FlatAppearance.BorderSize = 0;
             this.BoxButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BoxButton.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.BoxButton.Location = new System.Drawing.Point(224, 2);
+            this.BoxButton.Location = new System.Drawing.Point(272, 2);
             this.BoxButton.Name = "BoxButton";
             this.BoxButton.Size = new System.Drawing.Size(36, 36);
             this.BoxButton.TabIndex = 37;
@@ -188,7 +205,7 @@
             this.ArrowButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ArrowButton.FlatAppearance.BorderSize = 0;
             this.ArrowButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ArrowButton.Location = new System.Drawing.Point(188, 2);
+            this.ArrowButton.Location = new System.Drawing.Point(236, 2);
             this.ArrowButton.Name = "ArrowButton";
             this.ArrowButton.Size = new System.Drawing.Size(36, 36);
             this.ArrowButton.TabIndex = 36;
@@ -218,7 +235,7 @@
             this.UndoButton.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.UndoButton.FlatAppearance.BorderSize = 0;
             this.UndoButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.UndoButton.Location = new System.Drawing.Point(296, 2);
+            this.UndoButton.Location = new System.Drawing.Point(344, 2);
             this.UndoButton.Name = "UndoButton";
             this.UndoButton.Size = new System.Drawing.Size(36, 36);
             this.UndoButton.TabIndex = 26;
@@ -233,7 +250,7 @@
             this.TextButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.TextButton.FlatAppearance.BorderSize = 0;
             this.TextButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.TextButton.Location = new System.Drawing.Point(152, 2);
+            this.TextButton.Location = new System.Drawing.Point(200, 2);
             this.TextButton.Name = "TextButton";
             this.TextButton.Size = new System.Drawing.Size(36, 36);
             this.TextButton.TabIndex = 27;
@@ -248,7 +265,7 @@
             this.PickButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.PickButton.FlatAppearance.BorderSize = 0;
             this.PickButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PickButton.Location = new System.Drawing.Point(260, 2);
+            this.PickButton.Location = new System.Drawing.Point(308, 2);
             this.PickButton.Name = "PickButton";
             this.PickButton.Size = new System.Drawing.Size(36, 36);
             this.PickButton.TabIndex = 31;
@@ -273,7 +290,7 @@
             this.AcceptButton = this.UploadButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(334, 311);
+            this.ClientSize = new System.Drawing.Size(382, 311);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -312,5 +329,6 @@
         private System.Windows.Forms.Panel panel1;
         public System.Windows.Forms.PictureBox ImageContainer;
         private System.Windows.Forms.Panel panel2;
+        public System.Windows.Forms.Button CaptureAgain;
     }
 }

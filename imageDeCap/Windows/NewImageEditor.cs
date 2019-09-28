@@ -34,20 +34,20 @@ namespace imageDeCap
             
             if (result == EditorResult.Quit)
             {
-                OutputData = CompleteCover.GetBytes(Editor.OriginalImage, ImageFormat.Png);
+                OutputData = Utilities.GetBytes(Editor.OriginalImage, ImageFormat.Png);
             }
             else
             {
-                OutputData = CompleteCover.GetBytes(Editor.EditedImage, ImageFormat.Png);
+                OutputData = Utilities.GetBytes(Editor.EditedImage, ImageFormat.Png);
                 Clipboard.Clear();
             }
             return (result, OutputData);
         }
-
-        public NewImageEditor(byte[] ImageData, int X, int Y)//on start
+        Rectangle SelectedRegion;
+        public NewImageEditor(byte[] ImageData, int X, int Y, Rectangle SelectedRegion)//on start
         {
             InitializeComponent();
-            
+            this.SelectedRegion = SelectedRegion;
             System.Threading.Thread.Sleep(100);
 
             Editor = new PictureEditor(Image.FromStream(new MemoryStream(ImageData)), this);
@@ -266,6 +266,19 @@ namespace imageDeCap
         private void HelpButton_Click(object sender, EventArgs e)
         {
             //InfoText.Visible = !InfoText.Visible;
+        }
+
+        private void CaptureAgain_Click(object sender, EventArgs e)
+        {
+            Utilities.PlaySound("snip.wav");
+            Bitmap result = ScreenCapturer.Capture(
+                ScreenCaptureMode.Bounds,
+                SelectedRegion.X,
+                SelectedRegion.Y,
+                SelectedRegion.Width + 1,
+                SelectedRegion.Height + 1);
+            
+            ScreenCapturer.UploadImageData(Utilities.GetBytes(result, ImageFormat.Png), Filetype.png, false, false, null, SelectedRegion);
         }
     }
 

@@ -96,7 +96,7 @@ namespace imageDeCap
             }
         }
 
-        public static void UploadImageData(byte[] ImageData, Filetype imageType, bool ForceNoEdit = false, bool RMBClickForceEdit = false, Bitmap[] GifImage = null)
+        public static void UploadImageData(byte[] ImageData, Filetype imageType, bool ForceNoEdit = false, bool RMBClickForceEdit = false, Bitmap[] GifImage = null, Rectangle SelectedRegion = default(Rectangle))
         {
             Program.hotkeysEnabled = true; // Enable hotkeys here again so you can take more screenshots
 
@@ -123,7 +123,7 @@ namespace imageDeCap
                 }
                 else
                 {
-                    NewImageEditor editor = new NewImageEditor(ImageData, CurrentBackCover.topBox.Location.X, CurrentBackCover.topBox.Location.Y);
+                    NewImageEditor editor = new NewImageEditor(ImageData, CurrentBackCover.topBox.Location.X, CurrentBackCover.topBox.Location.Y, SelectedRegion);
                     editor.Show();
                     editor.FormClosed += EditorDone;
                 }

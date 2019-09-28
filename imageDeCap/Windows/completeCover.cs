@@ -11,10 +11,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+
 namespace imageDeCap
 {
+    // This class is responsible for covering the screen and recording pieces of it.
+
     public partial class CompleteCover : Form
     {
+        protected PerformanceCounter ramCounter = new PerformanceCounter("Memory", "Available MBytes");
+
         // Final rectangle representing the VirtualScreen region selected
         public Rectangle SelectedRegion;
 
@@ -75,6 +80,11 @@ namespace imageDeCap
             if(isGif)
             {
                 Hotkeys.CaptureVideoHotkeyPressed += CaptureVideoHotkeyPressed;
+            }
+            else
+            {
+                cancelButton.Visible = false;
+                doneButton.Visible = false;
             }
 
             int x = (int)(SystemInformation.VirtualScreen.X * scaler);
@@ -283,12 +293,6 @@ namespace imageDeCap
             }
         }
 
-        public static byte[] GetBytes(Image image, ImageFormat format)
-        {
-            var ms = new MemoryStream();
-            image.Save(ms, format);
-            return ms.ToArray();
-        }
 
         // this is called from Form1's updateSelectedArea when it considers itself done figuring out what region to capture.
         public void CompletedSelection(bool ForceEdit = false)
@@ -324,7 +328,7 @@ namespace imageDeCap
                     if (FreezeScreen)
                         this.Close();
 
-                    ScreenCapturer.UploadImageData(GetBytes(result, ImageFormat.Png), Filetype.png, false, ForceEdit);
+                    ScreenCapturer.UploadImageData(Utilities.GetBytes(result, ImageFormat.Png), Filetype.png, false, ForceEdit, null, SelectedRegion);
                 }
 
                 if (FreezeScreen)
@@ -344,12 +348,27 @@ namespace imageDeCap
                     this.Location = new Point(SelectedRegion.X - 2, SelectedRegion.Y + SelectedRegion.Height + 3);
                     this.Width = Math.Max(SelectedRegion.Width, 300);
                     this.Height = 50;
-                    
+
+                    //int BottomDistance = Screen.FromControl(this).Bounds.Height - this.Location.Y + 2;
+                    //int TopDistance = (this.Location.Y - SelectedRegion.Height) -3;
+                    //int RightDistance = Screen.FromControl(this).Bounds.Width - SelectedRegion.Width + 2;
+                    //int LeftDistance = (this.Location.X);
+                    //
+                    //int TaskbarHeight = 200;
+                    //
+                    //int ControlWidth = 278;
+                    //int ControlHeight = 47;
+                    //
+                    //bool BottomAvailable = BottomDistance > TaskbarHeight + ControlHeight;
+                    //bool TopAvailable = BottomDistance > TaskbarHeight + ControlHeight;
+                    //bool LeftAvailable = BottomDistance > TaskbarHeight + ControlHeight;
+                    //bool RightAvailable = BottomDistance > TaskbarHeight + ControlHeight;
+
                     // If it's near the bottom of the screen
-                    if(this.Location.Y > Screen.FromControl(this).Bounds.Height - 200)
-                    {
-                        this.Location = new Point(SelectedRegion.X - 2, SelectedRegion.Y - 50 + 3);
-                    }
+                    //if (this.Location.Y > Screen.FromControl(this).Bounds.Height - 200)
+                    //{
+                    //    this.Location = new Point(SelectedRegion.X - 2, SelectedRegion.Y - 50 + 3);
+                    //}
 
                     this.ResumeLayout(false);
                     this.TopMost = true;
@@ -416,7 +435,12 @@ namespace imageDeCap
                 ruleOfThirdsBox4.Hide();
 
                 cover.Close();
-                if (!abort)
+                if(abort)
+                {
+                    foreach (var v in CapturedClpFrames) { v.Dispose(); }
+                    CapturedClpFrames.Clear();
+                }
+                else
                 {
                     Utilities.PlaySound("snip.wav");
 
@@ -459,17 +483,31 @@ namespace imageDeCap
 
             //int minutes = (RecordedTime / 1000 / 60) % 60;
             int seconds = (RecordedTime / 1000);
-            int csecs = RecordedTime % 1000;
+            int csecs = (RecordedTime % 1000);
             float RecordedTimeSeconds = RecordedTime / 1000.0f;
 
-            TimeLabel.Text = $"Time: {seconds}.{csecs}";
+            TimeLabel.Text = $"Time: {seconds}";//.{csecs}
             FramesLabel.Text = $"Frames: {FramesCaptured + 1}";
-            MemoryLabel.Text = $"Memory Usage: {(FramesCaptured * SelectedRegion.Width * SelectedRegion.Height * 8L) / 1000000L} MB"; // marked L (int64) because the standard int32's would overflow.
+            //MemoryLabel.Text = $"Memory Usage: {(FramesCaptured * SelectedRegion.Width * SelectedRegion.Height * 8L) / 1000000L} MB"; // marked L (int64) because the standard int32's would overflow.
+            float RamLeft = ramCounter.NextValue() - 500;
+            MemoryLabel.Text = $"RAM left: {RamLeft} MB";
             TargetFramerateLabel.Text = $"TF: {Preferences.RecordingFramerate}";
             ActualFramerateLabel.Text = $"RF: {(int)((FramesCaptured + 1) / RecordedTimeSeconds)}";
             RecordedFramerate = (int)(((float)FramesCaptured + 1.0f) / RecordedTimeSeconds);
 
             FramesCaptured++;
+            if (RamLeft <= 0)
+            {
+                StopRecordingGif(this, false);
+            }
+
+            // If the user pressesd esc, complete the recording and open the editor.
+            string hotkey = Hotkeys.GetCurrentHotkey();
+            if (hotkey == "Escape")
+            {
+                StopRecordingGif(this, false);
+            }
+
         }
         
         // Makes the form not show up in alt-tab

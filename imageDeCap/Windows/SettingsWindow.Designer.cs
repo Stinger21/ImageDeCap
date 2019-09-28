@@ -450,7 +450,7 @@
             this.ResetHotkeysbutton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
             this.ResetHotkeysbutton.FlatAppearance.BorderSize = 0;
             this.ResetHotkeysbutton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ResetHotkeysbutton.Location = new System.Drawing.Point(6, 114);
+            this.ResetHotkeysbutton.Location = new System.Drawing.Point(236, 11);
             this.ResetHotkeysbutton.Name = "ResetHotkeysbutton";
             this.ResetHotkeysbutton.Size = new System.Drawing.Size(100, 36);
             this.ResetHotkeysbutton.TabIndex = 39;

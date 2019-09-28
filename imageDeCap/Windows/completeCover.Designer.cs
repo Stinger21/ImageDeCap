@@ -101,7 +101,7 @@ namespace imageDeCap
             this.FramesLabel.AutoSize = true;
             this.FramesLabel.BackColor = System.Drawing.Color.Black;
             this.FramesLabel.ForeColor = System.Drawing.Color.White;
-            this.FramesLabel.Location = new System.Drawing.Point(0, 15);
+            this.FramesLabel.Location = new System.Drawing.Point(0, 17);
             this.FramesLabel.Name = "FramesLabel";
             this.FramesLabel.Size = new System.Drawing.Size(28, 13);
             this.FramesLabel.TabIndex = 4;
@@ -125,7 +125,7 @@ namespace imageDeCap
             this.ActualFramerateLabel.AutoSize = true;
             this.ActualFramerateLabel.BackColor = System.Drawing.Color.Black;
             this.ActualFramerateLabel.ForeColor = System.Drawing.Color.White;
-            this.ActualFramerateLabel.Location = new System.Drawing.Point(111, 14);
+            this.ActualFramerateLabel.Location = new System.Drawing.Point(111, 16);
             this.ActualFramerateLabel.Name = "ActualFramerateLabel";
             this.ActualFramerateLabel.Size = new System.Drawing.Size(45, 13);
             this.ActualFramerateLabel.TabIndex = 7;
@@ -147,7 +147,7 @@ namespace imageDeCap
             this.MemoryLabel.AutoSize = true;
             this.MemoryLabel.BackColor = System.Drawing.Color.Black;
             this.MemoryLabel.ForeColor = System.Drawing.Color.White;
-            this.MemoryLabel.Location = new System.Drawing.Point(0, 27);
+            this.MemoryLabel.Location = new System.Drawing.Point(0, 31);
             this.MemoryLabel.Name = "MemoryLabel";
             this.MemoryLabel.Size = new System.Drawing.Size(28, 13);
             this.MemoryLabel.TabIndex = 6;
