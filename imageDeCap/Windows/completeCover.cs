@@ -496,7 +496,7 @@ namespace imageDeCap
             TimeLabel.Text = $"Time: {TimeSpan.FromSeconds(seconds).ToString()}";//.{csecs}
             FramesLabel.Text = $"Frames: {FramesCaptured + 1}";
             //MemoryLabel.Text = $"Memory Usage: {(FramesCaptured * SelectedRegion.Width * SelectedRegion.Height * 8L) / 1000000L} MB"; // marked L (int64) because the standard int32's would overflow.
-            float RamLeft = ramCounter.NextValue() - 500;
+            float RamLeft = ramCounter.NextValue() - 1000; // 1000 here is a buffer number to make sure the capturing stops before we run out of memory.
             MemoryLabel.Text = $"RAM left: {RamLeft} MB";
             TargetFramerateLabel.Text = $"TF: {Preferences.RecordingFramerate}";
             ActualFramerateLabel.Text = $"RF: {(int)((FramesCaptured + 1) / RecordedTimeSeconds)}";
