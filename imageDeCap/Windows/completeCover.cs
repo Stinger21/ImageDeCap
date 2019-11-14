@@ -7,6 +7,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -453,8 +454,14 @@ namespace imageDeCap
             }
         }
 
+        [DllImport("user32.dll")]
+        static extern uint GetGuiResources(IntPtr hProcess, uint uiFlags);
+
+        //const uint GR_GDIOBJECTS = 0;
+
         private void GifCaptureTimer_Tick(object sender, EventArgs e)
         {
+
             this.BringToFront();
             this.TopMost = true;
 
@@ -472,13 +479,13 @@ namespace imageDeCap
             if (height % 2 == 1)
                 height = height - 1;
             // Capture Bitmap
+
             Bitmap b = ScreenCapturer.Capture(
                 ScreenCaptureMode.Bounds,
                 SelectedRegion.X - 1,
                 SelectedRegion.Y - 1,
                 width,
                 height, true);
-
             CapturedClpFrames.Add(b);
 
             //int minutes = (RecordedTime / 1000 / 60) % 60;
@@ -486,7 +493,7 @@ namespace imageDeCap
             int csecs = (RecordedTime % 1000);
             float RecordedTimeSeconds = RecordedTime / 1000.0f;
 
-            TimeLabel.Text = $"Time: {seconds}";//.{csecs}
+            TimeLabel.Text = $"Time: {TimeSpan.FromSeconds(seconds).ToString()}";//.{csecs}
             FramesLabel.Text = $"Frames: {FramesCaptured + 1}";
             //MemoryLabel.Text = $"Memory Usage: {(FramesCaptured * SelectedRegion.Width * SelectedRegion.Height * 8L) / 1000000L} MB"; // marked L (int64) because the standard int32's would overflow.
             float RamLeft = ramCounter.NextValue() - 500;
@@ -508,6 +515,14 @@ namespace imageDeCap
                 StopRecordingGif(this, false);
             }
 
+            uint GDIHandles = GetGuiResources(Process.GetCurrentProcess().Handle, 0);
+            uint UserHandles = GetGuiResources(Process.GetCurrentProcess().Handle, 0);
+            Console.WriteLine(UserHandles);
+            if (UserHandles > 9000 || UserHandles > 9000)
+            {
+                Console.WriteLine("Almost out of GDI handles, stopping recording.");
+                StopRecordingGif(this, false);
+            }
         }
         
         // Makes the form not show up in alt-tab

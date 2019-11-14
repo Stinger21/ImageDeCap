@@ -61,8 +61,9 @@ namespace imageDeCap
             FinalImageGraphics.DrawImage(Properties.Resources.Magnifier, 0, 0, 128, 128);
             
             MainPictureBox.Image = FinalImage;
-            int width = ScreenCapturer.CurrentBackCover.SelectedRegion.Width;
-            int height = ScreenCapturer.CurrentBackCover.SelectedRegion.Height;
+            var SelectedRegion = ScreenCapturer.CurrentBackCover.SelectedRegion;
+            int width = SelectedRegion.Width;
+            int height = SelectedRegion.Height;
             width = width == 0 ? width : width + 1;
             height = height == 0 ? height : height + 1;
             CaptureResolution.Text = $"{width}x{height}";

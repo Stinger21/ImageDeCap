@@ -25,6 +25,8 @@ using System.Net.Http;
 using Newtonsoft.Json.Linq;
 using System.Threading;
 using System.Diagnostics;
+using System.Drawing.Imaging;
+using System.Reflection;
 
 namespace imageDeCap
 {
@@ -34,10 +36,34 @@ namespace imageDeCap
         Window,
         Bounds
     }
+    public class NonGDIBitmap
+    {
+        byte[] Data;
+        public NonGDIBitmap(Bitmap bitmap)
+        {
+            BitmapData bmpdata = null;
+
+            try
+            {
+                bmpdata = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, bitmap.PixelFormat);
+                int numbytes = bmpdata.Stride * bitmap.Height;
+                byte[] bytedata = new byte[numbytes];
+                IntPtr ptr = bmpdata.Scan0;
+
+                Marshal.Copy(ptr, bytedata, 0, numbytes);
+
+                Data = bytedata;
+            }
+            finally
+            {
+                if (bmpdata != null)
+                    bitmap.UnlockBits(bmpdata);
+            }
+        }
+    }
 
     public static class ScreenCapturer
     {
-
         public static CompleteCover CurrentBackCover;
         public static bool IsTakingSnapshot = false;
         
@@ -395,11 +421,9 @@ namespace imageDeCap
             }
 
             var result = new Bitmap(bounds.Width, bounds.Height);
-
+            result = Program.CaptureScreen(bounds.Left, bounds.Top, bounds.Size.Width, bounds.Size.Height);
             using (var g = Graphics.FromImage(result))
             {
-                g.Clear(Color.Black);
-                g.CopyFromScreen(new Point(bounds.Left, bounds.Top), Point.Empty, bounds.Size, CopyPixelOperation.SourceCopy);
                 if (CaptureMouse)
                 {
                     int cursorX = 0;
@@ -407,38 +431,58 @@ namespace imageDeCap
                     Bitmap cursorBMP = CaptureCursor(ref cursorX, ref cursorY);
                     if (cursorBMP != null)
                     {
-                        g.DrawImage(cursorBMP, new Rectangle(cursorX - CurrentBackCover.SelectedRegion.X, cursorY - CurrentBackCover.SelectedRegion.Y, cursorBMP.Width, cursorBMP.Height));
+                        Rectangle SelectedRegion = CurrentBackCover.SelectedRegion;
+                        g.DrawImage(cursorBMP, new Rectangle(cursorX - SelectedRegion.X, cursorY - SelectedRegion.Y, cursorBMP.Width, cursorBMP.Height));
                         g.Flush();
+                        cursorBMP.Dispose();
+                    }
+                    else
+                    {
+                        Console.WriteLine("Failed to capture cursor.");
                     }
                 }
             }
             return result;
         }
 
+
         static Bitmap CaptureCursor(ref int x, ref int y)
         {
-            Bitmap bmp;
-            IntPtr hicon;
             Win32Stuff.CURSORINFO ci = new Win32Stuff.CURSORINFO();
             ci.cbSize = Marshal.SizeOf(ci);
             if (!Win32Stuff.GetCursorInfo(out ci))
                 return null;
-
+        
             if (ci.flags != Win32Stuff.CURSOR_SHOWING)
                 return null;
 
-            hicon = Win32Stuff.CopyIcon(ci.hCursor);
+            IntPtr hicon = Win32Stuff.CopyIcon(ci.hCursor);
+
             if (!Win32Stuff.GetIconInfo(hicon, out Win32Stuff.ICONINFO icInfo))
+            {
+                Win32Stuff.DestroyIcon(hicon);
+                Win32Stuff.DeleteObject(icInfo.hbmMask);
+                Win32Stuff.DeleteObject(icInfo.hbmColor);
                 return null;
-            
+            }
+
             x = ci.ptScreenPos.x - ((int)icInfo.xHotspot);
             y = ci.ptScreenPos.y - ((int)icInfo.yHotspot);
             Icon ic = Icon.FromHandle(hicon);
             if (ic.Size.Height == 0 || ic.Size.Width == 0)
+            {
+                Win32Stuff.DestroyIcon(hicon);
+                Win32Stuff.DeleteObject(icInfo.hbmMask);
+                Win32Stuff.DeleteObject(icInfo.hbmColor);
                 return null;
+            }
+            Bitmap b = ic.ToBitmap();
 
-            bmp = ic.ToBitmap();
-            return bmp;
+            Win32Stuff.DestroyIcon(hicon);
+            Win32Stuff.DeleteObject(icInfo.hbmMask);
+            Win32Stuff.DeleteObject(icInfo.hbmColor);
+            
+            return b;
         }
     }
 
@@ -484,10 +528,28 @@ namespace imageDeCap
             public int Bottom;
         }
 
+        public enum TernaryRasterOperations : uint
+        {
+            SRCCOPY = 0x00CC0020,
+            SRCPAINT = 0x00EE0086,
+            SRCAND = 0x008800C6,
+            SRCINVERT = 0x00660046,
+            SRCERASE = 0x00440328,
+            NOTSRCCOPY = 0x00330008,
+            NOTSRCERASE = 0x001100A6,
+            MERGECOPY = 0x00C000CA,
+            MERGEPAINT = 0x00BB0226,
+            PATCOPY = 0x00F00021,
+            PATPAINT = 0x00FB0A09,
+            PATINVERT = 0x005A0049,
+            DSTINVERT = 0x00550009,
+            BLACKNESS = 0x00000042,
+            WHITENESS = 0x00FF0062
+        }
         #endregion
-        
-        #region Class Functions
 
+        #region Class Functions
+        
         [DllImport("user32.dll")]
         public static extern IntPtr GetForegroundWindow();
 
@@ -508,7 +570,8 @@ namespace imageDeCap
 
         [DllImport("user32.dll", EntryPoint = "ReleaseDC")]
         public static extern IntPtr ReleaseDC(IntPtr hWnd, IntPtr hDc);
-        
+
+
         [DllImport("user32.dll", EntryPoint = "GetCursorInfo")]
         public static extern bool GetCursorInfo(out CURSORINFO pci);
 
@@ -517,7 +580,40 @@ namespace imageDeCap
 
         [DllImport("user32.dll", EntryPoint = "GetIconInfo")]
         public static extern bool GetIconInfo(IntPtr hIcon, out ICONINFO piconinfo);
-        
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        public static extern bool DestroyIcon(IntPtr handle);
+
+
+        [DllImport("gdi32.dll", EntryPoint = "DeleteObject")]
+        public static extern IntPtr DeleteObject(IntPtr hDc);
+
+        [DllImport("gdi32.dll", EntryPoint = "BitBlt")]
+        public static extern bool BitBlt(IntPtr hDcDest, int nXDest, int nYDest, int nWidth, int nHeight, IntPtr hDcSrc, int nXSrc, int nYSrc, uint dwRop);
+
+        [DllImport("gdi32.dll", EntryPoint = "SelectObject")]
+        public static extern IntPtr SelectObject(IntPtr hDc, IntPtr hgdiobj);
+
+        [DllImport("gdi32.dll", EntryPoint = "CreateCompatibleDC")]
+        public static extern IntPtr CreateCompatibleDC(IntPtr hDc);
+
+        [DllImport("gdi32.dll", EntryPoint = "DeleteDC")]
+        public static extern bool DeleteDC(IntPtr hDc);
+
+        [DllImport("kernel32.dll", EntryPoint = "RegisterApplicationRestart")]
+        public static extern int RegisterApplicationRestart([MarshalAs(UnmanagedType.BStr)] string commandLineArgs, int flags);
+
+        [DllImport("user32.dll", EntryPoint = "mouse_event")]
+        public static extern void mouse_event(int dwFlags, int dx, int dy, int cButtons, int dwExtraInfo);
+
+        [DllImport("user32.dll", EntryPoint = "keybd_event")]
+        public static extern void keybd_event(byte vk, byte scan, int flags, int extrainfo);
+
+        [DllImport("user32.dll", EntryPoint = "SetCursorPos")]
+        public static extern void SetCursorPos(int x, int y);
+
+
+
         #endregion
     }
 

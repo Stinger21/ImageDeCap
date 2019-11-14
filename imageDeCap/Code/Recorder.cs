@@ -10,6 +10,7 @@ using SharpAvi.Codecs;
 using SharpAvi.Output;
 
 using System.Windows.Forms;
+using System.IO;
 
 // Most of the code here is not mine. 
 // All the code here is used simply to create the final output video file from the series of screenshots recorded in the gif-recorder.
@@ -27,8 +28,10 @@ namespace imageDeCap
         //IAviVideoStream videoStream;
         public static void Write(RecorderParams Params, Bitmap[] images)
         {
-            ProgressWindow w = new ProgressWindow();
-            w.Location = Cursor.Position;
+            ProgressWindow w = new ProgressWindow
+            {
+                Location = Cursor.Position
+            };
             w.Show();
             w.SetProgress($"Processing frame 0/{images.Length}", 0, images.Length);
 
@@ -43,9 +46,13 @@ namespace imageDeCap
                 i++;
                 w.SetProgress($"Processing frame {i}/{images.Length}", i, images.Length);
 
-                var bits = b.LockBits(new Rectangle(Params.X, Params.Y, Params.Width, Params.Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
+                Bitmap a = (Bitmap)b.Clone();
+
+                var bits = a.LockBits(new Rectangle(Params.X, Params.Y, Params.Width, Params.Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
                 Marshal.Copy(bits.Scan0, buffer, 0, buffer.Length);
-                b.UnlockBits(bits);
+                a.UnlockBits(bits);
+
+                a.Dispose();
 
                 videoStream.WriteFrame(true, buffer, 0, buffer.Length);
             }
@@ -53,6 +60,7 @@ namespace imageDeCap
             writer.Close();
         }
     }
+
 
 
     // Used to Configure the Recorder
@@ -71,9 +79,9 @@ namespace imageDeCap
             this.Y = Y;
         }
 
-        string FileName;
+        readonly string FileName;
         public int FramesPerSecond, Quality;
-        FourCC Codec;
+        readonly FourCC Codec;
 
         public int Height { get; private set; }
         public int Width { get; private set; }
