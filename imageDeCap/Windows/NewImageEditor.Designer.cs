@@ -141,7 +141,6 @@
             // 
             // UploadButton
             // 
-            this.UploadButton.BackgroundImage = global::imageDeCap.Properties.Resources.upload;
             this.UploadButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.UploadButton.FlatAppearance.BorderSize = 0;
             this.UploadButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -156,7 +155,6 @@
             // CaptureAgain
             // 
             this.CaptureAgain.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.CaptureAgain.BackgroundImage = global::imageDeCap.Properties.Resources.camera;
             this.CaptureAgain.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.CaptureAgain.FlatAppearance.BorderSize = 0;
             this.CaptureAgain.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -171,7 +169,6 @@
             // BoxButton
             // 
             this.BoxButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.BoxButton.BackgroundImage = global::imageDeCap.Properties.Resources.Box;
             this.BoxButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.BoxButton.FlatAppearance.BorderSize = 0;
             this.BoxButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -186,7 +183,6 @@
             // 
             // SaveButton
             // 
-            this.SaveButton.BackgroundImage = global::imageDeCap.Properties.Resources.save;
             this.SaveButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.SaveButton.FlatAppearance.BorderSize = 0;
             this.SaveButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -201,7 +197,6 @@
             // ArrowButton
             // 
             this.ArrowButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.ArrowButton.BackgroundImage = global::imageDeCap.Properties.Resources.Arrow;
             this.ArrowButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ArrowButton.FlatAppearance.BorderSize = 0;
             this.ArrowButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -215,7 +210,6 @@
             // 
             // ClipboardButton
             // 
-            this.ClipboardButton.BackgroundImage = global::imageDeCap.Properties.Resources.clipboard;
             this.ClipboardButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ClipboardButton.FlatAppearance.BorderSize = 0;
             this.ClipboardButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -230,7 +224,6 @@
             // UndoButton
             // 
             this.UndoButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.UndoButton.BackgroundImage = global::imageDeCap.Properties.Resources.undo;
             this.UndoButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.UndoButton.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.UndoButton.FlatAppearance.BorderSize = 0;
@@ -246,7 +239,6 @@
             // TextButton
             // 
             this.TextButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.TextButton.BackgroundImage = global::imageDeCap.Properties.Resources.Text;
             this.TextButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.TextButton.FlatAppearance.BorderSize = 0;
             this.TextButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -261,7 +253,6 @@
             // PickButton
             // 
             this.PickButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.PickButton.BackgroundImage = global::imageDeCap.Properties.Resources.Dropper;
             this.PickButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.PickButton.FlatAppearance.BorderSize = 0;
             this.PickButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;

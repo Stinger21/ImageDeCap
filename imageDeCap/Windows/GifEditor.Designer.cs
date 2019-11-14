@@ -86,7 +86,6 @@ namespace imageDeCap
             // 
             this.UploadButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.UploadButton.BackColor = System.Drawing.SystemColors.Control;
-            this.UploadButton.BackgroundImage = global::imageDeCap.Properties.Resources.upload;
             this.UploadButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.UploadButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
             this.UploadButton.FlatAppearance.BorderSize = 0;
@@ -102,7 +101,6 @@ namespace imageDeCap
             // 
             this.SaveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.SaveButton.BackColor = System.Drawing.SystemColors.Control;
-            this.SaveButton.BackgroundImage = global::imageDeCap.Properties.Resources.save;
             this.SaveButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.SaveButton.FlatAppearance.BorderSize = 0;
             this.SaveButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
