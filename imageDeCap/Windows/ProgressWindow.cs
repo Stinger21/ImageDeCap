@@ -11,15 +11,15 @@ using System.IO;
 
 namespace imageDeCap
 {
-
     public partial class ProgressWindow : Form
     {
         public ProgressWindow()
         {
+            this.Location = Cursor.Position;
             InitializeComponent();
             this.Shown += FormShown;
-            Location = Cursor.Position;
             this.Show();
+            Application.DoEvents();
         }
 
         public void SetProgress(string text, int current, int max)
@@ -27,6 +27,7 @@ namespace imageDeCap
             this.Text = $"{text} - ImageDeCap";
             progressBar1.Value = current;
             progressBar1.Maximum = max;
+            Application.DoEvents();
         }
 
         private void FormShown(object sender, EventArgs e)

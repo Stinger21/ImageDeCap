@@ -53,6 +53,13 @@ namespace imageDeCap
                     w = new ProgressWindow();
                     w.SetProgress($"Adding sound...", 50, 100);
                     engine.CustomCommand($"-i \"{outcompressedpath}\" -i \"{SoundRecording.Mp3Path}\" -c:v copy -c:a aac -strict experimental \"{outcompressedpathWithAudio}\"");
+                    engine.ConversionCompleteEvent += ConversionComplete;
+                    while (Converting)
+                    {
+                        Application.DoEvents();
+                        System.Threading.Thread.Sleep(1);
+                    }
+                        
                     w.Close();
                 }
                 else
@@ -69,6 +76,13 @@ namespace imageDeCap
             //File.Delete(outcompressedpathWithAudio);
             //File.Delete(SoundPath);
             return data;
+        }
+        static bool Converting = true;
+
+        private static void ConversionComplete(object sender, ConversionCompleteEventArgs e)
+        {
+            Converting = false;
+            Console.WriteLine("Conversion Complete");
         }
 
         string SecondsToString(double number)

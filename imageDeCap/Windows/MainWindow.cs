@@ -27,14 +27,16 @@ namespace imageDeCap
     TODO:
     make the progress bar actually show up on the mouse cursor wth.
     add a test button to the FTP
-test install and add to startup feature
+    test install and add to startup feature
 
-get a cloc of the project just for curiosity's sake
+    get a cloc of the project just for curiosity's sake
+
+    Replace screen recorder with something more robust that can record at exactly 30 instead of 32
 
     */
+
     // The code in this whole program is a mess. DW tho, it only crashes sometimes. ;)
-
-
+    
     // Notes about the files and what they are meant for as I am refactoring it, 2019-06-06
     // Static classes:
     // ScreenCapturer.cs    Contains functions for capturing images off the screen
