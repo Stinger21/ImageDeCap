@@ -13,14 +13,11 @@ using System.Windows.Forms;
 using System.IO;
 
 // Most of the code here is not mine. 
-// All the code here is used simply to create the final output video file from the series of screenshots recorded in the gif-recorder.
+// All the code here is used simply to create the final output video file from the series of screenshots recorded in the recorder.
 // I *think* there is potential for massive memory and performance improvements possible by doing this in some other way.
 
 namespace imageDeCap
 {
-
-
-    // IIRC this write function is the only function actually in direct use.
     public static class VideoWriter
     {
         //RecorderParams Params;
@@ -28,11 +25,8 @@ namespace imageDeCap
         //IAviVideoStream videoStream;
         public static void Write(RecorderParams Params, Bitmap[] images)
         {
-            ProgressWindow w = new ProgressWindow
-            {
-                Location = Cursor.Position
-            };
-            w.Show();
+            ProgressWindow w = new ProgressWindow();
+            //w.Show();
             w.SetProgress($"Processing frame 0/{images.Length}", 0, images.Length);
 
             AviWriter writer = Params.CreateAviWriter();
@@ -66,7 +60,7 @@ namespace imageDeCap
     // Used to Configure the Recorder
     public class RecorderParams
     {
-        public RecorderParams(string filename, int FrameRate, FourCC Encoder, int Quality, int X = 0, int Y = 0, int Width = 100, int Height = 100)
+        public RecorderParams(string filename, decimal FrameRate, FourCC Encoder, int Quality, int X = 0, int Y = 0, int Width = 100, int Height = 100)
         {
             FileName = filename;
             FramesPerSecond = FrameRate;
@@ -80,7 +74,8 @@ namespace imageDeCap
         }
 
         readonly string FileName;
-        public int FramesPerSecond, Quality;
+        public decimal FramesPerSecond;
+        public int Quality;
         readonly FourCC Codec;
 
         public int Height { get; private set; }

@@ -15,13 +15,12 @@ using System.Windows.Forms;
 
 namespace imageDeCap
 {
-
     public enum Filetype
     {
         jpg,
         png,
         bmp,
-        gif,
+        mp4,
         error,
     }
 
@@ -55,19 +54,20 @@ namespace imageDeCap
 
         public static void PlaySound(string soundName)
         {
-            if (!imageDeCap.Preferences.DisableSoundEffects)
-            {
-                SoundPlayer sp = null;
-                string soundPath = $"imageDeCap.Sounds.{soundName}";
-                Assembly assembly = Assembly.GetExecutingAssembly();
-                Stream soundResource = assembly.GetManifestResourceStream(soundPath);
-                sp = new SoundPlayer(soundResource);
-                
-                if(sp != null)
-                {
-                    sp.Play();
-                }
-            }
+            if (Preferences.DisableNotifications)
+                return;
+
+            SoundPlayer sp = null;
+            string soundPath = $"imageDeCap.Sounds.{soundName}";
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            Stream soundResource = assembly.GetManifestResourceStream(soundPath);
+            sp = new SoundPlayer(soundResource);
+
+            if (sp == null)
+                return;
+
+            sp.Play();
+            
         }
 
         // Utility function for displaying bubble notifications.
@@ -101,7 +101,7 @@ namespace imageDeCap
             {
                 // Attempt to get a list of security permissions from the folder. 
                 // This will raise an exception if the path is read only or do not have access to view the permissions. 
-                System.Security.AccessControl.DirectorySecurity ds = Directory.GetAccessControl(folderPath);
+                Directory.GetAccessControl(folderPath);
                 return true;
             }
             catch (UnauthorizedAccessException)
@@ -157,7 +157,7 @@ namespace imageDeCap
             }
             else if (filepath.EndsWith(".gif") || filepath.EndsWith(MainWindow.videoFormat))
             {
-                return Filetype.gif;
+                return Filetype.mp4;
             }
             else
             {
@@ -230,7 +230,7 @@ namespace imageDeCap
         {
             return new Vector2(P1.Y, -P1.X);
         }
-        public static Vector2 fromAtoB(Vector2 A, Vector2 B)
+        public static Vector2 FromAtoB(Vector2 A, Vector2 B)
         {
             return B - A;
         }

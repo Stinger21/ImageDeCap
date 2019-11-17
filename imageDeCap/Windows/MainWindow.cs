@@ -23,6 +23,15 @@ using System.Text.RegularExpressions;
 
 namespace imageDeCap
 {
+    /*
+    TODO:
+    make the progress bar actually show up on the mouse cursor wth.
+    add a test button to the FTP
+test install and add to startup feature
+
+get a cloc of the project just for curiosity's sake
+
+    */
     // The code in this whole program is a mess. DW tho, it only crashes sometimes. ;)
 
 
@@ -38,12 +47,13 @@ namespace imageDeCap
 
     // Forms:
     // CompleteCover.cs Handles freezing the screen, firing up the editors, recording gifs etc.
-    
-    public partial class MainWindow : Form
+
+    partial class MainWindow : Form
     {
         // Global Variables
         AboutWindow about;
         SettingsWindow props;
+        public static PerformanceCounter ramCounter;
 
         List<string> Links = new List<string>();
         public static string videoFormat = ".mp4";
@@ -56,6 +66,8 @@ namespace imageDeCap
         public static string BackupDirectory = "ERROR";
         public void Initialize()
         {
+
+            ramCounter = new PerformanceCounter("Memory", "Available MBytes");
 
             this.VersionLabel.Text = MainWindow.VersionNumber;
             ExeDirectory = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
@@ -248,7 +260,7 @@ namespace imageDeCap
             ScreenCapturer.CaptureScreenRegion();
         }
 
-        private void RecordGif_Click(object sender, EventArgs e)
+        private void RecordClip_Click(object sender, EventArgs e)
         {
             ScreenCapturer.CaptureScreenRegion(true);
         }
@@ -270,7 +282,8 @@ namespace imageDeCap
 
         private void HideToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            props.Close();
+            if(props != null)
+                props.Close();
             this.Close();
         }
 
@@ -308,7 +321,8 @@ namespace imageDeCap
 
             if (Copy)
             {
-                Clipboard.SetText(Links[LinksListBox.SelectedIndex]);
+                if(LinksListBox.SelectedIndex >= 0 && LinksListBox.SelectedIndex <= Links.Capacity-1)
+                    Clipboard.SetText(Links[LinksListBox.SelectedIndex]);
             }
             else if (Delete)
             {

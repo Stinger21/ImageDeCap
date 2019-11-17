@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
 namespace imageDeCap
 {
@@ -17,6 +18,8 @@ namespace imageDeCap
         {
             InitializeComponent();
             this.Shown += FormShown;
+            Location = Cursor.Position;
+            this.Show();
         }
 
         public void SetProgress(string text, int current, int max)
@@ -29,11 +32,6 @@ namespace imageDeCap
         private void FormShown(object sender, EventArgs e)
         {
             this.Location = Cursor.Position;
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            this.Close();
         }
     }
 }

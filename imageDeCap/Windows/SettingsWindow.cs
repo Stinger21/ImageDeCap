@@ -23,59 +23,62 @@ namespace imageDeCap
 
         void InitSettings()
         {
-            SaveImages.Checked = Preferences.SaveImages;
-            SaveImagesBrowseButton.Enabled = Preferences.SaveImages;
-            SaveImagesHereTextBox.Text = Preferences.SaveImagesLocation;
-            SaveImagesHereTextBox.Enabled = SaveImages.Checked;
-            EditImages.Checked = Preferences.EditScreenshotAfterCapture;
-            CopyLinksToClipboard.Checked = Preferences.CopyLinksToClipboard;
-            BackupImages.Checked = Preferences.DisableSoundEffects;
-            OpenInBrowser.Checked = Preferences.OpenInBrowser;
-            OpenInBrowser.Enabled = !Preferences.NeverUpload;
-            CopyLinksToClipboard.Enabled = !Preferences.NeverUpload;
-            DisableNotifications.Enabled = !Preferences.NeverUpload;
-            PastebinSubjectLineTextBox.Enabled = !Preferences.NeverUpload;
-            PastebinSubjectLineTextBox.Text = Preferences.PastebinSubjectLine;
-            neverUpload.Checked = Preferences.NeverUpload;
-            DisableNotifications.Checked = Preferences.DisableNotifications;
-            FreezeScreen.Checked = Preferences.FreezeScreenOnRegionShot;
-            AlsoFTPTextFilesBox.Checked = Preferences.uploadToFTP;
-            AlsoFTPTextFilesBox.Enabled = Preferences.uploadToFTP;
-            FTPURL.Enabled = Preferences.uploadToFTP;
-            FTPUsername.Enabled = Preferences.uploadToFTP;
-            FTPpassword.Enabled = Preferences.uploadToFTP;
-            HotkeyTextBox1.Text = Preferences.HotkeyText;
-            HotkeyTextBox2.Text = Preferences.HotkeyVideo;
-            HotkeyTextBox3.Text = Preferences.HotkeyImage;
-            FTPpassword.Text = Preferences.FTPpassword;
-            FTPURL.Text = Preferences.FTPurl;
-            FTPUsername.Text = Preferences.FTPusername;
-            RecordingFramerate.Value = Preferences.RecordingFramerate;
-            CopyImageToClipboard.Checked = Preferences.CopyImageToClipboard;
-            RuleOfThirds.Checked = Preferences.UseRuleOfThirds;
-            watermarkCheckbox.Checked = Preferences.AddWatermark;
-            watermarkTextbox.Text = Preferences.WatermarkFilePath;
-            watermarkLocation0.Checked = Preferences.WatermarkLocation == 0;
-            watermarkLocation1.Checked = Preferences.WatermarkLocation == 1;
-            watermarkLocation2.Checked = Preferences.WatermarkLocation == 2;
-            watermarkLocation3.Checked = Preferences.WatermarkLocation == 3;
-            watermarkLocation0.Enabled = Preferences.AddWatermark;
-            watermarkLocation1.Enabled = Preferences.AddWatermark;
-            watermarkLocation2.Enabled = Preferences.AddWatermark;
-            watermarkLocation3.Enabled = Preferences.AddWatermark;
-            watermarkBrowseButton.Enabled = Preferences.AddWatermark;
-            watermarkTextbox.Enabled = Preferences.AddWatermark;
-            BackupImages.Checked = Preferences.BackupImages;
+            checkBoxUploadToFTP.Checked         = Preferences.uploadToFTP;
+            SaveImages.Checked                  = Preferences.SaveImages;
+            SaveImagesBrowseButton.Enabled      = Preferences.SaveImages;
+            SaveImagesHereTextBox.Text          = Preferences.SaveImagesLocation;
+            SaveImagesHereTextBox.Enabled       = SaveImages.Checked;
+            EditImages.Checked                  = Preferences.EditScreenshotAfterCapture;
+            CopyLinksToClipboard.Checked        = Preferences.CopyLinksToClipboard;
+            BackupImages.Checked                = Preferences.BackupImages;
+            OpenInBrowser.Checked               = Preferences.OpenInBrowser;
+            OpenInBrowser.Enabled               = !Preferences.NeverUpload;
+            CopyLinksToClipboard.Enabled        = !Preferences.NeverUpload;
+            DisableNotifications.Enabled        = !Preferences.NeverUpload;
+            PastebinSubjectLineTextBox.Enabled  = !Preferences.NeverUpload;
+            PastebinSubjectLineTextBox.Text     = Preferences.PastebinSubjectLine;
+            neverUpload.Checked                 = Preferences.NeverUpload;
+            DisableNotifications.Checked        = Preferences.DisableNotifications;
+            FreezeScreen.Checked                = Preferences.FreezeScreenOnRegionShot;
+            FTPURL.Enabled                      = Preferences.uploadToFTP;
+            FTPUsername.Enabled                 = Preferences.uploadToFTP;
+            FTPpassword.Enabled                 = Preferences.uploadToFTP;
+            FTPLink.Enabled                     = Preferences.uploadToFTP;
+            CopyFTPLink.Enabled                 = Preferences.uploadToFTP;
+            FTPURL.Text                         = Preferences.FTPurl;
+            FTPUsername.Text                    = Preferences.FTPusername;
+            FTPpassword.Text                    = Preferences.FTPpassword;
+            FTPLink.Text                        = Preferences.FTPLink;
+            CopyFTPLink.Checked                 = Preferences.CopyFTPLink;
+            HotkeyTextBox1.Text                 = Preferences.HotkeyText;
+            HotkeyTextBox2.Text                 = Preferences.HotkeyVideo;
+            HotkeyTextBox3.Text                 = Preferences.HotkeyImage;
+            RecordingFramerate.Value            = Preferences.RecordingFramerate;
+            CopyImageToClipboard.Checked        = Preferences.CopyImageToClipboard;
+            RuleOfThirds.Checked                = Preferences.UseRuleOfThirds;
+            watermarkCheckbox.Checked           = Preferences.AddWatermark;
+            watermarkTextbox.Text               = Preferences.WatermarkFilePath;
+            watermarkLocation0.Checked          = Preferences.WatermarkLocation == 0;
+            watermarkLocation1.Checked          = Preferences.WatermarkLocation == 1;
+            watermarkLocation2.Checked          = Preferences.WatermarkLocation == 2;
+            watermarkLocation3.Checked          = Preferences.WatermarkLocation == 3;
+            watermarkLocation0.Enabled          = Preferences.AddWatermark;
+            watermarkLocation1.Enabled          = Preferences.AddWatermark;
+            watermarkLocation2.Enabled          = Preferences.AddWatermark;
+            watermarkLocation3.Enabled          = Preferences.AddWatermark;
+            watermarkBrowseButton.Enabled       = Preferences.AddWatermark;
+            watermarkTextbox.Enabled            = Preferences.AddWatermark;
+            BackupImages.Checked                = Preferences.BackupImages;
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void SaveImagesBrowseButton_Click(object sender, EventArgs e)
         {
             DialogResult result = folderBrowserDialog1.ShowDialog();
             if (result == DialogResult.OK)
                 SaveImagesHereTextBox.Text = folderBrowserDialog1.SelectedPath;
         }
         
-        private void button1_Click(object sender, EventArgs e)
+        private void CloseButton_Click(object sender, EventArgs e)
         {
             this.Close();
         }
@@ -93,7 +96,7 @@ namespace imageDeCap
             UnregisterHotKey(this.Handle, 0);
         }
 
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        private void CheckBox1_CheckedChanged(object sender, EventArgs e)
         {
             SaveImagesHereTextBox.Enabled = SaveImages.Checked;
             SaveImagesBrowseButton.Enabled = SaveImages.Checked;
@@ -101,13 +104,13 @@ namespace imageDeCap
             Preferences.Save();
         }
 
-        private void textBox1_TextChanged(object sender, EventArgs e)
+        private void TextBox1_TextChanged(object sender, EventArgs e)
         {
             Preferences.SaveImagesLocation = SaveImagesHereTextBox.Text;
             Preferences.Save();
         }
         
-        private void checkBox7_CheckedChanged(object sender, EventArgs e)
+        private void CheckBox7_CheckedChanged(object sender, EventArgs e)
         {
             Preferences.EditScreenshotAfterCapture = EditImages.Checked;
             Preferences.Save();
@@ -125,13 +128,13 @@ namespace imageDeCap
             Preferences.Save();
         }
 
-        private void textBox2_TextChanged_1(object sender, EventArgs e)
+        private void TextBox2_TextChanged_1(object sender, EventArgs e)
         {
             Preferences.PastebinSubjectLine = PastebinSubjectLineTextBox.Text;
             Preferences.Save();
         }
 
-        private void neverUpload_CheckedChanged(object sender, EventArgs e)
+        private void NeverUpload_CheckedChanged(object sender, EventArgs e)
         {
             Preferences.NeverUpload = neverUpload.Checked;
             Preferences.Save();
@@ -141,34 +144,35 @@ namespace imageDeCap
             PastebinSubjectLineTextBox.Enabled = !Preferences.NeverUpload;
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void Button3_Click(object sender, EventArgs e)
         {
             Preferences.ResetAllPreferences();
-            InitSettings();
             Preferences.Save();
+            InitSettings();
         }
 
-        private void checkBox5_CheckedChanged(object sender, EventArgs e)
+        private void CheckBox5_CheckedChanged(object sender, EventArgs e)
         {
             Preferences.DisableNotifications = DisableNotifications.Checked;
             Preferences.Save();
         }
 
-        private void checkBox6_CheckedChanged(object sender, EventArgs e)
+        private void CheckBox6_CheckedChanged(object sender, EventArgs e)
         {
             Preferences.FreezeScreenOnRegionShot = FreezeScreen.Checked;
             Preferences.Save();
         }
 
-        private void checkBoxUploadToFTP_CheckedChanged(object sender, EventArgs e)
+        private void CheckBoxUploadToFTP_CheckedChanged(object sender, EventArgs e)
         {
             Preferences.uploadToFTP = checkBoxUploadToFTP.Checked;
             Preferences.Save();
-
-            AlsoFTPTextFilesBox.Enabled = Preferences.uploadToFTP;
+            
             FTPURL.Enabled = Preferences.uploadToFTP;
             FTPUsername.Enabled = Preferences.uploadToFTP;
             FTPpassword.Enabled = Preferences.uploadToFTP;
+            FTPLink.Enabled = Preferences.uploadToFTP;
+            CopyFTPLink.Enabled = Preferences.uploadToFTP;
         }
 
         private void FTPURL_TextChanged(object sender, EventArgs e)
@@ -195,24 +199,24 @@ namespace imageDeCap
             Preferences.Save();
         }
         
-        private void imageContainer_Click(object sender, EventArgs e)
+        private void ImageContainer_Click(object sender, EventArgs e)
         {
             System.Diagnostics.Process.Start("http://www.mattwestphal.com/");
         }
         
-        private void gifFPS_ValueChanged(object sender, EventArgs e)
+        private void ClipFPS_ValueChanged(object sender, EventArgs e)
         {
             Preferences.RecordingFramerate = (int)RecordingFramerate.Value;
             Preferences.Save();
         }
         
-        private void checkBox8_CheckedChanged(object sender, EventArgs e)
+        private void CheckBox8_CheckedChanged(object sender, EventArgs e)
         {
             Preferences.UseRuleOfThirds = RuleOfThirds.Checked;
             Preferences.Save();
         }
         
-        private void watermarkCheckbox_CheckedChanged(object sender, EventArgs e)
+        private void WatermarkCheckbox_CheckedChanged(object sender, EventArgs e)
         {
             Preferences.AddWatermark = watermarkCheckbox.Checked;
             watermarkLocation0.Enabled = Preferences.AddWatermark;
@@ -224,56 +228,44 @@ namespace imageDeCap
             Preferences.Save();
         }
         
-        private void watermarkBrowseButton_Click_1(object sender, EventArgs e)
+        private void WatermarkBrowseButton_Click_1(object sender, EventArgs e)
         {
             if (ImageFileDialog.ShowDialog() == DialogResult.OK)
                 watermarkTextbox.Text = ImageFileDialog.FileName;
         }
         
-        private void watermarkTextbox_TextChanged(object sender, EventArgs e)
+        private void WatermarkTextbox_TextChanged(object sender, EventArgs e)
         {
             Preferences.WatermarkFilePath = watermarkTextbox.Text;
             Preferences.Save();
         }
 
-        private void watermarkLocation0_CheckedChanged(object sender, EventArgs e)
+        private void WatermarkLocation0_CheckedChanged(object sender, EventArgs e)
         {
             Preferences.WatermarkLocation = 0;
             Preferences.Save();
         }
 
-        private void watermarkLocation1_CheckedChanged(object sender, EventArgs e)
+        private void WatermarkLocation1_CheckedChanged(object sender, EventArgs e)
         {
             Preferences.WatermarkLocation = 1;
             Preferences.Save();
         }
 
-        private void watermarkLocation2_CheckedChanged(object sender, EventArgs e)
+        private void WatermarkLocation2_CheckedChanged(object sender, EventArgs e)
         {
             Preferences.WatermarkLocation = 2;
             Preferences.Save();
         }
 
-        private void watermarkLocation3_CheckedChanged(object sender, EventArgs e)
+        private void WatermarkLocation3_CheckedChanged(object sender, EventArgs e)
         {
             Preferences.WatermarkLocation = 3;
             Preferences.Save();
         }
-
-        private void radioButton1_CheckedChanged(object sender, EventArgs e)
-        {
-            Preferences.GifTarget = "gfycat";
-            Preferences.Save();
-        }
-
-        private void radioButton2_CheckedChanged(object sender, EventArgs e)
-        {
-            Preferences.GifTarget = "webmshare";
-            Preferences.Save();
-        }
         
         // Add the program to startup
-        private void button4_Click(object sender, EventArgs e)
+        private void AddToStartupButton_Click(object sender, EventArgs e)
         {
             Utilities.AddToStartup();
             Utilities.BubbleNotification("Added to startup!");
@@ -288,7 +280,7 @@ namespace imageDeCap
             InitSettings();
         }
 
-        private void label14_Click(object sender, EventArgs e)
+        private void BackupFolderLink_Click(object sender, EventArgs e)
         {
             if (!Directory.Exists(MainWindow.BackupDirectory))
             {
@@ -417,7 +409,6 @@ namespace imageDeCap
 
         private void LockPrintScreen()
         {
-            Console.WriteLine("Enter");
             RegisterHotKey(this.Handle, 0, 0, Keys.PrintScreen.GetHashCode());
             RegisterHotKey(this.Handle, 1, (int)KeyModifier.Alt, Keys.PrintScreen.GetHashCode());
             RegisterHotKey(this.Handle, 2, (int)KeyModifier.Control, Keys.PrintScreen.GetHashCode());
@@ -463,6 +454,18 @@ namespace imageDeCap
             // Starting location
             this.StartPosition = FormStartPosition.Manual;
             this.Location = new Point(Screen.PrimaryScreen.Bounds.Width/3, Screen.PrimaryScreen.Bounds.Height/3);
+        }
+
+        private void CopyFTPLink_CheckedChanged(object sender, EventArgs e)
+        {
+            Preferences.CopyFTPLink = CopyFTPLink.Checked;
+            Preferences.Save();
+        }
+
+        private void FTPLink_TextChanged(object sender, EventArgs e)
+        {
+            Preferences.FTPLink = FTPLink.Text;
+            Preferences.Save();
         }
     }
 }

@@ -61,6 +61,7 @@
             this.Website.Size = new System.Drawing.Size(89, 13);
             this.Website.TabIndex = 7;
             this.Website.Text = "Mattias Westphal";
+            this.Website.Click += new System.EventHandler(this.Website_Click);
             // 
             // Contributors
             // 

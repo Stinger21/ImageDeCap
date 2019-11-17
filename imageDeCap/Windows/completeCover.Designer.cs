@@ -39,7 +39,7 @@ namespace imageDeCap
             this.ActualFramerateLabel = new System.Windows.Forms.Label();
             this.TargetFramerateLabel = new System.Windows.Forms.Label();
             this.MemoryLabel = new System.Windows.Forms.Label();
-            this.GifCaptureTimer = new System.Windows.Forms.Timer(this.components);
+            this.ClipCaptureTimer = new System.Windows.Forms.Timer(this.components);
             this.BoxMovementTimer = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel1.SuspendLayout();
@@ -153,10 +153,10 @@ namespace imageDeCap
             this.MemoryLabel.TabIndex = 6;
             this.MemoryLabel.Text = "0:00";
             // 
-            // GifCaptureTimer
+            // ClipCaptureTimer
             // 
-            this.GifCaptureTimer.Interval = 16;
-            this.GifCaptureTimer.Tick += new System.EventHandler(this.GifCaptureTimer_Tick);
+            this.ClipCaptureTimer.Interval = 16;
+            this.ClipCaptureTimer.Tick += new System.EventHandler(this.ClipCaptureTimer_Tick);
             // 
             // BoxMovementTimer
             // 
@@ -199,7 +199,7 @@ namespace imageDeCap
         private System.Windows.Forms.Label FramesLabel;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label MemoryLabel;
-        public System.Windows.Forms.Timer GifCaptureTimer;
+        public System.Windows.Forms.Timer ClipCaptureTimer;
         private System.Windows.Forms.Label ActualFramerateLabel;
         private System.Windows.Forms.Label TargetFramerateLabel;
         private System.Windows.Forms.Timer BoxMovementTimer;

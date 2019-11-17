@@ -17,7 +17,6 @@ namespace imageDeCap
 
         public static void Update()
         {
-            
             string hotkey = GetCurrentHotkey();
 
             if (Preferences.HotkeyText == hotkey)
@@ -33,8 +32,7 @@ namespace imageDeCap
                     if (Program.hotkeysEnabled)
                         ScreenCapturer.CaptureScreenRegion(true);
 
-                if(CaptureVideoHotkeyPressed != null)
-                    CaptureVideoHotkeyPressed();
+                CaptureVideoHotkeyPressed?.Invoke();
 
                 CaptureVideoHotkey = true;
             }

@@ -36,31 +36,31 @@ namespace imageDeCap
         Window,
         Bounds
     }
-    public class NonGDIBitmap
-    {
-        byte[] Data;
-        public NonGDIBitmap(Bitmap bitmap)
-        {
-            BitmapData bmpdata = null;
-
-            try
-            {
-                bmpdata = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, bitmap.PixelFormat);
-                int numbytes = bmpdata.Stride * bitmap.Height;
-                byte[] bytedata = new byte[numbytes];
-                IntPtr ptr = bmpdata.Scan0;
-
-                Marshal.Copy(ptr, bytedata, 0, numbytes);
-
-                Data = bytedata;
-            }
-            finally
-            {
-                if (bmpdata != null)
-                    bitmap.UnlockBits(bmpdata);
-            }
-        }
-    }
+    //public class NonGDIBitmap
+    //{
+    //    byte[] Data;
+    //    public NonGDIBitmap(Bitmap bitmap)
+    //    {
+    //        BitmapData bmpdata = null;
+    //
+    //        try
+    //        {
+    //            bmpdata = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, bitmap.PixelFormat);
+    //            int numbytes = bmpdata.Stride * bitmap.Height;
+    //            byte[] bytedata = new byte[numbytes];
+    //            IntPtr ptr = bmpdata.Scan0;
+    //
+    //            Marshal.Copy(ptr, bytedata, 0, numbytes);
+    //
+    //            Data = bytedata;
+    //        }
+    //        finally
+    //        {
+    //            if (bmpdata != null)
+    //                bitmap.UnlockBits(bmpdata);
+    //        }
+    //    }
+    //}
 
     public static class ScreenCapturer
     {
@@ -76,15 +76,18 @@ namespace imageDeCap
                 SendKeys.SendWait("^c");
                 System.Threading.Thread.Sleep(500);
                 string clipboard = Clipboard.GetText();
+                Utilities.PlaySound("snip.wav");
 
                 if (!Preferences.NeverUpload)
                 {
-                    Utilities.PlaySound("snip.wav");
                     BackgroundWorker bw = new BackgroundWorker();
                     bw.DoWork += Uploading.UploadPastebin;
                     bw.RunWorkerCompleted += UploadPastebinCompleted;
                     bw.RunWorkerAsync(clipboard);
+                }
 
+                if (Preferences.uploadToFTP)
+                {
                     BackgroundWorker bw2 = new BackgroundWorker();
                     bw2.DoWork += Uploading.UploadToFTP;
                     string name = DateTime.UtcNow.ToString("yyyyMMddHHmmssfff");
@@ -104,9 +107,15 @@ namespace imageDeCap
             }
         }
 
-        public static void CaptureScreenRegion(bool isGif = false)
+        public static void CaptureScreenRegion(bool isClip = false)
         {
-            Bitmap background = ScreenCapturer.Capture(ScreenCaptureMode.Screen);
+            Bitmap background = null;
+            if(!isClip)
+            {
+                var bounds = SystemInformation.VirtualScreen;
+                background = Program.CaptureScreen(bounds.Left, bounds.Top, bounds.Size.Width, bounds.Size.Height);
+            }
+
             // prevent blackening
             if (!IsTakingSnapshot)
             {
@@ -116,13 +125,13 @@ namespace imageDeCap
                 if (CurrentBackCover != null)
                     CurrentBackCover.Dispose();
 
-                CurrentBackCover = new CompleteCover(isGif);
+                CurrentBackCover = new CompleteCover(isClip);
                 CurrentBackCover.Show();
-                CurrentBackCover.AfterShow(background, isGif);
+                CurrentBackCover.AfterShow(background, isClip);
             }
         }
 
-        public static void UploadImageData(byte[] ImageData, Filetype imageType, bool ForceNoEdit = false, bool RMBClickForceEdit = false, Bitmap[] GifImage = null, Rectangle SelectedRegion = default(Rectangle))
+        public static void UploadImageData(byte[] ImageData, Filetype imageType, bool ForceNoEdit = false, bool RMBClickForceEdit = false, Bitmap[] ClipFrames = null, Rectangle SelectedRegion = default(Rectangle))
         {
             Program.hotkeysEnabled = true; // Enable hotkeys here again so you can take more screenshots
 
@@ -130,7 +139,7 @@ namespace imageDeCap
                 return;
 
             // Copy image to clipboard
-            if (imageType != Filetype.gif)
+            if (imageType != Filetype.mp4)
             {
                 if (Preferences.CopyImageToClipboard)
                 {
@@ -140,58 +149,59 @@ namespace imageDeCap
 
             if ((Preferences.EditScreenshotAfterCapture || RMBClickForceEdit) && ForceNoEdit == false)
             {
-                if (imageType == Filetype.gif)
+                if (imageType == Filetype.mp4)
                 {
                     //int framerate = 1000 / CurrentBackCover.RecordedTime;
-                    GifEditor editor = new GifEditor(GifImage, CurrentBackCover.topBox.Location.X, CurrentBackCover.topBox.Location.Y, CurrentBackCover.RecordedFramerate);
+                    ClipTrimmer editor = new ClipTrimmer(ClipFrames, CurrentBackCover.topBox.Location.X, CurrentBackCover.topBox.Location.Y, CurrentBackCover.RecordedFramerate);
                     editor.Show();
                     editor.FormClosed += EditorDone;
                 }
                 else
                 {
-                    NewImageEditor editor = new NewImageEditor(ImageData, CurrentBackCover.topBox.Location.X, CurrentBackCover.topBox.Location.Y, SelectedRegion);
+                    ImageEditor editor = new ImageEditor(ImageData, CurrentBackCover.topBox.Location.X, CurrentBackCover.topBox.Location.Y, SelectedRegion);
                     editor.Show();
                     editor.FormClosed += EditorDone;
                 }
             }
             else
             {
-                // If it's a gif make save the default :>
-                NewImageEditor.EditorResult EditorResult = NewImageEditor.EditorResult.Upload;
-                if(imageType == Filetype.gif)
-                    EditorResult = NewImageEditor.EditorResult.Save;
+                // If it's a clip make save the default :>
+                ImageEditor.EditorResult EditorResult = ImageEditor.EditorResult.Upload;
+                if(imageType == Filetype.mp4)
+                    EditorResult = ImageEditor.EditorResult.Save;
 
-                UploadImageData_AfterEdit(EditorResult, imageType, ImageData, GifImage);
+                UploadImageData_AfterEdit(EditorResult, imageType, ImageData, ClipFrames);
             }
         }
 
         public static void EditorDone(object sender, EventArgs e)
         {
             Filetype f;
-            NewImageEditor.EditorResult EditorResult = NewImageEditor.EditorResult.Quit;
+            ImageEditor.EditorResult EditorResult = ImageEditor.EditorResult.Quit;
             byte[] ImageData = null;
-            Bitmap[] GifData = null;
-            if (sender is NewImageEditor)
+            Bitmap[] ClipData = null;
+            bool Sound = false;
+            if (sender is ImageEditor)
             {
-                NewImageEditor editor = (NewImageEditor)sender;
+                ImageEditor editor = (ImageEditor)sender;
                 (EditorResult, ImageData) = editor.FinalFunction();
                 editor.Dispose();
                 f = Filetype.png;
             }
             else
             {
-                GifEditor editor = (GifEditor)sender;
-                (EditorResult, GifData) = editor.FinalFunction();
+                ClipTrimmer editor = (ClipTrimmer)sender;
+                (EditorResult, ClipData, Sound) = editor.FinalFunction();
                 editor.Dispose();
-                f = Filetype.gif;
+                f = Filetype.mp4;
             }
-            UploadImageData_AfterEdit(EditorResult, f, ImageData, GifData);
+            UploadImageData_AfterEdit(EditorResult, f, ImageData, ClipData, Sound);
         }
 
-        // TODO: Change this to take a path with the editorresult
-        public static void UploadImageData_AfterEdit(NewImageEditor.EditorResult EditorResult, Filetype imageType, byte[] FileData, Bitmap[] GifImage)
+
+        public static void UploadImageData_AfterEdit(ImageEditor.EditorResult EditorResult, Filetype imageType, byte[] FileData, Bitmap[] ClipData, bool Sound = false)
         {
-            if (EditorResult == NewImageEditor.EditorResult.Quit)
+            if (EditorResult == ImageEditor.EditorResult.Quit)
             {
                 foreach (var v in CurrentBackCover.CapturedClpFrames) { v.Dispose(); }
                 CurrentBackCover.CapturedClpFrames.Clear();
@@ -200,20 +210,20 @@ namespace imageDeCap
 
             // Ask the user where to save before turning the array of images into a video because video compression can take a while.
             string SavePath = null;
-            if (EditorResult == NewImageEditor.EditorResult.Save) // If gif, ask to save only if 
+            if (EditorResult == ImageEditor.EditorResult.Save)
             {
-                if (imageType == Filetype.gif)
+                if (imageType == Filetype.mp4)
                 {
                     SavePath = Utilities.FileDialog(MainWindow.videoFormat);
                 }
-                if (imageType != Filetype.gif)
+                if (imageType != Filetype.mp4)
                 {
                     SavePath = Utilities.FileDialog(".png");
                 }
             }
 
             // compress video
-            if (imageType == Filetype.gif)
+            if (imageType == Filetype.mp4)
             {
                 if(CurrentBackCover.RecordedFramerate == 0)
                 {
@@ -221,7 +231,7 @@ namespace imageDeCap
                     MessageBox.Show("Something went wrong with this recording.", "Framerate was 0.");
                     return;
                 }
-                FileData = GifEditor.VideoFromFrames(GifImage, CurrentBackCover.RecordedFramerate);
+                FileData = ClipTrimmer.VideoFromFrames(ClipData, CurrentBackCover.RecordedFramerate, Sound);
                 foreach (var v in CurrentBackCover.CapturedClpFrames) { v.Dispose(); }
                 CurrentBackCover.CapturedClpFrames.Clear();
             }
@@ -232,12 +242,12 @@ namespace imageDeCap
 
             string SaveFileName = DateTime.UtcNow.ToString("yyyyMMddHHmmssfff");
             string Extension = imageType.ToString();
-            if (Extension == "gif")
-            {
-                Extension = MainWindow.videoFormat.Replace(".", "");
-            }
+            //if (Extension == "gif")
+            //{
+            //    Extension = MainWindow.videoFormat.Replace(".", "");
+            //}
 
-            if (Preferences.SaveImages)
+            if (Preferences.SaveImages && Directory.Exists(Preferences.SaveImagesLocation))
             {
                 string directory_path = Path.GetFullPath(Environment.ExpandEnvironmentVariables(Preferences.SaveImagesLocation));
                 string file_path = Path.Combine(directory_path, $"{SaveFileName}.{Extension}");
@@ -278,10 +288,10 @@ namespace imageDeCap
             }
 
 
-            // Copy image to clipboard if it's not a gif
-            if (imageType != Filetype.gif)
+            // Copy image to clipboard if it's not a clip
+            if (imageType != Filetype.mp4)
             {
-                if (EditorResult == NewImageEditor.EditorResult.Clipboard)
+                if (EditorResult == ImageEditor.EditorResult.Clipboard)
                 {
                     if (Preferences.CopyImageToClipboard)
                     {
@@ -290,45 +300,71 @@ namespace imageDeCap
                 }
             }
 
-            // Upload the image
-            if (EditorResult == NewImageEditor.EditorResult.Upload)
+
+            BackgroundWorker bwFTP = new BackgroundWorker();
+            if (Preferences.uploadToFTP)
             {
-                if (!Preferences.NeverUpload)
+                bwFTP.DoWork += Uploading.UploadToFTP;
+                bwFTP.RunWorkerAsync(new object[] { Preferences.FTPurl,
+                                                Preferences.FTPusername,
+                                                Preferences.FTPpassword,
+                                                FileData,
+                                                $"{SaveFileName}.{Extension}" });
+            }
+            if (Preferences.CopyFTPLink && Preferences.uploadToFTP)
+            {
+                bwFTP.RunWorkerCompleted += UploadImageFileCompleted;
+            }
+
+            // Upload the image
+            if (EditorResult == ImageEditor.EditorResult.Upload)
+            {
+                BackgroundWorker bw1 = new BackgroundWorker();
+                if(!Preferences.NeverUpload)
                 {
-                    BackgroundWorker bw = new BackgroundWorker();
-                    if (imageType == Filetype.gif)
+                    if (imageType == Filetype.mp4)
                     {
-                        if (Preferences.GifTarget == "gfycat")
-                        {
-                            bw.DoWork += Uploading.UploadGif_Gfycat;
-                        }
-                        else if (Preferences.GifTarget == "imgur")
-                        {
-                            bw.DoWork += Uploading.UploadGif_Imgur;
-                        }
-                        else if (Preferences.GifTarget == "webmshare")
-                        {
-                            bw.DoWork += Uploading.UploadGif_Webmshare;
-                        }
+                        //if (Preferences.ClipTarget == "gfycat")
+                        //{
+                        //    bw1.DoWork += Uploading.UploadClip_Gfycat;
+                        //}
+                        //else if (Preferences.ClipTarget == "imgur")
+                        //{
+                        //    bw1.DoWork += Uploading.UploadClip_Imgur;
+                        //}
+                        //else if (Preferences.ClipTarget == "webmshare")
+                        //{
+                        //    bw1.DoWork += Uploading.UploadClip_Webmshare;
+                        //}
                     }
                     else
                     {
-                        bw.DoWork += Uploading.UploadImage_Imgur;
+                        bw1.DoWork += Uploading.UploadImage_Imgur;
                     }
-                    bw.RunWorkerCompleted += UploadImageFileCompleted;
-                    bw.RunWorkerAsync(FileData);
                 }
+
+                if (Preferences.CopyFTPLink && Preferences.uploadToFTP)
+                {
+                    //bwFTP.RunWorkerCompleted += UploadImageFileCompleted;
+                }
+                else if(!Preferences.NeverUpload)
+                {
+                    bw1.RunWorkerCompleted += UploadImageFileCompleted;
+                }
+                bw1.RunWorkerAsync(FileData);
+
+                
             }
         }
 
         public static void UploadImageFileCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             (string url, byte[] ImageData) = (ValueTuple<string, byte[]>)e.Result;
-
+            
             if (url.Contains("failed"))
             {
                 ClipboardHandler.SetClipboardText(url);
-                Utilities.BubbleNotification($"Upload to imgur failed! \n{url}\nAre you connected to the internet? \nis Imgur Down?", null, ToolTipIcon.Error);
+                Utilities.BubbleNotification($"Upload to failed! \n{url}\nAre you connected to the internet?", null, ToolTipIcon.Error);
                 Utilities.PlaySound("error.wav");
             }
             else
@@ -340,15 +376,16 @@ namespace imageDeCap
                 if (!Preferences.CopyLinksToClipboard)
                 {
                     if (Preferences.DisableNotifications)
-                        Utilities.BubbleNotification("Imgur URL copied to clipboard!", Program.ImageDeCap.BalloonTipClicked);
+                        Utilities.BubbleNotification("URL copied to clipboard!", Program.ImageDeCap.BalloonTipClicked);
                 }
                 else
                 {
                     if (!Preferences.DisableNotifications)
                         Utilities.BubbleNotification("Upload Complete!", Program.ImageDeCap.BalloonTipClicked);
                 }
-
-                if (!Utilities.IsWindows10() || Preferences.DisableNotifications)
+                bool WindowsXP = !Utilities.IsWindows10();
+                bool NotificationsEnabled = !Preferences.DisableNotifications;
+                if (WindowsXP && NotificationsEnabled)
                 {
                     Utilities.PlaySound("upload.wav");
                 }
@@ -356,17 +393,6 @@ namespace imageDeCap
                 Program.ImageDeCap.AddLink(url);
             }
 
-            if (Preferences.uploadToFTP)
-            {
-                string name = DateTime.UtcNow.ToString("yyyyMMddHHmmssfff");
-                BackgroundWorker bw = new BackgroundWorker();
-                bw.DoWork += Uploading.UploadToFTP;
-                bw.RunWorkerAsync(new object[] { Preferences.FTPurl,
-                                                 Preferences.FTPusername,
-                                                 Preferences.FTPpassword,
-                                                 ImageData,
-                                                 name + (url.EndsWith(".png") ? ".png" : ".jpg") });
-            }
         }
 
         public static void UploadPastebinCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -604,10 +630,10 @@ namespace imageDeCap
         public static extern int RegisterApplicationRestart([MarshalAs(UnmanagedType.BStr)] string commandLineArgs, int flags);
 
         [DllImport("user32.dll", EntryPoint = "mouse_event")]
-        public static extern void mouse_event(int dwFlags, int dx, int dy, int cButtons, int dwExtraInfo);
+        public static extern void Mouse_event(int dwFlags, int dx, int dy, int cButtons, int dwExtraInfo);
 
         [DllImport("user32.dll", EntryPoint = "keybd_event")]
-        public static extern void keybd_event(byte vk, byte scan, int flags, int extrainfo);
+        public static extern void Keybd_event(byte vk, byte scan, int flags, int extrainfo);
 
         [DllImport("user32.dll", EntryPoint = "SetCursorPos")]
         public static extern void SetCursorPos(int x, int y);
@@ -665,87 +691,6 @@ namespace imageDeCap
                 result = responseString;
                 return (false, $"failed, {result}");
             }
-        }
-    }
-    
-    public static class Gfycat
-    {
-        public static (bool UploadSuccessfull, string Message) Upload(byte[] FileData)
-        {
-            var createResponse = Create(new GfycatCreateRequest() { NoMd5 = true }).GetAwaiter().GetResult();
-    
-            Upload(createResponse.GfyName, FileData).GetAwaiter().GetResult();
-            int notfounds = 0;
-            while (true)
-            {
-                var statusResponse = Status(createResponse.GfyName).GetAwaiter().GetResult();
-    
-                if (statusResponse.Task == "NotFoundo")
-                {
-                    if (notfounds > 10)
-                        return (false, statusResponse.Task);
-                    notfounds++;
-                }
-                else if (statusResponse.Task == "encoding") { }
-                else if (statusResponse.Task == "complete")
-                    return (true, $"https://gfycat.com/{statusResponse.GfyName}");
-                else
-                    return (false, statusResponse.Task);
-    
-                System.Threading.Thread.Sleep(1000);
-            }
-        }
-    
-        static async Task<GfycatCreateResponse> Create(GfycatCreateRequest request)
-        {
-            HttpClient client = new HttpClient();
-            var response = await client.PostAsJsonAsync("https://api.gfycat.com/v1/gfycats", request);
-            response.EnsureSuccessStatusCode();
-    
-            return await response.Content.ReadAsAsync<GfycatCreateResponse>();
-        }
-    
-        static async Task Upload(string gfyname, byte[] fileData)
-        {
-            HttpClient client = new HttpClient();
-            using (var formData = new MultipartFormDataContent())
-            {
-                formData.Add(new StringContent(gfyname), "key", "key");
-                formData.Add(new ByteArrayContent(fileData), "file", gfyname);
-    
-                var response = await client.PostAsync("https://filedrop.gfycat.com/", formData);
-    
-                response.EnsureSuccessStatusCode();
-            }
-        }
-    
-        static async Task<GfycatStatusResponse> Status(string gfyname)
-        {
-            HttpClient client = new HttpClient();
-            var response = await client.GetAsync($"https://api.gfycat.com/v1/gfycats/fetch/status/{gfyname}");
-            response.EnsureSuccessStatusCode();
-    
-            return await response.Content.ReadAsAsync<GfycatStatusResponse>();
-        }
-    
-        struct GfycatCreateRequest
-        {
-            public bool NoMd5 { get; set; }
-        }
-    
-        struct GfycatCreateResponse
-        {
-            public bool IsOk { get; set; }
-            public string GfyName { get; set; }
-            public string Secret { get; set; }
-            public string UploadType { get; set; }
-        }
-    
-        struct GfycatStatusResponse
-        {
-            public string Task { get; set; }
-            public string GfyName { get; set; }
-            public double Progress { get; set; }
         }
     }
 }

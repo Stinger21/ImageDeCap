@@ -18,7 +18,6 @@ namespace imageDeCap
         public static bool EditScreenshotAfterCapture = true;
         public static bool CopyImageToClipboard = true;
         public static bool DisableNotifications = false;
-        public static bool DisableSoundEffects = false;
         public static int RecordingFramerate = 32;
         public static bool BackupImages = true;
 
@@ -34,11 +33,13 @@ namespace imageDeCap
         public static bool NeverUpload = false;
         public static bool CopyLinksToClipboard = true;
         public static bool OpenInBrowser = false;
+        public static string ClipTarget = "gfycat";
         public static bool uploadToFTP = false;
-        public static string FTPurl = "ftp://speedtest.tele2.net/upload/";
-        public static string FTPusername = "anonymous";
-        public static string FTPpassword = "password";
-        public static string GifTarget = "gfycat";
+        public static string FTPurl = "ftp://mysite.com/ftp/";
+        public static string FTPusername = "Username";
+        public static string FTPpassword = "Password";
+        public static string FTPLink = "http://mysite.com/ftp/";
+        public static bool CopyFTPLink = false;
 
         // Misc
         public static string c_Misc;
@@ -47,7 +48,7 @@ namespace imageDeCap
         public static bool AddWatermark = false;
         public static string WatermarkFilePath = "";
         public static int WatermarkLocation = 3;
-        public static int BrushSmoothingDistance = 8;
+        public static int BrushSmoothingDistance = 2;
         public static string ImageEditorFont = "Arial Black";
         public static int FontStyleType = (int)FontStyle.Bold;
 
@@ -103,13 +104,11 @@ namespace imageDeCap
                     {
                         string value = s.Split('=')[1];
 
-                        int IntResult;
-                        bool Boolesult;
-                        if (int.TryParse(value, out IntResult))
+                        if (int.TryParse(value, out int IntResult))
                         {
                             f.SetValue(typeof(Preferences), IntResult);
                         }
-                        else if (bool.TryParse(value, out Boolesult))
+                        else if (bool.TryParse(value, out bool Boolesult))
                         {
                             f.SetValue(typeof(Preferences), Boolesult);
                         }

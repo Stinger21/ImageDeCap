@@ -22,7 +22,7 @@ namespace imageDeCap
 
         private void Andrew_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start("https://www.linkedin.com/in/andrew-newton-aa1a2094/");
+            System.Diagnostics.Process.Start("https://andrewnewton.me/");
         }
 
         private void Alastair_Click(object sender, EventArgs e)
@@ -33,6 +33,11 @@ namespace imageDeCap
         private void Peter_Click(object sender, EventArgs e)
         {
             System.Diagnostics.Process.Start("https://github.com/peterlindgren");
+        }
+
+        private void Website_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start("http://mattwestphal.com/");
         }
     }
 }

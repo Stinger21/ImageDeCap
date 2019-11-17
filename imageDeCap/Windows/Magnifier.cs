@@ -30,7 +30,7 @@ namespace imageDeCap
         Graphics FinalImageGraphics;
         int resolution = 16;
 
-        public Magnifier(bool IsGif)
+        public Magnifier(bool isClip)
         {
             InitializeComponent();
             
@@ -40,7 +40,7 @@ namespace imageDeCap
             CaptureResolution.Parent = MainPictureBox;
             CaptureResolution.BackColor = Color.Transparent;
 
-            CaptureType.Text = IsGif ? "Gif" : "Image";
+            CaptureType.Text = isClip ? "Clip" : "Image";
             CaptureType.Parent = MainPictureBox;
             CaptureType.BackColor = Color.Transparent;
 

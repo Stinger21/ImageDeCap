@@ -25,8 +25,10 @@ namespace imageDeCap
 
             keys.Add(char.ToUpper(key));
 
-            INPUT input = new INPUT();
-            input.type = INPUT_KEYBOARD;
+            INPUT input = new INPUT
+            {
+                type = INPUT_KEYBOARD
+            };
             int inputSize = Marshal.SizeOf(input);
 
             for (int i = 0; i < keys.Count; ++i)
@@ -53,15 +55,15 @@ namespace imageDeCap
         [DllImport("user32.dll")]
         static extern short GetAsyncKeyState(ushort vKey);
 
-        struct MOUSEINPUT
-        {
-            public int dx;
-            public int dy;
-            public uint mouseData;
-            public uint dwFlags;
-            public uint time;
-            public IntPtr dwExtraInfo;
-        }
+        //struct MOUSEINPUT
+        //{
+        //    public int dx;
+        //    public int dy;
+        //    public uint mouseData;
+        //    public uint dwFlags;
+        //    public uint time;
+        //    public IntPtr dwExtraInfo;
+        //}
 
         struct KEYBDINPUT
         {
@@ -72,24 +74,24 @@ namespace imageDeCap
             public IntPtr dwExtraInfo;
         }
 
-        struct HARDWAREINPUT
-        {
-            public int uMsg;
-            public short wParamL;
-            public short wParamH;
-        }
+        //struct HARDWAREINPUT
+        //{
+        //    public int uMsg;
+        //    public short wParamL;
+        //    public short wParamH;
+        //}
 
         [StructLayout(LayoutKind.Explicit)]
         struct MOUSEKEYBDHARDWAREINPUT
         {
-            [FieldOffset(0)]
-            public MOUSEINPUT mi;
+            //[FieldOffset(0)]
+            //public MOUSEINPUT mi;
 
             [FieldOffset(0)]
             public KEYBDINPUT ki;
 
-            [FieldOffset(0)]
-            public HARDWAREINPUT hi;
+            //[FieldOffset(0)]
+            //public HARDWAREINPUT hi;
         }
 
         struct INPUT

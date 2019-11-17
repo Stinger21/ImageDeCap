@@ -76,17 +76,14 @@ namespace imageDeCap
             
             ImageDeCap = new MainWindow();
             ImageDeCap.Initialize();
-
-            NewRecorder.ReadVideoFrame();
+            
             Quit = false;
-            List<Bitmap> wat = new List<Bitmap>();
 
             while (!Quit)
             {
                 Application.DoEvents();
                 ImageDeCap.MainLoop();
                 System.Threading.Thread.Sleep(1);
-
             }
         }
 
