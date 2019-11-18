@@ -33,6 +33,9 @@ namespace imageDeCap
 
         public static byte[] VideoFromFrames(Bitmap[] frames, decimal framerate = 15.21M, bool sound = false)
         {
+            if (!Directory.Exists(MainWindow.AppdataDirectory))
+                Directory.CreateDirectory(MainWindow.AppdataDirectory);
+
             string outpath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\imageDeCap\out.avi";
             string outcompressedpath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\imageDeCap\out" + MainWindow.videoFormat;
             string outcompressedpathWithAudio = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\imageDeCap\out_sound" + MainWindow.videoFormat;

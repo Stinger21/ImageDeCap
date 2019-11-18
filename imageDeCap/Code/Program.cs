@@ -85,6 +85,13 @@ namespace imageDeCap
             {
                 Application.DoEvents();
                 ImageDeCap.MainLoop();
+                // WHAT
+                for (int i = 0; i < BetterTimer.TimersMarkedForDeletion.Count; i++)
+                {
+                    BetterTimer.Timers.Remove(BetterTimer.TimersMarkedForDeletion[i]);
+                    BetterTimer.TimersMarkedForDeletion.Remove(BetterTimer.TimersMarkedForDeletion[i]);
+                    i--;
+                }
                 foreach (var item in BetterTimer.Timers)
                 {
                     item.TickPrivate();

@@ -20,6 +20,9 @@ namespace imageDeCap
         public static void Start()
         {
             WavPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\imageDeCap\out.wav";
+            if(!Directory.Exists(MainWindow.AppdataDirectory))
+                Directory.CreateDirectory(MainWindow.AppdataDirectory);
+
             Mp3PathUntrimmed = WavPath.Replace(".wav", ".mp3");
             Mp3Path = WavPath.Replace(".wav", "_trimmed.mp3");
             CaptureInstance = new WasapiLoopbackCapture();

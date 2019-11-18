@@ -142,21 +142,21 @@
             // clearLinksToolStripMenuItem
             // 
             this.clearLinksToolStripMenuItem.Name = "clearLinksToolStripMenuItem";
-            this.clearLinksToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.clearLinksToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.clearLinksToolStripMenuItem.Text = "Clear Links";
             this.clearLinksToolStripMenuItem.Click += new System.EventHandler(this.ClearLinksToolStripMenuItem_Click);
             // 
             // hideToolStripMenuItem
             // 
             this.hideToolStripMenuItem.Name = "hideToolStripMenuItem";
-            this.hideToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.hideToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.hideToolStripMenuItem.Text = "Close window";
             this.hideToolStripMenuItem.Click += new System.EventHandler(this.HideToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.exitToolStripMenuItem.Text = "Exit Program";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItem_Click);
             // 
@@ -220,7 +220,7 @@
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(66, 13);
             this.label3.TabIndex = 21;
-            this.label3.Text = "PREVIEW 2";
+            this.label3.Text = "PREVIEW 3";
             // 
             // MainWindow
             // 

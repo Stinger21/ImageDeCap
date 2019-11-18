@@ -10,6 +10,7 @@ namespace imageDeCap
     public class BetterTimer : IDisposable
     {
         public static List<BetterTimer> Timers = new List<BetterTimer>();
+        public static List<BetterTimer> TimersMarkedForDeletion = new List<BetterTimer>();
 
         public object Tag = null;
         public double FramesPerSecond = 20.0;
@@ -23,7 +24,7 @@ namespace imageDeCap
         }
         public void Dispose()
         {
-            Timers.Remove(this);
+            TimersMarkedForDeletion.Add(this);
         }
 
         DateTime LastPokeTime;
