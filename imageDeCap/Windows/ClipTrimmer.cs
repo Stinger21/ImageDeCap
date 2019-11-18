@@ -39,28 +39,19 @@ namespace imageDeCap
             
             VideoWriter.Write(new RecorderParams(outpath, framerate, SharpAvi.KnownFourCCs.Codecs.MotionJpeg, 100, 0, 0, frames[0].Width, frames[0].Height), frames);
 
+            ProgressWindow w = new ProgressWindow();
             var inputFile = new MediaFile { Filename = outpath };
             var outputFile = new MediaFile { Filename = outcompressedpath };
             using (var engine = new Engine())
             {
                 // Compress video
-                ProgressWindow w = new ProgressWindow();
-                w.SetProgress($"Compressing Video...", 50, 100);
+                w.SetProgress($"Compressing video...", 33, 100);
                 engine.Convert(inputFile, outputFile);
-                w.Close();
                 if (sound)
                 {
-                    w = new ProgressWindow();
-                    w.SetProgress($"Adding sound...", 50, 100);
+                    w.SetProgress($"Adding sound...", 66, 100);
                     engine.CustomCommand($"-i \"{outcompressedpath}\" -i \"{SoundRecording.Mp3Path}\" -c:v copy -c:a aac -strict experimental \"{outcompressedpathWithAudio}\"");
-                    engine.ConversionCompleteEvent += ConversionComplete;
-                    while (Converting)
-                    {
-                        Application.DoEvents();
-                        System.Threading.Thread.Sleep(1);
-                    }
-                        
-                    w.Close();
+                    //engine.ConversionCompleteEvent += ConversionComplete;
                 }
                 else
                 {
@@ -69,21 +60,26 @@ namespace imageDeCap
                     File.Move(outcompressedpath, outcompressedpathWithAudio);
                 }
             }
-
+            //while (Converting)
+            //{
+            //    Application.DoEvents();
+            //    System.Threading.Thread.Sleep(1);
+            //}
             byte[] data = File.ReadAllBytes(outcompressedpathWithAudio);
             //File.Delete(outpath);
             //File.Delete(outcompressedpath);
             //File.Delete(outcompressedpathWithAudio);
             //File.Delete(SoundPath);
+            w.Close();
             return data;
         }
-        static bool Converting = true;
 
-        private static void ConversionComplete(object sender, ConversionCompleteEventArgs e)
-        {
-            Converting = false;
-            Console.WriteLine("Conversion Complete");
-        }
+        //static bool Converting = true;
+        //private static void ConversionComplete(object sender, ConversionCompleteEventArgs e)
+        //{
+        //    Converting = false;
+        //    Console.WriteLine("Conversion Complete");
+        //}
 
         string SecondsToString(double number)
         {

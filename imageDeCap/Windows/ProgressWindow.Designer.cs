@@ -55,7 +55,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "ProgressWindow";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
-            this.Text = "Processing frame 50/123 - ImageDeCap";
+            this.Text = "Something's wrong - ImageDeCap";
             this.TopMost = true;
             this.ResumeLayout(false);
 

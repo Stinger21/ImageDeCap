@@ -112,8 +112,8 @@ namespace imageDeCap
 
         public static void UploadToFTP(object sender, DoWorkEventArgs e)
         {
-            ProgressWindow w = new ProgressWindow();
-            w.SetProgress($"Uploading to FTP", 50, 100);
+            //ProgressWindow w = new ProgressWindow();
+            //w.SetProgress($"Uploading to FTP", 50, 100);
 
             object[] arguments = (object[])e.Argument;
             string url = (string)arguments[0];
@@ -146,13 +146,13 @@ namespace imageDeCap
             {
                 e.Result = ($"failed, {Preferences.FTPLink}{filename}", filedata);
             }
-            w.Close();
+            //w.Close();
         }
 
         public static void UploadPastebin(object sender, DoWorkEventArgs e)
         {
-            ProgressWindow w = new ProgressWindow();
-            w.SetProgress($"Uploading to Pastebin", 50, 100);
+            //ProgressWindow w = new ProgressWindow();
+            //w.SetProgress($"Uploading to Pastebin", 50, 100);
 
             //private string ILoginURL = "http://pastebin.com/api/api_login.php";
             string IPostURL = "http://pastebin.com/api/api_post.php";
@@ -192,7 +192,7 @@ namespace imageDeCap
             }
             e.Result = IResponse;
 
-            w.Close();
+           // w.Close();
         }
     }
 

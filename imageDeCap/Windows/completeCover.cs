@@ -28,7 +28,7 @@ namespace imageDeCap
         // Vector from mouse position to box corner.
         Vector2 BoxDelta;
 
-        public List<Bitmap> CapturedClpFrames = new List<Bitmap>();
+        public List<Bitmap> CapturedClipFrames = new List<Bitmap>();
         public int RecordedTime = 0;
         public decimal RecordedFramerate = 0;
         int FramesCaptured = 0;
@@ -155,7 +155,7 @@ namespace imageDeCap
         {
             Cursor.Current = Cursors.Cross;
 
-            if (ClipCaptureTimer.Enabled) // Don't update if we are capturing a clip
+            if (ClipCaptureTimer2 != null) // Don't update if we are capturing a clip
                 return;
 
             bool LmbUp = false;
@@ -225,7 +225,6 @@ namespace imageDeCap
                     ruleOfThirdsBox3.SetBounds(SelectedRegion.X, SelectedRegion.Y + (SelectedRegion.Height / 3), SelectedRegion.Width, 0);
                     ruleOfThirdsBox4.SetBounds(SelectedRegion.X, SelectedRegion.Y + (SelectedRegion.Height / 3) * 2, SelectedRegion.Width, 0);
                 }
-
             }
 
             if (RMB)
@@ -266,7 +265,7 @@ namespace imageDeCap
         
         private void CompleteCover_KeyDown(object sender, KeyEventArgs e)
         {
-            if(ClipCaptureTimer.Enabled == false)
+            if(ClipCaptureTimer2 == null)
             {
                 if (e.KeyCode == Keys.Escape)
                 {
@@ -379,6 +378,7 @@ namespace imageDeCap
             EscapePressed = true;
             StopRecordingClip(this, true);
         }
+        BetterTimer ClipCaptureTimer2;
 
         DateTime ClipRecordStartTime;
         TimeSpan TotalRecordedTime;
@@ -386,9 +386,14 @@ namespace imageDeCap
         {
             RecordedTime = 0;
             FramesCaptured = 0;
-            ClipCaptureTimer.Enabled = true;
-            ClipCaptureTimer.Tag = ForceEdit;
-            ClipCaptureTimer.Interval = 1000 / Preferences.RecordingFramerate;
+            //ClipCaptureTimer.Enabled = true;
+            //ClipCaptureTimer.Tag = ForceEdit;
+            //ClipCaptureTimer.Interval = 1000 / Preferences.RecordingFramerate;
+            ClipCaptureTimer2 = new BetterTimer();
+            ClipCaptureTimer2.FramesPerSecond = Preferences.RecordingFramerate;
+            ClipCaptureTimer2.Tag = ForceEdit;
+            ClipCaptureTimer2.Tick += ClipCaptureTimer_Tick;
+
             LastTime = DateTime.Now;
 
             Box.BackColor = Color.Green;
@@ -401,7 +406,7 @@ namespace imageDeCap
             ruleOfThirdsBox2.Hide();
             ruleOfThirdsBox3.Hide();
             ruleOfThirdsBox4.Hide();
-            SoundRecording.Start();//@"C:\Users\Stinger\Desktop\what.wav"
+            SoundRecording.Start();
             ClipRecordStartTime = DateTime.Now;
         }
         public static double RecordedSeconds;
@@ -409,14 +414,14 @@ namespace imageDeCap
         
         public void StopRecordingClip(CompleteCover cover, bool abort)
         {
-            if (ClipCaptureTimer.Enabled)
+            if (ClipCaptureTimer2 != null)
             {
                 TotalRecordedTime = DateTime.Now - ClipRecordStartTime;
                 double f = (double)FramesCaptured;
                 RecordedSeconds = TotalRecordedTime.TotalMilliseconds / 1000.0;
                 FramesPerSecond = f / RecordedSeconds;
                 RecordedFramerate = (decimal)FramesPerSecond;
-                ClipCaptureTimer.Enabled = false;
+                //ClipCaptureTimer2.Enabled = false;
                 Box.Hide();
                 topBox.Hide();
                 bottomBox.Hide();
@@ -432,16 +437,18 @@ namespace imageDeCap
                 SoundRecording.Stop();
                 if (abort)
                 {
-                    foreach (var v in CapturedClpFrames) { v.Dispose(); }
-                    CapturedClpFrames.Clear();
+                    foreach (var v in CapturedClipFrames) { v.Dispose(); }
+                    CapturedClipFrames.Clear();
                 }
                 else
                 {
                     Utilities.PlaySound("snip.wav");
 
                     // Feed in through the tag weather the user right-clicked to force editor even when it's disabled.
-                    ScreenCapturer.UploadImageData(new byte[] { }, Filetype.mp4, false, (bool)ClipCaptureTimer.Tag, CapturedClpFrames.ToArray());
+                    ScreenCapturer.UploadImageData(new byte[] { }, Filetype.mp4, false, (bool)ClipCaptureTimer2.Tag, CapturedClipFrames.ToArray());
                 }
+                ClipCaptureTimer2.Dispose();
+                ClipCaptureTimer2 = null;
 
                 ScreenCapturer.IsTakingSnapshot = false;
                 Program.hotkeysEnabled = true;
@@ -452,9 +459,8 @@ namespace imageDeCap
         static extern uint GetGuiResources(IntPtr hProcess, uint uiFlags);
         
 
-        private void ClipCaptureTimer_Tick(object sender, EventArgs e)
+        private void ClipCaptureTimer_Tick()
         {
-
             this.BringToFront();
             this.TopMost = true;
 
@@ -462,32 +468,29 @@ namespace imageDeCap
             LastTime = DateTime.Now;
             
             RecordedTime += DeltaTime.Milliseconds;
-
-
-            int width  = SelectedRegion.Width + 1;
+            
+            int width = SelectedRegion.Width + 1;
             int height = SelectedRegion.Height + 1;
             if (width % 2 == 1)
-                width = width - 1;
+                width -= 1;
             if (height % 2 == 1)
-                height = height - 1;
-            // Capture Bitmap
+                height -= 1;
 
             Bitmap b = ScreenCapturer.Capture(ScreenCaptureMode.Bounds, SelectedRegion.X, SelectedRegion.Y, width, height, true);
 
-            CapturedClpFrames.Add(b);
+            CapturedClipFrames.Add(b);
             
             int seconds = (RecordedTime / 1000);
-            //int csecs = (RecordedTime % 1000);
             float RecordedTimeSeconds = RecordedTime / 1000.0f;
-
-            TimeLabel.Text = $"Time: {TimeSpan.FromSeconds(seconds).ToString()}";//.{csecs}
-            FramesLabel.Text = $"Frames: {FramesCaptured + 1}";
             float RamLeft = MainWindow.ramCounter.NextValue() - 1000; // 1000 here is a buffer number to make sure the capturing stops before we run out of memory.
+            RecordedFramerate = (int)(((float)FramesCaptured + 1.0f) / RecordedTimeSeconds);
+            
+            TimeLabel.Text = $"Time: {(DateTime.Now - ClipRecordStartTime).ToString(@"mm\:ss\.ff")}";
+            FramesLabel.Text = $"Frames: {FramesCaptured + 1}";
             MemoryLabel.Text = $"RAM left: {RamLeft} MB";
             TargetFramerateLabel.Text = $"TF: {Preferences.RecordingFramerate}";
-            ActualFramerateLabel.Text = $"RF: {(int)((FramesCaptured + 1) / RecordedTimeSeconds)}";
-            RecordedFramerate = (int)(((float)FramesCaptured + 1.0f) / RecordedTimeSeconds);
-
+            ActualFramerateLabel.Text = $"RF: {(int)Math.Round((FramesCaptured + 1) / RecordedTimeSeconds)}";
+            
             FramesCaptured++;
             if (RamLeft <= 0)
             {
@@ -503,7 +506,7 @@ namespace imageDeCap
 
             uint GDIHandles = GetGuiResources(Process.GetCurrentProcess().Handle, 0);
             uint UserHandles = GetGuiResources(Process.GetCurrentProcess().Handle, 0);
-
+            
             //Almost out of GDI handles, stopping recording.
             if (UserHandles > 9000 || UserHandles > 9000)
             {

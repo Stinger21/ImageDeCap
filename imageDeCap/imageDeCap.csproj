@@ -233,6 +233,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Code\BetterTimer.cs" />
     <Compile Include="Code\ClipboardHandler.cs" />
     <Compile Include="Code\Hotkeys.cs" />
     <Compile Include="Code\SoundRecording.cs" />

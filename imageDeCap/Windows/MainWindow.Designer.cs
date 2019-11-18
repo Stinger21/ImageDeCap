@@ -45,8 +45,6 @@
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.BindPrintscreenTimer = new System.Windows.Forms.Timer(this.components);
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
             this.VersionLabel = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
@@ -66,7 +64,7 @@
             this.button2.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
             this.button2.FlatAppearance.BorderSize = 0;
             this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.Location = new System.Drawing.Point(8, 100);
+            this.button2.Location = new System.Drawing.Point(8, 83);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(224, 28);
             this.button2.TabIndex = 9;
@@ -79,7 +77,7 @@
             this.button3.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
             this.button3.FlatAppearance.BorderSize = 0;
             this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button3.Location = new System.Drawing.Point(8, 44);
+            this.button3.Location = new System.Drawing.Point(8, 27);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(224, 28);
             this.button3.TabIndex = 10;
@@ -92,7 +90,7 @@
             this.button4.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
             this.button4.FlatAppearance.BorderSize = 0;
             this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button4.Location = new System.Drawing.Point(8, 72);
+            this.button4.Location = new System.Drawing.Point(8, 55);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(224, 28);
             this.button4.TabIndex = 11;
@@ -108,15 +106,16 @@
             this.LinksListBox.BackColor = System.Drawing.SystemColors.Control;
             this.LinksListBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.LinksListBox.FormattingEnabled = true;
-            this.LinksListBox.Location = new System.Drawing.Point(8, 151);
+            this.LinksListBox.Location = new System.Drawing.Point(8, 125);
             this.LinksListBox.Name = "LinksListBox";
-            this.LinksListBox.Size = new System.Drawing.Size(224, 288);
+            this.LinksListBox.Size = new System.Drawing.Size(224, 314);
             this.LinksListBox.TabIndex = 14;
             this.LinksListBox.DoubleClick += new System.EventHandler(this.ListBox1_DoubleClick);
             this.LinksListBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ListBox1_KeyDown);
             // 
             // menuStrip1
             // 
+            this.menuStrip1.BackColor = System.Drawing.SystemColors.Control;
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
             this.optionsToolStripMenuItem,
@@ -130,6 +129,8 @@
             // 
             // fileToolStripMenuItem
             // 
+            this.fileToolStripMenuItem.Checked = true;
+            this.fileToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.clearLinksToolStripMenuItem,
             this.hideToolStripMenuItem,
@@ -141,29 +142,33 @@
             // clearLinksToolStripMenuItem
             // 
             this.clearLinksToolStripMenuItem.Name = "clearLinksToolStripMenuItem";
-            this.clearLinksToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
+            this.clearLinksToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.clearLinksToolStripMenuItem.Text = "Clear Links";
             this.clearLinksToolStripMenuItem.Click += new System.EventHandler(this.ClearLinksToolStripMenuItem_Click);
             // 
             // hideToolStripMenuItem
             // 
             this.hideToolStripMenuItem.Name = "hideToolStripMenuItem";
-            this.hideToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
-            this.hideToolStripMenuItem.Text = "Close";
+            this.hideToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.hideToolStripMenuItem.Text = "Close window";
             this.hideToolStripMenuItem.Click += new System.EventHandler(this.HideToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
-            this.exitToolStripMenuItem.Text = "Exit";
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.exitToolStripMenuItem.Text = "Exit Program";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItem_Click);
             // 
             // optionsToolStripMenuItem
             // 
+            this.optionsToolStripMenuItem.Checked = true;
+            this.optionsToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.optionsToolStripMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.optionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.preferencesToolStripMenuItem});
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
+            this.optionsToolStripMenuItem.ShowShortcutKeys = false;
             this.optionsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
             this.optionsToolStripMenuItem.Text = "Options";
             // 
@@ -176,6 +181,8 @@
             // 
             // helpToolStripMenuItem
             // 
+            this.helpToolStripMenuItem.Checked = true;
+            this.helpToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.aboutToolStripMenuItem});
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
@@ -194,34 +201,17 @@
             this.BindPrintscreenTimer.Enabled = true;
             this.BindPrintscreenTimer.Interval = 1000;
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(14, 28);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(41, 13);
-            this.label1.TabIndex = 19;
-            this.label1.Text = "Upload";
-            // 
-            // label2
-            // 
-            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(15, 135);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(32, 13);
-            this.label2.TabIndex = 20;
-            this.label2.Text = "Links";
-            // 
             // VersionLabel
             // 
             this.VersionLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.VersionLabel.AutoSize = true;
+            this.VersionLabel.Cursor = System.Windows.Forms.Cursors.Hand;
             this.VersionLabel.Location = new System.Drawing.Point(3, 444);
             this.VersionLabel.Name = "VersionLabel";
-            this.VersionLabel.Size = new System.Drawing.Size(40, 13);
+            this.VersionLabel.Size = new System.Drawing.Size(99, 13);
             this.VersionLabel.TabIndex = 17;
-            this.VersionLabel.Text = "v1.100";
+            this.VersionLabel.Text = "Hello, This is a test.";
+            this.VersionLabel.Click += new System.EventHandler(this.VersionLabel_Click);
             // 
             // label3
             // 
@@ -240,10 +230,8 @@
             this.ClientSize = new System.Drawing.Size(240, 461);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.VersionLabel);
-            this.Controls.Add(this.label2);
             this.Controls.Add(this.LinksListBox);
             this.Controls.Add(this.button2);
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.menuStrip1);
@@ -283,8 +271,6 @@
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem clearLinksToolStripMenuItem;
         private System.Windows.Forms.Timer BindPrintscreenTimer;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
         public System.Windows.Forms.Label VersionLabel;
         private System.Windows.Forms.Label label3;
     }

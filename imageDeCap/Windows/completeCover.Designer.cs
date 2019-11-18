@@ -156,7 +156,6 @@ namespace imageDeCap
             // ClipCaptureTimer
             // 
             this.ClipCaptureTimer.Interval = 16;
-            this.ClipCaptureTimer.Tick += new System.EventHandler(this.ClipCaptureTimer_Tick);
             // 
             // BoxMovementTimer
             // 

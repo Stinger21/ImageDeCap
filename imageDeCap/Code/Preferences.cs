@@ -18,7 +18,7 @@ namespace imageDeCap
         public static bool EditScreenshotAfterCapture = true;
         public static bool CopyImageToClipboard = true;
         public static bool DisableNotifications = false;
-        public static int RecordingFramerate = 32;
+        public static int RecordingFramerate = 30;
         public static bool BackupImages = true;
 
         // Hotkeys

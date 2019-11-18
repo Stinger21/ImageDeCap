@@ -20,23 +20,21 @@ using System.Xml.Linq;
 using Microsoft.Win32;
 using System.Windows.Media.Imaging;
 using System.Text.RegularExpressions;
+using System.Net;
 
 namespace imageDeCap
 {
     /*
     TODO:
-    make the progress bar actually show up on the mouse cursor wth.
-    add a test button to the FTP
-    test install and add to startup feature
-
-    get a cloc of the project just for curiosity's sake
-
-    Replace screen recorder with something more robust that can record at exactly 30 instead of 32
-
+        get a cloc of the project just for curiosity's sake
+        
+        Prime target for overhauling:
+            settings and capture pipeline
     */
 
     // The code in this whole program is a mess. DW tho, it only crashes sometimes. ;)
-    
+    // Passion projects, am I right?
+
     // Notes about the files and what they are meant for as I am refactoring it, 2019-06-06
     // Static classes:
     // ScreenCapturer.cs    Contains functions for capturing images off the screen
@@ -59,7 +57,9 @@ namespace imageDeCap
 
         List<string> Links = new List<string>();
         public static string videoFormat = ".mp4";
-        public static string VersionNumber = "v1.27";
+        public static int MajorVersion = 1;
+        public static int MinorVersion = 27;
+        public static string VersionNumber = $"v{MajorVersion}.{MinorVersion}";
 
         public static string LinksFilePath = "ERROR";
         public static string PreferencesPath = "ERROR";
@@ -68,10 +68,47 @@ namespace imageDeCap
         public static string BackupDirectory = "ERROR";
         public void Initialize()
         {
-
             ramCounter = new PerformanceCounter("Memory", "Available MBytes");
+            // Find out what the latest version is on the web:
+            using (WebClient client = new WebClient())
+            {
+                string htmlCode = null;
+                try
+                {
+                    htmlCode = client.DownloadString("http://www.mattwestphal.com/imagedecap");
+                }
+                catch { }
 
-            this.VersionLabel.Text = MainWindow.VersionNumber;
+                if(htmlCode != null)
+                {
+                    htmlCode = htmlCode.Split(new string[] { "IMAGEDECAP_VERSION" }, StringSplitOptions.None)[1];
+                    htmlCode = htmlCode.Split(new string[] { "-->" }, StringSplitOptions.None)[0];
+                    int LatestMajorVersion = int.Parse(htmlCode.Split(new string[] { "." }, StringSplitOptions.None)[0]);
+                    int LatestMinorVersion = int.Parse(htmlCode.Split(new string[] { "." }, StringSplitOptions.None)[1]);
+                    bool NewerVersionAvilable = false;
+                    if(LatestMajorVersion > MajorVersion)
+                    {
+                        NewerVersionAvilable = true;
+                    }
+                    else if(LatestMajorVersion == MajorVersion && LatestMinorVersion > MinorVersion)
+                    {
+                        NewerVersionAvilable = true;
+                    }
+
+                    if(NewerVersionAvilable)
+                    {
+                        this.VersionLabel.Text = (MainWindow.VersionNumber + " - New version avilable here!");
+                        this.VersionLabel.ForeColor = Color.Blue;
+                        
+                    }
+                    else
+                    {
+                        this.VersionLabel.Text = MainWindow.VersionNumber;
+                    }
+                }
+            }
+
+
             ExeDirectory = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
             AppdataDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\imageDeCap";
 
@@ -339,12 +376,17 @@ namespace imageDeCap
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            VersionLabel.Text = MainWindow.VersionNumber;
+            //VersionLabel.Text = MainWindow.VersionNumber;
         }
 
         private void BubbleNotification_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             OpenWindow();
+        }
+
+        private void VersionLabel_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start("http://www.mattwestphal.com/imagedecap");
         }
     }
 
