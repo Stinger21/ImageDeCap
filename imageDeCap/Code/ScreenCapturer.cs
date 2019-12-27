@@ -201,6 +201,31 @@ namespace imageDeCap
 
         public static void UploadImageData_AfterEdit(ImageEditor.EditorResult EditorResult, Filetype imageType, byte[] FileData, Bitmap[] ClipData, bool Sound = false)
         {
+            // Do this first, since we want to save even if the user pressed esc
+            string SaveFileName = DateTime.UtcNow.ToString("yyyyMMddHHmmssfff");
+            string Extension = imageType.ToString();
+            if (Preferences.SaveImages && Directory.Exists(Preferences.SaveImagesLocation))
+            {
+                string directory_path = Path.GetFullPath(Environment.ExpandEnvironmentVariables(Preferences.SaveImagesLocation));
+                string file_path = Path.Combine(directory_path, $"{SaveFileName}.{Extension}");
+                try
+                {
+                    Directory.CreateDirectory(directory_path);
+                    try
+                    {
+                        File.WriteAllBytes(file_path, FileData);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine($"Failed to create the file {file_path}. Exception: {e.Message}");
+                    }
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show($"Failed create the directory {directory_path}. Exception: {e.Message}");
+                }
+            }
+
             if (EditorResult == ImageEditor.EditorResult.Quit)
             {
                 foreach (var v in CurrentBackCover.CapturedClipFrames) { v.Dispose(); }
@@ -240,34 +265,6 @@ namespace imageDeCap
                 File.WriteAllBytes(SavePath, FileData);
             }
 
-            string SaveFileName = DateTime.UtcNow.ToString("yyyyMMddHHmmssfff");
-            string Extension = imageType.ToString();
-            //if (Extension == "gif")
-            //{
-            //    Extension = MainWindow.videoFormat.Replace(".", "");
-            //}
-
-            if (Preferences.SaveImages && Directory.Exists(Preferences.SaveImagesLocation))
-            {
-                string directory_path = Path.GetFullPath(Environment.ExpandEnvironmentVariables(Preferences.SaveImagesLocation));
-                string file_path = Path.Combine(directory_path, $"{SaveFileName}.{Extension}");
-                try
-                {
-                    Directory.CreateDirectory(directory_path);
-                    try
-                    {
-                        File.WriteAllBytes(file_path, FileData);
-                    }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine($"Failed to create the file {file_path}. Exception: {e.Message}");
-                    }
-                }
-                catch (Exception e)
-                {
-                    MessageBox.Show($"Failed create the directory {directory_path}. Exception: {e.Message}");
-                }
-            }
 
             if (Preferences.BackupImages)
             {
