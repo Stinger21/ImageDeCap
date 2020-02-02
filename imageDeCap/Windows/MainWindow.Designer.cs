@@ -47,6 +47,7 @@
             this.BindPrintscreenTimer = new System.Windows.Forms.Timer(this.components);
             this.VersionLabel = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -69,6 +70,7 @@
             this.button2.Size = new System.Drawing.Size(224, 28);
             this.button2.TabIndex = 9;
             this.button2.Text = "Upload Text";
+            this.toolTip1.SetToolTip(this.button2, "Uploads clipboard text to Pastebin.");
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.UploadText_Click);
             // 
@@ -82,6 +84,7 @@
             this.button3.Size = new System.Drawing.Size(224, 28);
             this.button3.TabIndex = 10;
             this.button3.Text = "Capture Image";
+            this.toolTip1.SetToolTip(this.button3, "Capture region of the screen.");
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.CaptureImage_Click);
             // 
@@ -95,6 +98,7 @@
             this.button4.Size = new System.Drawing.Size(224, 28);
             this.button4.TabIndex = 11;
             this.button4.Text = "Record Clip";
+            this.toolTip1.SetToolTip(this.button4, "Records a short video file.");
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.RecordClip_Click);
             // 
@@ -110,6 +114,7 @@
             this.LinksListBox.Name = "LinksListBox";
             this.LinksListBox.Size = new System.Drawing.Size(224, 314);
             this.LinksListBox.TabIndex = 14;
+            this.toolTip1.SetToolTip(this.LinksListBox, "List of uploaded links.");
             this.LinksListBox.DoubleClick += new System.EventHandler(this.ListBox1_DoubleClick);
             this.LinksListBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ListBox1_KeyDown);
             // 
@@ -273,6 +278,7 @@
         private System.Windows.Forms.Timer BindPrintscreenTimer;
         public System.Windows.Forms.Label VersionLabel;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }
 

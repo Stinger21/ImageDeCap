@@ -41,6 +41,7 @@ namespace imageDeCap
             this.MemoryLabel = new System.Windows.Forms.Label();
             this.ClipCaptureTimer = new System.Windows.Forms.Timer(this.components);
             this.BoxMovementTimer = new System.Windows.Forms.Timer(this.components);
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -67,6 +68,7 @@ namespace imageDeCap
             this.doneButton.Size = new System.Drawing.Size(57, 45);
             this.doneButton.TabIndex = 1;
             this.doneButton.Text = "Done";
+            this.toolTip1.SetToolTip(this.doneButton, "Finish recording and open trimmer.");
             this.doneButton.UseVisualStyleBackColor = false;
             this.doneButton.Click += new System.EventHandler(this.DoneButton_Click);
             // 
@@ -82,6 +84,7 @@ namespace imageDeCap
             this.cancelButton.Size = new System.Drawing.Size(57, 45);
             this.cancelButton.TabIndex = 2;
             this.cancelButton.Text = "Cancel";
+            this.toolTip1.SetToolTip(this.cancelButton, "Cancel recording.");
             this.cancelButton.UseVisualStyleBackColor = false;
             this.cancelButton.Click += new System.EventHandler(this.CancelButton_Click);
             // 
@@ -202,5 +205,6 @@ namespace imageDeCap
         private System.Windows.Forms.Label ActualFramerateLabel;
         private System.Windows.Forms.Label TargetFramerateLabel;
         private System.Windows.Forms.Timer BoxMovementTimer;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }

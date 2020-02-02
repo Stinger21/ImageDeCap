@@ -45,11 +45,11 @@
             this.ClipboardButton = new System.Windows.Forms.Button();
             this.TextButton = new System.Windows.Forms.Button();
             this.PickButton = new System.Windows.Forms.Button();
-            this.panel1 = new System.Windows.Forms.Panel();
             this.ImageContainer = new System.Windows.Forms.PictureBox();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ImageContainer)).BeginInit();
+            this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -161,7 +161,7 @@
             this.SaveButton.Name = "SaveButton";
             this.SaveButton.Size = new System.Drawing.Size(36, 36);
             this.SaveButton.TabIndex = 40;
-            this.toolTip1.SetToolTip(this.SaveButton, "Save to file");
+            this.toolTip1.SetToolTip(this.SaveButton, "Save to file.");
             this.SaveButton.UseVisualStyleBackColor = true;
             this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
             // 
@@ -224,6 +224,19 @@
             this.PickButton.UseVisualStyleBackColor = true;
             this.PickButton.Click += new System.EventHandler(this.PickColorButton_click);
             // 
+            // ImageContainer
+            // 
+            this.ImageContainer.Location = new System.Drawing.Point(1, 1);
+            this.ImageContainer.Name = "ImageContainer";
+            this.ImageContainer.Size = new System.Drawing.Size(300, 200);
+            this.ImageContainer.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.ImageContainer.TabIndex = 0;
+            this.ImageContainer.TabStop = false;
+            this.toolTip1.SetToolTip(this.ImageContainer, "Close the settings window.");
+            this.ImageContainer.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ImageContainer_MouseClick);
+            this.ImageContainer.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ImageContainer_MouseDown);
+            this.ImageContainer.MouseMove += new System.Windows.Forms.MouseEventHandler(this.ImageContainer_MouseMove);
+            // 
             // panel1
             // 
             this.panel1.AutoScroll = true;
@@ -235,18 +248,6 @@
             this.panel1.Size = new System.Drawing.Size(467, 316);
             this.panel1.TabIndex = 1;
             this.panel1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.Panel1_MouseClick);
-            // 
-            // ImageContainer
-            // 
-            this.ImageContainer.Location = new System.Drawing.Point(1, 1);
-            this.ImageContainer.Name = "ImageContainer";
-            this.ImageContainer.Size = new System.Drawing.Size(300, 200);
-            this.ImageContainer.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.ImageContainer.TabIndex = 0;
-            this.ImageContainer.TabStop = false;
-            this.ImageContainer.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ImageContainer_MouseClick);
-            this.ImageContainer.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ImageContainer_MouseDown);
-            this.ImageContainer.MouseMove += new System.Windows.Forms.MouseEventHandler(this.ImageContainer_MouseMove);
             // 
             // panel2
             // 
@@ -282,9 +283,9 @@
             this.Text = "Editor - ImageDeCap";
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ImageEditor_KeyDown);
             this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.NewImageEditor_MouseClick);
+            ((System.ComponentModel.ISupportInitialize)(this.ImageContainer)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ImageContainer)).EndInit();
             this.panel2.ResumeLayout(false);
             this.ResumeLayout(false);
 

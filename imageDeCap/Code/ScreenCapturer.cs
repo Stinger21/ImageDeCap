@@ -201,6 +201,20 @@ namespace imageDeCap
 
         public static void UploadImageData_AfterEdit(ImageEditor.EditorResult EditorResult, Filetype imageType, byte[] FileData, Bitmap[] ClipData, bool Sound = false)
         {
+            // compress video
+            if (imageType == Filetype.mp4)
+            {
+                if (CurrentBackCover.RecordedFramerate == 0)
+                {
+                    // ERROR, the recorded framerate was 0. o_o
+                    MessageBox.Show("Something went wrong with this recording.", "Framerate was 0.");
+                    return;
+                }
+                FileData = ClipTrimmer.VideoFromFrames(ClipData, CurrentBackCover.RecordedFramerate, Sound);
+                foreach (var v in CurrentBackCover.CapturedClipFrames) { v.Dispose(); }
+                CurrentBackCover.CapturedClipFrames.Clear();
+            }
+
             // Do this first, since we want to save even if the user pressed esc
             string SaveFileName = DateTime.UtcNow.ToString("yyyyMMddHHmmssfff");
             string Extension = imageType.ToString();
@@ -247,19 +261,7 @@ namespace imageDeCap
                 }
             }
 
-            // compress video
-            if (imageType == Filetype.mp4)
-            {
-                if(CurrentBackCover.RecordedFramerate == 0)
-                {
-                    // ERROR, the recorded framerate was 0. o_o
-                    MessageBox.Show("Something went wrong with this recording.", "Framerate was 0.");
-                    return;
-                }
-                FileData = ClipTrimmer.VideoFromFrames(ClipData, CurrentBackCover.RecordedFramerate, Sound);
-                foreach (var v in CurrentBackCover.CapturedClipFrames) { v.Dispose(); }
-                CurrentBackCover.CapturedClipFrames.Clear();
-            }
+            
             if (SavePath != null)
             {
                 File.WriteAllBytes(SavePath, FileData);

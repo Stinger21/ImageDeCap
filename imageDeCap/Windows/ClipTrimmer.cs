@@ -76,14 +76,7 @@ namespace imageDeCap
             w.Close();
             return data;
         }
-
-        //static bool Converting = true;
-        //private static void ConversionComplete(object sender, ConversionCompleteEventArgs e)
-        //{
-        //    Converting = false;
-        //    Console.WriteLine("Conversion Complete");
-        //}
-
+        
         string SecondsToString(double number)
         {
             TimeSpan t = TimeSpan.FromSeconds(number);
@@ -104,16 +97,13 @@ namespace imageDeCap
 
                 double StartTrimTime = SavedImageStart * FrameTime;
                 double EndTrimTime = SavedImageEnd * FrameTime;
-                //double Duration = EndTrimTime - StartTrimTime;
 
                 string StartTrimTimeInt = SecondsToString(StartTrimTime);
                 string EndTrimTimeInt = SecondsToString(EndTrimTime);
-                //int DurationInt = (int)Duration;
 
                 using (var engine = new Engine())
                 {
-                    string command = "";// $"-i \"{SoundRecording.Mp3Path}\" -vf trim=duration={StartTrimTimeInt}";
-                    //command = $"-i \"{SoundRecording.Mp3Path}\" -ss 00:00:0{StartTrimTimeInt} -t 00:00:0{DurationInt} -c copy \"{SoundRecording.Mp3Path}\"";
+                    string command = "";
                     command = $"-i \"{SoundRecording.Mp3PathUntrimmed}\" -ss {StartTrimTimeInt} -to {EndTrimTimeInt} -c copy \"{SoundRecording.Mp3Path}\"";
 
                     engine.CustomCommand(command); // trim

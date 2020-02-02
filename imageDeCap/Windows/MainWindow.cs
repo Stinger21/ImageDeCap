@@ -141,7 +141,6 @@ namespace imageDeCap
             Preferences.Load();
             if (Preferences.FirstStartup)
             {
-
                 // do first-startup stuff
                 Preferences.FirstStartup = false;
                 if (Portable)

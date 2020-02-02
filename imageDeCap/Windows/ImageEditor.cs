@@ -139,6 +139,9 @@ namespace imageDeCap
 
             if (KeyCode == "Escape")
             {
+                // When the user hits escape we want to put whatever they had drawn into the clipboard.
+                // I like it fight me.
+                result = EditorResult.Clipboard;
                 this.Close();
                 return;
             }
