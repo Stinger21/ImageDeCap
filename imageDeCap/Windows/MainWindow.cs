@@ -31,10 +31,7 @@ namespace imageDeCap
         Prime target for overhauling:
             settings and capture pipeline
     */
-
-    // The code in this whole program is a mess. DW tho, it only crashes sometimes. ;)
-    // Passion projects, am I right?
-
+    
     // Notes about the files and what they are meant for as I am refactoring it, 2019-06-06
     // Static classes:
     // ScreenCapturer.cs    Contains functions for capturing images off the screen
@@ -139,6 +136,7 @@ namespace imageDeCap
             BackupDirectory = AppdataDirectory + @"\Backup";
 
             Preferences.Load();
+
             if (Preferences.FirstStartup)
             {
                 // do first-startup stuff

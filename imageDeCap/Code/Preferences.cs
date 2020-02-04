@@ -31,6 +31,7 @@ namespace imageDeCap
         public static string c_Uploading;
         public static string PastebinSubjectLine = "ImageDeCap Upload!";
         public static bool NeverUpload = false;
+        public static string NeverUploadForcePath = @"H:\Installers\ImageDeCap\NeverUploadForce.ini";
         public static bool CopyLinksToClipboard = true;
         public static bool OpenInBrowser = false;
         public static string ClipTarget = "gfycat";
@@ -119,6 +120,12 @@ namespace imageDeCap
                         break;
                     }
                 }
+            }
+
+
+            if (File.Exists(Preferences.NeverUploadForcePath))
+            {
+                Preferences.NeverUpload = true;
             }
         }
 

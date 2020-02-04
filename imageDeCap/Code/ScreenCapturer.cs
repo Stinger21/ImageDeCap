@@ -115,6 +115,16 @@ namespace imageDeCap
                 var bounds = SystemInformation.VirtualScreen;
                 background = CaptureScreen(bounds.Left, bounds.Top, bounds.Size.Width, bounds.Size.Height);
             }
+            else
+            {
+                if(TempClipTrimmer != null)
+                {
+                    FlashWindow.TrayAndWindow(TempClipTrimmer, 5);
+                    System.Media.SystemSounds.Beep.Play();
+                    TempClipTrimmer.Activate();
+                    return;
+                }
+            }
 
             // prevent blackening
             if (!IsTakingSnapshot)
@@ -130,6 +140,10 @@ namespace imageDeCap
                 CurrentBackCover.AfterShow(background, isClip);
             }
         }
+
+        // Temporary thing to stop crashing on recording multiple clips.
+        // TODO: Delete this and add support for capturign multiple clips at once.
+        public static ClipTrimmer TempClipTrimmer = null;
 
         public static void UploadImageData(byte[] ImageData, Filetype imageType, bool ForceNoEdit = false, bool RMBClickForceEdit = false, Bitmap[] ClipFrames = null, Rectangle SelectedRegion = default(Rectangle))
         {
@@ -155,6 +169,7 @@ namespace imageDeCap
                     ClipTrimmer editor = new ClipTrimmer(ClipFrames, CurrentBackCover.topBox.Location.X, CurrentBackCover.topBox.Location.Y, CurrentBackCover.RecordedFramerate);
                     editor.Show();
                     editor.FormClosed += EditorDone;
+                    TempClipTrimmer = editor;
                 }
                 else
                 {
@@ -194,6 +209,7 @@ namespace imageDeCap
                 (EditorResult, ClipData, Sound) = editor.FinalFunction();
                 editor.Dispose();
                 f = Filetype.mp4;
+                TempClipTrimmer = null;
             }
             UploadImageData_AfterEdit(EditorResult, f, ImageData, ClipData, Sound);
         }

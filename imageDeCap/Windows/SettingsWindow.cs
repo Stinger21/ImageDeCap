@@ -37,6 +37,11 @@ namespace imageDeCap
             DisableNotifications.Enabled        = !Preferences.NeverUpload;
             PastebinSubjectLineTextBox.Enabled  = !Preferences.NeverUpload;
             PastebinSubjectLineTextBox.Text     = Preferences.PastebinSubjectLine;
+            if (File.Exists(Preferences.NeverUploadForcePath))
+            {
+                Preferences.NeverUpload = true;
+                neverUpload.Checked = true;
+            }
             neverUpload.Checked                 = Preferences.NeverUpload;
             DisableNotifications.Checked        = Preferences.DisableNotifications;
             FreezeScreen.Checked                = Preferences.FreezeScreenOnRegionShot;
@@ -137,6 +142,11 @@ namespace imageDeCap
         private void NeverUpload_CheckedChanged(object sender, EventArgs e)
         {
             Preferences.NeverUpload = neverUpload.Checked;
+            if (File.Exists(Preferences.NeverUploadForcePath))
+            {
+                Preferences.NeverUpload = true;
+                neverUpload.Checked = true;
+            }
             Preferences.Save();
             OpenInBrowser.Enabled = !Preferences.NeverUpload;
             CopyLinksToClipboard.Enabled = !Preferences.NeverUpload;
