@@ -58,6 +58,13 @@ namespace imageDeCap
         public static int MinorVersion = 27;
         public static string VersionNumber = $"v{MajorVersion}.{MinorVersion}";
 
+        // Some init stuff is slow, so we do it on a separate thread.
+        void OffThreadInitialization()
+        {
+            ramCounter = new PerformanceCounter("Memory", "Available MBytes");
+        }
+
+
         public static string LinksFilePath = "ERROR";
         public static string PreferencesPath = "ERROR";
         public static string AppdataDirectory = "ERROR";
@@ -65,7 +72,11 @@ namespace imageDeCap
         public static string BackupDirectory = "ERROR";
         public void Initialize()
         {
-            ramCounter = new PerformanceCounter("Memory", "Available MBytes");
+
+            Thread t = new Thread(OffThreadInitialization);
+            t.Start();
+
+
             // Find out what the latest version is on the web:
             using (WebClient client = new WebClient())
             {
@@ -76,27 +87,27 @@ namespace imageDeCap
                 }
                 catch { }
 
-                if(htmlCode != null)
+                if (htmlCode != null)
                 {
                     htmlCode = htmlCode.Split(new string[] { "IMAGEDECAP_VERSION" }, StringSplitOptions.None)[1];
                     htmlCode = htmlCode.Split(new string[] { "-->" }, StringSplitOptions.None)[0];
                     int LatestMajorVersion = int.Parse(htmlCode.Split(new string[] { "." }, StringSplitOptions.None)[0]);
                     int LatestMinorVersion = int.Parse(htmlCode.Split(new string[] { "." }, StringSplitOptions.None)[1]);
                     bool NewerVersionAvilable = false;
-                    if(LatestMajorVersion > MajorVersion)
+                    if (LatestMajorVersion > MajorVersion)
                     {
                         NewerVersionAvilable = true;
                     }
-                    else if(LatestMajorVersion == MajorVersion && LatestMinorVersion > MinorVersion)
+                    else if (LatestMajorVersion == MajorVersion && LatestMinorVersion > MinorVersion)
                     {
                         NewerVersionAvilable = true;
                     }
 
-                    if(NewerVersionAvilable)
+                    if (NewerVersionAvilable)
                     {
                         this.VersionLabel.Text = (MainWindow.VersionNumber + " - New version avilable here!");
                         this.VersionLabel.ForeColor = Color.Blue;
-                        
+
                     }
                     else
                     {
@@ -230,14 +241,15 @@ namespace imageDeCap
         
         public void ShowSettings()
         {
-            try
-            {
-                props.Show();
-            }
-            catch
-            {
+            if(props == null)
                 props = new SettingsWindow();
-            }
+            //try
+            //{
+            //    props.Show();
+            //}
+            //catch
+            //{
+            //}
             props.Show();
             props.BringToFront();
         }
@@ -383,7 +395,7 @@ namespace imageDeCap
 
         private void VersionLabel_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start("http://www.mattwestphal.com/imagedecap");
+            Process.Start("http://www.mattwestphal.com/imagedecap");
         }
     }
 

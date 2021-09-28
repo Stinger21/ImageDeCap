@@ -33,6 +33,9 @@ namespace imageDeCap
 
         public static byte[] VideoFromFrames(Bitmap[] frames, decimal framerate = 15.21M, bool sound = false)
         {
+            //if (frames.Length == 0)
+            //    return new byte[0];
+
             if (!Directory.Exists(MainWindow.AppdataDirectory))
                 Directory.CreateDirectory(MainWindow.AppdataDirectory);
 
@@ -88,7 +91,8 @@ namespace imageDeCap
         {
             if(result == ImageEditor.EditorResult.Quit)
             {
-                return (result, new Bitmap[] { }, false);
+                CalculateFileSizeAndSaveOutputImage();
+                //return (result, new Bitmap[] { }, false);
             }
             bool Sound = SoundCheckbox.Checked;
             if (Sound)
@@ -295,7 +299,7 @@ namespace imageDeCap
 
         private void CalculateFileSizeAndSaveOutputImage()
         {
-            //If this is true, that means the user changed nothing and we don't need to re-compute the image.
+            // If this is true, that means the user changed nothing and we don't need to re-compute the image.
             if((SavedImageStart == (int)startTrack.Value) &&
               (SavedImageEnd == (int)endTrack.Value))
             {

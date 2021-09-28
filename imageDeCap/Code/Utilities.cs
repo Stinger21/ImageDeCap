@@ -130,7 +130,7 @@ namespace imageDeCap
         }
 
 
-        /// Stop Flashing the specified Window (form)            
+        /// Stop Flashing the specified Window (form)
         public static bool Stop(System.Windows.Forms.Form form)
         {
             if (Win2000OrLater)
@@ -265,7 +265,7 @@ namespace imageDeCap
         }
         
 
-        // Probably add something to this to make it check what the actual file-type it is instead of just assuming it's 
+        // Probably add something to this to make it check what the actual file-type it is instead of just assuming it's
         public static Filetype GetImageType(string filepath)
         {
             filepath = filepath.ToLower();

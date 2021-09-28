@@ -107,8 +107,6 @@ namespace imageDeCap
             if (System.Windows.Input.Keyboard.IsKeyDown(System.Windows.Input.Key.LeftShift))
                 Editor.Shift = true;
 
-            Editor.MouseMove(new Vector2(mousePos));
-
             if (Editor.LastLMBIsDown != Editor.LMBIsDown)
             {
                 if(Editor.LMBIsDown)
@@ -128,6 +126,8 @@ namespace imageDeCap
                 Editor.LastRMBIsDown = Editor.RMBIsDown;
                 return;
             }
+
+            Editor.MouseMove(new Vector2(mousePos));
         }
         
 
@@ -266,10 +266,6 @@ namespace imageDeCap
         {
             Editor.SetState(new Vector2(ImageContainer.PointToClient(Cursor.Position)), PictureEditor.EditorState.Box);
         }
-        private void HelpButton_Click(object sender, EventArgs e)
-        {
-            //InfoText.Visible = !InfoText.Visible;
-        }
 
         private void CaptureAgain_Click(object sender, EventArgs e)
         {
@@ -319,7 +315,6 @@ namespace imageDeCap
         float BrushDelta = 0;
         float LastBrushValue = 0;
 
-        // ctor
         public PictureEditor(Image InputImage, ImageEditor owner)
         {
             this.Owner = owner;
@@ -510,9 +505,6 @@ namespace imageDeCap
             GammaCorrectedBrushSize = (BrushSize * BrushSize) * 0.01f;
             GammaCorrectedTextSize = (TextSize * TextSize) * 0.01f;
             Owner.ImageContainer.Refresh();
-
-            //LastMousePosition = MousePosition;
-
         }
 
         public Color GetPixelSafe(Image b, float x, float y)
@@ -587,6 +579,7 @@ namespace imageDeCap
                 g.DrawLine(MyPen, P1.ToPoint(), P2.ToPoint());
             }
         }
+
 
         public void LMBUp(Vector2 Position)
         {

@@ -300,31 +300,34 @@ namespace imageDeCap
         {
             Cursor.Current = Cursors.Default;
             BoxMovementTimer.Enabled = false;
-            if (!Clip) // If it's not a clip, hide everything and fire off an upload thread instantly.
+
+            magnifier.Close();
+
+            ruleOfThirdsBox1.Hide();
+            ruleOfThirdsBox2.Hide();
+            ruleOfThirdsBox3.Hide();
+            ruleOfThirdsBox4.Hide();
+
+            // From here, we fire up clip recording
+            if (SelectedRegion.Width > 0 && SelectedRegion.Height > 0)
             {
-                magnifier.Close();
-                if (!FreezeScreen)
-                    this.Close();
-
-                Box.Hide();
-                topBox.Hide();
-                bottomBox.Hide();
-                leftBox.Hide();
-                rightBox.Hide();
-
-                ruleOfThirdsBox1.Hide();
-                ruleOfThirdsBox2.Hide();
-                ruleOfThirdsBox3.Hide();
-                ruleOfThirdsBox4.Hide();
-
-                if (SelectedRegion.Width > 0 && SelectedRegion.Height > 0) // Make sure we actually selected a region to take a screenshot of.
+                if (!Clip) // If it's not a clip, hide everything and fire off an upload thread instantly.
                 {
+                    Box.Hide();
+                    topBox.Hide();
+                    bottomBox.Hide();
+                    leftBox.Hide();
+                    rightBox.Hide();
+
+                    if (!FreezeScreen)
+                        this.Close();
+
                     Utilities.PlaySound("snip.wav");
                     Bitmap result = ScreenCapturer.Capture(
-                        ScreenCaptureMode.Bounds, 
-                        SelectedRegion.X, 
+                        ScreenCaptureMode.Bounds,
+                        SelectedRegion.X,
                         SelectedRegion.Y,
-                        SelectedRegion.Width + 1, 
+                        SelectedRegion.Width + 1,
                         SelectedRegion.Height + 1);
 
                     if (FreezeScreen)
@@ -332,17 +335,7 @@ namespace imageDeCap
 
                     ScreenCapturer.UploadImageData(Utilities.GetBytes(result, ImageFormat.Png), Filetype.png, false, ForceEdit, null, SelectedRegion);
                 }
-
-                if (FreezeScreen)
-                    this.Close();
-
-                ScreenCapturer.IsTakingSnapshot = false;
-                Program.hotkeysEnabled = true;
-            }
-            else
-            {
-                // From here, we fire up clip recording
-                if (SelectedRegion.Width > 0 && SelectedRegion.Height > 0)
+                else
                 {
                     magnifier.Close();
                     StartRecordingClip(ForceEdit);
@@ -350,9 +343,9 @@ namespace imageDeCap
                     this.Location = new Point(SelectedRegion.X - 2, SelectedRegion.Y + SelectedRegion.Height + 3);
                     this.Width = Math.Max(SelectedRegion.Width, 300);
                     this.Height = 50;
-                    
+
                     this.ResumeLayout(false);
-                    this.TopMost = true;
+                    //this.TopMost = true;
 
                     pictureBox1.Hide();
 
@@ -363,9 +356,23 @@ namespace imageDeCap
                     myBrush.Dispose();
                     formGraphics.Dispose();
                     this.Opacity = 1;
-
                 }
             }
+            else
+            {
+                Box.Hide();
+                topBox.Hide();
+                bottomBox.Hide();
+                leftBox.Hide();
+                rightBox.Hide();
+                this.Close();
+            }
+
+            if (FreezeScreen)
+                this.Close();
+
+            ScreenCapturer.IsTakingSnapshot = false;
+            Program.hotkeysEnabled = true;
         }
         
         private void DoneButton_Click(object sender, EventArgs e)
@@ -482,7 +489,9 @@ namespace imageDeCap
             
             int seconds = (RecordedTime / 1000);
             float RecordedTimeSeconds = RecordedTime / 1000.0f;
-            float RamLeft = MainWindow.ramCounter.NextValue() - 1000; // 1000 here is a buffer number to make sure the capturing stops before we run out of memory.
+            float RamLeft = 1;
+            if (MainWindow.ramCounter != null)
+                RamLeft = MainWindow.ramCounter.NextValue() - 1000; // 1000 here is a buffer number to make sure the capturing stops before we run out of memory.
             RecordedFramerate = (int)(((float)FramesCaptured + 1.0f) / RecordedTimeSeconds);
             
             TimeLabel.Text = $"Time: {(DateTime.Now - ClipRecordStartTime).ToString(@"mm\:ss\.ff")}";

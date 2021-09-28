@@ -15,7 +15,7 @@ namespace imageDeCap
     {
         public ProgressWindow()
         {
-            this.Location = Cursor.Position;
+            this.Location = new Point(Cursor.Position.X + 25, Cursor.Position.Y + 25);
             InitializeComponent();
             this.Shown += FormShown;
             this.Show();
@@ -32,7 +32,7 @@ namespace imageDeCap
 
         private void FormShown(object sender, EventArgs e)
         {
-            this.Location = Cursor.Position;
+            this.Location = new Point(Cursor.Position.X + 25, Cursor.Position.Y + 25);
         }
     }
 }

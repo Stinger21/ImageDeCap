@@ -277,7 +277,6 @@ namespace imageDeCap
                 }
             }
 
-            
             if (SavePath != null)
             {
                 File.WriteAllBytes(SavePath, FileData);
