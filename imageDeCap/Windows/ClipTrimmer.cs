@@ -94,7 +94,7 @@ namespace imageDeCap
                 CalculateFileSizeAndSaveOutputImage();
                 //return (result, new Bitmap[] { }, false);
             }
-            bool Sound = SoundCheckbox.Checked;
+            bool Sound = SoundCheckbox.Checked && SoundRecording.soundRecordingAvilable;
             if (Sound)
             {
                 double FrameTime = 1.0 / CompleteCover.FramesPerSecond;

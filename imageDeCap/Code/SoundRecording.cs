@@ -17,6 +17,7 @@ namespace imageDeCap
         public static string WavPath = "";
         public static string Mp3PathUntrimmed = "";
         public static string Mp3Path = "";
+        public static bool soundRecordingAvilable = true;
         public static void Start()
         {
             WavPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\imageDeCap\out.wav";
@@ -27,6 +28,7 @@ namespace imageDeCap
             Mp3Path = WavPath.Replace(".wav", "_trimmed.mp3");
             CaptureInstance = new WasapiLoopbackCapture();
             WaveFileWriter RecordedAudioWriter = new WaveFileWriter(WavPath, CaptureInstance.WaveFormat);
+            
             CaptureInstance.DataAvailable += (s, a) =>
             {
                 RecordedAudioWriter.Write(a.Buffer, 0, a.BytesRecorded);
@@ -39,7 +41,14 @@ namespace imageDeCap
                 CaptureInstance.Dispose();
             };
 
-            CaptureInstance.StartRecording();
+            try
+            {
+                CaptureInstance.StartRecording();
+            }
+            catch(System.Runtime.InteropServices.COMException e) // repored by one user. if it happens just don't record sound?
+            {
+                soundRecordingAvilable = false;
+            }
         }
 
         public static void Stop()
