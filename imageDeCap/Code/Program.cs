@@ -39,9 +39,15 @@ namespace imageDeCap
             DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2 = 34
         }
     }
-    
+
+
     static class Program
     {
+        [DllImport("Kernel32.dll")]
+        public static extern bool QueryPerformanceCounter(out long lpPerformanceCount);
+        [DllImport("Kernel32.dll")]
+        public static extern bool QueryPerformanceFrequency(out long lpFrequency);
+
         public static MainWindow ImageDeCap;
         public static bool hotkeysEnabled = true;
         public static bool Quit = false;
@@ -81,10 +87,17 @@ namespace imageDeCap
             
             Quit = false;
 
+            long frequency = 0;
+            QueryPerformanceFrequency(out frequency);
+
             while (!Quit)
             {
                 Application.DoEvents();
+
                 ImageDeCap.MainLoop();
+
+
+
                 // WHAT
                 for (int i = 0; i < BetterTimer.TimersMarkedForDeletion.Count; i++)
                 {
@@ -96,7 +109,10 @@ namespace imageDeCap
                 {
                     item.TickPrivate();
                 }
+
                 System.Threading.Thread.Sleep(1);
+
+
             }
         }
 

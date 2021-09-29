@@ -55,7 +55,7 @@ namespace imageDeCap
         List<string> Links = new List<string>();
         public static string videoFormat = ".mp4";
         public static int MajorVersion = 1;
-        public static int MinorVersion = 27;
+        public static int MinorVersion = 28;
         public static string VersionNumber = $"v{MajorVersion}.{MinorVersion}";
 
         // Some init stuff is slow, so we do it on a separate thread.

@@ -46,7 +46,6 @@
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.BindPrintscreenTimer = new System.Windows.Forms.Timer(this.components);
             this.VersionLabel = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -218,22 +217,12 @@
             this.VersionLabel.Text = "Hello, This is a test.";
             this.VersionLabel.Click += new System.EventHandler(this.VersionLabel_Click);
             // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(162, 444);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(66, 13);
-            this.label3.TabIndex = 21;
-            this.label3.Text = "PREVIEW 3";
-            // 
             // MainWindow
             // 
             this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(240, 461);
-            this.Controls.Add(this.label3);
             this.Controls.Add(this.VersionLabel);
             this.Controls.Add(this.LinksListBox);
             this.Controls.Add(this.button2);
@@ -277,7 +266,6 @@
         private System.Windows.Forms.ToolStripMenuItem clearLinksToolStripMenuItem;
         private System.Windows.Forms.Timer BindPrintscreenTimer;
         public System.Windows.Forms.Label VersionLabel;
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ToolTip toolTip1;
     }
 }
