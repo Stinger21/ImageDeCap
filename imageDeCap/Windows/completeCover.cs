@@ -150,9 +150,14 @@ namespace imageDeCap
         {
             return a - Math.Floor(a);
         }
-        Vector2 LastMouse;
+
+        [DllImport("User32.dll")]
+        public static extern Int32 SetForegroundWindow(int hWnd);
+
         public void UpdateSelection()
         {
+            SetForegroundWindow(Handle.ToInt32());
+
             Cursor.Current = Cursors.Cross;
 
             if (ClipCaptureTimer2 != null) // Don't update if we are capturing a clip
@@ -165,16 +170,11 @@ namespace imageDeCap
 
             Vector2 Mouse = new Vector2(Cursor.Position.X, Cursor.Position.Y);
             
-            //Vector2 MouseDelta = Mouse - LastMouse;
-            LastMouse = Mouse;
-            //Mouse += MouseDelta * 0.25f;
-
             if (wasPressed != (MouseButtons == MouseButtons.Left))
             {
                 LmbUp = wasPressed;
                 LmbDown = !wasPressed;
             }
-
 
             // Moving things from MainWindow to here...
             this.Activate();

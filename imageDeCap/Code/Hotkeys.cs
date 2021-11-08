@@ -153,8 +153,8 @@ namespace imageDeCap
                 textToPutInBox = textToPutInBox.Replace("RightCtrl", "Ctrl");
                 textToPutInBox = textToPutInBox.Replace("LeftShift", "Shift");
                 textToPutInBox = textToPutInBox.Replace("RightShift", "Shift");
-                textToPutInBox = textToPutInBox.Replace("Snapshot", "Printscreen");
-                textToPutInBox = textToPutInBox.Replace("Scroll", "ScrollLock");
+                //textToPutInBox = textToPutInBox.Replace("Snapshot", "Printscreen");
+                //textToPutInBox = textToPutInBox.Replace("Scroll", "ScrollLock");
 
                 textToPutInBox = textToPutInBox.Remove(textToPutInBox.Length - 1);
                 return textToPutInBox;
