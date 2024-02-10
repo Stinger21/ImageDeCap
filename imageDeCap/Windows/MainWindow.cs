@@ -121,7 +121,7 @@ namespace imageDeCap
             AppdataDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\imageDeCap";
 
             // If the program is started from a folder containing the name "Program Files"
-            // we assume that it's not running in portablemode.
+            // we assume that it's not running in portable mode.
             bool Portable = !ExeDirectory.Contains("Program Files");
 
             if (Portable)
@@ -148,6 +148,7 @@ namespace imageDeCap
 
             Preferences.Load();
 
+            OpenWindow();
             if (Preferences.FirstStartup)
             {
                 // do first-startup stuff
@@ -158,9 +159,8 @@ namespace imageDeCap
                     Preferences.BackupImages = true;
                 Preferences.Save();
 
-                OpenWindow();
                 Utilities.BubbleNotification("Press PRINTSCREEN to start!", null, ToolTipIcon.Info, "Welcome to ImageDeCap!");
-                Utilities.AddToStartup();
+                Utilities.AddToSystemStartup();
 
                 // Try deleting any old shortcut stuff from 1.23 and earlier
                 string startupPath = Environment.GetFolderPath(Environment.SpecialFolder.Startup) + @"\imageDeCap.lnk";
@@ -243,13 +243,7 @@ namespace imageDeCap
         {
             if(props == null)
                 props = new SettingsWindow();
-            //try
-            //{
-            //    props.Show();
-            //}
-            //catch
-            //{
-            //}
+
             props.Show();
             props.BringToFront();
         }

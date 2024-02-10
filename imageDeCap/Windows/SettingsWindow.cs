@@ -267,7 +267,7 @@ namespace imageDeCap
         // Add the program to startup
         private void AddToStartupButton_Click(object sender, EventArgs e)
         {
-            Utilities.AddToStartup();
+            Utilities.AddToSystemStartup();
             Utilities.BubbleNotification("Added to startup!");
         }
 

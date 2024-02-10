@@ -160,7 +160,7 @@ namespace imageDeCap
             return ms.ToArray();
         }
 
-        public static void AddToStartup()
+        public static void AddToSystemStartup()
         {
             string startupPath = Environment.GetFolderPath(Environment.SpecialFolder.Startup) + @"\imageDeCap.lnk";
             Utilities.CreateShortcut(startupPath, MainWindow.ExeDirectory + @"\imageDeCap.exe");

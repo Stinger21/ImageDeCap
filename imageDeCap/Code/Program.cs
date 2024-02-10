@@ -8,8 +8,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Diagnostics;
 using System.IO;
-using System.Drawing;
-using System.Reflection;
+using System.IO.Pipes;
 
 namespace imageDeCap
 {
@@ -39,43 +38,36 @@ namespace imageDeCap
             DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2 = 34
         }
     }
-
-
+    
     static class Program
     {
-        [DllImport("Kernel32.dll")]
-        public static extern bool QueryPerformanceCounter(out long lpPerformanceCount);
-        [DllImport("Kernel32.dll")]
-        public static extern bool QueryPerformanceFrequency(out long lpFrequency);
-
         public static MainWindow ImageDeCap;
         public static bool hotkeysEnabled = true;
         public static bool Quit = false;
 
+        static bool openWindow = false;
+        public static void WaitForBringToFrontEventLoop()
+        {
+            while (true)
+            {
+                var server = new NamedPipeServerStream("MyNamedPipe", PipeDirection.InOut);
+                server.WaitForConnection();
+                openWindow = true;
+                server.Close();
+            }
+        }
+
         [STAThread]
         static void Main(string[] args)
         {
-            // Prefent the program from resizing and breaking with windows scaling. (handle scaling ourselves.)
             NativeMethods.SetProcessDpiAwarenessContext((int)NativeMethods.DPI_AWARENESS_CONTEXT.DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2);
 
-            // Commands:
-            // -ForceStartup:
-            //      Forces the program to start even if there are other instances of the program already running.
-            // 
-
-            bool ForceStartup = false;
-            if(args.Length > 0)
+            bool AlreadyRunning = Process.GetProcessesByName(Process.GetCurrentProcess().ProcessName).Length > 1;
+            if (AlreadyRunning)
             {
-                if(args[0].Contains("ForceStartup"))
-                {
-                    ForceStartup = true;
-                    System.Threading.Thread.Sleep(2000);
-                }
-            }
-
-            // stop from having multiple instances of this program running at the same time.
-            if (Process.GetProcessesByName(Process.GetCurrentProcess().ProcessName).Length > 1 && ForceStartup == false)
-            {
+                NamedPipeClientStream client = new NamedPipeClientStream(".", "MyNamedPipe", PipeDirection.InOut);
+                client.Connect();
+                client.Close();
                 return;
             }
 
@@ -84,37 +76,23 @@ namespace imageDeCap
             
             ImageDeCap = new MainWindow();
             ImageDeCap.Initialize();
-            
+
+            new Thread(WaitForBringToFrontEventLoop).Start();
+
+            //NewRecorder.ReadVideoFrame();
+
             Quit = false;
-
-            long frequency = 0;
-            QueryPerformanceFrequency(out frequency);
-
             while (!Quit)
             {
                 Application.DoEvents();
-
                 ImageDeCap.MainLoop();
-
-
-
-                // WHAT
-                for (int i = 0; i < BetterTimer.TimersMarkedForDeletion.Count; i++)
+                if (openWindow)
                 {
-                    BetterTimer.Timers.Remove(BetterTimer.TimersMarkedForDeletion[i]);
-                    BetterTimer.TimersMarkedForDeletion.Remove(BetterTimer.TimersMarkedForDeletion[i]);
-                    i--;
+                    openWindow = false;
+                    ImageDeCap.OpenWindow();
                 }
-                foreach (var item in BetterTimer.Timers)
-                {
-                    item.TickPrivate();
-                }
-
                 System.Threading.Thread.Sleep(1);
-
-
-            }
+            } 
         }
-
     }
 }
