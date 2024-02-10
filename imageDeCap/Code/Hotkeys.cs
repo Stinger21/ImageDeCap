@@ -66,15 +66,12 @@ namespace imageDeCap
             Key.F1,Key.F2,Key.F3,Key.F4,Key.F5,Key.F6,Key.F7,Key.F8,Key.F9,Key.F10,Key.F11,Key.F12,Key.F13,Key.F14,Key.F15,Key.F16,Key.F17,Key.F18,Key.F19,Key.F20,Key.F21,Key.F22,Key.F23,Key.F24,
         };
 
-
-        static void unParse(string value, HashSet<Key> Keys)
+        static void UnParse(string value, HashSet<Key> Keys)
         {
             value = value.Replace("Alt", "LeftAlt");
             value = value.Replace("Ctrl", "LeftCtrl");
             value = value.Replace("Shift", "LeftShift");
-            value = value.Replace("Printscreen", "Snapshot");
-            value = value.Replace("ScrollLock", "Scroll");
-            
+
             foreach(string s in value.Split('+'))
             {
                 Key key;
@@ -87,37 +84,19 @@ namespace imageDeCap
 
         public static string GetCurrentHotkey(bool CheckOnlyHotkeys = false)
         {
-            string textToPutInBox = "";
-            //int length = Enum.GetValues(typeof(Key)).Length;
-            //
-            //for (int i = length; i-- > 0;)
-            //{
-            //    if (Enum.IsDefined(typeof(Key), i) && i != 0)
-            //    {
-            //        bool isDown = System.Windows.Input.Keyboard.IsKeyDown((Key)i);
-            //        if (isDown)
-            //        {
-            //            textToPutInBox += $"{((Key)i).ToString()}+";
-            //        }
-            //    }
-            //}
+            List<Key> HeldKeys = new List<Key>();
 
-            //long start = 0;
-            //long end = 0;
-            //Program.QueryPerformanceCounter(out start);
-
-
-            if(CheckOnlyHotkeys)
+            if (CheckOnlyHotkeys)
             {
                 HashSet<Key> keys = new HashSet<Key>();
-                unParse(Preferences.HotkeyImage, keys);
-                unParse(Preferences.HotkeyText, keys);
-                unParse(Preferences.HotkeyVideo, keys);
+                UnParse(Preferences.HotkeyImage, keys);
+                UnParse(Preferences.HotkeyText, keys);
+                UnParse(Preferences.HotkeyVideo, keys);
                 foreach (Key k in keys)
                 {
                     if (System.Windows.Input.Keyboard.IsKeyDown(k))
                     {
-                        textToPutInBox += $"{k}+";
+                        HeldKeys.Add(k);
                     }
                 }
             }
@@ -127,38 +106,35 @@ namespace imageDeCap
                 {
                     if (System.Windows.Input.Keyboard.IsKeyDown(k))
                     {
-                        textToPutInBox += $"{k}+";
+                        HeldKeys.Add(k);
                     }
                 }
-
             }
 
-            //Program.QueryPerformanceCounter(out end);
-            //Console.WriteLine(end - start);
-
+            HeldKeys.Sort();
+            HeldKeys.Reverse();
+            string textToPutInBox = "";
+            foreach (Key k in HeldKeys)
+            {
+                textToPutInBox += $"{k}+";
+            }
 
             if (textToPutInBox == null)
-            {
                 return "";
-            }
-            else if (textToPutInBox == "")
-            {
-                return "";
-            }
-            else
-            {
-                textToPutInBox = textToPutInBox.Replace("LeftAlt", "Alt");
-                textToPutInBox = textToPutInBox.Replace("RightAlt", "Alt");
-                textToPutInBox = textToPutInBox.Replace("LeftCtrl", "Ctrl");
-                textToPutInBox = textToPutInBox.Replace("RightCtrl", "Ctrl");
-                textToPutInBox = textToPutInBox.Replace("LeftShift", "Shift");
-                textToPutInBox = textToPutInBox.Replace("RightShift", "Shift");
-                //textToPutInBox = textToPutInBox.Replace("Snapshot", "Printscreen");
-                //textToPutInBox = textToPutInBox.Replace("Scroll", "ScrollLock");
 
-                textToPutInBox = textToPutInBox.Remove(textToPutInBox.Length - 1);
-                return textToPutInBox;
-            }
+            if (textToPutInBox == "")
+                return "";
+
+            textToPutInBox = textToPutInBox.Replace("LeftAlt", "Alt");
+            textToPutInBox = textToPutInBox.Replace("RightAlt", "Alt");
+            textToPutInBox = textToPutInBox.Replace("LeftCtrl", "Ctrl");
+            textToPutInBox = textToPutInBox.Replace("RightCtrl", "Ctrl");
+            textToPutInBox = textToPutInBox.Replace("LeftShift", "Shift");
+            textToPutInBox = textToPutInBox.Replace("RightShift", "Shift");
+
+            textToPutInBox = textToPutInBox.Remove(textToPutInBox.Length - 1);
+            return textToPutInBox;
+            
 
         }
     }
