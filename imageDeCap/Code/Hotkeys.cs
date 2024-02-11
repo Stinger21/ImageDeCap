@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using System.Windows.Input;
 public delegate void HotkeyPressed();
 
@@ -10,6 +11,8 @@ namespace imageDeCap
 {
     public static class Hotkeys
     {
+        public static System.Diagnostics.Stopwatch watch;
+        public static System.Diagnostics.Stopwatch watchTotal;
         public static HotkeyPressed CaptureVideoHotkeyPressed = null;
         static bool UploadPastebitHotkey = false;
         static bool CaptureVideoHotkey = false;
@@ -18,7 +21,6 @@ namespace imageDeCap
         public static void Update()
         {
             string hotkey = GetCurrentHotkey(true);
-
             if (Preferences.HotkeyText == hotkey)
             {
                 if (!UploadPastebitHotkey)
@@ -38,10 +40,15 @@ namespace imageDeCap
             }
             else if (Preferences.HotkeyImage == hotkey)
             {
+                Hotkeys.watchTotal = System.Diagnostics.Stopwatch.StartNew(); // 3
+
                 if (!CaptureImageHotkey)
                     if (Program.hotkeysEnabled)
                         ScreenCapturer.CaptureScreenRegion();
                 CaptureImageHotkey = true;
+
+                Hotkeys.watchTotal.Stop();
+                Console.WriteLine("Total: " + Hotkeys.watchTotal.ElapsedMilliseconds);
             }
             else
             {
@@ -82,13 +89,15 @@ namespace imageDeCap
             }
         }
 
+        static List<Key> HeldKeys = new List<Key>();
+        static HashSet<Key> keys = new HashSet<Key>();
         public static string GetCurrentHotkey(bool CheckOnlyHotkeys = false)
         {
-            List<Key> HeldKeys = new List<Key>();
+            HeldKeys.Clear();
 
             if (CheckOnlyHotkeys)
             {
-                HashSet<Key> keys = new HashSet<Key>();
+                keys.Clear();
                 UnParse(Preferences.HotkeyImage, keys);
                 UnParse(Preferences.HotkeyText, keys);
                 UnParse(Preferences.HotkeyVideo, keys);
@@ -134,8 +143,6 @@ namespace imageDeCap
 
             textToPutInBox = textToPutInBox.Remove(textToPutInBox.Length - 1);
             return textToPutInBox;
-            
-
         }
     }
 }

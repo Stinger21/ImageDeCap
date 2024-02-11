@@ -79,13 +79,14 @@ namespace imageDeCap
 
             new Thread(WaitForBringToFrontEventLoop).Start();
 
-            //NewRecorder.ReadVideoFrame();
-
             Quit = false;
             while (!Quit)
             {
                 Application.DoEvents();
-                ImageDeCap.MainLoop();
+
+                ClipboardHandler.Update();
+                Hotkeys.Update();
+
                 if (openWindow)
                 {
                     openWindow = false;

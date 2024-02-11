@@ -56,6 +56,8 @@ namespace imageDeCap
 
         private void UpdateTimer_Tick(object sender, EventArgs e)
         {
+            if (!ScreenCapturer.IsTakingSnapshot)
+                return;
             CopiedImageGraphics.CopyFromScreen(MousePosition.X - (resolution / 2), MousePosition.Y - (resolution / 2), 0, 0, new Size(resolution, resolution));
             FinalImageGraphics.DrawImage(CopiedImage, 0, 0, 128, 128);
             FinalImageGraphics.DrawImage(Properties.Resources.Magnifier, 0, 0, 128, 128);

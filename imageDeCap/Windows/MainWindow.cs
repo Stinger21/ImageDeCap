@@ -52,18 +52,16 @@ namespace imageDeCap
         SettingsWindow props;
         public static PerformanceCounter ramCounter;
 
-        List<string> Links = new List<string>();
+        List<string> links = new List<string>();
         public static string videoFormat = ".mp4";
-        public static int MajorVersion = 1;
-        public static int MinorVersion = 29;
-        public static string VersionNumber = $"v{MajorVersion}.{MinorVersion}";
+        public static int version = 30;
+        public static string versionNumber = $"v30";
 
         // Some init stuff is slow, so we do it on a separate thread.
         void OffThreadInitialization()
         {
             ramCounter = new PerformanceCounter("Memory", "Available MBytes");
         }
-
 
         public static string LinksFilePath = "ERROR";
         public static string PreferencesPath = "ERROR";
@@ -72,10 +70,8 @@ namespace imageDeCap
         public static string BackupDirectory = "ERROR";
         public void Initialize()
         {
-
             Thread t = new Thread(OffThreadInitialization);
             t.Start();
-
 
             // Find out what the latest version is on the web:
             using (WebClient client = new WebClient())
@@ -94,24 +90,20 @@ namespace imageDeCap
                     int LatestMajorVersion = int.Parse(htmlCode.Split(new string[] { "." }, StringSplitOptions.None)[0]);
                     int LatestMinorVersion = int.Parse(htmlCode.Split(new string[] { "." }, StringSplitOptions.None)[1]);
                     bool NewerVersionAvilable = false;
-                    if (LatestMajorVersion > MajorVersion)
-                    {
-                        NewerVersionAvilable = true;
-                    }
-                    else if (LatestMajorVersion == MajorVersion && LatestMinorVersion > MinorVersion)
+                    if (LatestMinorVersion > version)
                     {
                         NewerVersionAvilable = true;
                     }
 
                     if (NewerVersionAvilable)
                     {
-                        this.VersionLabel.Text = (MainWindow.VersionNumber + " - New version avilable here!");
+                        this.VersionLabel.Text = (MainWindow.versionNumber + " - New version avilable here!");
                         this.VersionLabel.ForeColor = Color.Blue;
 
                     }
                     else
                     {
-                        this.VersionLabel.Text = MainWindow.VersionNumber;
+                        this.VersionLabel.Text = MainWindow.versionNumber;
                     }
                 }
             }
@@ -213,6 +205,8 @@ namespace imageDeCap
             LinksListBox.AllowDrop = true;
             LinksListBox.DragEnter += new DragEventHandler(Form1_DragEnter);
             LinksListBox.DragDrop += new DragEventHandler(Form1_DragDrop);
+
+            ScreenCapturer.Start();
         }
         public MainWindow()
         {
@@ -221,9 +215,9 @@ namespace imageDeCap
 
         public void AddLink(string link, bool Write = true)
         {
-            Links.Add(link);
+            links.Add(link);
             LinksListBox.DataSource = null;
-            LinksListBox.DataSource = Links;
+            LinksListBox.DataSource = links;
             try
             {
                 LinksListBox.SelectedIndex = LinksListBox.Items.Count - 1;
@@ -234,7 +228,7 @@ namespace imageDeCap
             }
             if (Write)
             {
-                string links = String.Join("\n", Links);
+                string links = string.Join("\n", this.links);
                 File.WriteAllText(LinksFilePath, links);
             }
         }
@@ -255,22 +249,16 @@ namespace imageDeCap
             this.Activate();
         }
 
-        public void MainLoop()
-        {
-            ClipboardHandler.Update();
-            Hotkeys.Update();
-        }
-
         private void ListBox1_DoubleClick(object sender, EventArgs e)
         {
-            if (Links.Count > 0 && Links[LinksListBox.SelectedIndex].StartsWith("http"))
-                Process.Start(Links[LinksListBox.SelectedIndex]);
+            if (links.Count > 0 && links[LinksListBox.SelectedIndex].StartsWith("http"))
+                Process.Start(links[LinksListBox.SelectedIndex]);
         }
 
         public void BalloonTipClicked(object sender, EventArgs e)
         {
-            if (Links.Count > 0 && Links[Links.Count - 1].StartsWith("http"))
-                Process.Start(Links[Links.Count - 1]);
+            if (links.Count > 0 && links[links.Count - 1].StartsWith("http"))
+                Process.Start(links[links.Count - 1]);
         }
 
         void Form1_DragEnter(object sender, DragEventArgs e)
@@ -347,9 +335,9 @@ namespace imageDeCap
             if (MessageBox.Show("This will clear all links with no undo.", "Warning", MessageBoxButtons.OKCancel) != DialogResult.OK)
                 return;
 
-            Links.Clear();
+            links.Clear();
             LinksListBox.DataSource = null;
-            LinksListBox.DataSource = Links;
+            LinksListBox.DataSource = links;
             File.Delete(LinksFilePath);
         }
 
@@ -363,17 +351,17 @@ namespace imageDeCap
 
             if (Copy)
             {
-                if(LinksListBox.SelectedIndex >= 0 && LinksListBox.SelectedIndex <= Links.Capacity-1)
-                    Clipboard.SetText(Links[LinksListBox.SelectedIndex]);
+                if(LinksListBox.SelectedIndex >= 0 && LinksListBox.SelectedIndex <= links.Capacity-1)
+                    Clipboard.SetText(links[LinksListBox.SelectedIndex]);
             }
             else if (Delete)
             {
                 if (MessageBox.Show("Delete link?.", "Warning", MessageBoxButtons.OKCancel) != DialogResult.OK)
                     return;
 
-                Links.RemoveAt(LinksListBox.SelectedIndex);
+                links.RemoveAt(LinksListBox.SelectedIndex);
                 LinksListBox.DataSource = null;
-                LinksListBox.DataSource = Links;
+                LinksListBox.DataSource = links;
             }
         }
 

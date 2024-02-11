@@ -1,4 +1,5 @@
-﻿using System;
+﻿using imageDeCap.Properties;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -18,7 +19,6 @@ namespace imageDeCap
 
     public partial class CompleteCover : Form
     {
-
         // Final rectangle representing the VirtualScreen region selected
         public Rectangle SelectedRegion;
 
@@ -34,18 +34,6 @@ namespace imageDeCap
         int FramesCaptured = 0;
         DateTime LastTime;
 
-        public ScreenshotRegionLine Box = new ScreenshotRegionLine();
-        public ScreenshotRegionLine topBox = new ScreenshotRegionLine();
-        public ScreenshotRegionLine bottomBox = new ScreenshotRegionLine();
-        public ScreenshotRegionLine leftBox = new ScreenshotRegionLine();
-        public ScreenshotRegionLine rightBox = new ScreenshotRegionLine();
-        public ScreenshotRegionLine ruleOfThirdsBox1 = new ScreenshotRegionLine(true);
-        public ScreenshotRegionLine ruleOfThirdsBox2 = new ScreenshotRegionLine(true);
-        public ScreenshotRegionLine ruleOfThirdsBox3 = new ScreenshotRegionLine(true);
-        public ScreenshotRegionLine ruleOfThirdsBox4 = new ScreenshotRegionLine(true);
-
-        public Magnifier magnifier;
-
         bool FreezeScreen;
         bool Clip = false;
         bool EscapePressed = false;
@@ -54,25 +42,26 @@ namespace imageDeCap
         bool AltKeyDown = false;
         bool ShiftKeyDown = false;
 
-        public CompleteCover(bool Clip = false)
+        public CompleteCover()
         {
             InitializeComponent();
-            this.Clip = Clip;
             this.Opacity = 0.005f;
             this.ShowInTaskbar = false;
-
-            FreezeScreen = imageDeCap.Preferences.FreezeScreenOnRegionShot;
-            if (Clip)
-                FreezeScreen = false;
         }
 
         void CaptureVideoHotkeyPressed()
         {
-            StopRecordingClip(this, false);
+            StopRecordingClip(false);
         }
 
         public void AfterShow(Bitmap background, bool isClip)
         {
+            this.Clip = isClip;
+
+            FreezeScreen = imageDeCap.Preferences.FreezeScreenOnRegionShot;
+            if (Clip)
+                FreezeScreen = false;
+
             if (isClip)
             {
                 Hotkeys.CaptureVideoHotkeyPressed += CaptureVideoHotkeyPressed;
@@ -90,47 +79,54 @@ namespace imageDeCap
 
             if (FreezeScreen && !isClip)
             {
+                Hotkeys.watch = System.Diagnostics.Stopwatch.StartNew(); // 1
                 this.TopMost = false;
                 pictureBox1.Image = background;
                 pictureBox1.SetBounds(0, 0, width, height);
                 this.SetBounds(x, y, width, height);
+                //pictureBox1.Update();
                 Application.DoEvents();
                 this.Opacity = 1;
+                Hotkeys.watch.Stop();
+                Console.WriteLine(Hotkeys.watch.ElapsedMilliseconds);
             }
             else
             {
                 this.SetBounds(x, y, width, height);
             }
-            //_Activated = true;
+            Hotkeys.watch = System.Diagnostics.Stopwatch.StartNew(); // 2
             BoxMovementTimer.Enabled = true;
 
-            magnifier = new Magnifier(isClip);
-            magnifier.Show();
-            magnifier.TopMost = true;
+            //ScreenCapturer.magnifier.Show();
+            ScreenCapturer.magnifier.TopMost = true;
 
-            SetupBox(Box, true);
-            SetupBox(topBox, true);
-            SetupBox(leftBox, true);
-            SetupBox(bottomBox, true);
-            SetupBox(rightBox, true);
+            ScreenCapturer.Box.SetBounds(-10, -10, 0, 0);
+            ScreenCapturer.Box.BackColor = Color.Red;
+            ScreenCapturer.topBox.SetBounds(-10, -10, 0, 0);
+            ScreenCapturer.topBox.BackColor = Color.Red;
+            ScreenCapturer.leftBox.SetBounds(-10, -10, 0, 0);
+            ScreenCapturer.leftBox.BackColor = Color.Red;
+            ScreenCapturer.bottomBox.SetBounds(-10, -10, 0, 0);
+            ScreenCapturer.bottomBox.BackColor = Color.Red;
+            ScreenCapturer.rightBox.SetBounds(-10, -10, 0, 0);
+            ScreenCapturer.rightBox.BackColor = Color.Red;
+            if (Preferences.UseRuleOfThirds)
+            {
+                ScreenCapturer.ruleOfThirdsBox1.SetBounds(-10, -10, 0, 0);
+                ScreenCapturer.ruleOfThirdsBox1.BackColor = Color.Gray;
+                ScreenCapturer.ruleOfThirdsBox2.SetBounds(-10, -10, 0, 0);
+                ScreenCapturer.ruleOfThirdsBox2.BackColor = Color.Gray;
+                ScreenCapturer.ruleOfThirdsBox3.SetBounds(-10, -10, 0, 0);
+                ScreenCapturer.ruleOfThirdsBox3.BackColor = Color.Gray;
+                ScreenCapturer.ruleOfThirdsBox4.SetBounds(-10, -10, 0, 0);
+                ScreenCapturer.ruleOfThirdsBox4.BackColor = Color.Gray;
 
-            SetupBox(ruleOfThirdsBox1, false);
-            SetupBox(ruleOfThirdsBox2, false);
-            SetupBox(ruleOfThirdsBox3, false);
-            SetupBox(ruleOfThirdsBox4, false);
+            }
 
             SelectedRegion.Width = 0;
             SelectedRegion.Height = 0;
-        }
-
-        private void SetupBox(ScreenshotRegionLine box, bool grey)
-        {
-            box.Show();
-            box.ShowInTaskbar = false;
-            box.BackColor = grey ? Color.Red : Color.Gray;
-            box.Opacity = 0.5;
-            box.SetBounds(0, 0, 0, 0);
-            box.TopMost = true;
+            Hotkeys.watch.Stop();
+            Console.WriteLine(Hotkeys.watch.ElapsedMilliseconds);
         }
 
         private void CompleteCover_MouseMove(object sender, MouseEventArgs e)
@@ -176,9 +172,8 @@ namespace imageDeCap
                 LmbDown = !wasPressed;
             }
 
-            // Moving things from MainWindow to here...
             this.Activate();
-            magnifier.Bounds = new Rectangle((int)Mouse.X + 32, (int)Mouse.Y - 32, 124, 124);
+            ScreenCapturer.magnifier.Bounds = new Rectangle((int)Mouse.X + 32, (int)Mouse.Y - 32, 124, 124);
             
             if (LmbDown)
             {
@@ -213,17 +208,17 @@ namespace imageDeCap
                 // Magic numbers
                 //Box.SetBounds(SelectedRegion.X, SelectedRegion.Y, SelectedRegion.Width, SelectedRegion.Height);
 
-                topBox.SetBounds(SelectedRegion.X - 3 + 1, SelectedRegion.Y - 3 + 1, SelectedRegion.Width + 3, 0);
-                leftBox.SetBounds(SelectedRegion.X - 3 + 1, SelectedRegion.Y - 1 + 1, 0, SelectedRegion.Height + 1);
-                bottomBox.SetBounds(SelectedRegion.X - 3 + 1, SelectedRegion.Height + SelectedRegion.Y + 1, SelectedRegion.Width + 5, 0);
-                rightBox.SetBounds(SelectedRegion.Width + SelectedRegion.X + 1, SelectedRegion.Y - 3 + 1, 0, SelectedRegion.Height + 3);
+                ScreenCapturer.topBox.SetBounds(SelectedRegion.X - 3 + 1, SelectedRegion.Y - 3 + 1, SelectedRegion.Width + 3, 0);
+                ScreenCapturer.leftBox.SetBounds(SelectedRegion.X - 3 + 1, SelectedRegion.Y - 1 + 1, 0, SelectedRegion.Height + 1);
+                ScreenCapturer.bottomBox.SetBounds(SelectedRegion.X - 3 + 1, SelectedRegion.Height + SelectedRegion.Y + 1, SelectedRegion.Width + 5, 0);
+                ScreenCapturer.rightBox.SetBounds(SelectedRegion.Width + SelectedRegion.X + 1, SelectedRegion.Y - 3 + 1, 0, SelectedRegion.Height + 3);
 
                 if (Preferences.UseRuleOfThirds)
                 {
-                    ruleOfThirdsBox1.SetBounds(SelectedRegion.X + (SelectedRegion.Width / 3), SelectedRegion.Y, 0, SelectedRegion.Height);
-                    ruleOfThirdsBox2.SetBounds(SelectedRegion.X + (SelectedRegion.Width / 3) * 2, SelectedRegion.Y, 0, SelectedRegion.Height);
-                    ruleOfThirdsBox3.SetBounds(SelectedRegion.X, SelectedRegion.Y + (SelectedRegion.Height / 3), SelectedRegion.Width, 0);
-                    ruleOfThirdsBox4.SetBounds(SelectedRegion.X, SelectedRegion.Y + (SelectedRegion.Height / 3) * 2, SelectedRegion.Width, 0);
+                    ScreenCapturer.ruleOfThirdsBox1.SetBounds(SelectedRegion.X + (SelectedRegion.Width / 3), SelectedRegion.Y, 0, SelectedRegion.Height);
+                    ScreenCapturer.ruleOfThirdsBox2.SetBounds(SelectedRegion.X + (SelectedRegion.Width / 3) * 2, SelectedRegion.Y, 0, SelectedRegion.Height);
+                    ScreenCapturer.ruleOfThirdsBox3.SetBounds(SelectedRegion.X, SelectedRegion.Y + (SelectedRegion.Height / 3), SelectedRegion.Width, 0);
+                    ScreenCapturer.ruleOfThirdsBox4.SetBounds(SelectedRegion.X, SelectedRegion.Y + (SelectedRegion.Height / 3) * 2, SelectedRegion.Width, 0);
                 }
             }
 
@@ -238,22 +233,8 @@ namespace imageDeCap
 
             if (EscapePressed)
             {
-                ScreenCapturer.CurrentBackCover.magnifier.Close();
-                this.Close();
-
-                Box.Hide();
-                topBox.Hide();
-                bottomBox.Hide();
-                leftBox.Hide();
-                rightBox.Hide();
-
-                if (Preferences.UseRuleOfThirds)
-                {
-                    ruleOfThirdsBox1.Hide();
-                    ruleOfThirdsBox2.Hide();
-                    ruleOfThirdsBox3.Hide();
-                    ruleOfThirdsBox4.Hide();
-                }
+                Hide();
+                HideBoxes();
 
                 ScreenCapturer.IsTakingSnapshot = false;
                 Program.hotkeysEnabled = true;
@@ -262,7 +243,12 @@ namespace imageDeCap
             EscapePressed = false;
             wasPressed = MouseButtons == MouseButtons.Left;
         }
-        
+        void Hide()
+        {
+            this.SetBounds(-10, -10, 0, 0);
+            BoxMovementTimer.Enabled = false;
+            ScreenCapturer.magnifier.Location = new Point(-20000, -20000);
+        }
         private void CompleteCover_KeyDown(object sender, KeyEventArgs e)
         {
             if(ClipCaptureTimer2 == null)
@@ -294,33 +280,39 @@ namespace imageDeCap
             }
         }
 
+        public static void HideBoxes()
+        {
+            ScreenCapturer.Box.SetBounds(-10, -10, 0, 0);
+            ScreenCapturer.topBox.SetBounds(-10, -10, 0, 0);
+            ScreenCapturer.bottomBox.SetBounds(-10, -10, 0, 0);
+            ScreenCapturer.leftBox.SetBounds(-10, -10, 0, 0);
+            ScreenCapturer.rightBox.SetBounds(-10, -10, 0, 0);
+            if (Preferences.UseRuleOfThirds)
+            {
+                ScreenCapturer.ruleOfThirdsBox1.SetBounds(-10, -10, 0, 0);
+                ScreenCapturer.ruleOfThirdsBox2.SetBounds(-10, -10, 0, 0);
+                ScreenCapturer.ruleOfThirdsBox3.SetBounds(-10, -10, 0, 0);
+                ScreenCapturer.ruleOfThirdsBox4.SetBounds(-10, -10, 0, 0);
+            }
+        }
 
         // this is called from Form1's updateSelectedArea when it considers itself done figuring out what region to capture.
         public void CompletedSelection(bool ForceEdit = false)
         {
             Cursor.Current = Cursors.Default;
+
             BoxMovementTimer.Enabled = false;
+            ScreenCapturer.magnifier.Location = new Point(-20000, -20000);
 
-            magnifier.Close();
-
-            ruleOfThirdsBox1.Hide();
-            ruleOfThirdsBox2.Hide();
-            ruleOfThirdsBox3.Hide();
-            ruleOfThirdsBox4.Hide();
+            HideBoxes();
 
             // From here, we fire up clip recording
             if (SelectedRegion.Width > 0 && SelectedRegion.Height > 0)
             {
                 if (!Clip) // If it's not a clip, hide everything and fire off an upload thread instantly.
                 {
-                    Box.Hide();
-                    topBox.Hide();
-                    bottomBox.Hide();
-                    leftBox.Hide();
-                    rightBox.Hide();
-
                     if (!FreezeScreen)
-                        this.Close();
+                        Hide();
 
                     Utilities.PlaySound("snip.wav");
                     Bitmap result = ScreenCapturer.Capture(
@@ -331,13 +323,13 @@ namespace imageDeCap
                         SelectedRegion.Height + 1);
 
                     if (FreezeScreen)
-                        this.Close();
+                        Hide();
 
                     ScreenCapturer.UploadImageData(Utilities.GetBytes(result, ImageFormat.Png), Filetype.png, false, ForceEdit, null, SelectedRegion);
                 }
                 else
                 {
-                    magnifier.Close();
+                    ScreenCapturer.magnifier.Location = new Point(-20000, -20000);
                     StartRecordingClip(ForceEdit);
 
                     this.Location = new Point(SelectedRegion.X - 2, SelectedRegion.Y + SelectedRegion.Height + 3);
@@ -360,16 +352,11 @@ namespace imageDeCap
             }
             else
             {
-                Box.Hide();
-                topBox.Hide();
-                bottomBox.Hide();
-                leftBox.Hide();
-                rightBox.Hide();
-                this.Close();
+                Hide();
             }
 
             if (FreezeScreen)
-                this.Close();
+                Hide();
 
             ScreenCapturer.IsTakingSnapshot = false;
             Program.hotkeysEnabled = true;
@@ -377,13 +364,13 @@ namespace imageDeCap
         
         private void DoneButton_Click(object sender, EventArgs e)
         {
-            StopRecordingClip(this, false);
+            StopRecordingClip(false);
         }
 
         private void CancelButton_Click(object sender, EventArgs e)
         {
             EscapePressed = true;
-            StopRecordingClip(this, true);
+            StopRecordingClip(true);
         }
         BetterTimer ClipCaptureTimer2;
 
@@ -403,23 +390,19 @@ namespace imageDeCap
 
             LastTime = DateTime.Now;
 
-            Box.BackColor = Color.Green;
-            topBox.BackColor = Color.Green;
-            bottomBox.BackColor = Color.Green;
-            leftBox.BackColor = Color.Green;
-            rightBox.BackColor = Color.Green;
+            ScreenCapturer.Box.BackColor = Color.Green;
+            ScreenCapturer.topBox.BackColor = Color.Green;
+            ScreenCapturer.bottomBox.BackColor = Color.Green;
+            ScreenCapturer.leftBox.BackColor = Color.Green;
+            ScreenCapturer.rightBox.BackColor = Color.Green;
 
-            ruleOfThirdsBox1.Hide();
-            ruleOfThirdsBox2.Hide();
-            ruleOfThirdsBox3.Hide();
-            ruleOfThirdsBox4.Hide();
             SoundRecording.Start();
             ClipRecordStartTime = DateTime.Now;
         }
         public static double RecordedSeconds;
         public static double FramesPerSecond;
         
-        public void StopRecordingClip(CompleteCover cover, bool abort)
+        public void StopRecordingClip(bool abort)
         {
             if (ClipCaptureTimer2 != null)
             {
@@ -428,19 +411,8 @@ namespace imageDeCap
                 RecordedSeconds = TotalRecordedTime.TotalMilliseconds / 1000.0;
                 FramesPerSecond = f / RecordedSeconds;
                 RecordedFramerate = (decimal)FramesPerSecond;
-                //ClipCaptureTimer2.Enabled = false;
-                Box.Hide();
-                topBox.Hide();
-                bottomBox.Hide();
-                leftBox.Hide();
-                rightBox.Hide();
 
-                ruleOfThirdsBox1.Hide();
-                ruleOfThirdsBox2.Hide();
-                ruleOfThirdsBox3.Hide();
-                ruleOfThirdsBox4.Hide();
-
-                cover.Close();
+                Hide();
                 SoundRecording.Stop();
                 if (abort)
                 {
@@ -454,6 +426,7 @@ namespace imageDeCap
                     // Feed in through the tag weather the user right-clicked to force editor even when it's disabled.
                     ScreenCapturer.UploadImageData(new byte[] { }, Filetype.mp4, false, (bool)ClipCaptureTimer2.Tag, CapturedClipFrames.ToArray());
                 }
+                HideBoxes();
                 ClipCaptureTimer2.Dispose();
                 ClipCaptureTimer2 = null;
 
@@ -465,7 +438,6 @@ namespace imageDeCap
         [DllImport("user32.dll")]
         static extern uint GetGuiResources(IntPtr hProcess, uint uiFlags);
         
-
         private void ClipCaptureTimer_Tick()
         {
             this.BringToFront();
@@ -503,14 +475,14 @@ namespace imageDeCap
             FramesCaptured++;
             if (RamLeft <= 0)
             {
-                StopRecordingClip(this, false);
+                StopRecordingClip(false);
             }
 
             // If the user pressesd esc, complete the recording and open the editor.
             string hotkey = Hotkeys.GetCurrentHotkey();
             if (hotkey == "Escape")
             {
-                StopRecordingClip(this, false);
+                StopRecordingClip(false);
             }
 
             uint GDIHandles = GetGuiResources(Process.GetCurrentProcess().Handle, 0);
@@ -519,7 +491,7 @@ namespace imageDeCap
             //Almost out of GDI handles, stopping recording.
             if (UserHandles > 9000 || UserHandles > 9000)
             {
-                StopRecordingClip(this, false);
+                StopRecordingClip(false);
             }
         }
         

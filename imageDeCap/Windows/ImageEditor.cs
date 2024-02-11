@@ -63,7 +63,7 @@ namespace imageDeCap
             else
                 Height = Editor.EditedImage.Height;
 
-            this.Size = new Size(Width + 23-5, Height + 95 - 15);
+            this.Size = new Size(Width + 23 - 5, Height + 95 - 15);
             this.StartPosition = FormStartPosition.Manual;
             this.Location = new Point(X - 7, Y - 20);
 
@@ -85,7 +85,6 @@ namespace imageDeCap
 
 
         // Drawing
-
         private void ImageContainer_MouseDown(object sender, MouseEventArgs e){ImageContainer_MouseMove(sender, e);}
         private void NewImageEditor_MouseClick(object sender, MouseEventArgs e){ImageContainer_MouseClick(sender, e);}
         private void Panel1_MouseClick(object sender, MouseEventArgs e){ImageContainer_MouseClick(sender, e);}
@@ -129,10 +128,8 @@ namespace imageDeCap
 
             Editor.MouseMove(new Vector2(mousePos));
         }
-        
 
         // Hotkeys
-
         private void ImageEditor_KeyDown(object sender, KeyEventArgs e)
         {
             string KeyCode = e.KeyCode.ToString();

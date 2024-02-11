@@ -28,18 +28,23 @@ namespace imageDeCap
         public ScreenshotRegionLine(bool grey = false)
         {
             InitializeComponent();
+            this.Show();
+            this.ShowInTaskbar = false;
+            this.Opacity = 0.5;
+            this.TopMost = true;
+            this.SetBounds(-10, -10, 0, 0);
         }
-        
-        protected override void WndProc(ref Message m)
-        {
-            int WM_NCHITTEST = 0x84;
-            Int32 HTTRANSPARENT = -1;
 
-            if (m.Msg == (int)WM_NCHITTEST)
-                m.Result = (IntPtr)HTTRANSPARENT;
-            else
-                base.WndProc(ref m);
-        }
+        //protected override void WndProc(ref Message m)
+        //{
+        //    int WM_NCHITTEST = 0x84;
+        //    Int32 HTTRANSPARENT = -1;
+        //
+        //    if (m.Msg == (int)WM_NCHITTEST)
+        //        m.Result = (IntPtr)HTTRANSPARENT;
+        //    else
+        //        base.WndProc(ref m);
+        //}
 
         // Makes the form not show up in alt-tab
         protected override CreateParams CreateParams

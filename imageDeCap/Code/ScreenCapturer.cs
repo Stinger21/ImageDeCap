@@ -64,47 +64,68 @@ namespace imageDeCap
 
     public static class ScreenCapturer
     {
-        public static CompleteCover CurrentBackCover;
+        public static CompleteCover CurrentBackCover = new CompleteCover();
         public static bool IsTakingSnapshot = false;
-        
+
+        public static ScreenshotRegionLine Box = new ScreenshotRegionLine();
+        public static ScreenshotRegionLine topBox = new ScreenshotRegionLine();
+        public static ScreenshotRegionLine bottomBox = new ScreenshotRegionLine();
+        public static ScreenshotRegionLine leftBox = new ScreenshotRegionLine();
+        public static ScreenshotRegionLine rightBox = new ScreenshotRegionLine();
+        public static ScreenshotRegionLine ruleOfThirdsBox1 = new ScreenshotRegionLine(true);
+        public static ScreenshotRegionLine ruleOfThirdsBox2 = new ScreenshotRegionLine(true);
+        public static ScreenshotRegionLine ruleOfThirdsBox3 = new ScreenshotRegionLine(true);
+        public static ScreenshotRegionLine ruleOfThirdsBox4 = new ScreenshotRegionLine(true);
+        public static Magnifier magnifier = new Magnifier(true);
+
+        public static void Start()
+        {
+            CurrentBackCover.Show();
+            CurrentBackCover.SetBounds(-10, -10, 0, 0);
+            magnifier.Show();
+            magnifier.Location = new Point(-20000, -20000);
+        }
+
+
         // UPLOADING FUNCTIONS
 
         public static void UploadPastebinClipboard()
         {
-            if (!IsTakingSnapshot)
+            if (IsTakingSnapshot)
+                return;
+            
+            SendKeys.SendWait("^c");
+            System.Threading.Thread.Sleep(500);
+            string clipboard = Clipboard.GetText();
+            Utilities.PlaySound("snip.wav");
+
+            if (!Preferences.NeverUpload)
             {
-                SendKeys.SendWait("^c");
-                System.Threading.Thread.Sleep(500);
-                string clipboard = Clipboard.GetText();
-                Utilities.PlaySound("snip.wav");
-
-                if (!Preferences.NeverUpload)
-                {
-                    BackgroundWorker bw = new BackgroundWorker();
-                    bw.DoWork += Uploading.UploadPastebin;
-                    bw.RunWorkerCompleted += UploadPastebinCompleted;
-                    bw.RunWorkerAsync(clipboard);
-                }
-
-                if (Preferences.uploadToFTP)
-                {
-                    BackgroundWorker bw2 = new BackgroundWorker();
-                    bw2.DoWork += Uploading.UploadToFTP;
-                    string name = DateTime.UtcNow.ToString("yyyyMMddHHmmssfff");
-                    bw2.RunWorkerAsync(new object[] { Preferences.FTPurl,
-                                                  Preferences.FTPusername,
-                                                  Preferences.FTPpassword,
-                                                  Encoding.ASCII.GetBytes(clipboard),
-                                                  $"{name}.txt" });
-                }
-
-                if (Preferences.SaveImages && Directory.Exists(Preferences.SaveImagesLocation))
-                {
-                    string name = DateTime.UtcNow.ToString("yyyyMMddHHmmssfff");
-                    string whereToSave = $"{Preferences.SaveImagesLocation}\\{name}.txt";
-                    File.WriteAllText(whereToSave, clipboard);
-                }
+                BackgroundWorker bw = new BackgroundWorker();
+                bw.DoWork += Uploading.UploadPastebin;
+                bw.RunWorkerCompleted += UploadPastebinCompleted;
+                bw.RunWorkerAsync(clipboard);
             }
+
+            if (Preferences.uploadToFTP)
+            {
+                BackgroundWorker bw2 = new BackgroundWorker();
+                bw2.DoWork += Uploading.UploadToFTP;
+                string name = DateTime.UtcNow.ToString("yyyyMMddHHmmssfff");
+                bw2.RunWorkerAsync(new object[] { Preferences.FTPurl,
+                                                Preferences.FTPusername,
+                                                Preferences.FTPpassword,
+                                                Encoding.ASCII.GetBytes(clipboard),
+                                                $"{name}.txt" });
+            }
+
+            if (Preferences.SaveImages && Directory.Exists(Preferences.SaveImagesLocation))
+            {
+                string name = DateTime.UtcNow.ToString("yyyyMMddHHmmssfff");
+                string whereToSave = $"{Preferences.SaveImagesLocation}\\{name}.txt";
+                File.WriteAllText(whereToSave, clipboard);
+            }
+            
         }
 
         public static void CaptureScreenRegion(bool isClip = false)
@@ -132,12 +153,10 @@ namespace imageDeCap
                 IsTakingSnapshot = true;
                 Program.hotkeysEnabled = false;
                 // back cover used for pulling cursor position into updateSelectedArea()
-                if (CurrentBackCover != null)
-                    CurrentBackCover.Dispose();
-
-                CurrentBackCover = new CompleteCover(isClip);
-                CurrentBackCover.Show();
-                CurrentBackCover.AfterShow(background, isClip);
+                //if (CurrentBackCover != null)
+                //    CurrentBackCover.Dispose();
+                
+                CurrentBackCover.AfterShow(background, isClip); // ~500ms
             }
         }
 
@@ -165,15 +184,14 @@ namespace imageDeCap
             {
                 if (imageType == Filetype.mp4)
                 {
-                    //int framerate = 1000 / CurrentBackCover.RecordedTime;
-                    ClipTrimmer editor = new ClipTrimmer(ClipFrames, CurrentBackCover.topBox.Location.X, CurrentBackCover.topBox.Location.Y, CurrentBackCover.RecordedFramerate);
+                    ClipTrimmer editor = new ClipTrimmer(ClipFrames, SelectedRegion.Left, SelectedRegion.Top, CurrentBackCover.RecordedFramerate);
                     editor.Show();
                     editor.FormClosed += EditorDone;
                     TempClipTrimmer = editor;
                 }
                 else
                 {
-                    ImageEditor editor = new ImageEditor(ImageData, CurrentBackCover.topBox.Location.X, CurrentBackCover.topBox.Location.Y, SelectedRegion);
+                    ImageEditor editor = new ImageEditor(ImageData, SelectedRegion.Left, SelectedRegion.Top, SelectedRegion);
                     editor.Show();
                     editor.FormClosed += EditorDone;
                 }
@@ -213,7 +231,6 @@ namespace imageDeCap
             }
             UploadImageData_AfterEdit(EditorResult, f, ImageData, ClipData, Sound);
         }
-
 
         public static void UploadImageData_AfterEdit(ImageEditor.EditorResult EditorResult, Filetype imageType, byte[] FileData, Bitmap[] ClipData, bool Sound = false)
         {
@@ -367,7 +384,6 @@ namespace imageDeCap
                 }
                 bw1.RunWorkerAsync(FileData);
 
-                
             }
         }
 
@@ -439,7 +455,6 @@ namespace imageDeCap
             }
         }
         
-
         public static Bitmap Capture(ScreenCaptureMode screenCaptureMode = ScreenCaptureMode.Window, int X = 0, int Y = 0, int Width = 0, int Height = 0, bool CaptureMouse = false)
         {
             Rectangle bounds;
@@ -485,7 +500,6 @@ namespace imageDeCap
             return result;
         }
 
-
         static Bitmap CaptureCursor(ref int x, ref int y)
         {
             Win32Stuff.CURSORINFO ci = new Win32Stuff.CURSORINFO();
@@ -524,7 +538,6 @@ namespace imageDeCap
             
             return b;
         }
-
 
         public static Bitmap CaptureScreen(int x, int y, int width, int height)
         {

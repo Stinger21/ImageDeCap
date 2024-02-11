@@ -17,7 +17,7 @@ namespace imageDeCap
             InitializeComponent();
             this.StartPosition = FormStartPosition.Manual;
             this.Location = new Point(Program.ImageDeCap.Location.X + 100, Program.ImageDeCap.Location.Y - 100);
-            this.ImageDecapLabel.Text = $"ImageDeCap {MainWindow.VersionNumber}";
+            this.ImageDecapLabel.Text = $"ImageDeCap {MainWindow.versionNumber}";
         }
 
         private void Andrew_Click(object sender, EventArgs e)
