@@ -45,7 +45,7 @@ namespace imageDeCap
         public CompleteCover()
         {
             InitializeComponent();
-            this.Opacity = 0.005f;
+            //this.Opacity = 0.005f;
             this.ShowInTaskbar = false;
         }
 
@@ -58,7 +58,7 @@ namespace imageDeCap
         {
             this.Clip = isClip;
 
-            FreezeScreen = imageDeCap.Preferences.FreezeScreenOnRegionShot;
+            FreezeScreen = Preferences.FreezeScreenOnRegionShot;
             if (Clip)
                 FreezeScreen = false;
 
@@ -76,25 +76,27 @@ namespace imageDeCap
             int y = SystemInformation.VirtualScreen.Y;
             int width = SystemInformation.VirtualScreen.Width;
             int height = SystemInformation.VirtualScreen.Height;
-
             if (FreezeScreen && !isClip)
             {
-                Hotkeys.watch = System.Diagnostics.Stopwatch.StartNew(); // 1
+                this.Opacity = 0;
                 this.TopMost = false;
                 pictureBox1.Image = background;
                 pictureBox1.SetBounds(0, 0, width, height);
                 this.SetBounds(x, y, width, height);
                 //pictureBox1.Update();
-                Application.DoEvents();
-                this.Opacity = 1;
-                Hotkeys.watch.Stop();
-                Console.WriteLine(Hotkeys.watch.ElapsedMilliseconds);
+                //Application.DoEvents();
+                //this.Opacity = 1.0;
+
             }
             else
             {
                 this.SetBounds(x, y, width, height);
             }
-            Hotkeys.watch = System.Diagnostics.Stopwatch.StartNew(); // 2
+
+            AltKeyDown = false;
+            ShiftKeyDown = false;
+            EscapePressed = false;
+            wasPressed = false;
             BoxMovementTimer.Enabled = true;
 
             //ScreenCapturer.magnifier.Show();
@@ -120,13 +122,10 @@ namespace imageDeCap
                 ScreenCapturer.ruleOfThirdsBox3.BackColor = Color.Gray;
                 ScreenCapturer.ruleOfThirdsBox4.SetBounds(-10, -10, 0, 0);
                 ScreenCapturer.ruleOfThirdsBox4.BackColor = Color.Gray;
-
             }
 
             SelectedRegion.Width = 0;
             SelectedRegion.Height = 0;
-            Hotkeys.watch.Stop();
-            Console.WriteLine(Hotkeys.watch.ElapsedMilliseconds);
         }
 
         private void CompleteCover_MouseMove(object sender, MouseEventArgs e)
@@ -139,6 +138,7 @@ namespace imageDeCap
 
         private void BoxMovementTimer_Tick(object sender, EventArgs e)
         {
+            this.Opacity = 1;
             UpdateSelection();
         }
 
@@ -347,7 +347,7 @@ namespace imageDeCap
                     formGraphics.FillRectangle(myBrush, new Rectangle(0, 0, this.Width, this.Height));
                     myBrush.Dispose();
                     formGraphics.Dispose();
-                    this.Opacity = 1;
+                    //this.Opacity = 1;
                 }
             }
             else

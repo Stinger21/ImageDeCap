@@ -35,62 +35,51 @@
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.button4 = new System.Windows.Forms.Button();
+            this.RecordingFramerate = new System.Windows.Forms.NumericUpDown();
             this.ImageFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.PrintScreenTimer = new System.Windows.Forms.Timer(this.components);
             this.imageContainer = new System.Windows.Forms.PictureBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.neverUpload = new System.Windows.Forms.CheckBox();
-            this.OpenInBrowser = new System.Windows.Forms.CheckBox();
-            this.CopyLinksToClipboard = new System.Windows.Forms.CheckBox();
-            this.checkBoxUploadToFTP = new System.Windows.Forms.CheckBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label16 = new System.Windows.Forms.Label();
-            this.FTPUsername = new System.Windows.Forms.TextBox();
-            this.FTPpassword = new System.Windows.Forms.TextBox();
-            this.PastebinSubjectLineTextBox = new System.Windows.Forms.TextBox();
-            this.FTPURL = new System.Windows.Forms.TextBox();
-            this.FTPLink = new System.Windows.Forms.TextBox();
-            this.label17 = new System.Windows.Forms.Label();
             this.CopyFTPLink = new System.Windows.Forms.CheckBox();
+            this.label17 = new System.Windows.Forms.Label();
+            this.FTPLink = new System.Windows.Forms.TextBox();
+            this.FTPURL = new System.Windows.Forms.TextBox();
+            this.FTPpassword = new System.Windows.Forms.TextBox();
+            this.FTPUsername = new System.Windows.Forms.TextBox();
+            this.label16 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.checkBoxUploadToFTP = new System.Windows.Forms.CheckBox();
+            this.CopyLinksToClipboard = new System.Windows.Forms.CheckBox();
+            this.OpenInBrowser = new System.Windows.Forms.CheckBox();
+            this.neverUpload = new System.Windows.Forms.CheckBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.HotkeyTextBox2 = new System.Windows.Forms.TextBox();
-            this.watermarkLocation2 = new System.Windows.Forms.RadioButton();
-            this.watermarkBrowseButton = new System.Windows.Forms.Button();
-            this.watermarkLocation1 = new System.Windows.Forms.RadioButton();
-            this.HotkeyTextBox1 = new System.Windows.Forms.TextBox();
-            this.HotkeyTextBox3 = new System.Windows.Forms.TextBox();
-            this.watermarkLocation0 = new System.Windows.Forms.RadioButton();
-            this.watermarkTextbox = new System.Windows.Forms.TextBox();
-            this.watermarkLocation3 = new System.Windows.Forms.RadioButton();
-            this.watermarkCheckbox = new System.Windows.Forms.CheckBox();
             this.ResetHotkeysbutton = new System.Windows.Forms.Button();
+            this.HotkeyTextBox3 = new System.Windows.Forms.TextBox();
+            this.HotkeyTextBox2 = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.FreezeScreen = new System.Windows.Forms.CheckBox();
-            this.BackupImages = new System.Windows.Forms.CheckBox();
-            this.CopyImageToClipboard = new System.Windows.Forms.CheckBox();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label14 = new System.Windows.Forms.Label();
-            this.SaveImages = new System.Windows.Forms.CheckBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.DisableNotifications = new System.Windows.Forms.CheckBox();
-            this.RuleOfThirds = new System.Windows.Forms.CheckBox();
-            this.EditImages = new System.Windows.Forms.CheckBox();
-            this.RecordingFramerate = new System.Windows.Forms.NumericUpDown();
-            this.SaveImagesHereTextBox = new System.Windows.Forms.TextBox();
             this.SaveImagesBrowseButton = new System.Windows.Forms.Button();
+            this.SaveImagesHereTextBox = new System.Windows.Forms.TextBox();
+            this.EditImages = new System.Windows.Forms.CheckBox();
+            this.RuleOfThirds = new System.Windows.Forms.CheckBox();
+            this.DisableNotifications = new System.Windows.Forms.CheckBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.SaveImages = new System.Windows.Forms.CheckBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.CopyImageToClipboard = new System.Windows.Forms.CheckBox();
+            this.BackupImages = new System.Windows.Forms.CheckBox();
+            this.FreezeScreen = new System.Windows.Forms.CheckBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
+            ((System.ComponentModel.ISupportInitialize)(this.RecordingFramerate)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageContainer)).BeginInit();
             this.tabPage3.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.tabPage1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.RecordingFramerate)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -138,6 +127,31 @@
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.AddToStartupButton_Click);
             // 
+            // RecordingFramerate
+            // 
+            this.RecordingFramerate.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.RecordingFramerate.Location = new System.Drawing.Point(8, 194);
+            this.RecordingFramerate.Maximum = new decimal(new int[] {
+            60,
+            0,
+            0,
+            0});
+            this.RecordingFramerate.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.RecordingFramerate.Name = "RecordingFramerate";
+            this.RecordingFramerate.Size = new System.Drawing.Size(44, 20);
+            this.RecordingFramerate.TabIndex = 31;
+            this.toolTip1.SetToolTip(this.RecordingFramerate, "The framerate will decrease if performance is low.");
+            this.RecordingFramerate.Value = new decimal(new int[] {
+            32,
+            0,
+            0,
+            0});
+            this.RecordingFramerate.ValueChanged += new System.EventHandler(this.ClipFPS_ValueChanged);
+            // 
             // ImageFileDialog
             // 
             this.ImageFileDialog.DefaultExt = "png";
@@ -168,14 +182,12 @@
             this.tabPage3.Controls.Add(this.label17);
             this.tabPage3.Controls.Add(this.FTPLink);
             this.tabPage3.Controls.Add(this.FTPURL);
-            this.tabPage3.Controls.Add(this.PastebinSubjectLineTextBox);
             this.tabPage3.Controls.Add(this.FTPpassword);
             this.tabPage3.Controls.Add(this.FTPUsername);
             this.tabPage3.Controls.Add(this.label16);
             this.tabPage3.Controls.Add(this.label6);
             this.tabPage3.Controls.Add(this.label2);
             this.tabPage3.Controls.Add(this.label12);
-            this.tabPage3.Controls.Add(this.label1);
             this.tabPage3.Controls.Add(this.checkBoxUploadToFTP);
             this.tabPage3.Controls.Add(this.CopyLinksToClipboard);
             this.tabPage3.Controls.Add(this.OpenInBrowser);
@@ -187,27 +199,109 @@
             this.tabPage3.Text = "Uploading";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
-            // neverUpload
+            // CopyFTPLink
             // 
-            this.neverUpload.AutoSize = true;
-            this.neverUpload.Location = new System.Drawing.Point(8, 17);
-            this.neverUpload.Name = "neverUpload";
-            this.neverUpload.Size = new System.Drawing.Size(160, 17);
-            this.neverUpload.TabIndex = 7;
-            this.neverUpload.Text = "Never upload to public sites.";
-            this.neverUpload.UseVisualStyleBackColor = true;
-            this.neverUpload.CheckedChanged += new System.EventHandler(this.NeverUpload_CheckedChanged);
+            this.CopyFTPLink.AutoSize = true;
+            this.CopyFTPLink.Location = new System.Drawing.Point(193, 206);
+            this.CopyFTPLink.Name = "CopyFTPLink";
+            this.CopyFTPLink.Size = new System.Drawing.Size(162, 17);
+            this.CopyFTPLink.TabIndex = 54;
+            this.CopyFTPLink.Text = "Copy HTTP link to clipboard.";
+            this.CopyFTPLink.UseVisualStyleBackColor = true;
+            this.CopyFTPLink.CheckedChanged += new System.EventHandler(this.CopyFTPLink_CheckedChanged);
             // 
-            // OpenInBrowser
+            // label17
             // 
-            this.OpenInBrowser.AutoSize = true;
-            this.OpenInBrowser.Location = new System.Drawing.Point(8, 35);
-            this.OpenInBrowser.Name = "OpenInBrowser";
-            this.OpenInBrowser.Size = new System.Drawing.Size(207, 17);
-            this.OpenInBrowser.TabIndex = 44;
-            this.OpenInBrowser.Text = "Open uploaded image in web browser.";
-            this.OpenInBrowser.UseVisualStyleBackColor = true;
-            this.OpenInBrowser.CheckedChanged += new System.EventHandler(this.OpenInBrowser_CheckedChanged);
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(7, 206);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(51, 13);
+            this.label17.TabIndex = 53;
+            this.label17.Text = "Http path";
+            // 
+            // FTPLink
+            // 
+            this.FTPLink.Location = new System.Drawing.Point(63, 203);
+            this.FTPLink.Name = "FTPLink";
+            this.FTPLink.Size = new System.Drawing.Size(126, 20);
+            this.FTPLink.TabIndex = 52;
+            this.FTPLink.Text = "http://mysite.com/ftp/";
+            this.FTPLink.TextChanged += new System.EventHandler(this.FTPLink_TextChanged);
+            // 
+            // FTPURL
+            // 
+            this.FTPURL.Location = new System.Drawing.Point(64, 128);
+            this.FTPURL.Name = "FTPURL";
+            this.FTPURL.Size = new System.Drawing.Size(285, 20);
+            this.FTPURL.TabIndex = 27;
+            this.FTPURL.Text = "ftp://mysite.com/ftp/";
+            this.FTPURL.TextChanged += new System.EventHandler(this.FTPURL_TextChanged);
+            // 
+            // FTPpassword
+            // 
+            this.FTPpassword.Location = new System.Drawing.Point(63, 178);
+            this.FTPpassword.Name = "FTPpassword";
+            this.FTPpassword.PasswordChar = '*';
+            this.FTPpassword.Size = new System.Drawing.Size(286, 20);
+            this.FTPpassword.TabIndex = 29;
+            this.FTPpassword.Text = "Password";
+            this.FTPpassword.TextChanged += new System.EventHandler(this.FTPpassword_TextChanged);
+            // 
+            // FTPUsername
+            // 
+            this.FTPUsername.Location = new System.Drawing.Point(63, 154);
+            this.FTPUsername.Name = "FTPUsername";
+            this.FTPUsername.Size = new System.Drawing.Size(286, 20);
+            this.FTPUsername.TabIndex = 28;
+            this.FTPUsername.Text = "Username";
+            this.FTPUsername.TextChanged += new System.EventHandler(this.FTPUsername_TextChanged);
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(5, 181);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(53, 13);
+            this.label16.TabIndex = 51;
+            this.label16.Text = "Password";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(2, 157);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(55, 13);
+            this.label6.TabIndex = 50;
+            this.label6.Text = "Username";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(29, 131);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(29, 13);
+            this.label2.TabIndex = 49;
+            this.label2.Text = "Host";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(3, 3);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(44, 13);
+            this.label12.TabIndex = 48;
+            this.label12.Text = "General";
+            // 
+            // checkBoxUploadToFTP
+            // 
+            this.checkBoxUploadToFTP.AutoSize = true;
+            this.checkBoxUploadToFTP.Location = new System.Drawing.Point(8, 108);
+            this.checkBoxUploadToFTP.Name = "checkBoxUploadToFTP";
+            this.checkBoxUploadToFTP.Size = new System.Drawing.Size(95, 17);
+            this.checkBoxUploadToFTP.TabIndex = 9;
+            this.checkBoxUploadToFTP.Text = "Upload to FTP";
+            this.checkBoxUploadToFTP.UseVisualStyleBackColor = true;
+            this.checkBoxUploadToFTP.CheckedChanged += new System.EventHandler(this.CheckBoxUploadToFTP_CheckedChanged);
             // 
             // CopyLinksToClipboard
             // 
@@ -222,143 +316,34 @@
             this.CopyLinksToClipboard.UseVisualStyleBackColor = true;
             this.CopyLinksToClipboard.CheckedChanged += new System.EventHandler(this.CopyLinksToClipboard_CheckedChanged);
             // 
-            // checkBoxUploadToFTP
+            // OpenInBrowser
             // 
-            this.checkBoxUploadToFTP.AutoSize = true;
-            this.checkBoxUploadToFTP.Location = new System.Drawing.Point(8, 108);
-            this.checkBoxUploadToFTP.Name = "checkBoxUploadToFTP";
-            this.checkBoxUploadToFTP.Size = new System.Drawing.Size(95, 17);
-            this.checkBoxUploadToFTP.TabIndex = 9;
-            this.checkBoxUploadToFTP.Text = "Upload to FTP";
-            this.checkBoxUploadToFTP.UseVisualStyleBackColor = true;
-            this.checkBoxUploadToFTP.CheckedChanged += new System.EventHandler(this.CheckBoxUploadToFTP_CheckedChanged);
+            this.OpenInBrowser.AutoSize = true;
+            this.OpenInBrowser.Location = new System.Drawing.Point(8, 35);
+            this.OpenInBrowser.Name = "OpenInBrowser";
+            this.OpenInBrowser.Size = new System.Drawing.Size(207, 17);
+            this.OpenInBrowser.TabIndex = 44;
+            this.OpenInBrowser.Text = "Open uploaded image in web browser.";
+            this.OpenInBrowser.UseVisualStyleBackColor = true;
+            this.OpenInBrowser.CheckedChanged += new System.EventHandler(this.OpenInBrowser_CheckedChanged);
             // 
-            // label1
+            // neverUpload
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(3, 80);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(110, 13);
-            this.label1.TabIndex = 23;
-            this.label1.Text = "Pastebin Subject Line";
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(3, 3);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(44, 13);
-            this.label12.TabIndex = 48;
-            this.label12.Text = "General";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(29, 131);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(29, 13);
-            this.label2.TabIndex = 49;
-            this.label2.Text = "Host";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(2, 157);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(55, 13);
-            this.label6.TabIndex = 50;
-            this.label6.Text = "Username";
-            // 
-            // label16
-            // 
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(5, 181);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(53, 13);
-            this.label16.TabIndex = 51;
-            this.label16.Text = "Password";
-            // 
-            // FTPUsername
-            // 
-            this.FTPUsername.Location = new System.Drawing.Point(63, 154);
-            this.FTPUsername.Name = "FTPUsername";
-            this.FTPUsername.Size = new System.Drawing.Size(286, 20);
-            this.FTPUsername.TabIndex = 28;
-            this.FTPUsername.Text = "Username";
-            this.FTPUsername.TextChanged += new System.EventHandler(this.FTPUsername_TextChanged);
-            // 
-            // FTPpassword
-            // 
-            this.FTPpassword.Location = new System.Drawing.Point(63, 178);
-            this.FTPpassword.Name = "FTPpassword";
-            this.FTPpassword.PasswordChar = '*';
-            this.FTPpassword.Size = new System.Drawing.Size(286, 20);
-            this.FTPpassword.TabIndex = 29;
-            this.FTPpassword.Text = "Password";
-            this.FTPpassword.TextChanged += new System.EventHandler(this.FTPpassword_TextChanged);
-            // 
-            // PastebinSubjectLineTextBox
-            // 
-            this.PastebinSubjectLineTextBox.Location = new System.Drawing.Point(123, 77);
-            this.PastebinSubjectLineTextBox.Name = "PastebinSubjectLineTextBox";
-            this.PastebinSubjectLineTextBox.Size = new System.Drawing.Size(223, 20);
-            this.PastebinSubjectLineTextBox.TabIndex = 22;
-            this.PastebinSubjectLineTextBox.Text = "ImageDeCap Upload!";
-            this.PastebinSubjectLineTextBox.TextChanged += new System.EventHandler(this.TextBox2_TextChanged_1);
-            // 
-            // FTPURL
-            // 
-            this.FTPURL.Location = new System.Drawing.Point(64, 128);
-            this.FTPURL.Name = "FTPURL";
-            this.FTPURL.Size = new System.Drawing.Size(285, 20);
-            this.FTPURL.TabIndex = 27;
-            this.FTPURL.Text = "ftp://mysite.com/ftp/";
-            this.FTPURL.TextChanged += new System.EventHandler(this.FTPURL_TextChanged);
-            // 
-            // FTPLink
-            // 
-            this.FTPLink.Location = new System.Drawing.Point(63, 203);
-            this.FTPLink.Name = "FTPLink";
-            this.FTPLink.Size = new System.Drawing.Size(126, 20);
-            this.FTPLink.TabIndex = 52;
-            this.FTPLink.Text = "http://mysite.com/ftp/";
-            this.FTPLink.TextChanged += new System.EventHandler(this.FTPLink_TextChanged);
-            // 
-            // label17
-            // 
-            this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(7, 206);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(51, 13);
-            this.label17.TabIndex = 53;
-            this.label17.Text = "Http path";
-            // 
-            // CopyFTPLink
-            // 
-            this.CopyFTPLink.AutoSize = true;
-            this.CopyFTPLink.Location = new System.Drawing.Point(193, 206);
-            this.CopyFTPLink.Name = "CopyFTPLink";
-            this.CopyFTPLink.Size = new System.Drawing.Size(162, 17);
-            this.CopyFTPLink.TabIndex = 54;
-            this.CopyFTPLink.Text = "Copy HTTP link to clipboard.";
-            this.CopyFTPLink.UseVisualStyleBackColor = true;
-            this.CopyFTPLink.CheckedChanged += new System.EventHandler(this.CopyFTPLink_CheckedChanged);
+            this.neverUpload.AutoSize = true;
+            this.neverUpload.Location = new System.Drawing.Point(8, 17);
+            this.neverUpload.Name = "neverUpload";
+            this.neverUpload.Size = new System.Drawing.Size(160, 17);
+            this.neverUpload.TabIndex = 7;
+            this.neverUpload.Text = "Never upload to public sites.";
+            this.neverUpload.UseVisualStyleBackColor = true;
+            this.neverUpload.CheckedChanged += new System.EventHandler(this.NeverUpload_CheckedChanged);
             // 
             // tabPage2
             // 
             this.tabPage2.Controls.Add(this.ResetHotkeysbutton);
-            this.tabPage2.Controls.Add(this.watermarkCheckbox);
-            this.tabPage2.Controls.Add(this.watermarkLocation3);
-            this.tabPage2.Controls.Add(this.watermarkTextbox);
             this.tabPage2.Controls.Add(this.HotkeyTextBox3);
-            this.tabPage2.Controls.Add(this.HotkeyTextBox1);
             this.tabPage2.Controls.Add(this.HotkeyTextBox2);
-            this.tabPage2.Controls.Add(this.watermarkLocation0);
-            this.tabPage2.Controls.Add(this.watermarkLocation1);
-            this.tabPage2.Controls.Add(this.watermarkBrowseButton);
-            this.tabPage2.Controls.Add(this.watermarkLocation2);
             this.tabPage2.Controls.Add(this.label7);
-            this.tabPage2.Controls.Add(this.label4);
             this.tabPage2.Controls.Add(this.label5);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
@@ -368,99 +353,18 @@
             this.tabPage2.Text = "Hotkeys";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
-            // label5
+            // ResetHotkeysbutton
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(3, 39);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(64, 13);
-            this.label5.TabIndex = 35;
-            this.label5.Text = "Record clip.";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(3, 76);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(64, 13);
-            this.label4.TabIndex = 34;
-            this.label4.Text = "Upload text.";
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(3, 3);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(78, 13);
-            this.label7.TabIndex = 36;
-            this.label7.Text = "Capture image.";
-            // 
-            // HotkeyTextBox2
-            // 
-            this.HotkeyTextBox2.Location = new System.Drawing.Point(6, 55);
-            this.HotkeyTextBox2.Multiline = true;
-            this.HotkeyTextBox2.Name = "HotkeyTextBox2";
-            this.HotkeyTextBox2.Size = new System.Drawing.Size(209, 17);
-            this.HotkeyTextBox2.TabIndex = 31;
-            this.HotkeyTextBox2.Text = "ctrl shift 3";
-            this.HotkeyTextBox2.Enter += new System.EventHandler(this.HotkeyTextBox2_Enter);
-            this.HotkeyTextBox2.GotFocus += new System.EventHandler(this.HotkeyTextBox2_GotFocus);
-            this.HotkeyTextBox2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.HotkeyTextBox2_KeyDown);
-            this.HotkeyTextBox2.Leave += new System.EventHandler(this.HotkeyTextBox2_Leave);
-            this.HotkeyTextBox2.LostFocus += new System.EventHandler(this.HotkeyTextBox2_LostFocus);
-            // 
-            // watermarkLocation2
-            // 
-            this.watermarkLocation2.AutoSize = true;
-            this.watermarkLocation2.Location = new System.Drawing.Point(246, 126);
-            this.watermarkLocation2.Name = "watermarkLocation2";
-            this.watermarkLocation2.Size = new System.Drawing.Size(79, 17);
-            this.watermarkLocation2.TabIndex = 47;
-            this.watermarkLocation2.Text = "Bottom Left";
-            this.watermarkLocation2.UseVisualStyleBackColor = true;
-            this.watermarkLocation2.Visible = false;
-            this.watermarkLocation2.CheckedChanged += new System.EventHandler(this.WatermarkLocation2_CheckedChanged);
-            // 
-            // watermarkBrowseButton
-            // 
-            this.watermarkBrowseButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
-            this.watermarkBrowseButton.FlatAppearance.BorderSize = 0;
-            this.watermarkBrowseButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.watermarkBrowseButton.Location = new System.Drawing.Point(114, 165);
-            this.watermarkBrowseButton.Name = "watermarkBrowseButton";
-            this.watermarkBrowseButton.Size = new System.Drawing.Size(55, 23);
-            this.watermarkBrowseButton.TabIndex = 43;
-            this.watermarkBrowseButton.Text = "Browse";
-            this.watermarkBrowseButton.UseVisualStyleBackColor = true;
-            this.watermarkBrowseButton.Visible = false;
-            this.watermarkBrowseButton.Click += new System.EventHandler(this.WatermarkBrowseButton_Click_1);
-            // 
-            // watermarkLocation1
-            // 
-            this.watermarkLocation1.AutoSize = true;
-            this.watermarkLocation1.Location = new System.Drawing.Point(246, 141);
-            this.watermarkLocation1.Name = "watermarkLocation1";
-            this.watermarkLocation1.Size = new System.Drawing.Size(72, 17);
-            this.watermarkLocation1.TabIndex = 46;
-            this.watermarkLocation1.Text = "Top Right";
-            this.watermarkLocation1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.watermarkLocation1.UseVisualStyleBackColor = true;
-            this.watermarkLocation1.Visible = false;
-            this.watermarkLocation1.CheckedChanged += new System.EventHandler(this.WatermarkLocation1_CheckedChanged);
-            // 
-            // HotkeyTextBox1
-            // 
-            this.HotkeyTextBox1.Location = new System.Drawing.Point(6, 91);
-            this.HotkeyTextBox1.Multiline = true;
-            this.HotkeyTextBox1.Name = "HotkeyTextBox1";
-            this.HotkeyTextBox1.Size = new System.Drawing.Size(209, 17);
-            this.HotkeyTextBox1.TabIndex = 30;
-            this.HotkeyTextBox1.Text = "ctrl shift 2";
-            this.HotkeyTextBox1.Enter += new System.EventHandler(this.HotkeyTextBox1_Enter);
-            this.HotkeyTextBox1.GotFocus += new System.EventHandler(this.HotkeyTextBox1_GotFocus);
-            this.HotkeyTextBox1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.HotkeyTextBox1_KeyDown);
-            this.HotkeyTextBox1.Leave += new System.EventHandler(this.HotkeyTextBox1_Leave);
-            this.HotkeyTextBox1.LostFocus += new System.EventHandler(this.HotkeyTextBox1_LostFocus);
+            this.ResetHotkeysbutton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
+            this.ResetHotkeysbutton.FlatAppearance.BorderSize = 0;
+            this.ResetHotkeysbutton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ResetHotkeysbutton.Location = new System.Drawing.Point(8, 184);
+            this.ResetHotkeysbutton.Name = "ResetHotkeysbutton";
+            this.ResetHotkeysbutton.Size = new System.Drawing.Size(100, 36);
+            this.ResetHotkeysbutton.TabIndex = 39;
+            this.ResetHotkeysbutton.Text = "Reset hotkeys";
+            this.ResetHotkeysbutton.UseVisualStyleBackColor = true;
+            this.ResetHotkeysbutton.Click += new System.EventHandler(this.ResetHotkeysbutton_Click);
             // 
             // HotkeyTextBox3
             // 
@@ -476,66 +380,37 @@
             this.HotkeyTextBox3.Leave += new System.EventHandler(this.HotkeyTextBox3_Leave);
             this.HotkeyTextBox3.LostFocus += new System.EventHandler(this.HotkeyTextBox3_LostFocus);
             // 
-            // watermarkLocation0
+            // HotkeyTextBox2
             // 
-            this.watermarkLocation0.AutoSize = true;
-            this.watermarkLocation0.Location = new System.Drawing.Point(246, 111);
-            this.watermarkLocation0.Name = "watermarkLocation0";
-            this.watermarkLocation0.Size = new System.Drawing.Size(65, 17);
-            this.watermarkLocation0.TabIndex = 45;
-            this.watermarkLocation0.Text = "Top Left";
-            this.watermarkLocation0.UseVisualStyleBackColor = true;
-            this.watermarkLocation0.Visible = false;
-            this.watermarkLocation0.CheckedChanged += new System.EventHandler(this.WatermarkLocation0_CheckedChanged);
+            this.HotkeyTextBox2.Location = new System.Drawing.Point(6, 55);
+            this.HotkeyTextBox2.Multiline = true;
+            this.HotkeyTextBox2.Name = "HotkeyTextBox2";
+            this.HotkeyTextBox2.Size = new System.Drawing.Size(209, 17);
+            this.HotkeyTextBox2.TabIndex = 31;
+            this.HotkeyTextBox2.Text = "ctrl shift 3";
+            this.HotkeyTextBox2.Enter += new System.EventHandler(this.HotkeyTextBox2_Enter);
+            this.HotkeyTextBox2.GotFocus += new System.EventHandler(this.HotkeyTextBox2_GotFocus);
+            this.HotkeyTextBox2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.HotkeyTextBox2_KeyDown);
+            this.HotkeyTextBox2.Leave += new System.EventHandler(this.HotkeyTextBox2_Leave);
+            this.HotkeyTextBox2.LostFocus += new System.EventHandler(this.HotkeyTextBox2_LostFocus);
             // 
-            // watermarkTextbox
+            // label7
             // 
-            this.watermarkTextbox.Location = new System.Drawing.Point(85, 194);
-            this.watermarkTextbox.Name = "watermarkTextbox";
-            this.watermarkTextbox.Size = new System.Drawing.Size(96, 20);
-            this.watermarkTextbox.TabIndex = 42;
-            this.watermarkTextbox.Visible = false;
-            this.watermarkTextbox.TextChanged += new System.EventHandler(this.WatermarkTextbox_TextChanged);
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(3, 3);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(78, 13);
+            this.label7.TabIndex = 36;
+            this.label7.Text = "Capture image.";
             // 
-            // watermarkLocation3
+            // label5
             // 
-            this.watermarkLocation3.AutoSize = true;
-            this.watermarkLocation3.Checked = true;
-            this.watermarkLocation3.Location = new System.Drawing.Point(246, 156);
-            this.watermarkLocation3.Name = "watermarkLocation3";
-            this.watermarkLocation3.Size = new System.Drawing.Size(86, 17);
-            this.watermarkLocation3.TabIndex = 48;
-            this.watermarkLocation3.TabStop = true;
-            this.watermarkLocation3.Text = "Bottom Right";
-            this.watermarkLocation3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.watermarkLocation3.UseVisualStyleBackColor = true;
-            this.watermarkLocation3.Visible = false;
-            this.watermarkLocation3.CheckedChanged += new System.EventHandler(this.WatermarkLocation3_CheckedChanged);
-            // 
-            // watermarkCheckbox
-            // 
-            this.watermarkCheckbox.AutoSize = true;
-            this.watermarkCheckbox.Location = new System.Drawing.Point(187, 194);
-            this.watermarkCheckbox.Name = "watermarkCheckbox";
-            this.watermarkCheckbox.Size = new System.Drawing.Size(145, 17);
-            this.watermarkCheckbox.TabIndex = 2;
-            this.watermarkCheckbox.Text = "Add watermark to images";
-            this.watermarkCheckbox.UseVisualStyleBackColor = true;
-            this.watermarkCheckbox.Visible = false;
-            this.watermarkCheckbox.CheckedChanged += new System.EventHandler(this.WatermarkCheckbox_CheckedChanged);
-            // 
-            // ResetHotkeysbutton
-            // 
-            this.ResetHotkeysbutton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
-            this.ResetHotkeysbutton.FlatAppearance.BorderSize = 0;
-            this.ResetHotkeysbutton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ResetHotkeysbutton.Location = new System.Drawing.Point(8, 114);
-            this.ResetHotkeysbutton.Name = "ResetHotkeysbutton";
-            this.ResetHotkeysbutton.Size = new System.Drawing.Size(100, 36);
-            this.ResetHotkeysbutton.TabIndex = 39;
-            this.ResetHotkeysbutton.Text = "Reset hotkeys";
-            this.ResetHotkeysbutton.UseVisualStyleBackColor = true;
-            this.ResetHotkeysbutton.Click += new System.EventHandler(this.ResetHotkeysbutton_Click);
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(3, 39);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(64, 13);
+            this.label5.TabIndex = 35;
+            this.label5.Text = "Record clip.";
             // 
             // tabPage1
             // 
@@ -561,113 +436,27 @@
             this.tabPage1.Text = "General";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // FreezeScreen
+            // SaveImagesBrowseButton
             // 
-            this.FreezeScreen.AutoSize = true;
-            this.FreezeScreen.Location = new System.Drawing.Point(8, 90);
-            this.FreezeScreen.Name = "FreezeScreen";
-            this.FreezeScreen.Size = new System.Drawing.Size(150, 17);
-            this.FreezeScreen.TabIndex = 29;
-            this.FreezeScreen.Text = "Freeze screen on capture.";
-            this.FreezeScreen.UseVisualStyleBackColor = true;
-            this.FreezeScreen.CheckedChanged += new System.EventHandler(this.CheckBox6_CheckedChanged);
+            this.SaveImagesBrowseButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
+            this.SaveImagesBrowseButton.FlatAppearance.BorderSize = 0;
+            this.SaveImagesBrowseButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.SaveImagesBrowseButton.Location = new System.Drawing.Point(238, 37);
+            this.SaveImagesBrowseButton.Name = "SaveImagesBrowseButton";
+            this.SaveImagesBrowseButton.Size = new System.Drawing.Size(75, 22);
+            this.SaveImagesBrowseButton.TabIndex = 2;
+            this.SaveImagesBrowseButton.Text = "Browse";
+            this.SaveImagesBrowseButton.UseVisualStyleBackColor = true;
+            this.SaveImagesBrowseButton.Click += new System.EventHandler(this.SaveImagesBrowseButton_Click);
             // 
-            // BackupImages
+            // SaveImagesHereTextBox
             // 
-            this.BackupImages.AutoSize = true;
-            this.BackupImages.Checked = true;
-            this.BackupImages.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.BackupImages.Location = new System.Drawing.Point(8, 107);
-            this.BackupImages.Name = "BackupImages";
-            this.BackupImages.Size = new System.Drawing.Size(168, 17);
-            this.BackupImages.TabIndex = 5;
-            this.BackupImages.Text = "Back up the last 100 captures";
-            this.BackupImages.UseVisualStyleBackColor = true;
-            this.BackupImages.CheckedChanged += new System.EventHandler(this.BackupImages_CheckedChanged);
-            // 
-            // CopyImageToClipboard
-            // 
-            this.CopyImageToClipboard.AutoSize = true;
-            this.CopyImageToClipboard.Location = new System.Drawing.Point(8, 124);
-            this.CopyImageToClipboard.Name = "CopyImageToClipboard";
-            this.CopyImageToClipboard.Size = new System.Drawing.Size(247, 17);
-            this.CopyImageToClipboard.TabIndex = 9;
-            this.CopyImageToClipboard.Text = "Copy image to clipboard immedietly on capture.";
-            this.CopyImageToClipboard.UseVisualStyleBackColor = true;
-            this.CopyImageToClipboard.CheckedChanged += new System.EventHandler(this.CopyImageToClipboard_CheckedChanged);
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(55, 197);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(135, 13);
-            this.label9.TabIndex = 35;
-            this.label9.Text = "Target recording framerate.";
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label14.ForeColor = System.Drawing.Color.RoyalBlue;
-            this.label14.Location = new System.Drawing.Point(169, 108);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(31, 13);
-            this.label14.TabIndex = 41;
-            this.label14.Text = "here.";
-            this.label14.Click += new System.EventHandler(this.BackupFolderLink_Click);
-            // 
-            // SaveImages
-            // 
-            this.SaveImages.AutoSize = true;
-            this.SaveImages.Location = new System.Drawing.Point(8, 19);
-            this.SaveImages.Name = "SaveImages";
-            this.SaveImages.Size = new System.Drawing.Size(114, 17);
-            this.SaveImages.TabIndex = 0;
-            this.SaveImages.Text = "Save to this folder.";
-            this.SaveImages.UseVisualStyleBackColor = true;
-            this.SaveImages.CheckedChanged += new System.EventHandler(this.CheckBox1_CheckedChanged);
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(3, 3);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(40, 13);
-            this.label3.TabIndex = 42;
-            this.label3.Text = "Saving";
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(3, 74);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(44, 13);
-            this.label8.TabIndex = 43;
-            this.label8.Text = "General";
-            // 
-            // DisableNotifications
-            // 
-            this.DisableNotifications.AutoSize = true;
-            this.DisableNotifications.Location = new System.Drawing.Point(8, 141);
-            this.DisableNotifications.Name = "DisableNotifications";
-            this.DisableNotifications.Size = new System.Drawing.Size(123, 17);
-            this.DisableNotifications.TabIndex = 5;
-            this.DisableNotifications.Text = "Disable notifications.";
-            this.DisableNotifications.UseVisualStyleBackColor = true;
-            this.DisableNotifications.CheckedChanged += new System.EventHandler(this.CheckBox5_CheckedChanged);
-            // 
-            // RuleOfThirds
-            // 
-            this.RuleOfThirds.AutoSize = true;
-            this.RuleOfThirds.Location = new System.Drawing.Point(8, 175);
-            this.RuleOfThirds.Name = "RuleOfThirds";
-            this.RuleOfThirds.Size = new System.Drawing.Size(192, 17);
-            this.RuleOfThirds.TabIndex = 1;
-            this.RuleOfThirds.Text = "Show rule of thirds when capturing.";
-            this.RuleOfThirds.UseVisualStyleBackColor = true;
-            this.RuleOfThirds.CheckedChanged += new System.EventHandler(this.CheckBox8_CheckedChanged);
+            this.SaveImagesHereTextBox.Location = new System.Drawing.Point(8, 38);
+            this.SaveImagesHereTextBox.Name = "SaveImagesHereTextBox";
+            this.SaveImagesHereTextBox.Size = new System.Drawing.Size(228, 20);
+            this.SaveImagesHereTextBox.TabIndex = 1;
+            this.SaveImagesHereTextBox.Text = "C:\\";
+            this.SaveImagesHereTextBox.TextChanged += new System.EventHandler(this.TextBox1_TextChanged);
             // 
             // EditImages
             // 
@@ -682,52 +471,113 @@
             this.EditImages.UseVisualStyleBackColor = true;
             this.EditImages.CheckedChanged += new System.EventHandler(this.CheckBox7_CheckedChanged);
             // 
-            // RecordingFramerate
+            // RuleOfThirds
             // 
-            this.RecordingFramerate.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.RecordingFramerate.Location = new System.Drawing.Point(8, 194);
-            this.RecordingFramerate.Maximum = new decimal(new int[] {
-            60,
-            0,
-            0,
-            0});
-            this.RecordingFramerate.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.RecordingFramerate.Name = "RecordingFramerate";
-            this.RecordingFramerate.Size = new System.Drawing.Size(44, 20);
-            this.RecordingFramerate.TabIndex = 31;
-            this.toolTip1.SetToolTip(this.RecordingFramerate, "The framerate will decrease if performance is low.");
-            this.RecordingFramerate.Value = new decimal(new int[] {
-            32,
-            0,
-            0,
-            0});
-            this.RecordingFramerate.ValueChanged += new System.EventHandler(this.ClipFPS_ValueChanged);
+            this.RuleOfThirds.AutoSize = true;
+            this.RuleOfThirds.Location = new System.Drawing.Point(8, 175);
+            this.RuleOfThirds.Name = "RuleOfThirds";
+            this.RuleOfThirds.Size = new System.Drawing.Size(192, 17);
+            this.RuleOfThirds.TabIndex = 1;
+            this.RuleOfThirds.Text = "Show rule of thirds when capturing.";
+            this.RuleOfThirds.UseVisualStyleBackColor = true;
+            this.RuleOfThirds.CheckedChanged += new System.EventHandler(this.CheckBox8_CheckedChanged);
             // 
-            // SaveImagesHereTextBox
+            // DisableNotifications
             // 
-            this.SaveImagesHereTextBox.Location = new System.Drawing.Point(8, 38);
-            this.SaveImagesHereTextBox.Name = "SaveImagesHereTextBox";
-            this.SaveImagesHereTextBox.Size = new System.Drawing.Size(228, 20);
-            this.SaveImagesHereTextBox.TabIndex = 1;
-            this.SaveImagesHereTextBox.Text = "C:\\";
-            this.SaveImagesHereTextBox.TextChanged += new System.EventHandler(this.TextBox1_TextChanged);
+            this.DisableNotifications.AutoSize = true;
+            this.DisableNotifications.Location = new System.Drawing.Point(8, 141);
+            this.DisableNotifications.Name = "DisableNotifications";
+            this.DisableNotifications.Size = new System.Drawing.Size(123, 17);
+            this.DisableNotifications.TabIndex = 5;
+            this.DisableNotifications.Text = "Disable notifications.";
+            this.DisableNotifications.UseVisualStyleBackColor = true;
+            this.DisableNotifications.CheckedChanged += new System.EventHandler(this.CheckBox5_CheckedChanged);
             // 
-            // SaveImagesBrowseButton
+            // label8
             // 
-            this.SaveImagesBrowseButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
-            this.SaveImagesBrowseButton.FlatAppearance.BorderSize = 0;
-            this.SaveImagesBrowseButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.SaveImagesBrowseButton.Location = new System.Drawing.Point(238, 37);
-            this.SaveImagesBrowseButton.Name = "SaveImagesBrowseButton";
-            this.SaveImagesBrowseButton.Size = new System.Drawing.Size(75, 22);
-            this.SaveImagesBrowseButton.TabIndex = 2;
-            this.SaveImagesBrowseButton.Text = "Browse";
-            this.SaveImagesBrowseButton.UseVisualStyleBackColor = true;
-            this.SaveImagesBrowseButton.Click += new System.EventHandler(this.SaveImagesBrowseButton_Click);
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(3, 74);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(44, 13);
+            this.label8.TabIndex = 43;
+            this.label8.Text = "General";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(3, 3);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(40, 13);
+            this.label3.TabIndex = 42;
+            this.label3.Text = "Saving";
+            // 
+            // SaveImages
+            // 
+            this.SaveImages.AutoSize = true;
+            this.SaveImages.Location = new System.Drawing.Point(8, 19);
+            this.SaveImages.Name = "SaveImages";
+            this.SaveImages.Size = new System.Drawing.Size(114, 17);
+            this.SaveImages.TabIndex = 0;
+            this.SaveImages.Text = "Save to this folder.";
+            this.SaveImages.UseVisualStyleBackColor = true;
+            this.SaveImages.CheckedChanged += new System.EventHandler(this.CheckBox1_CheckedChanged);
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label14.ForeColor = System.Drawing.Color.RoyalBlue;
+            this.label14.Location = new System.Drawing.Point(169, 108);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(31, 13);
+            this.label14.TabIndex = 41;
+            this.label14.Text = "here.";
+            this.label14.Click += new System.EventHandler(this.BackupFolderLink_Click);
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(55, 197);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(135, 13);
+            this.label9.TabIndex = 35;
+            this.label9.Text = "Target recording framerate.";
+            // 
+            // CopyImageToClipboard
+            // 
+            this.CopyImageToClipboard.AutoSize = true;
+            this.CopyImageToClipboard.Location = new System.Drawing.Point(8, 124);
+            this.CopyImageToClipboard.Name = "CopyImageToClipboard";
+            this.CopyImageToClipboard.Size = new System.Drawing.Size(247, 17);
+            this.CopyImageToClipboard.TabIndex = 9;
+            this.CopyImageToClipboard.Text = "Copy image to clipboard immedietly on capture.";
+            this.CopyImageToClipboard.UseVisualStyleBackColor = true;
+            this.CopyImageToClipboard.CheckedChanged += new System.EventHandler(this.CopyImageToClipboard_CheckedChanged);
+            // 
+            // BackupImages
+            // 
+            this.BackupImages.AutoSize = true;
+            this.BackupImages.Checked = true;
+            this.BackupImages.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.BackupImages.Location = new System.Drawing.Point(8, 107);
+            this.BackupImages.Name = "BackupImages";
+            this.BackupImages.Size = new System.Drawing.Size(168, 17);
+            this.BackupImages.TabIndex = 5;
+            this.BackupImages.Text = "Back up the last 100 captures";
+            this.BackupImages.UseVisualStyleBackColor = true;
+            this.BackupImages.CheckedChanged += new System.EventHandler(this.BackupImages_CheckedChanged);
+            // 
+            // FreezeScreen
+            // 
+            this.FreezeScreen.AutoSize = true;
+            this.FreezeScreen.Location = new System.Drawing.Point(8, 90);
+            this.FreezeScreen.Name = "FreezeScreen";
+            this.FreezeScreen.Size = new System.Drawing.Size(150, 17);
+            this.FreezeScreen.TabIndex = 29;
+            this.FreezeScreen.Text = "Freeze screen on capture.";
+            this.FreezeScreen.UseVisualStyleBackColor = true;
+            this.FreezeScreen.CheckedChanged += new System.EventHandler(this.CheckBox6_CheckedChanged);
             // 
             // tabControl1
             // 
@@ -763,6 +613,7 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SettingsWindow_FormClosing);
             this.Load += new System.EventHandler(this.SettingsWindow_Load);
             this.Shown += new System.EventHandler(this.SettingsWindow_Shown);
+            ((System.ComponentModel.ISupportInitialize)(this.RecordingFramerate)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageContainer)).EndInit();
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
@@ -770,7 +621,6 @@
             this.tabPage2.PerformLayout();
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.RecordingFramerate)).EndInit();
             this.tabControl1.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -790,32 +640,21 @@
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.TextBox FTPLink;
         private System.Windows.Forms.TextBox FTPURL;
-        private System.Windows.Forms.TextBox PastebinSubjectLineTextBox;
         private System.Windows.Forms.TextBox FTPpassword;
         private System.Windows.Forms.TextBox FTPUsername;
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.CheckBox checkBoxUploadToFTP;
         private System.Windows.Forms.CheckBox CopyLinksToClipboard;
         private System.Windows.Forms.CheckBox OpenInBrowser;
         private System.Windows.Forms.CheckBox neverUpload;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.Button ResetHotkeysbutton;
-        private System.Windows.Forms.CheckBox watermarkCheckbox;
-        private System.Windows.Forms.RadioButton watermarkLocation3;
-        private System.Windows.Forms.TextBox watermarkTextbox;
         private System.Windows.Forms.TextBox HotkeyTextBox3;
-        private System.Windows.Forms.TextBox HotkeyTextBox1;
         private System.Windows.Forms.TextBox HotkeyTextBox2;
-        private System.Windows.Forms.RadioButton watermarkLocation0;
-        private System.Windows.Forms.RadioButton watermarkLocation1;
-        private System.Windows.Forms.Button watermarkBrowseButton;
-        private System.Windows.Forms.RadioButton watermarkLocation2;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.Button SaveImagesBrowseButton;

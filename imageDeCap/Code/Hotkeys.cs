@@ -5,30 +5,22 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Input;
+using System.Diagnostics;
 public delegate void HotkeyPressed();
 
 namespace imageDeCap
 {
     public static class Hotkeys
     {
-        public static System.Diagnostics.Stopwatch watch;
-        public static System.Diagnostics.Stopwatch watchTotal;
+        public static Stopwatch watch;
         public static HotkeyPressed CaptureVideoHotkeyPressed = null;
-        static bool UploadPastebitHotkey = false;
         static bool CaptureVideoHotkey = false;
         static bool CaptureImageHotkey = false;
-
+        
         public static void Update()
         {
             string hotkey = GetCurrentHotkey(true);
-            if (Preferences.HotkeyText == hotkey)
-            {
-                if (!UploadPastebitHotkey)
-                    if (Program.hotkeysEnabled)
-                        ScreenCapturer.UploadPastebinClipboard();
-                UploadPastebitHotkey = true;
-            }
-            else if (Preferences.HotkeyVideo == hotkey)
+            if (Preferences.HotkeyVideo == hotkey)
             {
                 if (!CaptureVideoHotkey)
                     if (Program.hotkeysEnabled)
@@ -40,20 +32,19 @@ namespace imageDeCap
             }
             else if (Preferences.HotkeyImage == hotkey)
             {
-                Hotkeys.watchTotal = System.Diagnostics.Stopwatch.StartNew(); // 3
+                Stopwatch watchTotal = Stopwatch.StartNew();
 
                 if (!CaptureImageHotkey)
                     if (Program.hotkeysEnabled)
                         ScreenCapturer.CaptureScreenRegion();
                 CaptureImageHotkey = true;
 
-                Hotkeys.watchTotal.Stop();
-                Console.WriteLine("Total: " + Hotkeys.watchTotal.ElapsedMilliseconds);
+                watchTotal.Stop();
+                Console.WriteLine("Total: " + watchTotal.ElapsedMilliseconds);
             }
             else
             {
                 // no recognized hotkey
-                UploadPastebitHotkey = false;
                 CaptureVideoHotkey = false;
                 CaptureImageHotkey = false;
             }
@@ -99,7 +90,6 @@ namespace imageDeCap
             {
                 keys.Clear();
                 UnParse(Preferences.HotkeyImage, keys);
-                UnParse(Preferences.HotkeyText, keys);
                 UnParse(Preferences.HotkeyVideo, keys);
                 foreach (Key k in keys)
                 {

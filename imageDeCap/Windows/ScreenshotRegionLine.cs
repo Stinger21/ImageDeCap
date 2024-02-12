@@ -30,7 +30,7 @@ namespace imageDeCap
             InitializeComponent();
             this.Show();
             this.ShowInTaskbar = false;
-            this.Opacity = 0.5;
+            //this.Opacity = 0.5;
             this.TopMost = true;
             this.SetBounds(-10, -10, 0, 0);
         }

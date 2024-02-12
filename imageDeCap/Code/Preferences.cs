@@ -29,11 +29,9 @@ namespace imageDeCap
 
         // Uploading
         public static string c_Uploading;
-        public static string PastebinSubjectLine = "ImageDeCap Upload!";
         public static bool NeverUpload = true;
         public static bool CopyLinksToClipboard = true;
         public static bool OpenInBrowser = false;
-        public static string ClipTarget = "gfycat";
         public static bool uploadToFTP = false;
         public static string FTPurl = "ftp://mysite.com/ftp/";
         public static string FTPusername = "Username";
@@ -45,9 +43,6 @@ namespace imageDeCap
         public static string c_Misc;
         public static bool FirstStartup = true;
         public static bool UseRuleOfThirds = false;
-        public static bool AddWatermark = false;
-        public static string WatermarkFilePath = "";
-        public static int WatermarkLocation = 3;
         public static int BrushSmoothingDistance = 2;
         public static string ImageEditorFont = "Arial Black";
         public static int FontStyleType = (int)FontStyle.Bold;

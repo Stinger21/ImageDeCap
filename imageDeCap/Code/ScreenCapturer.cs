@@ -86,55 +86,15 @@ namespace imageDeCap
             magnifier.Location = new Point(-20000, -20000);
         }
 
-
         // UPLOADING FUNCTIONS
-
-        public static void UploadPastebinClipboard()
-        {
-            if (IsTakingSnapshot)
-                return;
-            
-            SendKeys.SendWait("^c");
-            System.Threading.Thread.Sleep(500);
-            string clipboard = Clipboard.GetText();
-            Utilities.PlaySound("snip.wav");
-
-            if (!Preferences.NeverUpload)
-            {
-                BackgroundWorker bw = new BackgroundWorker();
-                bw.DoWork += Uploading.UploadPastebin;
-                bw.RunWorkerCompleted += UploadPastebinCompleted;
-                bw.RunWorkerAsync(clipboard);
-            }
-
-            if (Preferences.uploadToFTP)
-            {
-                BackgroundWorker bw2 = new BackgroundWorker();
-                bw2.DoWork += Uploading.UploadToFTP;
-                string name = DateTime.UtcNow.ToString("yyyyMMddHHmmssfff");
-                bw2.RunWorkerAsync(new object[] { Preferences.FTPurl,
-                                                Preferences.FTPusername,
-                                                Preferences.FTPpassword,
-                                                Encoding.ASCII.GetBytes(clipboard),
-                                                $"{name}.txt" });
-            }
-
-            if (Preferences.SaveImages && Directory.Exists(Preferences.SaveImagesLocation))
-            {
-                string name = DateTime.UtcNow.ToString("yyyyMMddHHmmssfff");
-                string whereToSave = $"{Preferences.SaveImagesLocation}\\{name}.txt";
-                File.WriteAllText(whereToSave, clipboard);
-            }
-            
-        }
-
         public static void CaptureScreenRegion(bool isClip = false)
         {
+            Stopwatch watchTotal = Stopwatch.StartNew();
+
             Bitmap background = null;
             if(!isClip)
             {
-                var bounds = SystemInformation.VirtualScreen;
-                background = CaptureScreen(bounds.Left, bounds.Top, bounds.Size.Width, bounds.Size.Height);
+                background = CaptureScreen(SystemInformation.VirtualScreen);
             }
             else
             {
@@ -146,18 +106,19 @@ namespace imageDeCap
                     return;
                 }
             }
+            watchTotal.Stop();
+            Console.WriteLine("Section0: " + watchTotal.ElapsedMilliseconds);
+            watchTotal = Stopwatch.StartNew();
 
             // prevent blackening
             if (!IsTakingSnapshot)
             {
                 IsTakingSnapshot = true;
                 Program.hotkeysEnabled = false;
-                // back cover used for pulling cursor position into updateSelectedArea()
-                //if (CurrentBackCover != null)
-                //    CurrentBackCover.Dispose();
-                
                 CurrentBackCover.AfterShow(background, isClip); // ~500ms
             }
+            watchTotal.Stop();
+            Console.WriteLine("Section1: " + watchTotal.ElapsedMilliseconds);
         }
 
         // Temporary thing to stop crashing on recording multiple clips.
@@ -425,36 +386,6 @@ namespace imageDeCap
 
         }
 
-        public static void UploadPastebinCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            string pasteBinResult = (string)e.Result;
-            if (!pasteBinResult.Contains("failed"))
-            {
-                ClipboardHandler.SetClipboardText(pasteBinResult);
-                if (Preferences.CopyLinksToClipboard)
-                {
-                    if (!Preferences.DisableNotifications)
-                        Utilities.BubbleNotification("Pastebin link placed in clipboard!", Program.ImageDeCap.BalloonTipClicked);
-                }
-                else
-                {
-                    if (!Preferences.DisableNotifications)
-                        Utilities.BubbleNotification("Upload complete!", Program.ImageDeCap.BalloonTipClicked);
-                }
-
-                if (!Utilities.IsWindows10() || Preferences.DisableNotifications)
-                {
-                    Utilities.PlaySound("upload.wav");
-                }
-                Program.ImageDeCap.AddLink(pasteBinResult);
-            }
-            else
-            {
-                Utilities.BubbleNotification($"upload to pastebin failed!\n{pasteBinResult}\nAre you connected to the internet? \nIs pastebin Down?", null, ToolTipIcon.Error);
-                Utilities.PlaySound("error.wav");
-            }
-        }
-        
         public static Bitmap Capture(ScreenCaptureMode screenCaptureMode = ScreenCaptureMode.Window, int X = 0, int Y = 0, int Width = 0, int Height = 0, bool CaptureMouse = false)
         {
             Rectangle bounds;
@@ -475,8 +406,7 @@ namespace imageDeCap
                 bounds = new Rectangle(X, Y, Width, Height);
             }
 
-            var result = new Bitmap(bounds.Width, bounds.Height);
-            result = CaptureScreen(bounds.Left, bounds.Top, bounds.Size.Width, bounds.Size.Height);
+            Bitmap result = CaptureScreen(bounds);
             using (var g = Graphics.FromImage(result))
             {
                 if (CaptureMouse)
@@ -539,8 +469,12 @@ namespace imageDeCap
             return b;
         }
 
-        public static Bitmap CaptureScreen(int x, int y, int width, int height)
+        public static Bitmap CaptureScreen(Rectangle rect)
         {
+            int x = rect.Left;
+            int y = rect.Top;
+            int width = rect.Size.Width;
+            int height = rect.Size.Height;
             IntPtr handle = User32.GetDesktopWindow();
             IntPtr hdcSrc = User32.GetWindowDC(handle);
             User32.RECT windowRect = new User32.RECT();

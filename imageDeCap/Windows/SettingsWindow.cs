@@ -35,8 +35,6 @@ namespace imageDeCap
             OpenInBrowser.Enabled               = !Preferences.NeverUpload;
             CopyLinksToClipboard.Enabled        = !Preferences.NeverUpload;
             DisableNotifications.Enabled        = !Preferences.NeverUpload;
-            PastebinSubjectLineTextBox.Enabled  = !Preferences.NeverUpload;
-            PastebinSubjectLineTextBox.Text     = Preferences.PastebinSubjectLine;
             neverUpload.Checked                 = Preferences.NeverUpload;
             DisableNotifications.Checked        = Preferences.DisableNotifications;
             FreezeScreen.Checked                = Preferences.FreezeScreenOnRegionShot;
@@ -50,24 +48,11 @@ namespace imageDeCap
             FTPpassword.Text                    = Preferences.FTPpassword;
             FTPLink.Text                        = Preferences.FTPLink;
             CopyFTPLink.Checked                 = Preferences.CopyFTPLink;
-            HotkeyTextBox1.Text                 = Preferences.HotkeyText;
             HotkeyTextBox2.Text                 = Preferences.HotkeyVideo;
             HotkeyTextBox3.Text                 = Preferences.HotkeyImage;
             RecordingFramerate.Value            = Preferences.RecordingFramerate;
             CopyImageToClipboard.Checked        = Preferences.CopyImageToClipboard;
             RuleOfThirds.Checked                = Preferences.UseRuleOfThirds;
-            watermarkCheckbox.Checked           = Preferences.AddWatermark;
-            watermarkTextbox.Text               = Preferences.WatermarkFilePath;
-            watermarkLocation0.Checked          = Preferences.WatermarkLocation == 0;
-            watermarkLocation1.Checked          = Preferences.WatermarkLocation == 1;
-            watermarkLocation2.Checked          = Preferences.WatermarkLocation == 2;
-            watermarkLocation3.Checked          = Preferences.WatermarkLocation == 3;
-            watermarkLocation0.Enabled          = Preferences.AddWatermark;
-            watermarkLocation1.Enabled          = Preferences.AddWatermark;
-            watermarkLocation2.Enabled          = Preferences.AddWatermark;
-            watermarkLocation3.Enabled          = Preferences.AddWatermark;
-            watermarkBrowseButton.Enabled       = Preferences.AddWatermark;
-            watermarkTextbox.Enabled            = Preferences.AddWatermark;
             BackupImages.Checked                = Preferences.BackupImages;
         }
 
@@ -128,12 +113,6 @@ namespace imageDeCap
             Preferences.Save();
         }
 
-        private void TextBox2_TextChanged_1(object sender, EventArgs e)
-        {
-            Preferences.PastebinSubjectLine = PastebinSubjectLineTextBox.Text;
-            Preferences.Save();
-        }
-
         private void NeverUpload_CheckedChanged(object sender, EventArgs e)
         {
             Preferences.NeverUpload = neverUpload.Checked;
@@ -141,7 +120,6 @@ namespace imageDeCap
             OpenInBrowser.Enabled = !Preferences.NeverUpload;
             CopyLinksToClipboard.Enabled = !Preferences.NeverUpload;
             DisableNotifications.Enabled = !Preferences.NeverUpload;
-            PastebinSubjectLineTextBox.Enabled = !Preferences.NeverUpload;
         }
 
         private void Button3_Click(object sender, EventArgs e)
@@ -216,54 +194,6 @@ namespace imageDeCap
             Preferences.Save();
         }
         
-        private void WatermarkCheckbox_CheckedChanged(object sender, EventArgs e)
-        {
-            Preferences.AddWatermark = watermarkCheckbox.Checked;
-            watermarkLocation0.Enabled = Preferences.AddWatermark;
-            watermarkLocation1.Enabled = Preferences.AddWatermark;
-            watermarkLocation2.Enabled = Preferences.AddWatermark;
-            watermarkLocation3.Enabled = Preferences.AddWatermark;
-            watermarkBrowseButton.Enabled = Preferences.AddWatermark;
-            watermarkTextbox.Enabled = Preferences.AddWatermark;
-            Preferences.Save();
-        }
-        
-        private void WatermarkBrowseButton_Click_1(object sender, EventArgs e)
-        {
-            if (ImageFileDialog.ShowDialog() == DialogResult.OK)
-                watermarkTextbox.Text = ImageFileDialog.FileName;
-        }
-        
-        private void WatermarkTextbox_TextChanged(object sender, EventArgs e)
-        {
-            Preferences.WatermarkFilePath = watermarkTextbox.Text;
-            Preferences.Save();
-        }
-
-        private void WatermarkLocation0_CheckedChanged(object sender, EventArgs e)
-        {
-            Preferences.WatermarkLocation = 0;
-            Preferences.Save();
-        }
-
-        private void WatermarkLocation1_CheckedChanged(object sender, EventArgs e)
-        {
-            Preferences.WatermarkLocation = 1;
-            Preferences.Save();
-        }
-
-        private void WatermarkLocation2_CheckedChanged(object sender, EventArgs e)
-        {
-            Preferences.WatermarkLocation = 2;
-            Preferences.Save();
-        }
-
-        private void WatermarkLocation3_CheckedChanged(object sender, EventArgs e)
-        {
-            Preferences.WatermarkLocation = 3;
-            Preferences.Save();
-        }
-        
         // Add the program to startup
         private void AddToStartupButton_Click(object sender, EventArgs e)
         {
@@ -273,7 +203,6 @@ namespace imageDeCap
 
         private void ResetHotkeysbutton_Click(object sender, EventArgs e)
         {
-            Preferences.ResetPreference(nameof(Preferences.HotkeyText));
             Preferences.ResetPreference(nameof(Preferences.HotkeyVideo));
             Preferences.ResetPreference(nameof(Preferences.HotkeyImage));
             Preferences.Save();
@@ -301,25 +230,11 @@ namespace imageDeCap
 
         // This is left here to lock up the printscreen button so it can be used for typing into the hotkey box.
 
-        private void HotkeyTextBox1_KeyDown(object sender, KeyEventArgs e)
-        {
-            HotkeyTextBox1.Text = Hotkeys.GetCurrentHotkey();
-            Preferences.HotkeyText = HotkeyTextBox1.Text;
-            Preferences.Save();
-        }
         private void HotkeyTextBox2_GotFocus(object sender, EventArgs e)
         {
             Program.hotkeysEnabled = false;
         }
         private void HotkeyTextBox2_LostFocus(object sender, EventArgs e)
-        {
-            Program.hotkeysEnabled = true;
-        }
-        private void HotkeyTextBox1_GotFocus(object sender, EventArgs e)
-        {
-            Program.hotkeysEnabled = false;
-        }
-        private void HotkeyTextBox1_LostFocus(object sender, EventArgs e)
         {
             Program.hotkeysEnabled = true;
         }
@@ -337,12 +252,6 @@ namespace imageDeCap
             switch (number)
             {
                 case 1:
-                    HotkeyTextBox1_KeyDown(null, null);
-                    if (HotkeyTextBox1.Text == "")
-                        HotkeyTextBox1.Text += "Snapshot";
-                    else
-                        HotkeyTextBox1.Text += "+Snapshot";
-                    Preferences.HotkeyText = HotkeyTextBox1.Text;
                     break;
                 case 2:
                     HotkeyTextBox2_KeyDown(null, null);
@@ -398,8 +307,6 @@ namespace imageDeCap
             
             if (m.Msg == 0x0312)
             {
-                if (HotkeyTextBox1.ContainsFocus)
-                    HotkeyTextBox_PrintScreen(1);
                 if (HotkeyTextBox2.ContainsFocus)
                     HotkeyTextBox_PrintScreen(2);
                 if (HotkeyTextBox3.ContainsFocus)

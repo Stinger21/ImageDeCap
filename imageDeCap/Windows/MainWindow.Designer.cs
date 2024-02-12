@@ -31,7 +31,6 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
             this.BubbleNotification = new System.Windows.Forms.NotifyIcon(this.components);
-            this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             this.LinksListBox = new System.Windows.Forms.ListBox();
@@ -58,20 +57,6 @@
             this.BubbleNotification.Text = "ImageDeCap";
             this.BubbleNotification.Visible = true;
             this.BubbleNotification.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.BubbleNotification_MouseDoubleClick);
-            // 
-            // button2
-            // 
-            this.button2.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
-            this.button2.FlatAppearance.BorderSize = 0;
-            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.Location = new System.Drawing.Point(8, 83);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(224, 28);
-            this.button2.TabIndex = 9;
-            this.button2.Text = "Upload Text";
-            this.toolTip1.SetToolTip(this.button2, "Uploads clipboard text to Pastebin.");
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.UploadText_Click);
             // 
             // button3
             // 
@@ -225,7 +210,6 @@
             this.ClientSize = new System.Drawing.Size(240, 461);
             this.Controls.Add(this.VersionLabel);
             this.Controls.Add(this.LinksListBox);
-            this.Controls.Add(this.button2);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.menuStrip1);
@@ -251,7 +235,6 @@
         #endregion
 
         public System.Windows.Forms.NotifyIcon BubbleNotification;
-        private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.ListBox LinksListBox;

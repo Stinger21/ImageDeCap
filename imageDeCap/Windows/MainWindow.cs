@@ -295,11 +295,6 @@ namespace imageDeCap
             ScreenCapturer.CaptureScreenRegion(true);
         }
 
-        private void UploadText_Click(object sender = null, EventArgs e = null)
-        {
-            ScreenCapturer.UploadPastebinClipboard();
-        }
-        
         private void PreferencesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ShowSettings();

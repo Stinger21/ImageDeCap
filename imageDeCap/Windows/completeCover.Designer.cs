@@ -178,7 +178,7 @@ namespace imageDeCap
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.KeyPreview = true;
             this.Name = "CompleteCover";
-            this.Opacity = 0.5D;
+            this.Opacity = 1.0D;
             this.Text = "completeCover";
             this.TopMost = true;
             this.TransparencyKey = System.Drawing.Color.Red;

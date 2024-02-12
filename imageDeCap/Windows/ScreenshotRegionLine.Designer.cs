@@ -38,7 +38,7 @@
             this.ClientSize = new System.Drawing.Size(10, 10);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "ScreenshotRegionLine";
-            this.Opacity = 0.1D;
+            this.Opacity = 0.5D;
             this.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.ShowInTaskbar = false;
             this.Text = "BoundingBox";
